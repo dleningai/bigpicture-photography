@@ -1,0 +1,155 @@
+
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- GLightbox CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Big Picture Photography</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="bilder/logo.png" type="image/png" />
+  
+    <!-- Lightbox CSS muss hier rein -->
+    <link rel="stylesheet" href="lightbox/lightbox.min.css">
+  </head>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="lightbox/lightbox.min.js"></script>
+    <script>
+      lightbox.option({
+        resizeDuration: 200,
+        wrapAround: true
+      })
+    </script>
+  <body>
+    <div class="logo-wrapper">
+      <img src="bilder/logo.png" alt="Big Picture Logo" class="logo" />
+    </div>
+  
+    <!-- Navigation gehört direkt danach sauber in den Body -->
+    <nav class="navigation">
+      <a href="#portfolio">Portfolio</a>
+      <a href="#contact">Kontakt</a>
+    </nav>
+  
+    <!-- Ab hier geht’s weiter -->
+    <section class="hero">
+    
+    </section>
+  <section class="hero">
+    <div class="hero-inner">
+      <button class="btn contact-toggle">Jetzt Kontakt aufnehmen</button>
+      <div class="contact-options">
+        <a href="tel:+491234567890">📞 Anrufen</a>
+        <a href="mailto:info@bigpicture.photography">✉️ E-Mail</a>
+        <a href="https://wa.me/491234567890" target="_blank">💬 WhatsApp</a>
+        <a href="https://instagram.com/big_picture_photography_" target="_blank">📷 Instagram</a>
+      </div>
+     </section>
+  <section id="about" class="about">
+    <div class="about-content">
+      <img src="bilder/dimitri neu.png" alt="Dimitri Lening" class="about-img" />
+      <div class="underline"></div>
+      <div class="about-text">
+        <p>Ich bin Dimitri – Fotograf, Videograf, Familienmensch, Kaffeeliebhaber. Ich halte keine Kamera drauf – ich halte echte Momente fest. Egal ob Business-Shooting, Hochzeit oder Event: Ich erzähle deine Geschichte in Bildern, die bleiben.</p>
+        <p>Aus Detmold, mit Herz und Auge fürs Wesentliche.</p>
+      </div>
+    </div>
+  </section>
+
+
+
+  <section id="portfolio" class="portfolio">
+    <h2>Mein Portfolio</h2>
+    <div class="portfolio-grid">
+  
+      <!-- Business -->
+      <div class="portfolio-item">
+        <a href="bilder/business1.jpg" class="glightbox" data-gallery="business">
+          <img src="bilder/business_thumb.jpeg" alt="Business-Shooting" style="width: 100%; border-radius: 8px;" />
+        </a>
+        <!-- Unsichtbare Bilder -->
+        <a href="bilder/business2.jpg" class="glightbox" data-gallery="business" style="display: none;"></a>
+        <a href="bilder/business3.jpg" class="glightbox" data-gallery="business" style="display: none;"></a>
+        <a href="bilder/business4.jpg" class="glightbox" data-gallery="business" style="display: none;"></a>
+      </div>
+  
+      <!-- Portrait -->
+      <div class="portfolio-item">
+        <a href="bilder/portrait1.jpg" class="glightbox" data-gallery="portrait">
+          <img src="bilder/portrait_thumb1.jpg" alt="Portrait-Serie" style="width: 100%; border-radius: 8px;" />
+        </a>
+        <a href="bilder/portrait2.jpg" class="glightbox" data-gallery="portrait" style="display: none;"></a>
+        <a href="bilder/portrait3.jpg" class="glightbox" data-gallery="portrait" style="display: none;"></a>
+        <a href="bilder/portrait4.jpg" class="glightbox" data-gallery="portrait" style="display: none;"></a>
+        <a href="bilder/portrait5.jpg" class="glightbox" data-gallery="portrait" style="display: none;"></a>
+        <a href="bilder/portrait6.jpg" class="glightbox" data-gallery="portrait" style="display: none;"></a>
+        <a href="bilder/portrait7.jpg" class="glightbox" data-gallery="portrait" style="display: none;"></a>
+      </div>
+  
+      <!-- Hochzeit -->
+      <div class="portfolio-item">
+      <a href="bilder/hochzeit1.jpeg" class="glightbox" data-gallery="hochzeit">
+       <img src="bilder/hochzeit_thumb.jpeg" alt="Hochzeit" style="width: 100%; border-radius: 8px;" />
+      </a>
+
+      <!-- Unsichtbare Lightbox-Galeriebilder -->
+     <a href="bilder/hochzeit2.jpeg" class="glightbox" data-gallery="hochzeit" style="display: none;"></a>
+     <a href="bilder/hochzeit3.jpeg" class="glightbox" data-gallery="hochzeit" style="display: none;"></a>
+     <a href="bilder/hochzeit4.jpeg" class="glightbox" data-gallery="hochzeit" style="display: none;"></a>
+      </div>
+  
+      <!-- Video -->
+      <div class="portfolio-item">
+        <a href="https://youtu.be/GE2AYh9GX3M" class="glightbox" data-gallery="videos">
+          <img src="videos/imagefilm.jpeg" alt="Imagefilm 2024" style="width: 100%; border-radius: 8px;" />
+        </a>
+        <a href="https://youtu.be/yvor0_ip9jY" class="glightbox" data-gallery="videos" style="display: none;"></a>
+        <a href="https://youtu.be/qVBboo2VwLs" class="glightbox" data-gallery="videos" style="display: none;"></a>
+        <a href="https://youtu.be/kC2IDGlRSGQ" class="glightbox" data-gallery="videos" style="display: none;"></a>
+      </div>
+  
+    </div>
+  </section>
+
+  
+
+    </div>
+  </section>
+<!-- GLightbox Script -->
+<script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
+<script>
+  const lightbox = GLightbox({
+    selector: '.glightbox'
+  });
+</script>
+<!-- Andere Sektionen wie Portfolio, Vision etc... -->
+
+
+
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+  const toggleButtons = document.querySelectorAll('.contact-toggle');
+  const menu = document.querySelector('.contact-options');
+
+  toggleButtons.forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      menu.classList.toggle('show');
+    });
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!menu.contains(e.target) && ![...toggleButtons].some(btn => btn.contains(e.target))) {
+      menu.classList.remove('show');
+    }
+  });
+});
+  
+  </script>
+</body>
+</html>
