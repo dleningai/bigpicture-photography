@@ -1,155 +1,275 @@
-
 <!DOCTYPE html>
 <html lang="de">
-  <head>
-    <meta charset="UTF-8" />
-    <!-- GLightbox CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Big Picture Photography</title>
-    <link rel="stylesheet" href="style.css" />
-    <link rel="icon" href="bilder/logo.png" type="image/png" />
-  
-    <!-- Lightbox CSS muss hier rein -->
-    <link rel="stylesheet" href="lightbox/lightbox.min.css">
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Big Picture Photography — Dimitri Lening</title>
+  <meta name="description" content="Big Picture Photography — Fotografie & Videografie von Dimitri Lening aus Detmold. Business, Portrait, Hochzeit & Event." />
 
+  <link rel="icon" href="bilder/logo.png" type="image/png" />
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="lightbox/lightbox.min.js"></script>
-    <script>
-      lightbox.option({
-        resizeDuration: 200,
-        wrapAround: true
-      })
-    </script>
-  <body>
-    <div class="logo-wrapper">
-      <img src="bilder/logo.png" alt="Big Picture Logo" class="logo" />
-    </div>
-  
-    <!-- Navigation gehört direkt danach sauber in den Body -->
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- GLightbox -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css">
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ============ NAVIGATION ============ -->
+  <header class="site-header" id="siteHeader">
     <nav class="navigation">
-      <a href="#portfolio">Portfolio</a>
-      <a href="#contact">Kontakt</a>
-    </nav>
-  
-    <!-- Ab hier geht’s weiter -->
-    <section class="hero">
-    
-    </section>
-  <section class="hero">
-    <div class="hero-inner">
-      <button class="btn contact-toggle">Jetzt Kontakt aufnehmen</button>
-      <div class="contact-options">
-        <a href="tel:+491234567890">📞 Anrufen</a>
-        <a href="mailto:info@bigpicture.photography">✉️ E-Mail</a>
-        <a href="https://wa.me/491234567890" target="_blank">💬 WhatsApp</a>
-        <a href="https://instagram.com/big_picture_photography_" target="_blank">📷 Instagram</a>
-      </div>
-     </section>
-  <section id="about" class="about">
-    <div class="about-content">
-      <img src="bilder/dimitri neu.png" alt="Dimitri Lening" class="about-img" />
-      <div class="underline"></div>
-      <div class="about-text">
-        <p>Ich bin Dimitri – Fotograf, Videograf, Familienmensch, Kaffeeliebhaber. Ich halte keine Kamera drauf – ich halte echte Momente fest. Egal ob Business-Shooting, Hochzeit oder Event: Ich erzähle deine Geschichte in Bildern, die bleiben.</p>
-        <p>Aus Detmold, mit Herz und Auge fürs Wesentliche.</p>
-      </div>
-    </div>
-  </section>
-
-
-
-  <section id="portfolio" class="portfolio">
-    <h2>Mein Portfolio</h2>
-    <div class="portfolio-grid">
-  
-      <!-- Business -->
-      <div class="portfolio-item">
-        <a href="bilder/business1.jpg" class="glightbox" data-gallery="business">
-          <img src="bilder/business_thumb.jpeg" alt="Business-Shooting" style="width: 100%; border-radius: 8px;" />
-        </a>
-        <!-- Unsichtbare Bilder -->
-        <a href="bilder/business2.jpg" class="glightbox" data-gallery="business" style="display: none;"></a>
-        <a href="bilder/business3.jpg" class="glightbox" data-gallery="business" style="display: none;"></a>
-        <a href="bilder/business4.jpg" class="glightbox" data-gallery="business" style="display: none;"></a>
-      </div>
-  
-      <!-- Portrait -->
-      <div class="portfolio-item">
-        <a href="bilder/portrait1.jpg" class="glightbox" data-gallery="portrait">
-          <img src="bilder/portrait_thumb1.jpg" alt="Portrait-Serie" style="width: 100%; border-radius: 8px;" />
-        </a>
-        <a href="bilder/portrait2.jpg" class="glightbox" data-gallery="portrait" style="display: none;"></a>
-        <a href="bilder/portrait3.jpg" class="glightbox" data-gallery="portrait" style="display: none;"></a>
-        <a href="bilder/portrait4.jpg" class="glightbox" data-gallery="portrait" style="display: none;"></a>
-        <a href="bilder/portrait5.jpg" class="glightbox" data-gallery="portrait" style="display: none;"></a>
-        <a href="bilder/portrait6.jpg" class="glightbox" data-gallery="portrait" style="display: none;"></a>
-        <a href="bilder/portrait7.jpg" class="glightbox" data-gallery="portrait" style="display: none;"></a>
-      </div>
-  
-      <!-- Hochzeit -->
-      <div class="portfolio-item">
-      <a href="bilder/hochzeit1.jpeg" class="glightbox" data-gallery="hochzeit">
-       <img src="bilder/hochzeit_thumb.jpeg" alt="Hochzeit" style="width: 100%; border-radius: 8px;" />
+      <a href="#top" class="nav-logo">
+        <img src="bilder/logo.png" alt="Big Picture Photography" onerror="this.parentElement.classList.add('logo-fallback')" />
+        <span class="logo-fallback-text">Big&nbsp;Picture</span>
       </a>
 
-      <!-- Unsichtbare Lightbox-Galeriebilder -->
-     <a href="bilder/hochzeit2.jpeg" class="glightbox" data-gallery="hochzeit" style="display: none;"></a>
-     <a href="bilder/hochzeit3.jpeg" class="glightbox" data-gallery="hochzeit" style="display: none;"></a>
-     <a href="bilder/hochzeit4.jpeg" class="glightbox" data-gallery="hochzeit" style="display: none;"></a>
+      <button class="nav-toggle" id="navToggle" aria-label="Menü öffnen" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+
+      <div class="nav-links" id="navLinks">
+        <a href="#about">Über mich</a>
+        <a href="#leistungen">Leistungen</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#kontakt" class="nav-cta">Kontakt</a>
       </div>
-  
-      <!-- Video -->
-      <div class="portfolio-item">
-        <a href="https://youtu.be/GE2AYh9GX3M" class="glightbox" data-gallery="videos">
-          <img src="videos/imagefilm.jpeg" alt="Imagefilm 2024" style="width: 100%; border-radius: 8px;" />
-        </a>
-        <a href="https://youtu.be/yvor0_ip9jY" class="glightbox" data-gallery="videos" style="display: none;"></a>
-        <a href="https://youtu.be/qVBboo2VwLs" class="glightbox" data-gallery="videos" style="display: none;"></a>
-        <a href="https://youtu.be/kC2IDGlRSGQ" class="glightbox" data-gallery="videos" style="display: none;"></a>
+    </nav>
+  </header>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="top">
+    <div class="hero-media" aria-hidden="true"></div>
+    <div class="hero-vignette" aria-hidden="true"></div>
+    <div class="hero-grain" aria-hidden="true"></div>
+
+    <div class="hero-content">
+      <p class="hero-eyebrow reveal">Fotografie &amp; Videografie · Detmold</p>
+      <h1 class="hero-title reveal">
+        Momente,<br />
+        die <em>bleiben</em>.
+      </h1>
+      <p class="hero-sub reveal">
+        Big Picture Photography — Business, Portrait, Hochzeit &amp; Event,
+        erzählt in Bildern mit Tiefe.
+      </p>
+      <div class="hero-actions reveal">
+        <a href="#portfolio" class="btn btn-primary">Portfolio ansehen</a>
+        <a href="#kontakt" class="btn btn-ghost">Jetzt anfragen</a>
       </div>
-  
+    </div>
+
+    <a href="#about" class="scroll-cue" aria-label="Nach unten scrollen">
+      <span></span>
+    </a>
+  </section>
+
+  <!-- ============ ABOUT ============ -->
+  <section id="about" class="about">
+    <div class="section-inner about-content">
+      <div class="about-media">
+        <div class="img-frame">
+          <img src="bilder/dimitri.jpg" alt="Dimitri Lening" onerror="this.closest('.img-frame').classList.add('img-placeholder')" />
+        </div>
+      </div>
+
+      <div class="about-text">
+        <p class="eyebrow reveal">Über mich</p>
+        <h2 class="reveal">Ich halte keine Kamera drauf —<br />ich halte echte Momente fest.</h2>
+        <div class="underline reveal"></div>
+        <p class="reveal">
+          Ich bin Dimitri – Fotograf, Videograf, Familienmensch, Kaffeeliebhaber.
+          Egal ob Business-Shooting, Hochzeit oder Event: Ich erzähle deine
+          Geschichte in Bildern, die bleiben.
+        </p>
+        <p class="reveal">Aus Detmold, mit Herz und Auge fürs Wesentliche.</p>
+      </div>
     </div>
   </section>
 
-  
+  <!-- ============ LEISTUNGEN ============ -->
+  <section id="leistungen" class="leistungen">
+    <div class="section-inner">
+      <p class="eyebrow reveal center">Leistungen</p>
+      <h2 class="section-title reveal center">Was ich für dich festhalte</h2>
+      <div class="underline center reveal"></div>
 
+      <div class="leistungen-grid">
+        <div class="leistung-card reveal">
+          <span class="leistung-icon">💼</span>
+          <h3>Business</h3>
+          <p>Professionelle Portraits &amp; Corporate-Shootings, die Vertrauen schaffen — für Bewerbungen, Website &amp; Social Media.</p>
+        </div>
+        <div class="leistung-card reveal">
+          <span class="leistung-icon">🙂</span>
+          <h3>Portrait</h3>
+          <p>Authentische Portraitfotografie, die Persönlichkeit zeigt statt Pose — natürliches Licht, echte Emotion.</p>
+        </div>
+        <div class="leistung-card reveal">
+          <span class="leistung-icon">💍</span>
+          <h3>Hochzeit</h3>
+          <p>Euer schönster Tag, unaufdringlich begleitet — von den ersten Vorbereitungen bis zur letzten Tanzfläche.</p>
+        </div>
+        <div class="leistung-card reveal">
+          <span class="leistung-icon">🎬</span>
+          <h3>Event &amp; Video</h3>
+          <p>Imagefilme &amp; Eventvideos, die die Atmosphäre einfangen und deine Marke in Bewegung erzählen.</p>
+        </div>
+      </div>
     </div>
   </section>
-<!-- GLightbox Script -->
-<script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
-<script>
-  const lightbox = GLightbox({
-    selector: '.glightbox'
-  });
-</script>
-<!-- Andere Sektionen wie Portfolio, Vision etc... -->
 
+  <!-- ============ PORTFOLIO ============ -->
+  <section id="portfolio" class="portfolio">
+    <div class="section-inner">
+      <p class="eyebrow reveal center">Portfolio</p>
+      <h2 class="section-title reveal center">Ausgewählte Arbeiten</h2>
+      <div class="underline center reveal"></div>
 
+      <div class="portfolio-filter reveal" role="tablist" aria-label="Portfolio filtern">
+        <button class="filter-btn active" data-filter="all">Alle</button>
+        <button class="filter-btn" data-filter="business">Business</button>
+        <button class="filter-btn" data-filter="portrait">Portrait</button>
+        <button class="filter-btn" data-filter="hochzeit">Hochzeit</button>
+        <button class="filter-btn" data-filter="video">Video</button>
+      </div>
 
+      <div class="portfolio-grid">
 
+        <!-- Business -->
+        <div class="portfolio-item reveal" data-category="business">
+          <a href="bilder/business1.jpg" class="glightbox portfolio-link" data-gallery="business">
+            <div class="img-frame portfolio-frame">
+              <img src="bilder/business_thumb.jpeg" alt="Business-Shooting" onerror="this.closest('.img-frame').classList.add('img-placeholder')" />
+              <span class="portfolio-tag">Business</span>
+            </div>
+          </a>
+          <a href="bilder/business2.jpg" class="glightbox" data-gallery="business" style="display:none;"></a>
+          <a href="bilder/business3.jpg" class="glightbox" data-gallery="business" style="display:none;"></a>
+          <a href="bilder/business4.jpg" class="glightbox" data-gallery="business" style="display:none;"></a>
+        </div>
 
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-  const toggleButtons = document.querySelectorAll('.contact-toggle');
-  const menu = document.querySelector('.contact-options');
+        <!-- Portrait -->
+        <div class="portfolio-item reveal" data-category="portrait">
+          <a href="bilder/portrait1.jpg" class="glightbox portfolio-link" data-gallery="portrait">
+            <div class="img-frame portfolio-frame">
+              <img src="bilder/portrait_thumb1.jpg" alt="Portrait-Serie" onerror="this.closest('.img-frame').classList.add('img-placeholder')" />
+              <span class="portfolio-tag">Portrait</span>
+            </div>
+          </a>
+          <a href="bilder/portrait2.jpg" class="glightbox" data-gallery="portrait" style="display:none;"></a>
+          <a href="bilder/portrait3.jpg" class="glightbox" data-gallery="portrait" style="display:none;"></a>
+          <a href="bilder/portrait4.jpg" class="glightbox" data-gallery="portrait" style="display:none;"></a>
+          <a href="bilder/portrait5.jpg" class="glightbox" data-gallery="portrait" style="display:none;"></a>
+          <a href="bilder/portrait6.jpg" class="glightbox" data-gallery="portrait" style="display:none;"></a>
+          <a href="bilder/portrait7.jpg" class="glightbox" data-gallery="portrait" style="display:none;"></a>
+        </div>
 
-  toggleButtons.forEach((btn) => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      menu.classList.toggle('show');
-    });
-  });
+        <!-- Hochzeit -->
+        <div class="portfolio-item reveal" data-category="hochzeit">
+          <a href="bilder/hochzeit1.jpeg" class="glightbox portfolio-link" data-gallery="hochzeit">
+            <div class="img-frame portfolio-frame">
+              <img src="bilder/hochzeit_thumb.jpeg" alt="Hochzeit" onerror="this.closest('.img-frame').classList.add('img-placeholder')" />
+              <span class="portfolio-tag">Hochzeit</span>
+            </div>
+          </a>
+          <a href="bilder/hochzeit2.jpeg" class="glightbox" data-gallery="hochzeit" style="display:none;"></a>
+          <a href="bilder/hochzeit3.jpeg" class="glightbox" data-gallery="hochzeit" style="display:none;"></a>
+          <a href="bilder/hochzeit4.jpeg" class="glightbox" data-gallery="hochzeit" style="display:none;"></a>
+        </div>
 
-  document.addEventListener('click', (e) => {
-    if (!menu.contains(e.target) && ![...toggleButtons].some(btn => btn.contains(e.target))) {
-      menu.classList.remove('show');
-    }
-  });
-});
-  
-  </script>
+        <!-- Video -->
+        <div class="portfolio-item reveal" data-category="video">
+          <a href="https://youtu.be/GE2AYh9GX3M" class="glightbox portfolio-link" data-gallery="videos">
+            <div class="img-frame portfolio-frame">
+              <img src="videos/imagefilm.jpeg" alt="Imagefilm 2024" onerror="this.closest('.img-frame').classList.add('img-placeholder')" />
+              <span class="portfolio-tag">Video</span>
+              <span class="play-icon">▶</span>
+            </div>
+          </a>
+          <a href="https://youtu.be/yvor0_ip9jY" class="glightbox" data-gallery="videos" style="display:none;"></a>
+          <a href="https://youtu.be/qVBboo2VwLs" class="glightbox" data-gallery="videos" style="display:none;"></a>
+          <a href="https://youtu.be/kC2IDGlRSGQ" class="glightbox" data-gallery="videos" style="display:none;"></a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ KONTAKT ============ -->
+  <section id="kontakt" class="kontakt">
+    <div class="hero-grain" aria-hidden="true"></div>
+    <div class="section-inner kontakt-inner">
+      <p class="eyebrow reveal center">Kontakt</p>
+      <h2 class="section-title reveal center">Lass uns dein Projekt besprechen</h2>
+      <div class="underline center reveal"></div>
+      <p class="kontakt-sub reveal center">
+        Erzähl mir kurz von deiner Idee — ich melde mich innerhalb von 24&nbsp;Stunden zurück.
+      </p>
+
+      <div class="kontakt-grid">
+        <form class="kontakt-form reveal" name="kontakt" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+          <input type="hidden" name="form-name" value="kontakt" />
+          <p class="hidden-field"><label>Bitte nicht ausfüllen: <input name="bot-field" /></label></p>
+
+          <div class="form-row">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required />
+          </div>
+          <div class="form-row">
+            <label for="email">E-Mail</label>
+            <input type="email" id="email" name="email" required />
+          </div>
+          <div class="form-row">
+            <label for="anlass">Anlass</label>
+            <select id="anlass" name="anlass">
+              <option>Business</option>
+              <option>Portrait</option>
+              <option>Hochzeit</option>
+              <option>Event / Video</option>
+              <option>Sonstiges</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label for="nachricht">Nachricht</label>
+            <textarea id="nachricht" name="nachricht" rows="4" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Anfrage senden</button>
+        </form>
+
+        <div class="kontakt-direct reveal">
+          <a href="tel:+491234567890" class="contact-link">
+            <span class="contact-icon">📞</span>
+            <span>Anrufen</span>
+          </a>
+          <a href="mailto:info@bigpicture.photography" class="contact-link">
+            <span class="contact-icon">✉️</span>
+            <span>E-Mail</span>
+          </a>
+          <a href="https://wa.me/491234567890" target="_blank" rel="noopener" class="contact-link">
+            <span class="contact-icon">💬</span>
+            <span>WhatsApp</span>
+          </a>
+          <a href="https://instagram.com/big_picture_photography_" target="_blank" rel="noopener" class="contact-link">
+            <span class="contact-icon">📷</span>
+            <span>Instagram</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer">
+    <p>&copy; <span id="year"></span> Big Picture Photography — Dimitri Lening · Detmold</p>
+    <a href="#top" class="back-to-top" aria-label="Nach oben">↑</a>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
