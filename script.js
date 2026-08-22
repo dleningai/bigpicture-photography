@@ -44,13 +44,27 @@ document.addEventListener('DOMContentLoaded', () => {
   );
   revealEls.forEach((el) => revealObserver.observe(el));
 
-  // Hero slideshow
+  // Hero slideshow — the first slide's image is inlined in the HTML for a fast
+  // first paint; the rest load lazily after the page settles so they don't
+  // compete with it for bandwidth.
   const slides = document.querySelectorAll('.hero-slide');
   if (slides.length > 1) {
+    const loadSlideBg = (slide) => {
+      const bg = slide.dataset.bg;
+      if (bg) {
+        slide.style.backgroundImage = `url('${bg}')`;
+        delete slide.dataset.bg;
+      }
+    };
+    window.addEventListener('load', () => {
+      setTimeout(() => slides.forEach(loadSlideBg), 1000);
+    });
+
     let slideIndex = 0;
     setInterval(() => {
       slides[slideIndex].classList.remove('active');
       slideIndex = (slideIndex + 1) % slides.length;
+      loadSlideBg(slides[slideIndex]);
       slides[slideIndex].classList.add('active');
     }, 5000);
   }
