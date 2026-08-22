@@ -10,6 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" href="assets/images/hero/slide-boxen.jpg" fetchpriority="high" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -41,12 +42,12 @@
   <section class="hero">
     <div class="hero-slides" aria-hidden="true">
       <div class="hero-slide active" style="background-image:url('assets/images/hero/slide-boxen.jpg')"></div>
-      <div class="hero-slide" style="background-image:url('assets/images/hero/slide-business.jpg')"></div>
-      <div class="hero-slide" style="background-image:url('assets/images/hero/slide-portrait.jpg')"></div>
-      <div class="hero-slide" style="background-image:url('assets/images/hero/slide-4.jpg')"></div>
-      <div class="hero-slide" style="background-image:url('assets/images/hero/slide-5.jpg')"></div>
-      <div class="hero-slide" style="background-image:url('assets/images/hero/slide-6.jpg')"></div>
-      <div class="hero-slide" style="background-image:url('assets/images/hero/slide-7.jpg')"></div>
+      <div class="hero-slide" data-bg="assets/images/hero/slide-business.jpg"></div>
+      <div class="hero-slide" data-bg="assets/images/hero/slide-portrait.jpg"></div>
+      <div class="hero-slide" data-bg="assets/images/hero/slide-4.jpg"></div>
+      <div class="hero-slide" data-bg="assets/images/hero/slide-5.jpg"></div>
+      <div class="hero-slide" data-bg="assets/images/hero/slide-6.jpg"></div>
+      <div class="hero-slide" data-bg="assets/images/hero/slide-7.jpg"></div>
     </div>
     <div class="hero-overlay" aria-hidden="true"></div>
     <div class="hero-box reveal">
