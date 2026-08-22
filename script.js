@@ -1,33 +1,35 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Footer year
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  // Sticky header background on scroll
-  const header = document.getElementById('siteHeader');
-  const onScroll = () => {
-    header.classList.toggle('scrolled', window.scrollY > 40);
-  };
-  onScroll();
-  window.addEventListener('scroll', onScroll, { passive: true });
+  // Sidebar navigation
+  const toggleBtn = document.getElementById('sidebarToggle');
+  const closeBtn = document.getElementById('sidebarClose');
+  const overlay = document.getElementById('sidebarOverlay');
+  const sidebar = document.getElementById('sidebarMenu');
 
-  // Mobile nav toggle
-  const navToggle = document.getElementById('navToggle');
-  const navLinks = document.getElementById('navLinks');
-  navToggle.addEventListener('click', () => {
-    const open = navLinks.classList.toggle('open');
-    navToggle.classList.toggle('open', open);
-    navToggle.setAttribute('aria-expanded', open);
-  });
-  navLinks.querySelectorAll('a').forEach((link) => {
-    link.addEventListener('click', () => {
-      navLinks.classList.remove('open');
-      navToggle.classList.remove('open');
-      navToggle.setAttribute('aria-expanded', false);
+  if (toggleBtn && closeBtn && overlay && sidebar) {
+    const open = () => {
+      sidebar.classList.add('active');
+      overlay.classList.add('active');
+      toggleBtn.classList.add('active');
+    };
+    const close = () => {
+      sidebar.classList.remove('active');
+      overlay.classList.remove('active');
+      toggleBtn.classList.remove('active');
+    };
+    toggleBtn.addEventListener('click', () => {
+      sidebar.classList.contains('active') ? close() : open();
     });
-  });
+    closeBtn.addEventListener('click', close);
+    overlay.addEventListener('click', close);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') close();
+    });
+  }
 
-  // Scroll reveal animations
+  // Scroll reveal
   const revealEls = document.querySelectorAll('.reveal');
   const revealObserver = new IntersectionObserver(
     (entries) => {
@@ -42,22 +44,80 @@ document.addEventListener('DOMContentLoaded', () => {
   );
   revealEls.forEach((el) => revealObserver.observe(el));
 
-  // Portfolio filter
-  const filterButtons = document.querySelectorAll('.filter-btn');
-  const portfolioItems = document.querySelectorAll('.portfolio-item');
-  filterButtons.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      filterButtons.forEach((b) => b.classList.remove('active'));
-      btn.classList.add('active');
-      const filter = btn.dataset.filter;
-      portfolioItems.forEach((item) => {
-        const match = filter === 'all' || item.dataset.category === filter;
-        item.classList.toggle('is-hidden', !match);
-      });
-    });
-  });
+  // Hero slideshow
+  const slides = document.querySelectorAll('.hero-slide');
+  if (slides.length > 1) {
+    let slideIndex = 0;
+    setInterval(() => {
+      slides[slideIndex].classList.remove('active');
+      slideIndex = (slideIndex + 1) % slides.length;
+      slides[slideIndex].classList.add('active');
+    }, 5000);
+  }
 
-  // GLightbox
+  // Animated stat counters
+  const statStrip = document.querySelector('.stats-strip');
+  if (statStrip) {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const statObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.querySelectorAll('.stat-val').forEach((counter) => {
+            const target = parseFloat(counter.dataset.target);
+            const prefix = counter.dataset.prefix || '';
+            const suffix = counter.dataset.suffix || '';
+            if (reduceMotion) {
+              counter.textContent = `${prefix}${target}${suffix}`;
+              return;
+            }
+            let start = null;
+            const duration = 1400;
+            function animate(ts) {
+              if (!start) start = ts;
+              const progress = Math.min((ts - start) / duration, 1);
+              const eased = 1 - Math.pow(1 - progress, 3);
+              counter.textContent = `${prefix}${Math.round(eased * target)}${suffix}`;
+              if (progress < 1) requestAnimationFrame(animate);
+              else counter.textContent = `${prefix}${target}${suffix}`;
+            }
+            requestAnimationFrame(animate);
+          });
+          statObserver.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.4 }
+    );
+    statObserver.observe(statStrip);
+  }
+
+  // Testimonial slider
+  const track = document.getElementById('testiTrack');
+  if (track) {
+    const prevBtn = document.getElementById('testiPrev');
+    const nextBtn = document.getElementById('testiNext');
+    const counter = document.getElementById('testiCounter');
+    const testiSlides = track.querySelectorAll('.testi-slide');
+    let index = 0;
+    const update = () => {
+      track.style.transform = `translateX(-${index * 100}%)`;
+      counter.textContent = `${index + 1} / ${testiSlides.length}`;
+    };
+    prevBtn.addEventListener('click', () => {
+      index = (index - 1 + testiSlides.length) % testiSlides.length;
+      update();
+    });
+    nextBtn.addEventListener('click', () => {
+      index = (index + 1) % testiSlides.length;
+      update();
+    });
+    setInterval(() => {
+      index = (index + 1) % testiSlides.length;
+      update();
+    }, 6000);
+  }
+
+  // GLightbox for portfolio galleries
   if (window.GLightbox) {
     GLightbox({ selector: '.glightbox', touchNavigation: true, loop: true });
   }

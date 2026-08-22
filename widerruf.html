@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Widerrufsbelehrung — Big Picture Photography</title>
+  <meta name="description" content="Widerrufsbelehrung und Widerrufsformular von Big Picture Photography." />
+  <link rel="icon" type="image/png" href="assets/images/favicon.png" />
+  <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="Menü öffnen">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <nav class="sidebar-menu" id="sidebarMenu" aria-label="Seitennavigation">
+    <button class="sidebar-close" id="sidebarClose" aria-label="Menü schließen">&times;</button>
+    <div class="sidebar-header">
+      <h3 class="sidebar-title">Big Picture</h3>
+      <p class="sidebar-subtitle">Fotografie &amp; Videografie</p>
+    </div>
+    <ul class="sidebar-nav">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="portfolio.html">Portfolio</a></li>
+      <li><a href="widerruf.html" class="active">Widerrufsbelehrung</a></li>
+      <li><a href="agb.html">AGB</a></li>
+      <li><a href="datenschutz.html">Datenschutz</a></li>
+      <li><a href="impressum.html">Impressum</a></li>
+    </ul>
+    <div class="sidebar-contact-wrap">
+      <a href="kontakt.html" class="sidebar-contact-btn">Kontakt aufnehmen</a>
+    </div>
+  </nav>
+
+  <div class="panel legal-panel reveal">
+    <p class="label">Rechtliches</p>
+    <h2>Widerrufsbelehrung &amp; Widerrufsformular</h2>
+    <p class="intro">Sie haben das Recht, <strong>binnen vierzehn Tagen ohne Angabe von Gründen</strong> diesen Vertrag zu widerrufen.</p>
+
+    <div class="legal-section">
+      <h3>Wichtig</h3>
+      <p>Die Widerrufsfrist beträgt <strong>14 Tage ab dem Tag des Vertragsabschlusses</strong>.</p>
+    </div>
+
+    <div class="legal-section">
+      <h3>Ausübung des Widerrufsrechts</h3>
+      <p>
+        Um Ihr Widerrufsrecht auszuüben, müssen Sie uns mittels einer eindeutigen Erklärung (z. B. per E-Mail oder telefonisch) über Ihren Entschluss informieren.<br><br>
+        <strong>Big Picture Photography</strong><br>
+        Dimitri Lening<br>
+        Am Bach 31<br>
+        32758 Detmold<br>
+        Deutschland<br><br>
+        <strong>E-Mail:</strong> <a href="mailto:dimitri_lening@gmx.de">dimitri_lening@gmx.de</a><br>
+        <strong>Telefon:</strong> <a href="tel:+4916096290806">+49 160 96290806</a>
+      </p>
+    </div>
+
+    <div class="legal-section">
+      <h3>Verwendung des Formulars</h3>
+      <p>Zur Vereinfachung können Sie das nachfolgende Widerrufsformular verwenden. Die Nutzung des Formulars ist <strong>nicht verpflichtend</strong>. Eine formlose Erklärung per E-Mail ist ebenfalls ausreichend.</p>
+    </div>
+
+    <div class="legal-section">
+      <h3>Fristwahrung</h3>
+      <p>Zur Wahrung der Frist reicht es aus, dass Sie die Mitteilung über die Ausübung des Widerrufsrechts <strong>vor Ablauf der 14-Tage-Frist absenden</strong>.</p>
+    </div>
+
+    <div class="legal-section">
+      <h3>Folgen des Widerrufs</h3>
+      <p>Im Falle eines wirksamen Widerrufs werden bereits geleistete Zahlungen unverzüglich und spätestens binnen <strong>14 Tagen</strong> ab Eingang Ihres Widerrufs zurückerstattet, sofern noch keine vollständige Leistung erbracht wurde.</p>
+    </div>
+
+    <div class="legal-section">
+      <h3>Hinweis</h3>
+      <p>Bei individuell gebuchten Dienstleistungen, bereits reservierten Terminen oder bereits vollständig erbrachten Leistungen kann das gesetzliche Widerrufsrecht gemäß § 312g BGB ausgeschlossen sein.</p>
+    </div>
+
+    <div class="legal-section">
+      <h3>Widerrufsformular</h3>
+      <form class="legal-form" name="widerruf" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="widerruf" />
+        <p style="position:absolute;left:-9999px;"><label>Bitte nicht ausfüllen: <input name="bot-field" /></label></p>
+
+        <div class="form-row"><label for="dienstleistung">Dienstleistung / Auftrag</label><input type="text" id="dienstleistung" name="dienstleistung" required /></div>
+        <div class="form-row"><label for="firma">Firma (optional)</label><input type="text" id="firma" name="firma" /></div>
+        <div class="form-row"><label for="name">Vor- und Nachname</label><input type="text" id="name" name="name" required /></div>
+        <div class="form-row"><label for="strasse">Straße und Hausnummer</label><input type="text" id="strasse" name="strasse" required /></div>
+        <div class="form-row"><label for="ort">PLZ und Ort</label><input type="text" id="ort" name="ort" required /></div>
+        <div class="form-row"><label for="email">E-Mail</label><input type="email" id="email" name="email" required /></div>
+        <div class="form-row"><label for="telefon">Telefon</label><input type="tel" id="telefon" name="telefon" pattern="[0-9\-\(\)+ #*]+" minlength="7" required /></div>
+        <div class="checkbox">
+          <input type="checkbox" id="widerruf-check" name="widerruf-bestaetigung" required />
+          <label for="widerruf-check">Ich widerrufe den oben genannten Vertrag</label>
+        </div>
+        <button type="submit" class="btn btn-primary" style="align-self:flex-start;">Abschicken</button>
+      </form>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-links">
+      <a href="impressum.html">Impressum</a>
+      <a href="datenschutz.html">Datenschutz</a>
+      <a href="agb.html">AGB</a>
+      <a href="widerruf.html">Widerrufsbelehrung</a>
+    </div>
+    <p>&copy; <span id="year"></span> Big Picture Photography — Dimitri Lening · Detmold</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
