@@ -3,273 +3,184 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Big Picture Photography — Dimitri Lening</title>
-  <meta name="description" content="Big Picture Photography — Fotografie & Videografie von Dimitri Lening aus Detmold. Business, Portrait, Hochzeit & Event." />
-
-  <link rel="icon" href="bilder/logo.png" type="image/png" />
-
-  <!-- Fonts -->
+  <title>Big Picture Photography — Fotograf &amp; Videograf in Detmold</title>
+  <meta name="description" content="Big Picture Photography – Fotograf & Videograf aus Detmold für Events, Unternehmen und Sport. Aussagekräftige Bilder und authentische Videos statt austauschbarer Standardaufnahmen." />
+  <link rel="icon" type="image/png" href="assets/images/favicon.png" />
+  <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
-
-  <!-- GLightbox -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css">
-
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- ============ NAVIGATION ============ -->
-  <header class="site-header" id="siteHeader">
-    <nav class="navigation">
-      <a href="#top" class="nav-logo">
-        <img src="bilder/logo.png" alt="Big Picture Photography" onerror="this.parentElement.classList.add('logo-fallback')" />
-        <span class="logo-fallback-text">Big&nbsp;Picture</span>
-      </a>
-
-      <button class="nav-toggle" id="navToggle" aria-label="Menü öffnen" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-
-      <div class="nav-links" id="navLinks">
-        <a href="#about">Über mich</a>
-        <a href="#leistungen">Leistungen</a>
-        <a href="#portfolio">Portfolio</a>
-        <a href="#kontakt" class="nav-cta">Kontakt</a>
-      </div>
-    </nav>
-  </header>
-
-  <!-- ============ HERO ============ -->
-  <section class="hero" id="top">
-    <div class="hero-media" aria-hidden="true"></div>
-    <div class="hero-vignette" aria-hidden="true"></div>
-    <div class="hero-grain" aria-hidden="true"></div>
-
-    <div class="hero-content">
-      <p class="hero-eyebrow reveal">Fotografie &amp; Videografie · Detmold</p>
-      <h1 class="hero-title reveal">
-        Momente,<br />
-        die <em>bleiben</em>.
-      </h1>
-      <p class="hero-sub reveal">
-        Big Picture Photography — Business, Portrait, Hochzeit &amp; Event,
-        erzählt in Bildern mit Tiefe.
-      </p>
-      <div class="hero-actions reveal">
-        <a href="#portfolio" class="btn btn-primary">Portfolio ansehen</a>
-        <a href="#kontakt" class="btn btn-ghost">Jetzt anfragen</a>
-      </div>
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="Menü öffnen">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <nav class="sidebar-menu" id="sidebarMenu" aria-label="Seitennavigation">
+    <button class="sidebar-close" id="sidebarClose" aria-label="Menü schließen">&times;</button>
+    <div class="sidebar-header">
+      <h3 class="sidebar-title">Big Picture</h3>
+      <p class="sidebar-subtitle">Fotografie &amp; Videografie</p>
     </div>
+    <ul class="sidebar-nav">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="portfolio.html">Portfolio</a></li>
+      <li><a href="widerruf.html">Widerrufsbelehrung</a></li>
+      <li><a href="agb.html">AGB</a></li>
+      <li><a href="datenschutz.html">Datenschutz</a></li>
+      <li><a href="impressum.html">Impressum</a></li>
+    </ul>
+    <div class="sidebar-contact-wrap">
+      <a href="kontakt.html" class="sidebar-contact-btn">Kontakt aufnehmen</a>
+    </div>
+  </nav>
 
-    <a href="#about" class="scroll-cue" aria-label="Nach unten scrollen">
-      <span></span>
-    </a>
-  </section>
-
-  <!-- ============ ABOUT ============ -->
-  <section id="about" class="about">
-    <div class="section-inner about-content">
-      <div class="about-media">
-        <div class="img-frame">
-          <img src="bilder/dimitri.jpg" alt="Dimitri Lening" onerror="this.closest('.img-frame').classList.add('img-placeholder')" />
-        </div>
-      </div>
-
-      <div class="about-text">
-        <p class="eyebrow reveal">Über mich</p>
-        <h2 class="reveal">Ich halte keine Kamera drauf —<br />ich halte echte Momente fest.</h2>
-        <div class="underline reveal"></div>
-        <p class="reveal">
-          Ich bin Dimitri – Fotograf, Videograf, Familienmensch, Kaffeeliebhaber.
-          Egal ob Business-Shooting, Hochzeit oder Event: Ich erzähle deine
-          Geschichte in Bildern, die bleiben.
-        </p>
-        <p class="reveal">Aus Detmold, mit Herz und Auge fürs Wesentliche.</p>
+  <section class="hero">
+    <div class="hero-slides" aria-hidden="true">
+      <div class="hero-slide active" style="background-image:url('assets/images/hero/slide-boxen.jpg')"></div>
+      <div class="hero-slide" style="background-image:url('assets/images/hero/slide-business.jpg')"></div>
+      <div class="hero-slide" style="background-image:url('assets/images/hero/slide-portrait.jpg')"></div>
+      <div class="hero-slide" style="background-image:url('assets/images/hero/slide-4.jpg')"></div>
+      <div class="hero-slide" style="background-image:url('assets/images/hero/slide-5.jpg')"></div>
+      <div class="hero-slide" style="background-image:url('assets/images/hero/slide-6.jpg')"></div>
+      <div class="hero-slide" style="background-image:url('assets/images/hero/slide-7.jpg')"></div>
+    </div>
+    <div class="hero-overlay" aria-hidden="true"></div>
+    <div class="hero-box reveal">
+      <p class="hero-eyebrow">Fotograf &amp; Videograf aus Detmold</p>
+      <h1 class="hero-title">Bilder &amp; Videos, die nicht nur gut aussehen – sondern wirken</h1>
+      <p class="hero-sub">Für Events, Unternehmen und Sport: Content, der Aufmerksamkeit erzeugt, Vertrauen aufbaut und im Kopf bleibt.</p>
+      <div class="hero-cta">
+        <a href="https://wa.me/4916096290806" class="btn btn-primary" target="_blank" rel="noopener">Jetzt Termin anfragen</a>
+        <a href="portfolio.html" class="btn btn-ghost">Portfolio ansehen</a>
       </div>
     </div>
   </section>
 
-  <!-- ============ LEISTUNGEN ============ -->
-  <section id="leistungen" class="leistungen">
-    <div class="section-inner">
-      <p class="eyebrow reveal center">Leistungen</p>
-      <h2 class="section-title reveal center">Was ich für dich festhalte</h2>
-      <div class="underline center reveal"></div>
+  <div class="stats-strip reveal">
+    <div class="stat"><span class="stat-val" data-target="100" data-suffix="+">0</span><span class="stat-label">Shootings</span></div>
+    <div class="stat-divider"></div>
+    <div class="stat"><span class="stat-val" data-target="10" data-suffix="+">0</span><span class="stat-label">Jahre Erfahrung</span></div>
+    <div class="stat-divider"></div>
+    <div class="stat"><span class="stat-val" data-target="5" data-suffix=" ★">0</span><span class="stat-label">Bewertung</span></div>
+    <div class="stat-divider"></div>
+    <div class="stat"><span class="stat-val" data-target="12" data-prefix="&lt; ">0</span><span class="stat-label">Stunden Antwortzeit</span></div>
+  </div>
 
-      <div class="leistungen-grid">
-        <div class="leistung-card reveal">
-          <span class="leistung-icon">💼</span>
-          <h3>Business</h3>
-          <p>Professionelle Portraits &amp; Corporate-Shootings, die Vertrauen schaffen — für Bewerbungen, Website &amp; Social Media.</p>
-        </div>
-        <div class="leistung-card reveal">
-          <span class="leistung-icon">🙂</span>
-          <h3>Portrait</h3>
-          <p>Authentische Portraitfotografie, die Persönlichkeit zeigt statt Pose — natürliches Licht, echte Emotion.</p>
-        </div>
-        <div class="leistung-card reveal">
-          <span class="leistung-icon">💍</span>
-          <h3>Hochzeit</h3>
-          <p>Euer schönster Tag, unaufdringlich begleitet — von den ersten Vorbereitungen bis zur letzten Tanzfläche.</p>
-        </div>
-        <div class="leistung-card reveal">
-          <span class="leistung-icon">🎬</span>
-          <h3>Event &amp; Video</h3>
-          <p>Imagefilme &amp; Eventvideos, die die Atmosphäre einfangen und deine Marke in Bewegung erzählen.</p>
-        </div>
+  <section class="section" id="leistungen">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="label">Leistungen</p>
+        <h2>Was ich für dich produziere</h2>
+      </div>
+      <div class="services-grid">
+        <a href="https://wa.me/4916096290806?text=Hallo,%20ich%20interessiere%20mich%20für%20Eventfotografie.%20Können%20Sie%20mir%20mehr%20Infos%20geben?" class="service-card reveal" target="_blank" rel="noopener">
+          <div class="service-top"><div class="service-number">01</div><h3>Eventfotografie</h3></div>
+          <p>Echte Momente statt gestellter Bilder – ich halte dein Event so fest, wie es sich wirklich angefühlt hat.</p>
+        </a>
+        <a href="https://wa.me/4916096290806?text=Hallo,%20ich%20benötige%20professionelle%20Business%20und%20Branding%20Fotos.%20Können%20Sie%20mir%20ein%20Angebot%20machen?" class="service-card reveal" target="_blank" rel="noopener">
+          <div class="service-top"><div class="service-number">02</div><h3>Business &amp; Branding</h3></div>
+          <p>Bilder, die Vertrauen schaffen und dein Unternehmen professionell wirken lassen – nicht austauschbar, sondern klar positioniert.</p>
+        </a>
+        <a href="https://wa.me/4916096290806?text=Hallo,%20ich%20interessiere%20mich%20für%20Sportfotografie.%20Können%20Sie%20mir%20mehr%20Infos%20geben?" class="service-card reveal" target="_blank" rel="noopener">
+          <div class="service-top"><div class="service-number">03</div><h3>Sportfotografie</h3></div>
+          <p>Der richtige Moment entscheidet – ich fange genau die Sekunden ein, die Kraft, Fokus und Emotion transportieren.</p>
+        </a>
+        <a href="https://wa.me/4916096290806?text=Hallo,%20ich%20benötige%20Video%20Content%20für%20Social%20Media.%20Können%20Sie%20mir%20mehr%20Infos%20geben?" class="service-card reveal" target="_blank" rel="noopener">
+          <div class="service-top"><div class="service-number">04</div><h3>Videografie &amp; Content</h3></div>
+          <p>Content, der nicht ignoriert wird – Reels und Videos, die Aufmerksamkeit ziehen und deine Reichweite sichtbar steigern.</p>
+        </a>
       </div>
     </div>
   </section>
 
-  <!-- ============ PORTFOLIO ============ -->
-  <section id="portfolio" class="portfolio">
-    <div class="section-inner">
-      <p class="eyebrow reveal center">Portfolio</p>
-      <h2 class="section-title reveal center">Ausgewählte Arbeiten</h2>
-      <div class="underline center reveal"></div>
-
-      <div class="portfolio-filter reveal" role="tablist" aria-label="Portfolio filtern">
-        <button class="filter-btn active" data-filter="all">Alle</button>
-        <button class="filter-btn" data-filter="business">Business</button>
-        <button class="filter-btn" data-filter="portrait">Portrait</button>
-        <button class="filter-btn" data-filter="hochzeit">Hochzeit</button>
-        <button class="filter-btn" data-filter="video">Video</button>
-      </div>
-
-      <div class="portfolio-grid">
-
-        <!-- Business -->
-        <div class="portfolio-item reveal" data-category="business">
-          <a href="bilder/business1.jpg" class="glightbox portfolio-link" data-gallery="business">
-            <div class="img-frame portfolio-frame">
-              <img src="bilder/business_thumb.jpeg" alt="Business-Shooting" onerror="this.closest('.img-frame').classList.add('img-placeholder')" />
-              <span class="portfolio-tag">Business</span>
-            </div>
-          </a>
-          <a href="bilder/business2.jpg" class="glightbox" data-gallery="business" style="display:none;"></a>
-          <a href="bilder/business3.jpg" class="glightbox" data-gallery="business" style="display:none;"></a>
-          <a href="bilder/business4.jpg" class="glightbox" data-gallery="business" style="display:none;"></a>
-        </div>
-
-        <!-- Portrait -->
-        <div class="portfolio-item reveal" data-category="portrait">
-          <a href="bilder/portrait1.jpg" class="glightbox portfolio-link" data-gallery="portrait">
-            <div class="img-frame portfolio-frame">
-              <img src="bilder/portrait_thumb1.jpg" alt="Portrait-Serie" onerror="this.closest('.img-frame').classList.add('img-placeholder')" />
-              <span class="portfolio-tag">Portrait</span>
-            </div>
-          </a>
-          <a href="bilder/portrait2.jpg" class="glightbox" data-gallery="portrait" style="display:none;"></a>
-          <a href="bilder/portrait3.jpg" class="glightbox" data-gallery="portrait" style="display:none;"></a>
-          <a href="bilder/portrait4.jpg" class="glightbox" data-gallery="portrait" style="display:none;"></a>
-          <a href="bilder/portrait5.jpg" class="glightbox" data-gallery="portrait" style="display:none;"></a>
-          <a href="bilder/portrait6.jpg" class="glightbox" data-gallery="portrait" style="display:none;"></a>
-          <a href="bilder/portrait7.jpg" class="glightbox" data-gallery="portrait" style="display:none;"></a>
-        </div>
-
-        <!-- Hochzeit -->
-        <div class="portfolio-item reveal" data-category="hochzeit">
-          <a href="bilder/hochzeit1.jpeg" class="glightbox portfolio-link" data-gallery="hochzeit">
-            <div class="img-frame portfolio-frame">
-              <img src="bilder/hochzeit_thumb.jpeg" alt="Hochzeit" onerror="this.closest('.img-frame').classList.add('img-placeholder')" />
-              <span class="portfolio-tag">Hochzeit</span>
-            </div>
-          </a>
-          <a href="bilder/hochzeit2.jpeg" class="glightbox" data-gallery="hochzeit" style="display:none;"></a>
-          <a href="bilder/hochzeit3.jpeg" class="glightbox" data-gallery="hochzeit" style="display:none;"></a>
-          <a href="bilder/hochzeit4.jpeg" class="glightbox" data-gallery="hochzeit" style="display:none;"></a>
-        </div>
-
-        <!-- Video -->
-        <div class="portfolio-item reveal" data-category="video">
-          <a href="https://youtu.be/GE2AYh9GX3M" class="glightbox portfolio-link" data-gallery="videos">
-            <div class="img-frame portfolio-frame">
-              <img src="videos/imagefilm.jpeg" alt="Imagefilm 2024" onerror="this.closest('.img-frame').classList.add('img-placeholder')" />
-              <span class="portfolio-tag">Video</span>
-              <span class="play-icon">▶</span>
-            </div>
-          </a>
-          <a href="https://youtu.be/yvor0_ip9jY" class="glightbox" data-gallery="videos" style="display:none;"></a>
-          <a href="https://youtu.be/qVBboo2VwLs" class="glightbox" data-gallery="videos" style="display:none;"></a>
-          <a href="https://youtu.be/kC2IDGlRSGQ" class="glightbox" data-gallery="videos" style="display:none;"></a>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ KONTAKT ============ -->
-  <section id="kontakt" class="kontakt">
-    <div class="hero-grain" aria-hidden="true"></div>
-    <div class="section-inner kontakt-inner">
-      <p class="eyebrow reveal center">Kontakt</p>
-      <h2 class="section-title reveal center">Lass uns dein Projekt besprechen</h2>
-      <div class="underline center reveal"></div>
-      <p class="kontakt-sub reveal center">
-        Erzähl mir kurz von deiner Idee — ich melde mich innerhalb von 24&nbsp;Stunden zurück.
-      </p>
-
-      <div class="kontakt-grid">
-        <form class="kontakt-form reveal" name="kontakt" method="POST" data-netlify="true" netlify-honeypot="bot-field">
-          <input type="hidden" name="form-name" value="kontakt" />
-          <p class="hidden-field"><label>Bitte nicht ausfüllen: <input name="bot-field" /></label></p>
-
-          <div class="form-row">
-            <label for="name">Name</label>
-            <input type="text" id="name" name="name" required />
+  <section class="section">
+    <div class="wrap">
+      <div class="testi-slider reveal">
+        <button class="testi-arrow testi-arrow-left" id="testiPrev" aria-label="Vorherige Bewertung">←</button>
+        <button class="testi-arrow testi-arrow-right" id="testiNext" aria-label="Nächste Bewertung">→</button>
+        <div class="testi-track-wrap">
+          <div class="testi-track" id="testiTrack">
+            <div class="testi-slide"><div class="panel testi-content">
+              <div class="testi-stars">★★★★★</div>
+              <p class="testi-text">„Es hat alles gut geklappt – von Anfang an. Ich durfte meine Wünsche und Anregungen vorstellen, die auch alle erfüllt wurden.“</p>
+              <div class="testi-divider"></div>
+              <div class="testi-author"><div class="testi-avatar">EK</div><div><p class="testi-name">Ella Kremer</p><p class="testi-role">Google Bewertung</p></div></div>
+            </div></div>
+            <div class="testi-slide"><div class="panel testi-content">
+              <div class="testi-stars">★★★★★</div>
+              <p class="testi-text">„Super nett und sympathisch. Bei den ersten Bildern kam kurz Verzweiflung auf, aber das Endergebnis war der Wahnsinn.“</p>
+              <div class="testi-divider"></div>
+              <div class="testi-author"><div class="testi-avatar">JR</div><div><p class="testi-name">Jaqueline Riesenbeck</p><p class="testi-role">Google Bewertung</p></div></div>
+            </div></div>
+            <div class="testi-slide"><div class="panel testi-content">
+              <div class="testi-stars">★★★★★</div>
+              <p class="testi-text">„Mega Zusammenarbeit mit Big Picture Photography. Super Qualität, sehr zuvorkommend und absolut empfehlenswert.“</p>
+              <div class="testi-divider"></div>
+              <div class="testi-author"><div class="testi-avatar">IP</div><div><p class="testi-name">Inspiring Production by Pohaku Malu</p><p class="testi-role">Google Bewertung</p></div></div>
+            </div></div>
+            <div class="testi-slide"><div class="panel testi-content">
+              <div class="testi-stars">★★★★★</div>
+              <p class="testi-text">„Sehr professionell und geht auf alle Wünsche ein. Ich würde sogar mehr Sterne geben, wenn es möglich wäre.“</p>
+              <div class="testi-divider"></div>
+              <div class="testi-author"><div class="testi-avatar">EP</div><div><p class="testi-name">E Privat</p><p class="testi-role">Google Bewertung</p></div></div>
+            </div></div>
+            <div class="testi-slide"><div class="panel testi-content">
+              <div class="testi-stars">★★★★★</div>
+              <p class="testi-text">„Sehr angenehme und lockere Zusammenarbeit. Meine Wünsche wurden gehört und perfekt umgesetzt. Mit der Qualität der Bilder war ich mehr als zufrieden.“</p>
+              <div class="testi-divider"></div>
+              <div class="testi-author"><div class="testi-avatar">LH</div><div><p class="testi-name">Lena Hermann</p><p class="testi-role">Google Bewertung</p></div></div>
+            </div></div>
           </div>
-          <div class="form-row">
-            <label for="email">E-Mail</label>
-            <input type="email" id="email" name="email" required />
-          </div>
-          <div class="form-row">
-            <label for="anlass">Anlass</label>
-            <select id="anlass" name="anlass">
-              <option>Business</option>
-              <option>Portrait</option>
-              <option>Hochzeit</option>
-              <option>Event / Video</option>
-              <option>Sonstiges</option>
-            </select>
-          </div>
-          <div class="form-row">
-            <label for="nachricht">Nachricht</label>
-            <textarea id="nachricht" name="nachricht" rows="4" required></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary">Anfrage senden</button>
-        </form>
-
-        <div class="kontakt-direct reveal">
-          <a href="tel:+491234567890" class="contact-link">
-            <span class="contact-icon">📞</span>
-            <span>Anrufen</span>
-          </a>
-          <a href="mailto:info@bigpicture.photography" class="contact-link">
-            <span class="contact-icon">✉️</span>
-            <span>E-Mail</span>
-          </a>
-          <a href="https://wa.me/491234567890" target="_blank" rel="noopener" class="contact-link">
-            <span class="contact-icon">💬</span>
-            <span>WhatsApp</span>
-          </a>
-          <a href="https://instagram.com/big_picture_photography_" target="_blank" rel="noopener" class="contact-link">
-            <span class="contact-icon">📷</span>
-            <span>Instagram</span>
-          </a>
         </div>
+        <div class="testi-counter" id="testiCounter">1 / 5</div>
       </div>
     </div>
   </section>
 
-  <!-- ============ FOOTER ============ -->
+  <section class="section">
+    <div class="wrap">
+      <div class="panel cta-box reveal">
+        <p class="label">Feedback &amp; Vertrauen</p>
+        <h2>Deine Meinung hilft anderen Kunden</h2>
+        <p>Warst du zufrieden mit dem Shooting oder dem Ergebnis? Dann freue ich mich sehr über eine kurze Google Bewertung. Damit hilfst du anderen Kunden bei ihrer Entscheidung und unterstützt mein Unternehmen.</p>
+        <a href="https://g.page/r/CQzD8QWz5UW7EAE/review" target="_blank" rel="noopener" class="btn btn-primary">Jetzt Google Bewertung schreiben</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="panel cta-box reveal">
+        <p class="label">Lass uns starten</p>
+        <h2>Lass uns dein Projekt einfach kurz durchsprechen.</h2>
+        <p>Schreib mir direkt bei WhatsApp – ich gebe dir eine ehrliche Einschätzung und sage dir klar, was sinnvoll ist und was nicht.</p>
+        <a href="https://wa.me/4916096290806?text=Hallo,%20ich%20h%C3%A4tte%20gern%20eine%20kurze%20Einsch%C3%A4tzung%20zu%20meinem%20Projekt." target="_blank" rel="noopener" class="btn btn-primary">Jetzt unverbindlich anfragen</a>
+        <span class="cta-note">Antwort meist innerhalb kurzer Zeit</span>
+      </div>
+    </div>
+  </section>
+
   <footer class="site-footer">
+    <div class="footer-links">
+      <a href="impressum.html">Impressum</a>
+      <a href="datenschutz.html">Datenschutz</a>
+      <a href="agb.html">AGB</a>
+      <a href="widerruf.html">Widerrufsbelehrung</a>
+    </div>
     <p>&copy; <span id="year"></span> Big Picture Photography — Dimitri Lening · Detmold</p>
-    <a href="#top" class="back-to-top" aria-label="Nach oben">↑</a>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
+  <a href="https://instagram.com/big_picture_photography_" class="float-btn float-instagram" target="_blank" rel="noopener" aria-label="Instagram">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4c0 3.2-2.6 5.8-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8C2 4.6 4.6 2 7.8 2zm4.2 5.2A4.8 4.8 0 1016.8 12 4.8 4.8 0 0012 7.2zm0 7.8A3 3 0 1115 12a3 3 0 01-3 3zm5.2-8.8a1.2 1.2 0 11-1.2-1.2 1.2 1.2 0 011.2 1.2z"/></svg>
+  </a>
+  <a href="https://wa.me/4916096290806?text=Hallo,%20ich%20habe%20dich%20über%20deine%20Website%20gefunden." class="float-btn float-whatsapp" target="_blank" rel="noopener" aria-label="WhatsApp">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16.004 0h-.008C7.174 0 0 7.176 0 16c0 3.5 1.128 6.744 3.046 9.378L1.054 32l6.826-2.192A15.915 15.915 0 0016.004 32C24.826 32 32 24.822 32 16S24.826 0 16.004 0zm9.35 22.614c-.396 1.116-1.956 2.042-3.216 2.312-.864.184-1.99.33-5.786-1.244-4.858-2.014-7.984-6.952-8.226-7.274-.232-.322-1.958-2.606-1.958-4.972s1.238-3.528 1.678-4.012c.396-.436 1.036-.636 1.65-.636.198 0 .376.01.536.018.44.02.66.046.95.734.364.864 1.25 3.05 1.36 3.272.11.222.184.482.036.772-.138.3-.208.486-.416.748-.208.262-.438.584-.626.784-.208.24-.424.5-.182.98.242.48 1.076 1.774 2.312 2.874 1.588 1.414 2.926 1.852 3.342 2.058.416.206.658.172.9-.104.252-.286 1.072-1.248 1.358-1.676.276-.428.562-.356.95-.214.39.144 2.476 1.168 2.9 1.38.424.214.706.322.81.498.104.176.104 1.022-.292 2.138z"/></svg>
+  </a>
+
   <script src="script.js"></script>
 </body>
 </html>

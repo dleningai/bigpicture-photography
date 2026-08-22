@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Impressum — Big Picture Photography</title>
+  <meta name="description" content="Impressum von Big Picture Photography." />
+  <link rel="icon" type="image/png" href="assets/images/favicon.png" />
+  <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="Menü öffnen">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <nav class="sidebar-menu" id="sidebarMenu" aria-label="Seitennavigation">
+    <button class="sidebar-close" id="sidebarClose" aria-label="Menü schließen">&times;</button>
+    <div class="sidebar-header">
+      <h3 class="sidebar-title">Big Picture</h3>
+      <p class="sidebar-subtitle">Fotografie &amp; Videografie</p>
+    </div>
+    <ul class="sidebar-nav">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="portfolio.html">Portfolio</a></li>
+      <li><a href="widerruf.html">Widerrufsbelehrung</a></li>
+      <li><a href="agb.html">AGB</a></li>
+      <li><a href="datenschutz.html">Datenschutz</a></li>
+      <li><a href="impressum.html" class="active">Impressum</a></li>
+    </ul>
+    <div class="sidebar-contact-wrap">
+      <a href="kontakt.html" class="sidebar-contact-btn">Kontakt aufnehmen</a>
+    </div>
+  </nav>
+
+  <div class="panel legal-panel reveal">
+    <div class="legal-top">
+      <p class="label" style="margin:0;">Impressum</p>
+      <span class="legal-meta">Stand: April 2026</span>
+    </div>
+    <h2>Angaben gemäß § 5 DDG</h2>
+
+    <div class="legal-section">
+      <h3>Anbieter</h3>
+      <p>Dimitri Lening<br>Big Picture Photography<br>Am Bach 31<br>32758 Detmold<br>Deutschland</p>
+    </div>
+
+    <div class="legal-section">
+      <h3>Kontakt</h3>
+      <div class="legal-contact-links">
+        <a href="tel:+4916096290806">+49 160 96290806</a>
+        <a href="mailto:dimitri_lening@gmx.de">dimitri_lening@gmx.de</a>
+        <a href="index.html">bigpicture.photography</a>
+      </div>
+    </div>
+
+    <div class="legal-section">
+      <h3>Umsatzsteuer</h3>
+      <p>Gemäß § 19 UStG wird keine Umsatzsteuer erhoben und ausgewiesen.</p>
+    </div>
+
+    <div class="legal-section">
+      <h3>Verantwortlich für journalistisch-redaktionelle Inhalte gemäß § 18 Abs. 2 MStV</h3>
+      <p>Dimitri Lening<br>Am Bach 31<br>32758 Detmold<br>Deutschland</p>
+    </div>
+
+    <div class="legal-section">
+      <h3>Haftung für externe Links</h3>
+      <p>Trotz sorgfältiger inhaltlicher Kontrolle übernehmen wir keine Haftung für die Inhalte externer Links. Für den Inhalt der verlinkten Seiten sind ausschließlich deren Betreiber verantwortlich.</p>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-links">
+      <a href="impressum.html">Impressum</a>
+      <a href="datenschutz.html">Datenschutz</a>
+      <a href="agb.html">AGB</a>
+      <a href="widerruf.html">Widerrufsbelehrung</a>
+    </div>
+    <p>&copy; <span id="year"></span> Big Picture Photography — Dimitri Lening · Detmold</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
