@@ -148,8 +148,45 @@ a { color: inherit; }
   transition: all 0.22s ease;
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.38);
 }
-.sidebar-toggle:hover { transform: scale(1.05) translateY(-1px); border-color: rgba(222, 175, 103, 0.3); }
-.sidebar-toggle span { width: 20px; height: 2px; background: var(--gold); border-radius: 2px; transition: 0.2s ease; }
+.sidebar-toggle::before {
+  content: '';
+  position: absolute; inset: -6px;
+  border-radius: 50%;
+  border: 1px solid transparent;
+  border-top-color: rgba(222, 175, 103, 0.55);
+  border-right-color: rgba(222, 175, 103, 0.55);
+  animation: toggleSpin 7s linear infinite;
+  pointer-events: none;
+}
+.sidebar-toggle::after {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 rgba(222, 175, 103, 0.3);
+  animation: togglePulse 2.8s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes toggleSpin { to { transform: rotate(360deg); } }
+@keyframes togglePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(222, 175, 103, 0.25); }
+  50% { box-shadow: 0 0 16px 3px rgba(222, 175, 103, 0.18); }
+}
+.sidebar-toggle:hover {
+  transform: scale(1.06) translateY(-1px);
+  border-color: rgba(222, 175, 103, 0.45);
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.42), 0 0 20px rgba(222, 175, 103, 0.25);
+}
+.sidebar-toggle:hover::before { animation-duration: 2s; border-top-color: var(--gold); border-right-color: var(--gold); }
+.sidebar-toggle span {
+  height: 2px; background: var(--gold); border-radius: 2px;
+  box-shadow: 0 0 6px rgba(222, 175, 103, 0.35);
+  transition: 0.22s ease;
+}
+.sidebar-toggle span:nth-child(1) { width: 14px; align-self: flex-start; margin-left: 15px; }
+.sidebar-toggle span:nth-child(2) { width: 20px; }
+.sidebar-toggle span:nth-child(3) { width: 14px; align-self: flex-end; margin-right: 15px; }
+.sidebar-toggle:hover span:nth-child(1) { width: 20px; margin-left: 0; }
+.sidebar-toggle:hover span:nth-child(3) { width: 20px; margin-right: 0; }
 /* The sidebar has its own close button once open, so the fixed toggle
    (which would otherwise float awkwardly over the sidebar's own header)
    just fades away instead of morphing into a second X. */
