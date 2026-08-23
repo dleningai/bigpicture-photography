@@ -394,6 +394,24 @@ a { color: inherit; }
 }
 .hero-cta { margin-top: 24px; display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
 
+/* Subpage hero — brand logo watermark instead of a photo */
+.hero-logo-bg {
+  position: absolute; inset: 0; z-index: -3;
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(ellipse 60% 55% at center 30%, rgba(222, 175, 103, 0.08), transparent 70%),
+    url('assets/images/logo.png');
+  background-repeat: no-repeat, no-repeat;
+  background-position: center, center 8%;
+  background-size: cover, 220px auto;
+  opacity: 0.9;
+}
+.hero-logo-bg::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 0%, var(--bg) 92%);
+}
+
 /* ==========================================================
    Stats strip
    ========================================================== */
