@@ -394,18 +394,6 @@ a { color: inherit; }
 }
 .hero-cta { margin-top: 24px; display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
 
-/* Subpage hero — brand logo watermark instead of a photo */
-.hero-logo-bg {
-  position: absolute; inset: 0; z-index: -3;
-  background-image:
-    radial-gradient(ellipse 70% 75% at center 20%, rgba(222, 175, 103, 0.12), transparent 70%),
-    url('assets/images/logo.png');
-  background-repeat: no-repeat, no-repeat;
-  background-position: center, center 4%;
-  background-size: cover, 190px auto;
-  opacity: 0.6;
-}
-
 /* Unified page-header card — hero title + content live in one seamless box */
 .page-card-head {
   position: relative;
