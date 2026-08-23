@@ -747,17 +747,48 @@ a { color: inherit; }
 
 .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; text-align: left; }
 .about-card {
+  position: relative;
   padding: 22px; border-radius: 18px;
+  overflow: hidden;
   background: radial-gradient(circle at top right, rgba(222, 175, 103, 0.05) 0%, transparent 32%),
     linear-gradient(180deg, rgba(30, 30, 30, 0.96) 0%, rgba(18, 18, 18, 0.99) 100%);
   border: 1px solid var(--gold-border);
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.24);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.about-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold) 50%, transparent);
+  background-size: 220% 100%;
+  animation: sidebarShimmer 6s ease-in-out infinite;
+  opacity: 0.5;
+}
+.about-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(222, 175, 103, 0.35);
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.32), 0 0 20px rgba(222, 175, 103, 0.14);
+}
+.about-card-top { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.about-badge {
+  min-width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  border-radius: 9px;
+  border: 1px solid rgba(222, 175, 103, 0.3);
+  background: rgba(222, 175, 103, 0.08);
+  color: var(--gold);
+  font-family: var(--font-mono); font-weight: 700; font-size: 0.8rem;
   transition: 0.22s ease;
 }
-.about-card:hover { transform: translateY(-4px); border-color: rgba(222, 175, 103, 0.28); }
-.about-card-top { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-.about-badge { min-width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; border-radius: 10px; background: var(--gold); color: #111; font-family: var(--font-mono); font-weight: 700; font-size: 0.88rem; }
-.about-card-title { font-weight: 700; font-size: 1rem; color: #fff; }
+.about-card:hover .about-badge {
+  border-color: var(--gold);
+  background: rgba(222, 175, 103, 0.18);
+  box-shadow: 0 0 12px rgba(222, 175, 103, 0.35);
+}
+.about-card-title {
+  font-family: var(--font-mono); font-weight: 700; font-size: 0.86rem;
+  letter-spacing: 0.03em; text-transform: uppercase; color: #fff;
+}
 .about-card-text { color: var(--ink-dim); font-size: 0.95rem; line-height: 1.65; }
 
 /* ==========================================================
