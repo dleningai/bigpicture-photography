@@ -303,27 +303,40 @@ a { color: inherit; }
 .sidebar-contact-btn:hover .arrow { transform: translateX(4px); }
 
 /* ==========================================================
-   Floating contact buttons
+   Social row (footer)
    ========================================================== */
 
-.float-btn {
-  position: fixed; right: 25px;
-  width: 58px; height: 58px;
-  border-radius: 50%;
+.social-row {
+  display: flex; justify-content: center; align-items: center;
+  gap: 14px; margin: 0 0 22px;
+}
+.social-link {
+  position: relative;
+  width: 46px; height: 46px;
   display: flex; align-items: center; justify-content: center;
-  text-decoration: none;
-  z-index: 900;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  border-radius: 50%;
+  border: 1px solid var(--gold-border);
+  background: var(--gold-soft);
+  color: var(--gold);
+  transition: 0.22s ease;
 }
-.float-btn svg { width: 28px; height: 28px; fill: #fff; }
-.float-whatsapp { bottom: 25px; background: #25d366; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); }
-.float-whatsapp:hover { transform: scale(1.08); }
-.float-instagram {
-  bottom: 95px;
-  background: radial-gradient(circle at 30% 30%, #feda75, #d62976, #962fbf, #4f5bd5);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+.social-link svg { width: 19px; height: 19px; fill: var(--gold); transition: 0.22s ease; }
+.social-link::after {
+  content: '';
+  position: absolute; inset: -1px;
+  border-radius: 50%;
+  border: 1px solid var(--gold);
+  opacity: 0;
+  transform: scale(0.85);
+  transition: 0.22s ease;
 }
-.float-instagram:hover { transform: scale(1.08); }
+.social-link:hover {
+  transform: translateY(-3px);
+  background: rgba(222, 175, 103, 0.16);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25), 0 0 16px rgba(222, 175, 103, 0.3);
+}
+.social-link:hover::after { opacity: 1; transform: scale(1); }
+.social-link:hover svg { fill: var(--gold-bright); }
 
 /* ==========================================================
    Hero
@@ -769,9 +782,7 @@ a { color: inherit; }
   .section { padding: 60px 0; }
   .name-box, .contact-panel, .legal-panel { margin-top: 100px; }
   .about-panel-inner { padding: 28px 20px 32px; }
-  .float-btn { width: 50px; height: 50px; right: 16px; }
-  .float-whatsapp { bottom: 16px; }
-  .float-instagram { bottom: 78px; }
+  .social-link { width: 42px; height: 42px; }
   .pf-chapter { min-height: 60vh; }
   .pf-chapter-content { padding-bottom: 36px; }
   .pf-gallery { grid-template-columns: repeat(2, 1fr); }
