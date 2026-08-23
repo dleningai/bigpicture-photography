@@ -95,7 +95,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 5000);
   }
 
-  // Animated stat counters
+  // Animated stat counters — staggered reveal with a HUD-style digit
+  // scramble before each counter locks onto its real value.
   const statStrip = document.querySelector('.stats-strip');
   if (statStrip) {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -103,26 +104,70 @@ document.addEventListener('DOMContentLoaded', () => {
       (entries) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
-          entry.target.querySelectorAll('.stat-val').forEach((counter) => {
+          const counters = Array.from(entry.target.querySelectorAll('.stat-val'));
+
+          if (reduceMotion) {
+            counters.forEach((counter) => {
+              const target = parseFloat(counter.dataset.target);
+              const prefix = counter.dataset.prefix || '';
+              const suffix = counter.dataset.suffix || '';
+              counter.textContent = `${prefix}${target}${suffix}`;
+              counter.closest('.stat').classList.add('is-visible');
+            });
+            return;
+          }
+
+          entry.target.classList.add('is-scanning');
+          setTimeout(() => entry.target.classList.remove('is-scanning'), 1200);
+
+          counters.forEach((counter, i) => {
             const target = parseFloat(counter.dataset.target);
             const prefix = counter.dataset.prefix || '';
             const suffix = counter.dataset.suffix || '';
-            if (reduceMotion) {
-              counter.textContent = `${prefix}${target}${suffix}`;
-              return;
-            }
-            let start = null;
-            const duration = 1400;
-            function animate(ts) {
-              if (!start) start = ts;
-              const progress = Math.min((ts - start) / duration, 1);
-              const eased = 1 - Math.pow(1 - progress, 3);
-              counter.textContent = `${prefix}${Math.round(eased * target)}${suffix}`;
-              if (progress < 1) requestAnimationFrame(animate);
-              else counter.textContent = `${prefix}${target}${suffix}`;
-            }
-            requestAnimationFrame(animate);
+            const digits = String(Math.round(target)).length;
+            const statEl = counter.closest('.stat');
+
+            setTimeout(() => {
+              statEl.classList.add('is-visible');
+              counter.classList.add('is-counting');
+
+              const scrambleDuration = 380;
+              const scrambleStart = performance.now();
+              function scramble(ts) {
+                const elapsed = ts - scrambleStart;
+                if (elapsed < scrambleDuration) {
+                  const rnd = Math.floor(Math.random() * Math.pow(10, digits));
+                  counter.textContent = `${prefix}${rnd}${suffix}`;
+                  requestAnimationFrame(scramble);
+                } else {
+                  countUp();
+                }
+              }
+
+              function countUp() {
+                let start = null;
+                const duration = 900;
+                function animate(ts) {
+                  if (!start) start = ts;
+                  const progress = Math.min((ts - start) / duration, 1);
+                  const eased = 1 - Math.pow(1 - progress, 3);
+                  counter.textContent = `${prefix}${Math.round(eased * target)}${suffix}`;
+                  if (progress < 1) {
+                    requestAnimationFrame(animate);
+                  } else {
+                    counter.textContent = `${prefix}${target}${suffix}`;
+                    counter.classList.remove('is-counting');
+                    counter.classList.add('is-landed');
+                    setTimeout(() => counter.classList.remove('is-landed'), 550);
+                  }
+                }
+                requestAnimationFrame(animate);
+              }
+
+              requestAnimationFrame(scramble);
+            }, i * 150);
           });
+
           statObserver.unobserve(entry.target);
         });
       },
