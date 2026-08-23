@@ -203,9 +203,8 @@ a { color: inherit; }
   animation: sidebarShimmer 5s ease-in-out infinite;
   opacity: 0.55;
 }
-.sidebar-logo { height: 92px; width: auto; margin-bottom: 14px; }
+.sidebar-logo { height: 128px; width: auto; margin-bottom: 14px; }
 .sidebar-title { margin: 0; font-size: 1.15rem; font-weight: 800; color: var(--gold); }
-.sidebar-subtitle { margin: 6px 0 0; color: var(--ink-faint); font-size: 0.82rem; }
 
 @keyframes sidebarShimmer {
   0%, 100% { background-position: 0% 0; }
