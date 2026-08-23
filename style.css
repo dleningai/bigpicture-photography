@@ -614,10 +614,12 @@ a { color: inherit; }
 .testi-arrow {
   position: absolute; top: 50%; transform: translateY(-50%); z-index: 2;
   width: 44px; height: 44px;
-  background: var(--gold-soft); border: 1px solid var(--gold-border);
+  background: linear-gradient(155deg, rgba(60, 47, 24, 0.9), rgba(30, 25, 16, 0.95));
+  border: 1px solid var(--gold-border);
   border-radius: 50%; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   font-size: 18px; color: var(--gold); transition: 0.22s ease;
+  box-shadow: 0 0 14px rgba(222, 175, 103, 0.15);
 }
 .testi-arrow:hover { background: var(--gold); color: #1e1e1e; border-color: var(--gold); box-shadow: 0 0 18px rgba(222, 175, 103, 0.4); transform: translateY(-50%) scale(1.06); }
 .testi-arrow-left { left: 0; }
