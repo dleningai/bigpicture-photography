@@ -397,19 +397,38 @@ a { color: inherit; }
 /* Subpage hero — brand logo watermark instead of a photo */
 .hero-logo-bg {
   position: absolute; inset: 0; z-index: -3;
-  background-color: var(--bg);
   background-image:
-    radial-gradient(ellipse 60% 55% at center 30%, rgba(222, 175, 103, 0.08), transparent 70%),
+    radial-gradient(ellipse 70% 75% at center 20%, rgba(222, 175, 103, 0.12), transparent 70%),
     url('assets/images/logo.png');
   background-repeat: no-repeat, no-repeat;
-  background-position: center, center 8%;
-  background-size: cover, 220px auto;
-  opacity: 0.9;
+  background-position: center, center 4%;
+  background-size: cover, 190px auto;
+  opacity: 0.6;
 }
-.hero-logo-bg::after {
-  content: '';
-  position: absolute; inset: 0;
-  background: linear-gradient(180deg, transparent 0%, var(--bg) 92%);
+
+/* Unified page-header card — hero title + content live in one seamless box */
+.page-card-head {
+  position: relative;
+  overflow: hidden;
+  padding: 54px 34px 30px;
+  text-align: center;
+}
+.page-card-meta {
+  display: inline-block; margin-top: 16px;
+  font-family: var(--font-mono); font-size: 0.74rem;
+  letter-spacing: 0.05em; color: var(--ink-faint);
+}
+.page-card-divider {
+  height: 1px; margin: 4px 34px 0;
+  background: linear-gradient(90deg, transparent, var(--gold-border) 50%, transparent);
+}
+.name-box.page-card, .contact-panel.page-card, .legal-panel.page-card {
+  margin-top: 130px !important;
+}
+@media (max-width: 640px) {
+  .name-box.page-card, .contact-panel.page-card, .legal-panel.page-card {
+    margin-top: 100px !important;
+  }
 }
 
 /* ==========================================================
@@ -539,6 +558,7 @@ a { color: inherit; }
    ========================================================== */
 
 .name-box { text-align: center; padding: 40px 30px 30px; max-width: var(--max-width); margin: 60px auto 24px; }
+.name-box.page-card { padding: 0; }
 .name-box .name { font-size: clamp(2.1rem, 5vw, 3rem); font-weight: 800; color: #fff; margin: 4px 0 10px; }
 .name-box .role { font-size: 0.95rem; color: var(--ink-dim); font-weight: 500; }
 
@@ -700,8 +720,9 @@ a { color: inherit; }
   max-width: 800px; margin: 60px auto 60px; padding: 40px 34px;
   text-align: center;
 }
-.contact-panel h2, .legal-panel h2 { font-size: clamp(1.7rem, 4vw, 2.1rem); font-weight: 800; color: #fff; margin: 0 0 14px; }
-.contact-panel p, .legal-panel .intro { max-width: 560px; margin: 0 auto 28px; color: var(--ink-dim); line-height: 1.75; }
+
+.contact-panel.page-card, .legal-panel.page-card { padding: 0; }
+.page-card-body { padding: 30px 34px 34px; }
 
 .contact-status {
   display: inline-flex; align-items: center; gap: 8px;
@@ -763,8 +784,6 @@ a { color: inherit; }
 
 /* ---------- Legal text pages ---------- */
 .legal-panel { text-align: left; }
-.legal-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
-.legal-meta { font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink-faint); }
 .legal-panel h2 { text-align: left; }
 .legal-panel .intro { text-align: left; margin: 0 0 28px; }
 .legal-section {
