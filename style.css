@@ -537,17 +537,31 @@ a { color: inherit; }
    Testimonial slider
    ========================================================== */
 
-.testi-panel { position: relative; padding: 50px 20px 44px; }
+.testi-panel { position: relative; padding: 50px 20px 44px; overflow: hidden; }
 .testi-glow {
-  position: absolute; inset: -20% -10%; z-index: 0; pointer-events: none;
+  position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
   background:
-    radial-gradient(ellipse 55% 50% at 22% 20%, rgba(222, 175, 103, 0.16), transparent 60%),
-    radial-gradient(ellipse 55% 50% at 78% 85%, rgba(222, 175, 103, 0.12), transparent 60%);
-  animation: testiGlowPulse 7s ease-in-out infinite;
+    radial-gradient(ellipse 60% 55% at 20% 25%, rgba(222, 175, 103, 0.2), transparent 55%),
+    radial-gradient(ellipse 60% 55% at 82% 70%, rgba(222, 175, 103, 0.16), transparent 55%),
+    radial-gradient(ellipse 55% 50% at 45% 100%, rgba(222, 175, 103, 0.12), transparent 60%);
+  background-repeat: no-repeat;
+  background-size: 160% 160%;
+  animation: testiAurora 16s ease-in-out infinite;
 }
-@keyframes testiGlowPulse {
-  0%, 100% { opacity: 0.75; transform: scale(1) rotate(0deg); }
-  50% { opacity: 1; transform: scale(1.08) rotate(3deg); }
+.testi-glow::after {
+  content: '';
+  position: absolute; top: -20%; bottom: -20%; left: -35%; width: 35%;
+  background: linear-gradient(90deg, transparent, rgba(222, 175, 103, 0.14), transparent);
+  transform: skewX(-12deg);
+  animation: testiSweep 7s ease-in-out infinite;
+}
+@keyframes testiAurora {
+  0%, 100% { background-position: 0% 0%, 100% 100%, 50% 100%; }
+  50% { background-position: 30% 45%, 65% 35%, 35% 75%; }
+}
+@keyframes testiSweep {
+  0% { left: -35%; }
+  60%, 100% { left: 115%; }
 }
 .testi-panel > * { position: relative; z-index: 1; }
 .testi-shimmer { background-size: 220% 100%; animation: sidebarShimmer 5s ease-in-out infinite; opacity: 0.7; }
