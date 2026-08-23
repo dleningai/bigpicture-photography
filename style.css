@@ -574,6 +574,7 @@ a { color: inherit; }
   position: relative;
   padding: 40px 40px 36px;
   overflow: hidden;
+  isolation: isolate;
 }
 .testi-content::before {
   content: '\201C';
@@ -581,6 +582,17 @@ a { color: inherit; }
   font-family: Georgia, serif; font-size: 6rem; line-height: 1;
   color: rgba(222, 175, 103, 0.12);
   pointer-events: none;
+  z-index: 0;
+}
+.testi-content::after {
+  content: '';
+  position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 65% at 12% 15%, rgba(222, 175, 103, 0.22), transparent 55%),
+    radial-gradient(ellipse 65% 60% at 88% 92%, rgba(222, 175, 103, 0.16), transparent 55%);
+  background-repeat: no-repeat;
+  background-size: 160% 160%;
+  animation: testiAurora 14s ease-in-out infinite;
 }
 .testi-stars { color: var(--gold); font-size: 20px; margin-bottom: 16px; letter-spacing: 1px; text-shadow: 0 0 12px rgba(222, 175, 103, 0.4); }
 .testi-text { position: relative; font-size: 1.15rem; line-height: 1.55; color: var(--ink); margin: 0 0 22px; font-weight: 600; }
