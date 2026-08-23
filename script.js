@@ -191,8 +191,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (nextBtn) nextBtn.addEventListener('click', advance);
   }
 
-  // Portfolio "Weitere Eindrücke" photo stacks — same rotating-queue
-  // mechanic as the testimonial stack, one independent instance per chapter.
+  // Portfolio photo stacks — same rotating-queue mechanic as the testimonial
+  // stack, one independent instance per chapter. Unlike the testimonial
+  // stack, clicking the front photo opens it full size via glightbox
+  // (bound separately below), so only the arrow button advances the stack.
   document.querySelectorAll('.pf-stack').forEach((pfStack) => {
     const wrap = pfStack.closest('.pf-stack-wrap');
     const nextBtn = wrap.querySelector('.pf-stack-next');
@@ -226,7 +228,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 500);
     };
 
-    photos.forEach((el) => el.addEventListener('click', advance));
     if (nextBtn) nextBtn.addEventListener('click', advance);
   });
 
