@@ -520,7 +520,7 @@ a { color: inherit; }
    About page
    ========================================================== */
 
-.name-box { text-align: center; padding: 40px 30px 30px; max-width: var(--max-width); margin: 100px auto 24px; }
+.name-box { text-align: center; padding: 40px 30px 30px; max-width: var(--max-width); margin: 60px auto 24px; }
 .name-box .name { font-size: clamp(2.1rem, 5vw, 3rem); font-weight: 800; color: #fff; margin: 4px 0 10px; }
 .name-box .role { font-size: 0.95rem; color: var(--ink-dim); font-weight: 500; }
 
@@ -672,7 +672,7 @@ a { color: inherit; }
    ========================================================== */
 
 .contact-panel, .legal-panel {
-  max-width: 800px; margin: 130px auto 60px; padding: 40px 34px;
+  max-width: 800px; margin: 60px auto 60px; padding: 40px 34px;
   text-align: center;
 }
 .contact-panel h2, .legal-panel h2 { font-size: clamp(1.7rem, 4vw, 2.1rem); font-weight: 800; color: #fff; margin: 0 0 14px; }
@@ -795,7 +795,7 @@ a { color: inherit; }
   .stats-strip { gap: 16px; padding: 20px 18px; margin-top: -22px; }
   .stat-val { font-size: 1.5rem; }
   .section { padding: 60px 0; }
-  .name-box, .contact-panel, .legal-panel { margin-top: 100px; }
+  .name-box, .contact-panel, .legal-panel { margin-top: 40px; }
   .about-panel-inner { padding: 28px 20px 32px; }
   .social-link { width: 42px; height: 42px; }
   .pf-chapter { min-height: 60vh; }
