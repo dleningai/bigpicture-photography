@@ -15,6 +15,7 @@
   --gold-border: rgba(222, 175, 103, 0.18);
   --border: rgba(255, 255, 255, 0.08);
   --font: 'Montserrat', Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
   --max-width: 1100px;
   --radius: 22px;
 }
@@ -23,6 +24,7 @@
 html { scroll-behavior: smooth; }
 
 body {
+  position: relative;
   background-color: var(--bg);
   color: var(--ink);
   font-family: var(--font);
@@ -32,6 +34,28 @@ body {
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
 }
+
+/* Faint HUD scan-grid behind everything — the futuristic undertone */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.4;
+  background-image:
+    linear-gradient(rgba(222, 175, 103, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(222, 175, 103, 0.05) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 0%, transparent 75%);
+}
+
+/* Thin glowing scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: linear-gradient(180deg, var(--gold-bright), var(--gold)); border-radius: 999px; border: 2px solid var(--bg); }
+::-webkit-scrollbar-thumb:hover { background: var(--gold-bright); }
+html { scrollbar-color: var(--gold) var(--bg); scrollbar-width: thin; }
 
 @media (prefers-reduced-motion: reduce) {
   * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
@@ -51,9 +75,10 @@ a { color: inherit; }
   background: var(--gold-soft);
   border: 1px solid var(--gold-border);
   color: var(--gold);
-  font-size: 0.78rem;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
@@ -62,6 +87,7 @@ a { color: inherit; }
 
 /* ---------- Buttons ---------- */
 .btn {
+  position: relative;
   display: inline-block;
   padding: 15px 30px;
   border-radius: 999px;
@@ -70,8 +96,21 @@ a { color: inherit; }
   text-decoration: none;
   border: 1px solid transparent;
   cursor: pointer;
+  overflow: hidden;
   transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease, color 0.25s ease;
 }
+/* Light sweep on hover — a small futuristic flourish */
+.btn::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -60%;
+  width: 40%; height: 100%;
+  background: linear-gradient(115deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.6s ease;
+  pointer-events: none;
+}
+.btn:hover::after { left: 130%; }
 .btn-primary {
   background: linear-gradient(135deg, var(--gold), var(--gold-bright));
   color: #17140f;
@@ -84,6 +123,19 @@ a { color: inherit; }
   color: var(--gold-bright);
 }
 .btn-ghost:hover { background: var(--gold-soft); border-color: var(--gold); }
+
+/* ---------- HUD corner frame — a small sci-fi accent on key panels ---------- */
+.hud-frame { position: relative; }
+.hud-frame::before,
+.hud-frame::after {
+  content: '';
+  position: absolute;
+  width: 22px; height: 22px;
+  pointer-events: none;
+  opacity: 0.7;
+}
+.hud-frame::before { top: -1px; left: -1px; border-top: 2px solid var(--gold); border-left: 2px solid var(--gold); border-radius: 6px 0 0 0; }
+.hud-frame::after { bottom: -1px; right: -1px; border-bottom: 2px solid var(--gold); border-right: 2px solid var(--gold); border-radius: 0 0 6px 0; }
 
 /* ==========================================================
    Sidebar navigation (shared across all pages)
@@ -246,6 +298,7 @@ a { color: inherit; }
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
 }
 .hero-eyebrow {
+  font-family: var(--font-mono);
   font-size: 0.72rem; font-weight: 700; letter-spacing: 0.22em;
   text-transform: uppercase; color: rgba(222, 175, 103, 0.85);
   margin-bottom: 10px;
@@ -279,8 +332,8 @@ a { color: inherit; }
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
 }
 .stat { text-align: center; }
-.stat-val { display: block; font-size: 1.9rem; font-weight: 800; color: var(--gold); }
-.stat-label { display: block; font-size: 0.78rem; color: var(--ink-faint); letter-spacing: 0.03em; margin-top: 4px; }
+.stat-val { display: block; font-family: var(--font-mono); font-size: 1.9rem; font-weight: 700; color: var(--gold); text-shadow: 0 0 18px rgba(222, 175, 103, 0.35); font-variant-numeric: tabular-nums; }
+.stat-label { display: block; font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-faint); letter-spacing: 0.05em; margin-top: 4px; text-transform: uppercase; }
 .stat-divider { width: 1px; height: 40px; background: var(--border); }
 
 /* ==========================================================
@@ -339,7 +392,7 @@ a { color: inherit; }
   display: flex; align-items: center; justify-content: center;
   border-radius: 14px;
   background: linear-gradient(180deg, var(--gold-bright), var(--gold));
-  color: #171717; font-weight: 800; font-size: 0.95rem;
+  color: #171717; font-family: var(--font-mono); font-weight: 700; font-size: 0.95rem;
 }
 .service-card h3 { margin: 4px 0 0; color: #fff; font-size: 1.1rem; font-weight: 800; }
 .service-card p { margin: 0; color: var(--ink-dim); font-size: 0.94rem; }
@@ -408,7 +461,7 @@ a { color: inherit; }
 .about-card { padding: 22px; border-radius: 18px; background: var(--gold-soft); border: 1px solid var(--gold-border); transition: 0.22s ease; }
 .about-card:hover { transform: translateY(-4px); border-color: rgba(222, 175, 103, 0.28); }
 .about-card-top { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-.about-badge { min-width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; border-radius: 10px; background: var(--gold); color: #111; font-weight: 700; font-size: 0.88rem; }
+.about-badge { min-width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; border-radius: 10px; background: var(--gold); color: #111; font-family: var(--font-mono); font-weight: 700; font-size: 0.88rem; }
 .about-card-title { font-weight: 700; font-size: 1rem; color: #fff; }
 .about-card-text { color: var(--ink-dim); font-size: 0.95rem; line-height: 1.65; }
 
@@ -450,7 +503,7 @@ a { color: inherit; }
   border: 1px solid transparent;
   transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
 }
-.pf-chapternav a .pf-chapternav-num { color: var(--gold); font-weight: 700; }
+.pf-chapternav a .pf-chapternav-num { color: var(--gold); font-family: var(--font-mono); font-weight: 700; }
 .pf-chapternav a:hover { color: var(--ink); border-color: var(--gold-border); background: var(--gold-soft); }
 
 /* Full-bleed chapter title card — the image itself carries the heading */
@@ -481,8 +534,9 @@ a { color: inherit; }
   min-width: 52px; height: 52px; padding: 0 12px;
   border-radius: 14px;
   background: linear-gradient(180deg, var(--gold-bright), var(--gold));
-  color: #171717; font-weight: 800; font-size: 1.1rem;
+  color: #171717; font-family: var(--font-mono); font-weight: 700; font-size: 1.1rem;
   margin-bottom: 18px;
+  box-shadow: 0 0 0 1px rgba(222,175,103,0.3), 0 0 24px rgba(222,175,103,0.35);
 }
 .pf-chapter-title {
   font-size: clamp(2.2rem, 6vw, 4rem);
@@ -550,12 +604,12 @@ a { color: inherit; }
 .contact-icon { flex: 0 0 auto; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 12px; background: rgba(222, 175, 103, 0.1); font-size: 1.1rem; }
 .contact-text { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
 .contact-text strong { font-size: 0.95rem; color: var(--gold); }
-.contact-text small { font-size: 0.76rem; color: var(--ink-faint); word-break: break-word; }
+.contact-text small { font-family: var(--font-mono); font-size: 0.74rem; color: var(--ink-faint); word-break: break-word; }
 
 /* ---------- Legal text pages ---------- */
 .legal-panel { text-align: left; }
 .legal-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
-.legal-meta { font-size: 0.8rem; color: var(--ink-faint); }
+.legal-meta { font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink-faint); }
 .legal-panel h2 { text-align: left; }
 .legal-panel .intro { text-align: left; margin: 0 0 28px; }
 .legal-section { margin-bottom: 18px; padding: 18px 20px; border-radius: 14px; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border); }
