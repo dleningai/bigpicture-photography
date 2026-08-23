@@ -55,6 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const setActive = (id) => {
       links.forEach((a) => a.classList.toggle('active', a.getAttribute('href') === `#${id}`));
+      sections.forEach((sec) => sec.classList.toggle('active', sec.id === id));
     };
     setActive(sections[0].id);
 

@@ -767,7 +767,16 @@ a { color: inherit; }
 .legal-meta { font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink-faint); }
 .legal-panel h2 { text-align: left; }
 .legal-panel .intro { text-align: left; margin: 0 0 28px; }
-.legal-section { margin-bottom: 18px; padding: 18px 20px; border-radius: 14px; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border); }
+.legal-section {
+  margin-bottom: 18px; padding: 18px 20px; border-radius: 14px;
+  background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border);
+  transition: border-color 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease;
+}
+.legal-section.active {
+  border-color: var(--gold);
+  background: var(--gold-soft);
+  box-shadow: 0 0 0 1px rgba(222, 175, 103, 0.25), 0 10px 26px rgba(0, 0, 0, 0.25), 0 0 20px rgba(222, 175, 103, 0.12);
+}
 .legal-section h3 { margin: 0 0 8px; font-size: 1rem; font-weight: 700; color: var(--gold); }
 .legal-section p { margin: 0; line-height: 1.75; color: var(--ink-dim); font-size: 0.94rem; }
 .legal-section a { color: var(--gold); text-decoration: none; }
