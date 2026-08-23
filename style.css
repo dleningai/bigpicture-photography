@@ -537,12 +537,20 @@ a { color: inherit; }
    Testimonial slider
    ========================================================== */
 
-.testi-section { position: relative; overflow: hidden; }
+.testi-panel { position: relative; padding: 50px 20px 44px; }
 .testi-glow {
-  position: absolute; inset: 0; z-index: 0; pointer-events: none;
-  background: radial-gradient(ellipse 60% 50% at center 45%, rgba(222, 175, 103, 0.08), transparent 70%);
+  position: absolute; inset: -20% -10%; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 55% 50% at 22% 20%, rgba(222, 175, 103, 0.16), transparent 60%),
+    radial-gradient(ellipse 55% 50% at 78% 85%, rgba(222, 175, 103, 0.12), transparent 60%);
+  animation: testiGlowPulse 7s ease-in-out infinite;
 }
-.testi-section .wrap { position: relative; z-index: 1; }
+@keyframes testiGlowPulse {
+  0%, 100% { opacity: 0.75; transform: scale(1) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1.08) rotate(3deg); }
+}
+.testi-panel > * { position: relative; z-index: 1; }
+.testi-shimmer { background-size: 220% 100%; animation: sidebarShimmer 5s ease-in-out infinite; opacity: 0.7; }
 
 .testi-slider { max-width: 760px; margin: 0 auto; position: relative; padding: 0 54px; }
 .testi-track-wrap { overflow: hidden; border-radius: 24px; }
@@ -817,6 +825,8 @@ a { color: inherit; }
 
 .contact-panel.page-card, .legal-panel.page-card { padding: 0; }
 .page-card-body { padding: 30px 34px 34px; }
+.page-card-body h2 { font-size: clamp(1.6rem, 3.5vw, 2.1rem); font-weight: 800; color: #fff; margin: 0 0 14px; }
+.page-card-body p:not(.label) { max-width: 620px; margin: 0 auto 26px; color: var(--ink-dim); line-height: 1.75; }
 
 .contact-status {
   display: inline-flex; align-items: center; gap: 8px;
