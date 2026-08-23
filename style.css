@@ -445,7 +445,7 @@ a { color: inherit; }
 }
 .hero-fx-vignette {
   position: absolute; inset: 0;
-  background: radial-gradient(circle at 50% 45%, transparent 0%, rgba(10, 10, 10, 0.18) 68%, rgba(10, 10, 10, 0.6) 100%);
+  background: radial-gradient(circle at 50% 45%, transparent 0%, transparent 55%, rgba(10, 10, 10, 0.22) 100%);
 }
 @keyframes heroGridDrift {
   from { transform: translate(0, 0); }
@@ -461,11 +461,6 @@ a { color: inherit; }
   90% { opacity: 1; }
   100% { top: 100%; opacity: 0; }
 }
-.hero-overlay {
-  position: absolute; inset: 0; z-index: -2;
-  background:
-    linear-gradient(180deg, rgba(10, 10, 10, 0.3) 0%, rgba(10, 10, 10, 0.55) 55%, rgba(10, 10, 10, 0.85) 100%);
-}
 @media (prefers-reduced-motion: reduce) {
   .hero-fx-grid, .hero-fx-glow, .hero-fx-scan { animation: none; }
 }
@@ -474,7 +469,7 @@ a { color: inherit; }
   text-align: center;
   max-width: 760px;
   margin: 0 auto;
-  padding: 26px 28px;
+  padding: 48px 28px 26px;
   border-radius: 20px;
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid var(--gold-border);
@@ -523,6 +518,8 @@ a { color: inherit; }
 @media (max-width: 640px) {
   .hero-logo-badge { width: 128px; height: 128px; margin-bottom: 20px; }
   .hero-logo-badge img { width: 112px; height: 112px; }
+  .hero-logo-badge::before { inset: -10px; }
+  .hero-logo-badge::after { inset: -22px; }
 }
 .hero-eyebrow {
   font-family: var(--font-mono);
