@@ -192,6 +192,7 @@ a { color: inherit; }
 .sidebar-header {
   position: relative;
   margin-top: 50px; margin-bottom: 26px; padding-bottom: 18px;
+  text-align: center;
 }
 .sidebar-header::after {
   content: '';
@@ -202,7 +203,7 @@ a { color: inherit; }
   animation: sidebarShimmer 5s ease-in-out infinite;
   opacity: 0.55;
 }
-.sidebar-logo { height: 56px; width: auto; margin-bottom: 12px; }
+.sidebar-logo { height: 92px; width: auto; margin-bottom: 14px; }
 .sidebar-title { margin: 0; font-size: 1.15rem; font-weight: 800; color: var(--gold); }
 .sidebar-subtitle { margin: 6px 0 0; color: var(--ink-faint); font-size: 0.82rem; }
 
