@@ -584,8 +584,7 @@ a { color: inherit; }
 
 .about-panel { max-width: var(--max-width); margin: 0 auto 70px; }
 .about-panel-inner { padding: 40px 34px 46px; text-align: center; }
-.about-panel-inner h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; color: #fff; margin: 0 0 16px; text-wrap: balance; }
-.about-intro { max-width: 700px; margin: 0 auto 34px; color: var(--ink-dim); }
+.about-panel-inner h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; color: #fff; margin: 0 0 34px; text-wrap: balance; }
 
 .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; text-align: left; }
 .about-card { padding: 22px; border-radius: 18px; background: var(--gold-soft); border: 1px solid var(--gold-border); transition: 0.22s ease; }
@@ -594,16 +593,6 @@ a { color: inherit; }
 .about-badge { min-width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; border-radius: 10px; background: var(--gold); color: #111; font-family: var(--font-mono); font-weight: 700; font-size: 0.88rem; }
 .about-card-title { font-weight: 700; font-size: 1rem; color: #fff; }
 .about-card-text { color: var(--ink-dim); font-size: 0.95rem; line-height: 1.65; }
-
-.about-more-link {
-  display: inline-flex; align-items: center; gap: 8px;
-  margin-top: 30px;
-  font-family: var(--font-mono); font-size: 0.82rem; font-weight: 700;
-  letter-spacing: 0.05em; text-transform: uppercase;
-  color: var(--gold); text-decoration: none;
-  transition: gap 0.22s ease, color 0.22s ease;
-}
-.about-more-link:hover { gap: 12px; color: var(--gold-bright); }
 
 /* ==========================================================
    Portfolio page — cinematic chapters
