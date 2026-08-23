@@ -419,7 +419,11 @@ a { color: inherit; }
   padding: 140px 20px 80px;
   background: var(--bg);
 }
-.hero-fx { position: absolute; inset: 0; z-index: -3; overflow: hidden; }
+.hero-fx {
+  position: absolute; inset: 0; z-index: -3; overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 78%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 78%, transparent 100%);
+}
 .hero-fx-grid {
   position: absolute; inset: -20%;
   background-image:
@@ -445,7 +449,7 @@ a { color: inherit; }
 }
 .hero-fx-vignette {
   position: absolute; inset: 0;
-  background: radial-gradient(circle at 50% 45%, transparent 0%, transparent 55%, rgba(10, 10, 10, 0.22) 100%);
+  background: radial-gradient(circle at 50% 40%, transparent 0%, transparent 50%, rgba(10, 10, 10, 0.22) 82%, transparent 100%);
 }
 @keyframes heroGridDrift {
   from { transform: translate(0, 0); }
