@@ -176,38 +176,6 @@ document.addEventListener('DOMContentLoaded', () => {
     statObserver.observe(statStrip);
   }
 
-  // Testimonial slider
-  const track = document.getElementById('testiTrack');
-  if (track) {
-    const prevBtn = document.getElementById('testiPrev');
-    const nextBtn = document.getElementById('testiNext');
-    const indexEl = document.getElementById('testiIndex');
-    const totalEl = document.getElementById('testiProgressTotal') || document.querySelector('.testi-progress-total');
-    const progressBar = document.getElementById('testiProgressBar');
-    const testiSlides = track.querySelectorAll('.testi-slide');
-    let index = 0;
-    const pad = (n) => String(n).padStart(2, '0');
-    if (totalEl) totalEl.textContent = pad(testiSlides.length);
-    const update = () => {
-      track.style.transform = `translateX(-${index * 100}%)`;
-      if (indexEl) indexEl.textContent = pad(index + 1);
-      if (progressBar) progressBar.style.width = `${((index + 1) / testiSlides.length) * 100}%`;
-    };
-    update();
-    prevBtn.addEventListener('click', () => {
-      index = (index - 1 + testiSlides.length) % testiSlides.length;
-      update();
-    });
-    nextBtn.addEventListener('click', () => {
-      index = (index + 1) % testiSlides.length;
-      update();
-    });
-    setInterval(() => {
-      index = (index + 1) % testiSlides.length;
-      update();
-    }, 6000);
-  }
-
   // GLightbox for portfolio galleries
   if (window.GLightbox) {
     GLightbox({ selector: '.glightbox', touchNavigation: true, loop: true });
