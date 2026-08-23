@@ -176,6 +176,46 @@ document.addEventListener('DOMContentLoaded', () => {
     statObserver.observe(statStrip);
   }
 
+  // Testimonial photo stack — click the card or the arrow to flip the
+  // front photo away, revealing the next one behind it. Works for any
+  // number of testimonials since it's a rotating queue, not a fixed grid.
+  const stack = document.getElementById('testiStack');
+  if (stack) {
+    const nextBtn = document.getElementById('testiStackNext');
+    const counter = document.getElementById('testiStackCounter');
+    const photos = Array.from(stack.querySelectorAll('.testi-photo'));
+    const total = photos.length;
+    let order = photos.map((_, i) => i);
+    let animating = false;
+    const pad = (n) => String(n).padStart(2, '0');
+
+    const layout = () => {
+      order.forEach((photoIdx, pos) => {
+        const el = photos[photoIdx];
+        el.classList.remove('stack-pos-0', 'stack-pos-1', 'stack-pos-2', 'stack-pos-3', 'stack-pos-4');
+        el.classList.add(`stack-pos-${Math.min(pos, 4)}`);
+      });
+      if (counter) counter.textContent = `${pad(order[0] + 1)} / ${pad(total)}`;
+    };
+    layout();
+
+    const advance = () => {
+      if (animating || total < 2) return;
+      animating = true;
+      const frontEl = photos[order[0]];
+      frontEl.classList.add('stack-leaving');
+      setTimeout(() => {
+        frontEl.classList.remove('stack-leaving', 'stack-pos-0');
+        order.push(order.shift());
+        layout();
+        animating = false;
+      }, 500);
+    };
+
+    photos.forEach((el) => el.addEventListener('click', advance));
+    if (nextBtn) nextBtn.addEventListener('click', advance);
+  }
+
   // GLightbox for portfolio galleries
   if (window.GLightbox) {
     GLightbox({ selector: '.glightbox', touchNavigation: true, loop: true });
