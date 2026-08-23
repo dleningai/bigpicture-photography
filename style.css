@@ -1052,12 +1052,41 @@ a { color: inherit; }
   margin: 0;
 }
 
-/* Clean, even editorial grid */
 /* Per-chapter photo stack — replaces the old fixed image grid so the page
    doesn't grow endlessly as more photos get added. Same rotating-queue
    mechanic as the testimonial stack; clicking the front card opens it full
    size (glightbox), the arrow button rotates to the next photo. */
 .pf-more { max-width: var(--max-width); margin: 50px auto 90px; padding: 0 20px; }
+
+/* Chapter divider — marks the handoff to the next chapter clearly, now
+   that the chapter photos fade seamlessly into the page background and
+   would otherwise blur together. */
+.pf-divider {
+  display: flex; align-items: center; justify-content: center; gap: 18px;
+  max-width: 460px; margin: 0 auto 70px; padding: 0 20px;
+}
+.pf-divider-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--gold-border)); }
+.pf-divider-line.flip { background: linear-gradient(90deg, var(--gold-border), transparent); }
+.pf-divider-tag {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 16px;
+  border: 1px solid var(--gold-border);
+  border-radius: 999px;
+  background: var(--gold-soft);
+  white-space: nowrap;
+}
+.pf-divider-num {
+  font-family: var(--font-mono); font-weight: 700; font-size: 0.72rem;
+  color: #171717;
+  background: linear-gradient(180deg, var(--gold-bright), var(--gold));
+  border-radius: 999px;
+  min-width: 22px; height: 22px;
+  display: flex; align-items: center; justify-content: center;
+}
+.pf-divider-text {
+  font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold);
+}
 .pf-stack-wrap { position: relative; width: 220px; margin: 0 auto; padding-bottom: 54px; }
 .pf-stack { position: relative; height: 270px; }
 .pf-stack-photo {
