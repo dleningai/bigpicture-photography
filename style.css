@@ -537,7 +537,10 @@ a { color: inherit; }
    Testimonial slider
    ========================================================== */
 
-.testi-panel { position: relative; padding: 50px 20px 44px; overflow: hidden; }
+.testi-panel {
+  position: relative; padding: 50px 20px 44px; overflow: hidden;
+  background: linear-gradient(160deg, rgba(46, 36, 18, 0.97) 0%, rgba(20, 17, 12, 0.99) 55%, rgba(17, 17, 17, 0.99) 100%);
+}
 .testi-glow {
   position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
   background:
@@ -575,6 +578,7 @@ a { color: inherit; }
   padding: 40px 40px 36px;
   overflow: hidden;
   isolation: isolate;
+  background: linear-gradient(155deg, rgba(42, 33, 17, 0.9) 0%, rgba(22, 19, 13, 0.96) 60%, rgba(17, 17, 17, 0.98) 100%);
 }
 .testi-content::before {
   content: '\201C';
