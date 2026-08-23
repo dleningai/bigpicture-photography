@@ -447,7 +447,7 @@ a { color: inherit; }
   margin: 0 auto 26px;
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  background: radial-gradient(circle at 50% 38%, rgba(222, 175, 103, 0.16), rgba(10, 10, 10, 0.92) 72%);
+  background: radial-gradient(circle at 50% 50%, rgba(222, 175, 103, 0.16), rgba(10, 10, 10, 0.92) 72%);
   border: 1px solid var(--gold-border);
   animation: heroLogoFloat 6s ease-in-out infinite, heroLogoPulse 3.2s ease-in-out infinite;
 }
@@ -468,7 +468,7 @@ a { color: inherit; }
   animation: heroLogoSpin 18s linear infinite reverse;
 }
 .hero-logo-badge img {
-  width: 124px; height: 124px; object-fit: contain;
+  width: 148px; height: 148px; object-fit: contain;
   position: relative; z-index: 1;
   filter: drop-shadow(0 0 20px rgba(222, 175, 103, 0.4));
 }
@@ -483,7 +483,7 @@ a { color: inherit; }
 }
 @media (max-width: 640px) {
   .hero-logo-badge { width: 128px; height: 128px; margin-bottom: 20px; }
-  .hero-logo-badge img { width: 94px; height: 94px; }
+  .hero-logo-badge img { width: 112px; height: 112px; }
 }
 .hero-eyebrow {
   font-family: var(--font-mono);
