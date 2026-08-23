@@ -134,8 +134,8 @@ a { color: inherit; }
   pointer-events: none;
   opacity: 0.7;
 }
-.hud-frame::before { top: -1px; left: -1px; border-top: 2px solid var(--gold); border-left: 2px solid var(--gold); border-radius: 6px 0 0 0; }
-.hud-frame::after { bottom: -1px; right: -1px; border-bottom: 2px solid var(--gold); border-right: 2px solid var(--gold); border-radius: 0 0 6px 0; }
+.hud-frame::before { top: -1px; left: -1px; border-top: 2px solid var(--gold); border-left: 2px solid var(--gold); }
+.hud-frame::after { bottom: -1px; right: -1px; border-bottom: 2px solid var(--gold); border-right: 2px solid var(--gold); }
 
 /* ==========================================================
    Sidebar navigation (shared across all pages)
