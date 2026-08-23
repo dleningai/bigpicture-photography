@@ -422,7 +422,8 @@ a { color: inherit; }
 .name-box .role { font-size: 0.95rem; color: var(--ink-dim); font-weight: 500; }
 
 .about-photo { max-width: var(--max-width); margin: 0 auto 40px; border-radius: var(--radius); overflow: hidden; }
-.about-photo img { width: 100%; max-height: 520px; object-fit: cover; object-position: top; }
+.about-photo { max-width: 640px; }
+.about-photo img { width: 100%; max-height: 800px; object-fit: cover; object-position: top; border-radius: var(--radius); }
 
 .about-panel { max-width: var(--max-width); margin: 0 auto 70px; }
 .about-panel-inner { padding: 40px 34px 46px; text-align: center; }
