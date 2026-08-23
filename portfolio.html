@@ -10,6 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" href="assets/images/portfolio/sport-header.jpg" fetchpriority="high" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css">
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -39,18 +40,42 @@
     </div>
   </nav>
 
-  <div class="portfolio-hero">
-    <div class="portfolio-banner reveal">
-      <img loading="lazy" decoding="async" src="assets/images/portfolio/sport-header.jpg" alt="Sportfotografie – Kampfshooting" />
+  <!-- Hero -->
+  <section class="hero" style="min-height:88vh;">
+    <div class="pf-hero-letterbox top" aria-hidden="true"></div>
+    <div class="pf-hero-letterbox bottom" aria-hidden="true"></div>
+    <div class="hero-slides" aria-hidden="true">
+      <div class="hero-slide active" style="background-image:url('assets/images/portfolio/sport-header.jpg')"></div>
+      <div class="hero-slide" data-bg="assets/images/portfolio/portrait-header.jpg"></div>
+      <div class="hero-slide" data-bg="assets/images/portfolio/event-header.jpg"></div>
+      <div class="hero-slide" data-bg="assets/images/portfolio/crowd-banner.jpg"></div>
     </div>
-  </div>
+    <div class="hero-overlay" aria-hidden="true"></div>
+    <div class="pf-hero-grain" aria-hidden="true"></div>
+    <div class="hero-box reveal">
+      <p class="hero-eyebrow">Ausgewählte Arbeiten</p>
+      <h1 class="hero-title">Portfolio</h1>
+      <p class="hero-sub">Drei Kapitel, ein Blick: Sport, Portrait &amp; Business und Event — Bilder, die den Moment nicht nur zeigen, sondern spürbar machen.</p>
+    </div>
+  </section>
 
-  <div class="portfolio-header reveal">
-    <p class="label">Sport</p>
-    <h2>Fokus, Dynamik und der richtige Moment.</h2>
-    <p>Sportfotografie lebt von Timing, Intensität und Kontrolle. Ich halte die Sekunden fest, in denen Spannung, Bewegung und echte Leistung sichtbar werden.</p>
-  </div>
-  <div class="gallery-grid">
+  <!-- Chapter navigation -->
+  <nav class="pf-chapternav" aria-label="Portfolio-Kapitel">
+    <a href="#sport"><span class="pf-chapternav-num">01</span> Sport</a>
+    <a href="#portrait"><span class="pf-chapternav-num">02</span> Portrait &amp; Business</a>
+    <a href="#event"><span class="pf-chapternav-num">03</span> Event</a>
+  </nav>
+
+  <!-- Chapter 01 — Sport -->
+  <section class="pf-chapter" id="sport" style="background-image:url('assets/images/portfolio/sport-header.jpg')">
+    <div class="pf-chapter-overlay" aria-hidden="true"></div>
+    <div class="pf-chapter-content reveal">
+      <span class="pf-chapter-number">01</span>
+      <h2 class="pf-chapter-title">Fokus, Dynamik und der richtige Moment.</h2>
+      <p class="pf-chapter-text">Sportfotografie lebt von Timing, Intensität und Kontrolle. Ich halte die Sekunden fest, in denen Spannung, Bewegung und echte Leistung sichtbar werden.</p>
+    </div>
+  </section>
+  <div class="pf-gallery">
     <a href="assets/images/portfolio/sport/a6341f33.jpg" class="glightbox reveal" data-gallery="sport"><img loading="lazy" decoding="async" src="assets/images/portfolio/sport/a6341f33.jpg" alt="Sportfotografie – Kampfshooting" /></a>
     <a href="assets/images/portfolio/sport/5fcd4867.jpg" class="glightbox reveal" data-gallery="sport"><img loading="lazy" decoding="async" src="assets/images/portfolio/sport/5fcd4867.jpg" alt="Sportfotografie – Kampfshooting" /></a>
     <a href="assets/images/portfolio/sport/f6c318fe.jpg" class="glightbox reveal" data-gallery="sport"><img loading="lazy" decoding="async" src="assets/images/portfolio/sport/f6c318fe.jpg" alt="Sportfotografie – Kampfshooting" /></a>
@@ -59,43 +84,49 @@
     <a href="assets/images/portfolio/sport/ab8be3b3.jpg" class="glightbox reveal" data-gallery="sport"><img loading="lazy" decoding="async" src="assets/images/portfolio/sport/ab8be3b3.jpg" alt="Sportfotografie – Kampfshooting" /></a>
   </div>
 
-  <div class="panel cta-box reveal" style="max-width:900px;margin:0 auto 70px;">
-    <p class="label">Kundenstimme</p>
-    <h2>„Ohne Witz – ich könnte mir vorstellen, mir dieses Foto irgendwann tätowieren zu lassen.“</h2>
-    <p>Feedback von <strong style="color:var(--gold)">@theerikson</strong> nach dem Kampfshooting</p>
-  </div>
+  <section class="section" style="padding-top:0;">
+    <div class="wrap">
+      <div class="panel cta-box reveal" style="max-width:900px;">
+        <p class="label">Kundenstimme</p>
+        <h2>„Ohne Witz – ich könnte mir vorstellen, mir dieses Foto irgendwann tätowieren zu lassen.“</h2>
+        <p>Feedback von <strong style="color:var(--gold)">@theerikson</strong> nach dem Kampfshooting</p>
+      </div>
+    </div>
+  </section>
 
-  <div class="portfolio-header reveal">
-    <p class="label">Portrait &amp; Business</p>
-    <h2>Präsenz, Charakter und ein starker Auftritt.</h2>
-    <p>Professionelle Portraits und Businessbilder für Unternehmer, Marken und Menschen, die sich authentisch, hochwertig und mit klarer Wirkung präsentieren möchten.</p>
-  </div>
-  <div class="portfolio-banner reveal">
-    <img loading="lazy" decoding="async" src="assets/images/portfolio/portrait-header-2.jpg" alt="Portrait- und Businessfotografie" />
-  </div>
-  <div class="gallery-grid">
+  <!-- Chapter 02 — Portrait & Business -->
+  <section class="pf-chapter" id="portrait" style="background-image:url('assets/images/portfolio/portrait-header.jpg')">
+    <div class="pf-chapter-overlay" aria-hidden="true"></div>
+    <div class="pf-chapter-content reveal">
+      <span class="pf-chapter-number">02</span>
+      <h2 class="pf-chapter-title">Präsenz, Charakter und ein starker Auftritt.</h2>
+      <p class="pf-chapter-text">Professionelle Portraits und Businessbilder für Unternehmer, Marken und Menschen, die sich authentisch, hochwertig und mit klarer Wirkung präsentieren möchten.</p>
+    </div>
+  </section>
+  <div class="pf-gallery">
     <a href="assets/images/portfolio/portrait/8854cecf.jpg" class="glightbox reveal" data-gallery="portrait"><img loading="lazy" decoding="async" src="assets/images/portfolio/portrait/8854cecf.jpg" alt="Portrait- und Businessfotografie" /></a>
     <a href="assets/images/portfolio/portrait/947a25dc.jpg" class="glightbox reveal" data-gallery="portrait"><img loading="lazy" decoding="async" src="assets/images/portfolio/portrait/947a25dc.jpg" alt="Portrait- und Businessfotografie" /></a>
     <a href="assets/images/portfolio/portrait/8f97a4e2.jpg" class="glightbox reveal" data-gallery="portrait"><img loading="lazy" decoding="async" src="assets/images/portfolio/portrait/8f97a4e2.jpg" alt="Portrait- und Businessfotografie" /></a>
     <a href="assets/images/portfolio/portrait/0d13ab52.jpg" class="glightbox reveal" data-gallery="portrait"><img loading="lazy" decoding="async" src="assets/images/portfolio/portrait/0d13ab52.jpg" alt="Portrait- und Businessfotografie" /></a>
   </div>
 
-  <div class="portfolio-header reveal">
-    <p class="label">Event</p>
-    <h2>Atmosphäre, Emotion und echte Momente.</h2>
-    <p>Von Firmenveranstaltungen über Konzerte bis hin zu besonderen Anlässen – ich halte die Stimmung, Dynamik und die ungestellten Augenblicke fest, die ein Event unvergesslich machen.</p>
-  </div>
-  <div class="portfolio-banner reveal">
-    <img loading="lazy" decoding="async" src="assets/images/portfolio/event-header.jpg" alt="Eventfotografie" />
-  </div>
-  <div class="gallery-grid">
+  <!-- Chapter 03 — Event -->
+  <section class="pf-chapter" id="event" style="background-image:url('assets/images/portfolio/event-header.jpg')">
+    <div class="pf-chapter-overlay" aria-hidden="true"></div>
+    <div class="pf-chapter-content reveal">
+      <span class="pf-chapter-number">03</span>
+      <h2 class="pf-chapter-title">Atmosphäre, Emotion und echte Momente.</h2>
+      <p class="pf-chapter-text">Von Firmenveranstaltungen über Konzerte bis hin zu besonderen Anlässen – ich halte die Stimmung, Dynamik und die ungestellten Augenblicke fest, die ein Event unvergesslich machen.</p>
+    </div>
+  </section>
+  <div class="pf-gallery">
     <a href="assets/images/portfolio/event/9dc5cf13.jpg" class="glightbox reveal" data-gallery="event"><img loading="lazy" decoding="async" src="assets/images/portfolio/event/9dc5cf13.jpg" alt="Eventfotografie" /></a>
     <a href="assets/images/portfolio/event/49cb9ed7.jpg" class="glightbox reveal" data-gallery="event"><img loading="lazy" decoding="async" src="assets/images/portfolio/event/49cb9ed7.jpg" alt="Eventfotografie" /></a>
     <a href="assets/images/portfolio/event/8ca57cf1.jpg" class="glightbox reveal" data-gallery="event"><img loading="lazy" decoding="async" src="assets/images/portfolio/event/8ca57cf1.jpg" alt="Eventfotografie" /></a>
     <a href="assets/images/portfolio/event/ccc1ddb9.jpg" class="glightbox reveal" data-gallery="event"><img loading="lazy" decoding="async" src="assets/images/portfolio/event/ccc1ddb9.jpg" alt="Eventfotografie" /></a>
   </div>
 
-  <section class="section">
+  <section class="section" style="padding-top:0;">
     <div class="wrap">
       <div class="panel cta-box reveal">
         <p class="label">Lass uns starten</p>
