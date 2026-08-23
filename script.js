@@ -181,13 +181,19 @@ document.addEventListener('DOMContentLoaded', () => {
   if (track) {
     const prevBtn = document.getElementById('testiPrev');
     const nextBtn = document.getElementById('testiNext');
-    const counter = document.getElementById('testiCounter');
+    const indexEl = document.getElementById('testiIndex');
+    const totalEl = document.getElementById('testiProgressTotal') || document.querySelector('.testi-progress-total');
+    const progressBar = document.getElementById('testiProgressBar');
     const testiSlides = track.querySelectorAll('.testi-slide');
     let index = 0;
+    const pad = (n) => String(n).padStart(2, '0');
+    if (totalEl) totalEl.textContent = pad(testiSlides.length);
     const update = () => {
       track.style.transform = `translateX(-${index * 100}%)`;
-      counter.textContent = `${index + 1} / ${testiSlides.length}`;
+      if (indexEl) indexEl.textContent = pad(index + 1);
+      if (progressBar) progressBar.style.width = `${((index + 1) / testiSlides.length) * 100}%`;
     };
+    update();
     prevBtn.addEventListener('click', () => {
       index = (index - 1 + testiSlides.length) % testiSlides.length;
       update();

@@ -124,8 +124,13 @@
     </div>
   </section>
 
-  <section class="section">
+  <section class="section testi-section">
+    <div class="testi-glow" aria-hidden="true"></div>
     <div class="wrap">
+      <div class="section-head reveal">
+        <p class="label">Kundenstimmen</p>
+        <h2>Was Kunden sagen</h2>
+      </div>
       <div class="testi-slider reveal">
         <button class="testi-arrow testi-arrow-left" id="testiPrev" aria-label="Vorherige Bewertung">←</button>
         <button class="testi-arrow testi-arrow-right" id="testiNext" aria-label="Nächste Bewertung">→</button>
@@ -163,7 +168,11 @@
             </div></div>
           </div>
         </div>
-        <div class="testi-counter" id="testiCounter">1 / 5</div>
+        <div class="testi-progress">
+          <span class="testi-progress-index" id="testiIndex">01</span>
+          <div class="testi-progress-track"><div class="testi-progress-bar" id="testiProgressBar"></div></div>
+          <span class="testi-progress-total">05</span>
+        </div>
       </div>
     </div>
   </section>

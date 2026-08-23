@@ -537,35 +537,71 @@ a { color: inherit; }
    Testimonial slider
    ========================================================== */
 
+.testi-section { position: relative; overflow: hidden; }
+.testi-glow {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background: radial-gradient(ellipse 60% 50% at center 45%, rgba(222, 175, 103, 0.08), transparent 70%);
+}
+.testi-section .wrap { position: relative; z-index: 1; }
+
 .testi-slider { max-width: 760px; margin: 0 auto; position: relative; padding: 0 54px; }
-.testi-track-wrap { overflow: hidden; }
-.testi-track { display: flex; transition: transform 0.4s ease; }
+.testi-track-wrap { overflow: hidden; border-radius: 24px; }
+.testi-track { display: flex; transition: transform 0.5s cubic-bezier(0.65, 0, 0.35, 1); }
 .testi-slide { min-width: 100%; padding: 6px; box-sizing: border-box; }
-.testi-content { padding: 36px; }
-.testi-stars { color: var(--gold); font-size: 20px; margin-bottom: 16px; letter-spacing: 1px; }
-.testi-text { font-size: 1.15rem; line-height: 1.55; color: var(--ink); margin: 0 0 22px; font-weight: 600; }
-.testi-divider { height: 1px; background: var(--border); margin: 0 0 20px; }
+.testi-content {
+  position: relative;
+  padding: 40px 40px 36px;
+  overflow: hidden;
+}
+.testi-content::before {
+  content: '\201C';
+  position: absolute; top: -6px; right: 26px;
+  font-family: Georgia, serif; font-size: 6rem; line-height: 1;
+  color: rgba(222, 175, 103, 0.12);
+  pointer-events: none;
+}
+.testi-stars { color: var(--gold); font-size: 20px; margin-bottom: 16px; letter-spacing: 1px; text-shadow: 0 0 12px rgba(222, 175, 103, 0.4); }
+.testi-text { position: relative; font-size: 1.15rem; line-height: 1.55; color: var(--ink); margin: 0 0 22px; font-weight: 600; }
+.testi-divider { height: 1px; background: linear-gradient(90deg, var(--gold-border), transparent); margin: 0 0 20px; }
 .testi-author { display: flex; align-items: center; gap: 14px; }
 .testi-avatar {
   width: 50px; height: 50px; border-radius: 50%;
-  background: var(--gold); color: #1e1e1e;
+  background: linear-gradient(135deg, var(--gold-bright), var(--gold)); color: #1e1e1e;
   display: flex; align-items: center; justify-content: center;
-  font-weight: 700; flex-shrink: 0;
+  font-family: var(--font-mono); font-weight: 700; flex-shrink: 0;
+  box-shadow: 0 0 0 1px rgba(222, 175, 103, 0.3), 0 0 18px rgba(222, 175, 103, 0.25);
 }
 .testi-name { font-size: 0.95rem; font-weight: 700; color: var(--gold); margin: 0; }
-.testi-role { font-size: 0.82rem; color: var(--ink-faint); margin: 3px 0 0; }
+.testi-role { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); margin: 4px 0 0; }
 .testi-arrow {
-  position: absolute; top: 50%; transform: translateY(-50%);
+  position: absolute; top: 50%; transform: translateY(-50%); z-index: 2;
   width: 44px; height: 44px;
-  background: var(--bg-panel); border: 1px solid var(--gold-border);
+  background: var(--gold-soft); border: 1px solid var(--gold-border);
   border-radius: 50%; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
-  font-size: 18px; color: var(--gold); transition: all 0.2s;
+  font-size: 18px; color: var(--gold); transition: 0.22s ease;
 }
-.testi-arrow:hover { background: var(--gold); color: #1e1e1e; border-color: var(--gold); }
+.testi-arrow:hover { background: var(--gold); color: #1e1e1e; border-color: var(--gold); box-shadow: 0 0 18px rgba(222, 175, 103, 0.4); transform: translateY(-50%) scale(1.06); }
 .testi-arrow-left { left: 0; }
 .testi-arrow-right { right: 0; }
-.testi-counter { text-align: center; margin-top: 18px; font-size: 0.85rem; color: var(--ink-faint); }
+
+.testi-progress {
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  margin-top: 22px;
+  font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.08em; color: var(--ink-faint);
+}
+.testi-progress-index { color: var(--gold); }
+.testi-progress-track {
+  width: 120px; height: 2px; border-radius: 2px;
+  background: var(--border); overflow: hidden;
+}
+.testi-progress-bar {
+  height: 100%; width: 20%;
+  background: linear-gradient(90deg, var(--gold), var(--gold-bright));
+  box-shadow: 0 0 8px rgba(222, 175, 103, 0.6);
+  transition: width 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+}
 
 /* ==========================================================
    Review CTA / Final CTA
@@ -622,7 +658,14 @@ a { color: inherit; }
 .about-panel-inner h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; color: #fff; margin: 0 0 34px; text-wrap: balance; }
 
 .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; text-align: left; }
-.about-card { padding: 22px; border-radius: 18px; background: var(--gold-soft); border: 1px solid var(--gold-border); transition: 0.22s ease; }
+.about-card {
+  padding: 22px; border-radius: 18px;
+  background: radial-gradient(circle at top right, rgba(222, 175, 103, 0.05) 0%, transparent 32%),
+    linear-gradient(180deg, rgba(30, 30, 30, 0.96) 0%, rgba(18, 18, 18, 0.99) 100%);
+  border: 1px solid var(--gold-border);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.24);
+  transition: 0.22s ease;
+}
 .about-card:hover { transform: translateY(-4px); border-color: rgba(222, 175, 103, 0.28); }
 .about-card-top { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
 .about-badge { min-width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; border-radius: 10px; background: var(--gold); color: #111; font-family: var(--font-mono); font-weight: 700; font-size: 0.88rem; }
