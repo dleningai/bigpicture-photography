@@ -229,6 +229,52 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     if (nextBtn) nextBtn.addEventListener('click', advance);
+
+    // Grid-preview popover — lets visitors jump straight to a specific
+    // photo instead of clicking through the whole stack one by one.
+    const gridToggle = wrap.querySelector('.pf-stack-grid-toggle');
+    const preview = wrap.querySelector('.pf-stack-preview');
+    if (gridToggle && preview) {
+      preview.innerHTML = `
+        <button type="button" class="pf-stack-preview-close" aria-label="Vorschau schließen">&times;</button>
+        <p class="pf-stack-preview-label">Alle Bilder</p>
+        <div class="pf-stack-preview-grid"></div>
+      `;
+      const grid = preview.querySelector('.pf-stack-preview-grid');
+      photos.forEach((photo, idx) => {
+        const thumb = document.createElement('img');
+        thumb.src = photo.querySelector('img').src;
+        thumb.loading = 'lazy';
+        thumb.decoding = 'async';
+        thumb.alt = photo.querySelector('img').alt;
+        thumb.addEventListener('click', () => {
+          closePreview();
+          photos[idx].click();
+        });
+        grid.appendChild(thumb);
+      });
+
+      const openPreview = () => {
+        preview.classList.add('active');
+        gridToggle.classList.add('active');
+        gridToggle.setAttribute('aria-expanded', 'true');
+      };
+      const closePreview = () => {
+        preview.classList.remove('active');
+        gridToggle.classList.remove('active');
+        gridToggle.setAttribute('aria-expanded', 'false');
+      };
+      gridToggle.addEventListener('click', () => {
+        preview.classList.contains('active') ? closePreview() : openPreview();
+      });
+      preview.querySelector('.pf-stack-preview-close').addEventListener('click', closePreview);
+      document.addEventListener('click', (e) => {
+        if (!wrap.contains(e.target)) closePreview();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closePreview();
+      });
+    }
   });
 
   // GLightbox for portfolio galleries
