@@ -248,15 +248,22 @@ a { color: inherit; }
   50% { background-position: 100% 0; }
 }
 
-.sidebar-nav { list-style: none; padding: 0; margin: 0; counter-reset: navnum; }
+.sidebar-nav { position: relative; list-style: none; padding: 0; margin: 0; counter-reset: navnum; }
+.sidebar-nav::before {
+  content: '';
+  position: absolute; left: 28px; top: 4px; bottom: 4px; width: 1px;
+  background: linear-gradient(180deg, transparent, rgba(222, 175, 103, 0.22) 10%, rgba(222, 175, 103, 0.22) 90%, transparent);
+  z-index: 0;
+}
 .sidebar-nav li { margin-bottom: 12px; counter-increment: navnum; }
 .sidebar-nav a {
+  position: relative; z-index: 1;
   color: var(--gold);
   text-decoration: none;
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 12px 15px;
+  gap: 12px;
+  padding: 10px 15px;
   border-radius: 14px;
   transition: 0.22s ease;
   border-left: 3px solid transparent;
@@ -264,11 +271,25 @@ a { color: inherit; }
 }
 .sidebar-nav a::before {
   content: counter(navnum, decimal-leading-zero);
+  display: flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px; flex-shrink: 0;
+  border-radius: 8px;
+  border: 1px solid rgba(222, 175, 103, 0.25);
+  background: rgba(222, 175, 103, 0.05);
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 700;
   color: var(--gold);
-  opacity: 0.45;
+  opacity: 0.55;
+  transition: 0.22s ease;
+}
+.sidebar-nav a::after {
+  content: '';
+  margin-left: auto;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--gold);
+  opacity: 0;
+  box-shadow: 0 0 8px 2px rgba(222, 175, 103, 0.6);
   transition: opacity 0.22s ease;
 }
 .sidebar-nav a:hover {
@@ -284,7 +305,17 @@ a { color: inherit; }
   text-shadow: 0 0 12px rgba(222, 175, 103, 0.5);
 }
 .sidebar-nav a:hover::before,
-.sidebar-nav a.active::before { opacity: 1; }
+.sidebar-nav a.active::before {
+  opacity: 1;
+  border-color: var(--gold);
+  background: rgba(222, 175, 103, 0.15);
+  box-shadow: 0 0 12px rgba(222, 175, 103, 0.3);
+}
+.sidebar-nav a.active::after { opacity: 1; animation: navDotPulse 1.8s ease-in-out infinite; }
+@keyframes navDotPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.7); }
+}
 
 .sidebar-contact-wrap {
   position: relative;
