@@ -2,6 +2,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
+  // HUD corner brackets — injected as real elements so they never clash
+  // with a panel's own ::before/::after decoration.
+  document.querySelectorAll('.hud-frame').forEach((el) => {
+    const tl = document.createElement('span');
+    tl.className = 'hud-corner tl';
+    tl.setAttribute('aria-hidden', 'true');
+    const br = document.createElement('span');
+    br.className = 'hud-corner br';
+    br.setAttribute('aria-hidden', 'true');
+    el.append(tl, br);
+  });
+
   // Sidebar navigation
   const toggleBtn = document.getElementById('sidebarToggle');
   const closeBtn = document.getElementById('sidebarClose');

@@ -124,18 +124,22 @@ a { color: inherit; }
 }
 .btn-ghost:hover { background: var(--gold-soft); border-color: var(--gold); }
 
-/* ---------- HUD corner frame — a small sci-fi accent on key panels ---------- */
+/* ---------- HUD corner frame — a small sci-fi accent used on every boxed
+   panel and card. Corners are injected as real elements (see script.js)
+   rather than ::before/::after so they never clash with a panel's own
+   pseudo-element decoration (e.g. .panel's top gradient line). ---------- */
 .hud-frame { position: relative; }
-.hud-frame::before,
-.hud-frame::after {
-  content: '';
+.hud-corner {
   position: absolute;
   width: 22px; height: 22px;
   pointer-events: none;
   opacity: 0.7;
 }
-.hud-frame::before { top: -1px; left: -1px; border-top: 2px solid var(--gold); border-left: 2px solid var(--gold); }
-.hud-frame::after { bottom: -1px; right: -1px; border-bottom: 2px solid var(--gold); border-right: 2px solid var(--gold); }
+.hud-corner.tl { top: 14px; left: 14px; border-top: 2px solid var(--gold); border-left: 2px solid var(--gold); }
+.hud-corner.br { bottom: 14px; right: 14px; border-bottom: 2px solid var(--gold); border-right: 2px solid var(--gold); }
+/* Tighter-cornered small elements (hero box, cards) can sit closer to the edge */
+.hero-box .hud-corner.tl, .service-card .hud-corner.tl, .about-card .hud-corner.tl { top: -1px; left: -1px; }
+.hero-box .hud-corner.br, .service-card .hud-corner.br, .about-card .hud-corner.br { bottom: -1px; right: -1px; }
 
 /* ==========================================================
    Sidebar navigation (shared across all pages)
@@ -448,8 +452,7 @@ a { color: inherit; }
 .name-box .name { font-size: clamp(2.1rem, 5vw, 3rem); font-weight: 800; color: #fff; margin: 4px 0 10px; }
 .name-box .role { font-size: 0.95rem; color: var(--ink-dim); font-weight: 500; }
 
-.about-photo { max-width: var(--max-width); margin: 0 auto 40px; border-radius: var(--radius); overflow: hidden; }
-.about-photo { max-width: 640px; }
+.about-photo { max-width: 640px; margin: 0 auto 40px; border-radius: var(--radius); overflow: hidden; }
 .about-photo img { width: 100%; max-height: 800px; object-fit: cover; object-position: top; border-radius: var(--radius); }
 
 .about-panel { max-width: var(--max-width); margin: 0 auto 70px; }
