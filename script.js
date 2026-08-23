@@ -44,6 +44,31 @@ document.addEventListener('DOMContentLoaded', () => {
   );
   revealEls.forEach((el) => revealObserver.observe(el));
 
+  // Scroll-spy — highlights the in-page nav link (chapter nav / TOC) whose
+  // section is currently in view.
+  document.querySelectorAll('.pf-chapternav, .legal-toc').forEach((nav) => {
+    const links = Array.from(nav.querySelectorAll('a[href^="#"]'));
+    const sections = links
+      .map((a) => document.getElementById(a.getAttribute('href').slice(1)))
+      .filter(Boolean);
+    if (!sections.length) return;
+
+    const setActive = (id) => {
+      links.forEach((a) => a.classList.toggle('active', a.getAttribute('href') === `#${id}`));
+    };
+    setActive(sections[0].id);
+
+    const spyObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActive(entry.target.id);
+        });
+      },
+      { rootMargin: '-40% 0px -50% 0px', threshold: 0 }
+    );
+    sections.forEach((sec) => spyObserver.observe(sec));
+  });
+
   // Hero slideshow — the first slide's image is inlined in the HTML for a fast
   // first paint; the rest load lazily after the page settles so they don't
   // compete with it for bandwidth.
