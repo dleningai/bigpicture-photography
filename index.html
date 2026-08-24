@@ -153,6 +153,33 @@
           <p>Content, der nicht ignoriert wird – Reels und Videos, die Aufmerksamkeit ziehen und deine Reichweite sichtbar steigern.</p>
         </a>
       </div>
+
+      <div class="calc reveal" id="priceCalc">
+        <div class="calc-step">
+          <div class="calc-step-label"><span class="calc-step-num">1</span> Was brauchst du?</div>
+          <div class="calc-options" id="calcCategory">
+            <button type="button" class="calc-opt" data-cat="event">Eventfotografie<small>Firmenfeiern, Konzerte</small></button>
+            <button type="button" class="calc-opt" data-cat="business">Business &amp; Branding<small>Portraits, Content</small></button>
+            <button type="button" class="calc-opt" data-cat="sport">Sportfotografie<small>Wettkämpfe, Vereine</small></button>
+            <button type="button" class="calc-opt" data-cat="video">Videografie &amp; Content<small>Reels, Imagefilm</small></button>
+          </div>
+        </div>
+
+        <div class="calc-step" id="calcScopeStep" style="display:none;">
+          <div class="calc-step-label"><span class="calc-step-num">2</span> Wie umfangreich?</div>
+          <div class="calc-options" id="calcScope"></div>
+        </div>
+
+        <div class="calc-result" id="calcResult">
+          <div class="calc-result-label">Richtwert</div>
+          <div class="calc-price" id="calcPrice">—</div>
+          <p class="calc-price-note" id="calcNote"></p>
+          <div class="calc-cta">
+            <a href="#" class="btn btn-primary" id="calcWaBtn" target="_blank" rel="noopener">Jetzt per WhatsApp anfragen</a>
+            <span class="calc-cta-note">Nachricht ist schon vorausgefüllt</span>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -315,6 +342,12 @@
     </div>
     <p>&copy; <span id="year"></span> Big Picture Photography — Dimitri Lening · Detmold</p>
   </footer>
+
+  <div class="sticky-cta" id="stickyCta">
+    <div class="sticky-cta-status"><span class="sticky-cta-dot"></span><span>Antwort &lt; 12 Std.</span></div>
+    <a href="https://wa.me/4916096290806" class="sticky-cta-btn" target="_blank" rel="noopener">Jetzt anfragen</a>
+    <button type="button" class="sticky-cta-close" id="stickyCtaClose" aria-label="Leiste schließen">&times;</button>
+  </div>
 
   <script src="script.js"></script>
 </body>

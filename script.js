@@ -346,4 +346,92 @@ document.addEventListener('DOMContentLoaded', () => {
   if (window.GLightbox) {
     GLightbox({ selector: '.glightbox', touchNavigation: true, loop: true });
   }
+
+  // Preis-Rechner — 2-step price estimator in the Leistungen section.
+  const calcEl = document.getElementById('priceCalc');
+  if (calcEl) {
+    const CALC_DATA = {
+      event: { label: 'Eventfotografie', scopes: [
+        { key: 'klein', label: 'Bis 3 Std.', note: 'z.B. Feier im kleinen Rahmen', price: '349 – 549 €' },
+        { key: 'mittel', label: 'Halbtags', note: 'z.B. Firmenfeier, Konzert', price: '549 – 899 €' },
+        { key: 'gross', label: 'Ganztags', note: 'z.B. mehrtägiges Event', price: 'ab 899 €' },
+      ]},
+      business: { label: 'Business & Branding', scopes: [
+        { key: 'klein', label: 'Einzelportrait', note: '1 Person, 1 Std.', price: '199 – 349 €' },
+        { key: 'mittel', label: 'Team-Shooting', note: 'bis 10 Personen', price: '449 – 799 €' },
+        { key: 'gross', label: 'Markenauftritt', note: 'Content-Paket', price: 'ab 899 €' },
+      ]},
+      sport: { label: 'Sportfotografie', scopes: [
+        { key: 'klein', label: 'Einzeltermin', note: 'ein Wettkampf/Training', price: '299 – 449 €' },
+        { key: 'mittel', label: 'Saisonpaket', note: 'mehrere Termine', price: '799 – 1.299 €' },
+        { key: 'gross', label: 'Vereinsbetreuung', note: 'laufende Begleitung', price: 'auf Anfrage' },
+      ]},
+      video: { label: 'Videografie & Content', scopes: [
+        { key: 'klein', label: 'Reel-Paket', note: '3–5 kurze Clips', price: '349 – 599 €' },
+        { key: 'mittel', label: 'Imagefilm', note: '1–2 Min., geschnitten', price: '899 – 1.499 €' },
+        { key: 'gross', label: 'Produktion', note: 'mehrtägig, mehrere Formate', price: 'ab 1.899 €' },
+      ]},
+    };
+
+    const categoryEl = document.getElementById('calcCategory');
+    const scopeStepEl = document.getElementById('calcScopeStep');
+    const scopeEl = document.getElementById('calcScope');
+    const resultEl = document.getElementById('calcResult');
+    const priceEl = document.getElementById('calcPrice');
+    const noteEl = document.getElementById('calcNote');
+    const waBtn = document.getElementById('calcWaBtn');
+    let selectedCat = null;
+
+    categoryEl.addEventListener('click', (e) => {
+      const btn = e.target.closest('.calc-opt');
+      if (!btn) return;
+      selectedCat = btn.dataset.cat;
+      [...categoryEl.children].forEach((b) => b.classList.toggle('active', b === btn));
+      resultEl.classList.remove('visible');
+
+      scopeEl.innerHTML = '';
+      CALC_DATA[selectedCat].scopes.forEach((s) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'calc-opt';
+        b.dataset.scope = s.key;
+        b.innerHTML = `${s.label}<small>${s.note}</small>`;
+        scopeEl.appendChild(b);
+      });
+      scopeStepEl.style.display = '';
+      scopeStepEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+
+    scopeEl.addEventListener('click', (e) => {
+      const btn = e.target.closest('.calc-opt');
+      if (!btn) return;
+      const selectedScope = btn.dataset.scope;
+      [...scopeEl.children].forEach((b) => b.classList.toggle('active', b === btn));
+
+      const cat = CALC_DATA[selectedCat];
+      const scope = cat.scopes.find((s) => s.key === selectedScope);
+      priceEl.textContent = scope.price;
+      noteEl.textContent = `${cat.label} — ${scope.label}. Unverbindlicher Richtwert, das genaue Angebot hängt von deinen Details ab.`;
+      const msg = encodeURIComponent(`Hallo, ich interessiere mich für ${cat.label} (${scope.label}) und hätte gern ein Angebot.`);
+      waBtn.href = `https://wa.me/4916096290806?text=${msg}`;
+      resultEl.classList.add('visible');
+      resultEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+  }
+
+  // Sticky-Kontakt-Leiste — appears after scrolling past the hero, dismissible.
+  const stickyCta = document.getElementById('stickyCta');
+  if (stickyCta) {
+    const stickyCtaClose = document.getElementById('stickyCtaClose');
+    let dismissed = false;
+    window.addEventListener('scroll', () => {
+      if (dismissed) return;
+      const show = window.scrollY > window.innerHeight * 0.7;
+      stickyCta.classList.toggle('visible', show);
+    }, { passive: true });
+    stickyCtaClose.addEventListener('click', () => {
+      dismissed = true;
+      stickyCta.classList.remove('visible');
+    });
+  }
 });
