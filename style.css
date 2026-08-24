@@ -350,7 +350,6 @@ a { color: inherit; }
   background: radial-gradient(circle, rgba(222, 175, 103, 0.5), transparent 70%);
   animation: heroGlowDrift 16s ease-in-out infinite;
 }
-.hero-fx-glow-a { width: 480px; height: 480px; top: -14%; left: -12%; }
 .hero-fx-glow-b { width: 420px; height: 420px; bottom: -18%; right: -10%; animation-delay: -8s; }
 .hero-fx-scan {
   position: absolute; left: 0; right: 0; height: 140px; top: -140px;
@@ -387,8 +386,8 @@ a { color: inherit; }
 }
 .hero-logo-badge {
   position: relative;
-  width: 168px; height: 168px;
-  margin: 0 auto 26px;
+  width: 216px; height: 216px;
+  margin: 0 auto 30px;
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   background: radial-gradient(circle at 50% 50%, rgba(222, 175, 103, 0.16), rgba(10, 10, 10, 0.92) 72%);
@@ -397,7 +396,7 @@ a { color: inherit; }
 }
 .hero-logo-badge::before {
   content: '';
-  position: absolute; inset: -14px;
+  position: absolute; inset: -18px;
   border-radius: 50%;
   border: 1px solid transparent;
   border-top-color: rgba(222, 175, 103, 0.65);
@@ -406,13 +405,13 @@ a { color: inherit; }
 }
 .hero-logo-badge::after {
   content: '';
-  position: absolute; inset: -30px;
+  position: absolute; inset: -38px;
   border-radius: 50%;
   border: 1px dashed rgba(222, 175, 103, 0.3);
   animation: heroLogoSpin 18s linear infinite reverse;
 }
 .hero-logo-badge img {
-  width: 148px; height: 148px; object-fit: contain;
+  width: 190px; height: 190px; object-fit: contain;
   position: relative; z-index: 1;
   filter: drop-shadow(0 0 20px rgba(222, 175, 103, 0.4));
 }
@@ -426,10 +425,10 @@ a { color: inherit; }
   50% { box-shadow: 0 0 0 1px rgba(222, 175, 103, 0.08), 0 24px 60px rgba(0, 0, 0, 0.5), 0 0 36px 8px rgba(222, 175, 103, 0.24); }
 }
 @media (max-width: 640px) {
-  .hero-logo-badge { width: 128px; height: 128px; margin-bottom: 20px; }
-  .hero-logo-badge img { width: 112px; height: 112px; }
-  .hero-logo-badge::before { inset: -10px; }
-  .hero-logo-badge::after { inset: -22px; }
+  .hero-logo-badge { width: 164px; height: 164px; margin-bottom: 24px; }
+  .hero-logo-badge img { width: 144px; height: 144px; }
+  .hero-logo-badge::before { inset: -13px; }
+  .hero-logo-badge::after { inset: -28px; }
 }
 .hero-title {
   font-size: clamp(1.7rem, 5vw, 2.6rem);
