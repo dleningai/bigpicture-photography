@@ -218,13 +218,6 @@ a { color: inherit; }
   backdrop-filter: blur(12px);
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
   overflow: hidden;
-  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease, border-color 0.25s ease, background-color 0.25s ease;
-}
-.site-nav:hover {
-  transform: translateX(-50%) translateY(-2px);
-  border-color: var(--gold);
-  background: linear-gradient(180deg, rgba(32, 28, 18, 0.98), rgba(16, 13, 6, 0.99));
-  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.4);
 }
 .site-nav::before {
   content: '';
@@ -239,38 +232,42 @@ a { color: inherit; }
   85% { opacity: 1; }
   100% { left: 100%; opacity: 0; }
 }
-/* Light sweep on hover — same flourish used on the .btn buttons */
-.site-nav-sweep {
+/* Per-category hover — no filled shape behind the text, just a lift,
+   color change and a small light-sweep confined to that one word. */
+.site-nav a {
+  position: relative; z-index: 1;
+  display: inline-block;
+  padding: 2px 1px;
+  font-family: var(--font-mono); font-size: 0.76rem; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink-dim); text-decoration: none;
+  transition: color 0.2s ease, transform 0.2s ease;
+  white-space: nowrap;
+}
+.site-nav a:hover { color: var(--gold); transform: translateY(-1px); }
+.site-nav-a-inner { position: relative; display: inline-block; overflow: hidden; }
+.site-nav-a-inner::after {
   content: '';
   position: absolute;
   top: 0; left: -60%;
   width: 40%; height: 100%;
-  background: linear-gradient(115deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  background: linear-gradient(115deg, transparent, rgba(255, 255, 255, 0.4), transparent);
   transform: skewX(-20deg);
-  transition: left 0.6s ease;
+  transition: left 0.5s ease;
   pointer-events: none;
 }
-.site-nav:hover .site-nav-sweep { left: 130%; }
-.site-nav-indicator {
-  position: absolute; top: 6px; bottom: 6px; left: 0; width: 0;
-  border-radius: 999px;
-  background: var(--gold-soft);
-  border: 1px solid var(--gold-border);
-  opacity: 0;
-  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), width 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.25s ease;
-  pointer-events: none;
-  z-index: 0;
+.site-nav a:hover .site-nav-a-inner::after { left: 130%; }
+/* Active page — a small persistent pulsing dot instead of a hover-style
+   highlight, so "you are here" reads differently from a mouse-over. */
+.site-nav a.active { color: var(--gold); }
+.site-nav a.active::before {
+  content: '';
+  position: absolute; left: 50%; bottom: -7px; transform: translateX(-50%);
+  width: 4px; height: 4px; border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 8px 2px rgba(222, 175, 103, 0.6);
+  animation: sidebarPulse 1.8s ease-in-out infinite;
 }
-.site-nav-indicator.visible { opacity: 1; }
-.site-nav a {
-  position: relative; z-index: 1;
-  font-family: var(--font-mono); font-size: 0.76rem; font-weight: 700;
-  letter-spacing: 0.08em; text-transform: uppercase;
-  color: var(--ink-dim); text-decoration: none;
-  transition: color 0.2s ease;
-  white-space: nowrap;
-}
-.site-nav a:hover, .site-nav a.active { color: var(--gold); }
 .site-nav-divider { position: relative; z-index: 1; width: 1px; height: 14px; background: var(--gold-border); flex-shrink: 0; }
 
 @media (max-width: 640px) {
@@ -279,7 +276,7 @@ a { color: inherit; }
 }
 @media (prefers-reduced-motion: reduce) {
   .site-nav::before { animation: none; }
-  .site-nav-indicator { transition: none; }
+  .site-nav a.active::before { animation: none; }
 }
 
 /* Decorative grid — the same HUD-grid motif used in the homepage hero
