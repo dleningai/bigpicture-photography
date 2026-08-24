@@ -107,7 +107,7 @@ a { color: inherit; }
 
 .wrap { max-width: var(--max-width); margin: 0 auto; padding: 0 20px; }
 
-.label {
+.label, .hero-eyebrow {
   display: inline-block;
   margin-bottom: 14px;
   padding: 7px 14px;
@@ -407,10 +407,6 @@ a { color: inherit; }
   max-width: 760px;
   margin: 0 auto;
   padding: 48px 28px 26px;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid var(--gold-border);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
 }
 .hero-logo-badge {
   position: relative;
@@ -458,12 +454,6 @@ a { color: inherit; }
   .hero-logo-badge::before { inset: -10px; }
   .hero-logo-badge::after { inset: -22px; }
 }
-.hero-eyebrow {
-  font-family: var(--font-mono);
-  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.22em;
-  text-transform: uppercase; color: rgba(222, 175, 103, 0.85);
-  margin-bottom: 10px;
-}
 .hero-title {
   font-size: clamp(1.7rem, 5vw, 2.6rem);
   font-weight: 800; line-height: 1.22; letter-spacing: -0.02em;
@@ -501,12 +491,19 @@ a { color: inherit; }
 }
 .legal-download-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
 .name-box.page-card, .contact-panel.page-card, .legal-panel.page-card {
-  margin-top: 130px !important;
+  margin-top: 142px !important;
 }
 @media (max-width: 640px) {
   .name-box.page-card, .contact-panel.page-card, .legal-panel.page-card {
-    margin-top: 100px !important;
+    margin-top: 112px !important;
   }
+}
+/* About's intro section stands in for the hero/page-card clearance other
+   pages get, so it needs the same nav clearance up top — matched to the
+   142px/112px values above instead of the shared .section rhythm. */
+.about-intro-section { padding-top: 142px !important; padding-bottom: 40px !important; }
+@media (max-width: 640px) {
+  .about-intro-section { padding-top: 112px !important; }
 }
 
 /* ==========================================================
