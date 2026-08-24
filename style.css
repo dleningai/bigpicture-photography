@@ -53,6 +53,43 @@ body::before {
   mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 0%, transparent 75%);
 }
 
+/* Boot-up intro — a one-time-per-session HUD "system startup" overlay on
+   the homepage. Skippable by click/keypress, respects reduced-motion, and
+   never re-shows once dismissed within the same browser session. */
+.boot-intro {
+  position: fixed; inset: 0; z-index: 9999;
+  background: var(--bg);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 24px;
+  cursor: pointer;
+  transition: opacity 0.5s ease, visibility 0.5s;
+}
+.boot-intro.boot-intro-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+.boot-intro-lines {
+  font-family: var(--font-mono); font-size: clamp(0.82rem, 2.2vw, 1.05rem);
+  color: var(--gold);
+  text-align: left;
+  min-height: 5.5em;
+  letter-spacing: 0.02em;
+}
+.boot-intro-lines div { margin: 0 0 10px; opacity: 0.92; }
+.boot-intro-lines div:last-child { margin-bottom: 0; }
+.boot-intro-cursor {
+  display: inline-block; width: 0.55em; height: 1em; margin-left: 2px;
+  background: var(--gold); vertical-align: -0.15em;
+  animation: bootCursorBlink 0.9s step-end infinite;
+}
+@keyframes bootCursorBlink { 50% { opacity: 0; } }
+.boot-intro-hint {
+  font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--ink-faint);
+  opacity: 0; transition: opacity 0.4s ease 0.6s;
+}
+.boot-intro.boot-intro-ready .boot-intro-hint { opacity: 0.7; }
+@media (prefers-reduced-motion: reduce) {
+  .boot-intro { display: none; }
+}
+
 /* Thin glowing scrollbar */
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
