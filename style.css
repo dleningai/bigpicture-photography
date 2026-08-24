@@ -1008,6 +1008,17 @@ a { color: inherit; }
    ========================================================== */
 
 .testi-stack-wrap { position: relative; max-width: 520px; margin: 0 auto; padding-bottom: 60px; }
+.testi-feedback-row {
+  display: flex; align-items: center; justify-content: center; gap: 24px; flex-wrap: wrap;
+  max-width: 720px; margin: 12px auto 0; padding-top: 34px;
+  border-top: 1px solid var(--gold-border);
+  text-align: center;
+}
+.testi-feedback-row p { margin: 0; color: var(--ink-dim); font-size: 0.95rem; }
+.testi-feedback-row .btn { flex-shrink: 0; }
+@media (max-width: 640px) {
+  .testi-feedback-row { flex-direction: column; gap: 18px; }
+}
 .testi-stack { position: relative; height: 340px; }
 .testi-photo {
   position: absolute; inset: 0;
