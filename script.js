@@ -2,6 +2,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
+  // Cursor-tracked glow on premium cards — writes pointer position as CSS
+  // custom properties so the radial highlight in style.css follows the mouse.
+  document.querySelectorAll('.glow-card').forEach((card) => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      card.style.setProperty('--mx', `${((e.clientX - rect.left) / rect.width) * 100}%`);
+      card.style.setProperty('--my', `${((e.clientY - rect.top) / rect.height) * 100}%`);
+    });
+  });
+
   // Sidebar navigation
   const toggleBtn = document.getElementById('sidebarToggle');
   const closeBtn = document.getElementById('sidebarClose');
