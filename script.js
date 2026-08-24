@@ -67,35 +67,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Site nav — sliding gold indicator that follows the active/hovered
-  // link, like a segmented control.
-  const siteNav = document.querySelector('.site-nav');
-  if (siteNav) {
-    const indicator = siteNav.querySelector('.site-nav-indicator');
-    const links = Array.from(siteNav.querySelectorAll('a'));
-    const activeLink = links.find((a) => a.classList.contains('active'));
-
-    const moveIndicator = (el) => {
-      if (!el || !indicator) return;
-      indicator.style.transform = `translateX(${el.offsetLeft}px)`;
-      indicator.style.width = `${el.offsetWidth}px`;
-      indicator.classList.add('visible');
-    };
-
-    if (activeLink) moveIndicator(activeLink);
-
-    links.forEach((a) => {
-      a.addEventListener('mouseenter', () => moveIndicator(a));
-    });
-    siteNav.addEventListener('mouseleave', () => {
-      if (activeLink) moveIndicator(activeLink);
-      else indicator.classList.remove('visible');
-    });
-    window.addEventListener('resize', () => {
-      if (activeLink) moveIndicator(activeLink);
-    });
-  }
-
   // Scroll reveal
   const revealEls = document.querySelectorAll('.reveal');
   const revealObserver = new IntersectionObserver(
