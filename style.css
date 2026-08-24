@@ -189,250 +189,79 @@ a { color: inherit; }
 .btn-ghost:active { transform: translateY(0); }
 
 /* ==========================================================
-   Sidebar navigation (shared across all pages)
+   Site navigation — a permanent pill bar, shared across all
+   pages, replacing the old hamburger + slide-in sidebar so the
+   nav is always visible instead of hidden behind a toggle.
    ========================================================== */
-
-.sidebar-toggle {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  border: 1px solid var(--gold-border);
-  background: linear-gradient(180deg, rgba(28, 28, 28, 0.96) 0%, rgba(14, 14, 14, 0.98) 100%);
-  backdrop-filter: blur(12px);
-  cursor: pointer;
-  z-index: 1001;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
-  transition: all 0.22s ease;
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.38);
-}
-.sidebar-toggle::before {
-  content: '';
-  position: absolute; inset: -6px;
-  border-radius: 50%;
-  border: 1px solid transparent;
-  border-top-color: rgba(222, 175, 103, 0.55);
-  border-right-color: rgba(222, 175, 103, 0.55);
-  animation: toggleSpin 7s linear infinite;
-  pointer-events: none;
-}
-.sidebar-toggle::after {
-  content: '';
-  position: absolute; inset: 0;
-  border-radius: 50%;
-  box-shadow: 0 0 0 0 rgba(222, 175, 103, 0.3);
-  animation: togglePulse 2.8s ease-in-out infinite;
-  pointer-events: none;
-}
-@keyframes toggleSpin { to { transform: rotate(360deg); } }
-@keyframes togglePulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(222, 175, 103, 0.25); }
-  50% { box-shadow: 0 0 16px 3px rgba(222, 175, 103, 0.18); }
-}
-.sidebar-toggle:hover {
-  transform: scale(1.06) translateY(-1px);
-  border-color: rgba(222, 175, 103, 0.45);
-  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.42), 0 0 20px rgba(222, 175, 103, 0.25);
-}
-.sidebar-toggle:hover::before { animation-duration: 2s; border-top-color: var(--gold); border-right-color: var(--gold); }
-.sidebar-toggle span {
-  height: 2px; background: var(--gold); border-radius: 2px;
-  box-shadow: 0 0 6px rgba(222, 175, 103, 0.35);
-  transition: 0.22s ease;
-}
-.sidebar-toggle span:nth-child(1) { width: 14px; align-self: flex-start; margin-left: 15px; }
-.sidebar-toggle span:nth-child(2) { width: 20px; }
-.sidebar-toggle span:nth-child(3) { width: 14px; align-self: flex-end; margin-right: 15px; }
-.sidebar-toggle:hover span:nth-child(1) { width: 20px; margin-left: 0; }
-.sidebar-toggle:hover span:nth-child(3) { width: 20px; margin-right: 0; }
-/* The sidebar has its own close button once open, so the fixed toggle
-   (which would otherwise float awkwardly over the sidebar's own header)
-   just fades away instead of morphing into a second X. */
-.sidebar-toggle.active { opacity: 0; pointer-events: none; transform: scale(0.9); }
-
-.sidebar-overlay {
-  position: fixed; inset: 0;
-  background: rgba(0, 0, 0, 0.62);
-  z-index: 999;
-  opacity: 0; visibility: hidden;
-  transition: 0.3s ease;
-}
-.sidebar-overlay.active { opacity: 1; visibility: visible; }
-
-.sidebar-menu {
-  position: fixed; top: 0; left: 0;
-  width: 300px; height: 100%;
-  padding: 24px;
-  color: var(--gold);
-  background:
-    radial-gradient(circle at top center, rgba(222, 175, 103, 0.06) 0%, rgba(222, 175, 103, 0.025) 16%, rgba(222, 175, 103, 0) 36%),
-    linear-gradient(180deg, rgba(20, 20, 20, 0.985) 0%, rgba(8, 8, 8, 0.995) 100%);
-  backdrop-filter: blur(18px);
-  border-right: 1px solid var(--gold-border);
-  box-shadow: 24px 0 60px rgba(0, 0, 0, 0.46);
-  transform: translateX(-100%);
-  transition: transform 0.3s ease;
-  overflow-y: auto;
-  z-index: 1000;
-}
-.sidebar-menu.active { transform: translateX(0); }
-
-.sidebar-close {
-  position: absolute; top: 15px; right: 15px;
-  width: 28px; height: 28px;
-  background: none; border: none;
-  color: var(--gold); font-size: 24px; cursor: pointer; line-height: 1;
-}
-
-.sidebar-header {
-  position: relative;
-  margin-top: 50px; margin-bottom: 26px; padding-bottom: 18px;
-  text-align: center;
-}
-.sidebar-header::after {
-  content: '';
-  position: absolute; left: 0; right: 0; bottom: 0;
-  height: 1px;
-  background: linear-gradient(90deg, var(--gold) 0%, transparent 60%);
-  background-size: 220% 100%;
-  animation: sidebarShimmer 5s ease-in-out infinite;
-  opacity: 0.55;
-}
-.sidebar-logo { height: 128px; width: auto; margin-bottom: 14px; }
-.sidebar-title { margin: 0; font-size: 1.15rem; font-weight: 800; color: var(--gold); }
 
 @keyframes sidebarShimmer {
   0%, 100% { background-position: 0% 0; }
   50% { background-position: 100% 0; }
 }
-
-.sidebar-nav { position: relative; list-style: none; padding: 0; margin: 0; counter-reset: navnum; }
-.sidebar-nav::before {
-  content: '';
-  position: absolute; left: 28px; top: 4px; bottom: 4px; width: 1px;
-  background: linear-gradient(180deg, transparent, rgba(222, 175, 103, 0.22) 10%, rgba(222, 175, 103, 0.22) 90%, transparent);
-  z-index: 0;
-}
-.sidebar-nav li { margin-bottom: 12px; counter-increment: navnum; }
-.sidebar-nav a {
-  position: relative; z-index: 1;
-  color: var(--gold);
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 15px;
-  border-radius: 14px;
-  transition: 0.22s ease;
-  border-left: 3px solid transparent;
-  font-weight: 600;
-}
-.sidebar-nav a::before {
-  content: counter(navnum, decimal-leading-zero);
-  display: flex; align-items: center; justify-content: center;
-  width: 26px; height: 26px; flex-shrink: 0;
-  border-radius: 8px;
-  border: 1px solid rgba(222, 175, 103, 0.25);
-  background: rgba(222, 175, 103, 0.05);
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  font-weight: 700;
-  color: var(--gold);
-  opacity: 0.55;
-  transition: 0.22s ease;
-}
-.sidebar-nav a::after {
-  content: '';
-  margin-left: auto;
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--gold);
-  opacity: 0;
-  box-shadow: 0 0 8px 2px rgba(222, 175, 103, 0.6);
-  transition: opacity 0.22s ease;
-}
-.sidebar-nav a:hover {
-  background: linear-gradient(90deg, rgba(222, 175, 103, 0.08) 0%, rgba(222, 175, 103, 0.03) 100%);
-  border-left-color: var(--gold);
-  box-shadow: inset 0 0 22px rgba(222, 175, 103, 0.08), 0 0 14px rgba(222, 175, 103, 0.12);
-  transform: translateX(4px);
-}
-.sidebar-nav a.active {
-  background: linear-gradient(90deg, rgba(222, 175, 103, 0.18) 0%, rgba(222, 175, 103, 0.08) 55%, rgba(222, 175, 103, 0.02) 100%);
-  border-left-color: var(--gold);
-  box-shadow: inset 0 0 22px rgba(222, 175, 103, 0.1), 0 0 16px rgba(222, 175, 103, 0.16);
-  text-shadow: 0 0 12px rgba(222, 175, 103, 0.5);
-}
-.sidebar-nav a:hover::before,
-.sidebar-nav a.active::before {
-  opacity: 1;
-  border-color: var(--gold);
-  background: rgba(222, 175, 103, 0.15);
-  box-shadow: 0 0 12px rgba(222, 175, 103, 0.3);
-}
-.sidebar-nav a.active::after { opacity: 1; animation: navDotPulse 1.8s ease-in-out infinite; }
-@keyframes navDotPulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.4; transform: scale(0.7); }
-}
-
-.sidebar-contact-wrap {
-  position: relative;
-  margin-top: 28px; padding-top: 20px;
-}
-.sidebar-contact-wrap::before {
-  content: '';
-  position: absolute; left: 0; right: 0; top: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--gold) 50%, transparent);
-  background-size: 220% 100%;
-  animation: sidebarShimmer 5s ease-in-out infinite reverse;
-  opacity: 0.55;
-}
-.sidebar-contact-status {
-  display: flex; align-items: center; gap: 8px;
-  margin: 0 0 12px 2px;
-  font-family: var(--font-mono);
-  font-size: 0.68rem; font-weight: 700;
-  letter-spacing: 0.12em; text-transform: uppercase;
-  color: var(--gold); opacity: 0.75;
-}
-.sidebar-contact-status .dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--gold);
-  box-shadow: 0 0 8px 1px var(--gold);
-  animation: sidebarPulse 1.8s ease-in-out infinite;
-}
 @keyframes sidebarPulse {
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.4; transform: scale(0.75); }
 }
-.sidebar-contact-btn {
-  position: relative;
-  display: flex; align-items: center; justify-content: center; gap: 10px;
-  width: 100%; padding: 15px;
-  background: linear-gradient(135deg, var(--gold-bright), var(--gold));
-  color: #1e1e1e;
-  text-decoration: none; text-align: center;
-  border-radius: 14px;
-  font-family: var(--font-mono);
-  font-weight: 700; font-size: 0.82rem;
-  letter-spacing: 0.08em; text-transform: uppercase;
-  transition: 0.22s ease;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(222, 175, 103, 0.3);
+
+.site-nav {
+  position: fixed;
+  top: 20px; left: 50%;
+  transform: translateX(-50%);
+  z-index: 1001;
+  display: flex; justify-content: center; align-items: center;
+  gap: 22px;
+  max-width: 92vw;
+  padding: 13px 26px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(24, 24, 24, 0.98), rgba(12, 12, 12, 0.99));
+  border: 1px solid var(--gold-border);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
   overflow: hidden;
 }
-.sidebar-contact-btn .arrow { transition: transform 0.22s ease; font-size: 1rem; }
-.sidebar-contact-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.22), 0 0 22px rgba(222, 175, 103, 0.35);
+.site-nav::before {
+  content: '';
+  position: absolute; top: 0; left: -30%; width: 30%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(222, 175, 103, 0.16), transparent);
+  pointer-events: none;
+  animation: navScan 1.3s ease-out 0.4s 1;
 }
-.sidebar-contact-btn:hover .arrow { transform: translateX(4px); }
+@keyframes navScan {
+  0% { left: -30%; opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { left: 100%; opacity: 0; }
+}
+.site-nav-indicator {
+  position: absolute; top: 6px; bottom: 6px; left: 0; width: 0;
+  border-radius: 999px;
+  background: var(--gold-soft);
+  border: 1px solid var(--gold-border);
+  opacity: 0;
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), width 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.25s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+.site-nav-indicator.visible { opacity: 1; }
+.site-nav a {
+  position: relative; z-index: 1;
+  font-family: var(--font-mono); font-size: 0.76rem; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink-dim); text-decoration: none;
+  transition: color 0.2s ease;
+  white-space: nowrap;
+}
+.site-nav a:hover, .site-nav a.active { color: var(--gold); }
+.site-nav-divider { position: relative; z-index: 1; width: 1px; height: 14px; background: var(--gold-border); flex-shrink: 0; }
+
+@media (max-width: 640px) {
+  .site-nav { gap: 14px; padding: 11px 18px; }
+  .site-nav a { font-size: 0.68rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-nav::before { animation: none; }
+  .site-nav-indicator { transition: none; }
+}
 
 /* ==========================================================
    Social row (footer)

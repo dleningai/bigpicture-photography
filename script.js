@@ -67,30 +67,32 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Sidebar navigation
-  const toggleBtn = document.getElementById('sidebarToggle');
-  const closeBtn = document.getElementById('sidebarClose');
-  const overlay = document.getElementById('sidebarOverlay');
-  const sidebar = document.getElementById('sidebarMenu');
+  // Site nav — sliding gold indicator that follows the active/hovered
+  // link, like a segmented control.
+  const siteNav = document.querySelector('.site-nav');
+  if (siteNav) {
+    const indicator = siteNav.querySelector('.site-nav-indicator');
+    const links = Array.from(siteNav.querySelectorAll('a'));
+    const activeLink = links.find((a) => a.classList.contains('active'));
 
-  if (toggleBtn && closeBtn && overlay && sidebar) {
-    const open = () => {
-      sidebar.classList.add('active');
-      overlay.classList.add('active');
-      toggleBtn.classList.add('active');
+    const moveIndicator = (el) => {
+      if (!el || !indicator) return;
+      indicator.style.transform = `translateX(${el.offsetLeft}px)`;
+      indicator.style.width = `${el.offsetWidth}px`;
+      indicator.classList.add('visible');
     };
-    const close = () => {
-      sidebar.classList.remove('active');
-      overlay.classList.remove('active');
-      toggleBtn.classList.remove('active');
-    };
-    toggleBtn.addEventListener('click', () => {
-      sidebar.classList.contains('active') ? close() : open();
+
+    if (activeLink) moveIndicator(activeLink);
+
+    links.forEach((a) => {
+      a.addEventListener('mouseenter', () => moveIndicator(a));
     });
-    closeBtn.addEventListener('click', close);
-    overlay.addEventListener('click', close);
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') close();
+    siteNav.addEventListener('mouseleave', () => {
+      if (activeLink) moveIndicator(activeLink);
+      else indicator.classList.remove('visible');
+    });
+    window.addEventListener('resize', () => {
+      if (activeLink) moveIndicator(activeLink);
     });
   }
 
