@@ -660,17 +660,79 @@ a { color: inherit; }
 .section-head h2 { font-size: clamp(1.7rem, 4vw, 2.3rem); font-weight: 800; color: var(--ink); margin: 0 0 12px; text-wrap: balance; }
 .section-head p:not(.label) { color: var(--ink-dim); font-size: 0.98rem; line-height: 1.8; margin: 0; }
 
-.region-tags {
-  display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
-  max-width: 640px; margin: 26px auto 0;
+/* Region radar — an abstract, futuristic stand-in for a map: Detmold at the
+   center, service-area cities placed radially, with a rotating sweep like a
+   radar screen. Avoids needing real map tiles while still reading as "here's
+   where I work". */
+.region-radar {
+  position: relative;
+  width: min(420px, 88vw); height: min(420px, 88vw);
+  margin: 40px auto 0;
+  border-radius: 50%;
 }
-.region-tag {
-  padding: 8px 16px;
+.region-radar-ring {
+  position: absolute; top: 50%; left: 50%;
+  border-radius: 50%;
+  border: 1px dashed var(--gold-border);
+  transform: translate(-50%, -50%);
+}
+.region-radar-ring.ring-1 { width: 34%; height: 34%; }
+.region-radar-ring.ring-2 { width: 66%; height: 66%; }
+.region-radar-ring.ring-3 { width: 100%; height: 100%; border-style: solid; }
+.region-radar-sweep {
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, rgba(222, 175, 103, 0.4), transparent 22%, transparent 100%);
+  animation: radarSweep 7s linear infinite;
+  pointer-events: none;
+}
+@keyframes radarSweep { to { transform: rotate(360deg); } }
+.region-radar-center {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  z-index: 2;
+}
+.region-radar-center-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 0 4px rgba(222, 175, 103, 0.18), 0 0 16px 4px rgba(222, 175, 103, 0.5);
+  animation: navDotPulse 1.8s ease-in-out infinite;
+}
+.region-radar-center-label {
+  font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.06em; text-transform: uppercase; color: var(--gold-bright);
+  white-space: nowrap;
+}
+.region-radar-node {
+  position: absolute; top: 50%; left: 50%;
+  width: 0; height: 0;
+}
+.region-radar-node-inner {
+  position: absolute;
+  transform: rotate(var(--angle)) translate(min(45vw, 190px)) rotate(calc(-1 * var(--angle))) translate(-50%, -50%);
+  display: flex; align-items: center; gap: 7px;
+  padding: 6px 12px;
   border: 1px solid var(--gold-border);
   border-radius: 999px;
-  background: var(--gold-soft);
-  font-family: var(--font-mono); font-size: 0.76rem; font-weight: 700;
-  letter-spacing: 0.03em; color: var(--gold);
+  background: rgba(18, 18, 18, 0.85);
+  backdrop-filter: blur(2px);
+  font-family: var(--font-mono); font-size: 0.68rem; font-weight: 700;
+  letter-spacing: 0.02em; color: var(--ink-dim);
+  white-space: nowrap;
+}
+.region-radar-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 6px 1px rgba(222, 175, 103, 0.6);
+  flex-shrink: 0;
+}
+.region-radar-fallback {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+@media (max-width: 640px) {
+  .region-radar-node-inner { transform: rotate(var(--angle)) translate(min(40vw, 150px)) rotate(calc(-1 * var(--angle))) translate(-50%, -50%); font-size: 0.62rem; padding: 5px 10px; }
 }
 
 /* ==========================================================
