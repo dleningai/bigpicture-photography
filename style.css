@@ -15,8 +15,8 @@
   --gold-border: rgba(222, 175, 103, 0.18);
   --border: rgba(255, 255, 255, 0.08);
   --font: 'Montserrat', Arial, sans-serif;
+  --font-heading: 'Space Grotesk', 'Montserrat', Arial, sans-serif;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
-  --font-serif: 'Cormorant Garamond', Georgia, serif;
   --max-width: 1100px;
   --radius: 22px;
 }
@@ -35,6 +35,8 @@ body {
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
 }
+
+h1, h2, h3 { font-family: var(--font-heading); }
 
 /* Faint HUD scan-grid behind everything — the futuristic undertone */
 body::before {
@@ -804,7 +806,7 @@ a { color: inherit; }
 }
 
 .testi-stars { color: var(--gold); font-size: 18px; margin-bottom: 14px; letter-spacing: 1px; text-shadow: 0 0 12px rgba(222, 175, 103, 0.4); }
-.testi-text { position: relative; flex: 1; font-family: var(--font-serif); font-style: italic; font-size: 1.28rem; line-height: 1.45; color: var(--ink); margin: 0 0 22px; font-weight: 500; }
+.testi-text { position: relative; flex: 1; font-size: 1rem; line-height: 1.6; color: var(--ink); margin: 0 0 22px; font-weight: 600; }
 .testi-divider { height: 1px; background: linear-gradient(90deg, var(--gold-border), transparent); margin: 0 0 18px; }
 .testi-author { display: flex; align-items: center; gap: 14px; }
 .testi-avatar {
@@ -874,9 +876,8 @@ a { color: inherit; }
 .about-interview { text-align: center; padding-top: 30px; }
 .about-quote {
   max-width: 640px; margin: 0 auto 34px;
-  font-family: var(--font-serif);
-  font-size: clamp(1.5rem, 3.6vw, 2rem); font-weight: 500; font-style: italic;
-  line-height: 1.5; color: #fff;
+  font-size: clamp(1.25rem, 3vw, 1.6rem); font-weight: 600; font-style: italic;
+  line-height: 1.55; color: #fff;
 }
 .about-qa {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
