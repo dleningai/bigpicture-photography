@@ -326,7 +326,7 @@ a { color: inherit; }
   min-height: 78vh;
   display: flex; align-items: center; justify-content: center;
   overflow: hidden;
-  padding: 140px 20px 80px;
+  padding: 105px 20px 80px;
   background: var(--bg);
 }
 .hero-fx {
@@ -1502,7 +1502,7 @@ a { color: inherit; }
 }
 
 @media (max-width: 640px) {
-  .hero { padding: 120px 16px 60px; min-height: 70vh; }
+  .hero { padding: 95px 16px 60px; min-height: 70vh; }
   .stats-strip { gap: 16px; padding: 20px 18px; margin-top: -22px; }
   .stat-val { font-size: 1.5rem; }
   .section { padding: 74px 0; }
