@@ -628,8 +628,8 @@ a { color: inherit; }
    Section heads
    ========================================================== */
 
-.section { padding: 90px 0; }
-.section-head { text-align: center; max-width: 700px; margin: 0 auto 40px; }
+.section { padding: 116px 0; }
+.section-head { text-align: center; max-width: 700px; margin: 0 auto 54px; }
 .section-head h2 { font-size: clamp(1.7rem, 4vw, 2.3rem); font-weight: 800; color: var(--ink); margin: 0 0 12px; text-wrap: balance; }
 .section-head p:not(.label) { color: var(--ink-dim); font-size: 0.98rem; line-height: 1.8; margin: 0; }
 
@@ -672,7 +672,7 @@ a { color: inherit; }
 .services-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
+  gap: 22px;
 }
 .service-card {
   position: relative;
@@ -867,7 +867,7 @@ a { color: inherit; }
 .about-panel-inner { padding: 40px 34px 46px; text-align: center; }
 .about-panel-inner h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; color: #fff; margin: 0 0 34px; text-wrap: balance; }
 
-.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; text-align: left; }
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; text-align: left; }
 .about-card {
   position: relative;
   padding: 22px; border-radius: 18px;
@@ -1243,6 +1243,11 @@ a { color: inherit; }
   font-size: 1.1rem;
   transition: 0.22s ease;
 }
+.contact-icon svg {
+  width: 19px; height: 19px;
+  fill: none; stroke: currentColor; stroke-width: 1.6;
+  stroke-linecap: round; stroke-linejoin: round;
+}
 .contact-item:hover .contact-icon { background: rgba(222, 175, 103, 0.18); box-shadow: 0 0 14px rgba(222, 175, 103, 0.25); }
 .contact-text { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
 .contact-text strong {
@@ -1324,7 +1329,7 @@ a { color: inherit; }
   .hero { padding: 120px 16px 60px; min-height: 70vh; }
   .stats-strip { gap: 16px; padding: 20px 18px; margin-top: -22px; }
   .stat-val { font-size: 1.5rem; }
-  .section { padding: 60px 0; }
+  .section { padding: 74px 0; }
   .name-box, .contact-panel, .legal-panel { margin-top: 40px; }
   .about-panel-inner { padding: 28px 20px 32px; }
   .social-link { width: 42px; height: 42px; }
