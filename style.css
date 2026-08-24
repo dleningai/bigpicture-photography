@@ -16,6 +16,7 @@
   --border: rgba(255, 255, 255, 0.08);
   --font: 'Montserrat', Arial, sans-serif;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
   --max-width: 1100px;
   --radius: 22px;
 }
@@ -85,19 +86,41 @@ a { color: inherit; }
 .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.7s ease, transform 0.7s ease; }
 .reveal.is-visible { opacity: 1; transform: translateY(0); }
 
+/* Staggered reveal — cards in the same grid ease in a beat apart instead of
+   all at once, a small but noticeable "considered" touch. */
+.services-grid .reveal:nth-child(1), .about-grid .reveal:nth-child(1), .contact-items .reveal:nth-child(1) { transition-delay: 0s; }
+.services-grid .reveal:nth-child(2), .about-grid .reveal:nth-child(2), .contact-items .reveal:nth-child(2) { transition-delay: 0.09s; }
+.services-grid .reveal:nth-child(3), .about-grid .reveal:nth-child(3), .contact-items .reveal:nth-child(3) { transition-delay: 0.18s; }
+.services-grid .reveal:nth-child(4), .about-grid .reveal:nth-child(4), .contact-items .reveal:nth-child(4) { transition-delay: 0.27s; }
+
+/* Cursor-tracked glow — a soft, mouse-following highlight on premium
+   interactive surfaces. JS (script.js) writes --mx/--my per pointer move. */
+.glow-card { position: relative; }
+.glow-card::after {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(222, 175, 103, 0.16), transparent 45%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+.glow-card:hover::after { opacity: 1; }
+
 /* ---------- Buttons ---------- */
 .btn {
   position: relative;
   display: inline-block;
-  padding: 15px 30px;
+  padding: 16px 34px;
   border-radius: 999px;
   font-weight: 700;
   font-size: 0.92rem;
+  letter-spacing: 0.015em;
   text-decoration: none;
   border: 1px solid transparent;
   cursor: pointer;
   overflow: hidden;
-  transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease, color 0.25s ease;
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease, background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
 }
 /* Light sweep on hover — a small futuristic flourish */
 .btn::after {
@@ -114,15 +137,17 @@ a { color: inherit; }
 .btn-primary {
   background: linear-gradient(135deg, var(--gold), var(--gold-bright));
   color: #17140f;
-  box-shadow: 0 10px 28px rgba(222, 175, 103, 0.22);
+  box-shadow: 0 10px 28px rgba(222, 175, 103, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.35);
 }
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 16px 36px rgba(222, 175, 103, 0.3); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 18px 40px rgba(222, 175, 103, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.4); }
+.btn-primary:active { transform: translateY(0); box-shadow: 0 8px 20px rgba(222, 175, 103, 0.26), inset 0 1px 0 rgba(255, 255, 255, 0.3); }
 .btn-ghost {
   background: transparent;
   border-color: var(--gold-border);
   color: var(--gold-bright);
 }
-.btn-ghost:hover { background: var(--gold-soft); border-color: var(--gold); }
+.btn-ghost:hover { background: var(--gold-soft); border-color: var(--gold); transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25); }
+.btn-ghost:active { transform: translateY(0); }
 
 /* ==========================================================
    Sidebar navigation (shared across all pages)
@@ -779,7 +804,7 @@ a { color: inherit; }
 }
 
 .testi-stars { color: var(--gold); font-size: 18px; margin-bottom: 14px; letter-spacing: 1px; text-shadow: 0 0 12px rgba(222, 175, 103, 0.4); }
-.testi-text { position: relative; flex: 1; font-size: 1rem; line-height: 1.6; color: var(--ink); margin: 0 0 22px; font-weight: 600; }
+.testi-text { position: relative; flex: 1; font-family: var(--font-serif); font-style: italic; font-size: 1.28rem; line-height: 1.45; color: var(--ink); margin: 0 0 22px; font-weight: 500; }
 .testi-divider { height: 1px; background: linear-gradient(90deg, var(--gold-border), transparent); margin: 0 0 18px; }
 .testi-author { display: flex; align-items: center; gap: 14px; }
 .testi-avatar {
@@ -849,8 +874,9 @@ a { color: inherit; }
 .about-interview { text-align: center; padding-top: 30px; }
 .about-quote {
   max-width: 640px; margin: 0 auto 34px;
-  font-size: clamp(1.25rem, 3vw, 1.6rem); font-weight: 600; font-style: italic;
-  line-height: 1.55; color: #fff;
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 3.6vw, 2rem); font-weight: 500; font-style: italic;
+  line-height: 1.5; color: #fff;
 }
 .about-qa {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
