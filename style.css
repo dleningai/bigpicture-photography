@@ -1365,7 +1365,37 @@ a { color: inherit; }
    doesn't grow endlessly as more photos get added. Same rotating-queue
    mechanic as the testimonial stack; clicking the front card opens it full
    size (glightbox), the arrow button rotates to the next photo. */
-.pf-more { max-width: var(--max-width); margin: 50px auto 90px; padding: 0 20px; }
+.pf-more { position: relative; max-width: var(--max-width); margin: 0 auto 90px; padding: 0 20px; }
+
+/* Visual bridge from the chapter hero image down to the photo stack —
+   without it the stack reads as disconnected, floating on plain
+   background instead of belonging to the image above it. */
+.pf-more-link {
+  position: relative;
+  display: flex; flex-direction: column; align-items: center;
+  height: 64px;
+}
+.pf-more-link-line {
+  width: 1px; height: 100%;
+  background: linear-gradient(180deg, var(--gold-border), rgba(222, 175, 103, 0.55));
+}
+.pf-more-link-dot {
+  position: absolute; bottom: 0; left: 50%; transform: translate(-50%, 50%);
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 10px 3px rgba(222, 175, 103, 0.5);
+  animation: dotPulse 1.8s ease-in-out infinite;
+}
+.pf-more::before {
+  content: '';
+  position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 480px; max-width: 90%; height: 420px;
+  background: radial-gradient(ellipse at 50% 0%, rgba(222, 175, 103, 0.1), transparent 68%);
+  pointer-events: none; z-index: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pf-more-link-dot { animation: none; }
+}
 
 /* Chapter divider — marks the handoff to the next chapter clearly, now
    that the chapter photos fade seamlessly into the page background and
@@ -1396,7 +1426,7 @@ a { color: inherit; }
   font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700;
   letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold);
 }
-.pf-stack-wrap { position: relative; width: 220px; margin: 0 auto; padding-bottom: 54px; }
+.pf-stack-wrap { position: relative; z-index: 1; width: 220px; margin: 0 auto; padding-bottom: 54px; }
 .pf-stack { position: relative; height: 270px; }
 .pf-stack-photo {
   position: absolute; inset: 0;
