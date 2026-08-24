@@ -1098,10 +1098,13 @@ a { color: inherit; }
   gap: 10px;
   margin-top: 28px;
 }
+/* Same card treatment as .about-card / .contact-item, minus the icon
+   badge — just the shimmer top line and hover lift, no numbering. */
 .pf-chapternav a {
-  display: flex; align-items: center; gap: 8px;
-  padding: 10px 20px;
-  border-radius: 999px;
+  position: relative;
+  overflow: hidden;
+  padding: 14px 24px;
+  border-radius: 14px;
   color: var(--ink-dim);
   text-decoration: none;
   font-family: var(--font-mono);
@@ -1110,28 +1113,30 @@ a { color: inherit; }
   letter-spacing: 0.05em;
   text-transform: uppercase;
   border: 1px solid var(--gold-border);
-  background: rgba(222, 175, 103, 0.04);
-  transition: border-color 0.22s ease, color 0.22s ease, background-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease;
+  background: radial-gradient(circle at top right, rgba(222, 175, 103, 0.05) 0%, transparent 32%),
+    linear-gradient(180deg, rgba(30, 30, 30, 0.96) 0%, rgba(18, 18, 18, 0.99) 100%);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.24);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, color 0.25s ease;
 }
-.pf-chapternav a .pf-chapternav-num {
-  color: var(--gold); font-weight: 700;
-  opacity: 0.7;
+.pf-chapternav a::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold) 50%, transparent);
+  background-size: 220% 100%;
+  animation: sidebarShimmer 6s ease-in-out infinite;
+  opacity: 0.5;
 }
 .pf-chapternav a:hover {
   color: #fff;
-  border-color: var(--gold);
-  background: var(--gold-soft);
-  box-shadow: 0 0 20px rgba(222, 175, 103, 0.25), inset 0 0 16px rgba(222, 175, 103, 0.1);
-  transform: translateY(-2px);
+  transform: translateY(-5px);
+  border-color: rgba(222, 175, 103, 0.35);
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.32), 0 0 20px rgba(222, 175, 103, 0.14);
 }
-.pf-chapternav a:hover .pf-chapternav-num { opacity: 1; }
 .pf-chapternav a.active {
-  color: #1e1e1e;
+  color: var(--gold);
   border-color: var(--gold);
-  background: linear-gradient(135deg, var(--gold-bright), var(--gold));
-  box-shadow: 0 0 20px rgba(222, 175, 103, 0.35), 0 6px 16px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.24), 0 0 16px rgba(222, 175, 103, 0.2);
 }
-.pf-chapternav a.active .pf-chapternav-num { color: #1e1e1e; opacity: 0.65; }
 @media (max-width: 640px) {
   .pf-chapternav { gap: 8px; margin-top: 22px; }
   .pf-chapternav a { padding: 8px 14px; font-size: 0.72rem; }
@@ -1401,51 +1406,63 @@ a { color: inherit; }
   animation: sidebarPulse 1.8s ease-in-out infinite;
 }
 
-.contact-items { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; counter-reset: contactnum; }
+/* Same card treatment as .about-card, for a consistent look across
+   the site instead of the previous gold-tinted horizontal layout. */
+.contact-items { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 .contact-item {
   position: relative;
-  display: flex; align-items: center; gap: 14px;
-  padding: 18px 20px; border-radius: 16px;
-  background: linear-gradient(180deg, rgba(222, 175, 103, 0.08), rgba(222, 175, 103, 0.04));
-  border: 1px solid var(--gold-border);
-  text-decoration: none; color: var(--gold);
-  text-align: left; min-height: 76px;
-  transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
-  counter-increment: contactnum;
+  display: block;
+  padding: 22px; border-radius: 18px;
   overflow: hidden;
+  background: radial-gradient(circle at top right, rgba(222, 175, 103, 0.05) 0%, transparent 32%),
+    linear-gradient(180deg, rgba(30, 30, 30, 0.96) 0%, rgba(18, 18, 18, 0.99) 100%);
+  border: 1px solid var(--gold-border);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.24);
+  text-decoration: none;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
 .contact-item::before {
-  content: counter(contactnum, decimal-leading-zero);
-  position: absolute; top: 10px; right: 14px;
-  font-family: var(--font-mono); font-size: 0.68rem; font-weight: 700;
-  color: var(--gold); opacity: 0.4;
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold) 50%, transparent);
+  background-size: 220% 100%;
+  animation: sidebarShimmer 6s ease-in-out infinite;
+  opacity: 0.5;
 }
 .contact-item:hover {
-  transform: translateY(-3px);
-  border-color: rgba(222, 175, 103, 0.4);
-  box-shadow: inset 0 0 24px rgba(222, 175, 103, 0.08), 0 10px 26px rgba(0, 0, 0, 0.28), 0 0 18px rgba(222, 175, 103, 0.16);
+  transform: translateY(-5px);
+  border-color: rgba(222, 175, 103, 0.35);
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.32), 0 0 20px rgba(222, 175, 103, 0.14);
 }
+.contact-item-top { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
 .contact-icon {
-  flex: 0 0 auto; width: 42px; height: 42px;
+  min-width: 34px; width: 34px; height: 34px; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
-  border-radius: 12px;
-  background: rgba(222, 175, 103, 0.1);
-  border: 1px solid var(--gold-border);
-  font-size: 1.1rem;
+  border-radius: 9px;
+  border: 1px solid rgba(222, 175, 103, 0.3);
+  background: rgba(222, 175, 103, 0.08);
+  color: var(--gold);
   transition: 0.22s ease;
 }
+.contact-item:hover .contact-icon {
+  border-color: var(--gold);
+  background: rgba(222, 175, 103, 0.18);
+  box-shadow: 0 0 12px rgba(222, 175, 103, 0.35);
+}
 .contact-icon svg {
-  width: 19px; height: 19px;
+  width: 17px; height: 17px;
   fill: none; stroke: currentColor; stroke-width: 1.6;
   stroke-linecap: round; stroke-linejoin: round;
 }
-.contact-item:hover .contact-icon { background: rgba(222, 175, 103, 0.18); box-shadow: 0 0 14px rgba(222, 175, 103, 0.25); }
-.contact-text { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
-.contact-text strong {
-  font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700;
-  letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold);
+.contact-item-title {
+  font-family: var(--font-mono); font-weight: 700; font-size: 0.86rem;
+  letter-spacing: 0.03em; text-transform: uppercase; color: #fff;
 }
-.contact-text small { font-family: var(--font-mono); font-size: 0.74rem; color: var(--ink-faint); word-break: break-word; }
+.contact-item-text {
+  display: block;
+  color: var(--ink-dim); font-size: 0.95rem; line-height: 1.65;
+  word-break: break-word;
+}
 
 /* ---------- Legal text pages ---------- */
 .legal-panel { text-align: left; }
