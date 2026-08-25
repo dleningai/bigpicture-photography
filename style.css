@@ -354,15 +354,14 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 78%, transparent 100%);
   mask-image: linear-gradient(to bottom, #000 0%, #000 78%, transparent 100%);
 }
-.hero-fx-grid {
-  position: absolute; inset: -20%;
-  background-image:
-    linear-gradient(rgba(222, 175, 103, 0.12) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(222, 175, 103, 0.12) 1px, transparent 1px);
-  background-size: 64px 64px;
+/* Film-grain texture — replaces the earlier grid pattern with something
+   photographic instead of a software/dashboard motif. */
+.hero-fx-grain {
+  position: absolute; inset: 0;
+  opacity: 0.09;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   -webkit-mask-image: radial-gradient(circle at 50% 45%, #000 0%, transparent 88%);
   mask-image: radial-gradient(circle at 50% 45%, #000 0%, transparent 88%);
-  animation: heroGridDrift 44s linear infinite;
 }
 .hero-fx-glow {
   position: absolute; border-radius: 50%;
@@ -405,7 +404,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   50% { transform: translate(26px, -18px) scale(1.12); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .hero-fx-grid, .hero-fx-glow, .hero-fx-bokeh { animation: none; opacity: 0.3; }
+  .hero-fx-glow, .hero-fx-bokeh { animation: none; opacity: 0.3; }
 }
 
 .hero-box {
