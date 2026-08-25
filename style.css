@@ -1156,9 +1156,6 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 }
 .ba-range::-webkit-slider-thumb { -webkit-appearance: none; width: 38px; height: 100%; }
 .ba-range::-moz-range-thumb { width: 38px; height: 100%; border: none; background: transparent; }
-@media (max-width: 640px) {
-  .ba-frame { aspect-ratio: 4 / 5; }
-}
 
 .about-panel { max-width: var(--max-width); margin: 0 auto 70px; }
 .about-panel-inner { padding: 40px 34px 46px; text-align: center; }
