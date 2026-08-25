@@ -929,8 +929,50 @@ a { color: inherit; }
   0%, 100% { box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(222, 175, 103, 0.08); }
   50% { box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45), 0 0 26px 2px rgba(222, 175, 103, 0.22), 0 0 0 1px rgba(222, 175, 103, 0.22); }
 }
-.about-photo-bleed img { width: 100%; display: block; height: auto; transition: transform 0.6s ease; }
+.about-photo-bleed img {
+  width: 100%; display: block; height: auto;
+  clip-path: inset(0 0 100% 0);
+  filter: brightness(1.4) saturate(0.4) contrast(1.05);
+  transition: transform 0.6s ease, clip-path 1.15s cubic-bezier(.16, .84, .44, 1), filter 1.15s ease;
+}
+.about-photo-bleed.is-scanned img { clip-path: inset(0 0 0% 0); filter: brightness(1) saturate(1) contrast(1); }
 .about-photo-bleed:hover img { transform: scale(1.045); }
+
+/* Scan-reveal — a sweeping line uncovers the photo top to bottom, framed
+   by camera-style corner brackets, the first time it scrolls into view. */
+.about-scan-line {
+  position: absolute; left: 0; right: 0; top: 0; height: 3px; z-index: 2;
+  background: linear-gradient(90deg, transparent, var(--gold-bright) 30%, var(--gold) 50%, var(--gold-bright) 70%, transparent);
+  box-shadow: 0 0 18px 4px rgba(222, 175, 103, 0.75), 0 0 46px 10px rgba(222, 175, 103, 0.3);
+  opacity: 0; pointer-events: none;
+}
+.about-photo-bleed.is-scanned .about-scan-line { animation: aboutScanSweep 1.15s cubic-bezier(.16, .84, .44, 1) forwards; }
+@keyframes aboutScanSweep {
+  0% { top: 0; opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+.about-scan-corner {
+  position: absolute; width: 24px; height: 24px;
+  border: 2px solid var(--gold);
+  opacity: 0; z-index: 2; pointer-events: none;
+  filter: drop-shadow(0 0 6px rgba(222, 175, 103, 0.65));
+}
+.about-scan-corner.tl { top: 10px; left: 10px; border-right: none; border-bottom: none; border-radius: 4px 0 0 0; }
+.about-scan-corner.tr { top: 10px; right: 10px; border-left: none; border-bottom: none; border-radius: 0 4px 0 0; }
+.about-scan-corner.bl { bottom: 10px; left: 10px; border-right: none; border-top: none; border-radius: 0 0 0 4px; }
+.about-scan-corner.br { bottom: 10px; right: 10px; border-left: none; border-top: none; border-radius: 0 0 4px 0; }
+.about-photo-bleed.is-scanned .about-scan-corner { animation: aboutScanCorners 1.5s ease forwards; }
+@keyframes aboutScanCorners {
+  0% { opacity: 0; }
+  12% { opacity: 1; }
+  78% { opacity: 1; }
+  100% { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .about-photo-bleed img { clip-path: inset(0 0 0% 0) !important; filter: none !important; transition: none; }
+  .about-scan-line, .about-scan-corner { display: none; }
+}
 .about-photo-fade {
   position: absolute; inset: 0; z-index: 1;
   background: linear-gradient(180deg, transparent 55%, rgba(17, 17, 17, 0.65) 100%);
