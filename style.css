@@ -969,6 +969,78 @@ a { color: inherit; }
 }
 .about-qa-item p { margin: 0; color: var(--ink-dim); font-size: 0.92rem; line-height: 1.6; }
 
+/* Before/after comparison slider — visual proof for the "02 · Stil" claim,
+   dragged left/right to reveal the edit against the original. */
+.ba-block { margin: 6px 0 34px; }
+.ba-tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 18px; }
+.ba-tab {
+  font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--ink-dim); background: transparent;
+  border: 1px solid var(--gold-border); border-radius: 999px;
+  padding: 7px 18px; cursor: pointer;
+  transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+.ba-tab:hover { color: var(--gold); border-color: var(--gold); }
+.ba-tab.active { color: #171717; background: linear-gradient(180deg, var(--gold-bright), var(--gold)); border-color: var(--gold); }
+.ba-frame {
+  position: relative;
+  width: 100%; max-width: 640px; margin: 0 auto;
+  aspect-ratio: 3 / 2;
+  border-radius: 20px; overflow: hidden;
+  border: 1px solid var(--gold-border);
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.45);
+  --pos: 50%;
+}
+.ba-frame[hidden] { display: none; }
+.ba-frame img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; object-fit: cover;
+  display: block; pointer-events: none; user-select: none;
+}
+.ba-frame .ba-before { clip-path: inset(0 calc(100% - var(--pos)) 0 0); }
+.ba-tag {
+  position: absolute; top: 14px;
+  font-family: var(--font-mono); font-size: 0.66rem; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase; color: #fff;
+  background: rgba(10, 10, 10, 0.6); backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px; padding: 5px 12px; pointer-events: none;
+}
+.ba-tag-before { left: 14px; }
+.ba-tag-after { right: 14px; }
+.ba-handle {
+  position: absolute; top: 0; bottom: 0;
+  left: var(--pos); transform: translateX(-50%);
+  width: 2px; background: rgba(255, 255, 255, 0.85);
+  pointer-events: none;
+}
+.ba-handle::before {
+  content: '';
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--gold);
+  border: 2px solid rgba(10, 10, 10, 0.5);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+}
+.ba-handle::after {
+  content: '‹ ›';
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -52%);
+  font-family: var(--font-mono); font-size: 0.85rem; font-weight: 700;
+  letter-spacing: 0.1em; color: #171717;
+}
+.ba-range {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  margin: 0; opacity: 0; cursor: ew-resize;
+  -webkit-appearance: none; appearance: none;
+}
+.ba-range::-webkit-slider-thumb { -webkit-appearance: none; width: 38px; height: 100%; }
+.ba-range::-moz-range-thumb { width: 38px; height: 100%; border: none; background: transparent; }
+@media (max-width: 640px) {
+  .ba-frame { aspect-ratio: 4 / 5; }
+}
+
 .about-panel { max-width: var(--max-width); margin: 0 auto 70px; }
 .about-panel-inner { padding: 40px 34px 46px; text-align: center; }
 .about-panel-inner h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; color: #fff; margin: 0 0 34px; text-wrap: balance; }

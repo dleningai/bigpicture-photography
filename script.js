@@ -407,4 +407,26 @@ document.addEventListener('DOMContentLoaded', () => {
       stickyCta.classList.remove('visible');
     });
   }
+
+  // Vorher/Nachher-Slider — Range-Input steuert den Clip-Path des "Vorher"-Bilds.
+  document.querySelectorAll('.ba-frame').forEach((frame) => {
+    const range = frame.querySelector('.ba-range');
+    if (!range) return;
+    range.addEventListener('input', () => {
+      frame.style.setProperty('--pos', `${range.value}%`);
+    });
+  });
+
+  const baTabs = document.querySelectorAll('.ba-tab');
+  if (baTabs.length) {
+    const baFrames = document.querySelectorAll('.ba-frame');
+    baTabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        baTabs.forEach((t) => t.classList.toggle('active', t === tab));
+        baFrames.forEach((f) => {
+          f.hidden = f.dataset.baPair !== tab.dataset.baTab;
+        });
+      });
+    });
+  }
 });
