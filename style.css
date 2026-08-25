@@ -980,30 +980,29 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 }
 .about-photo-bleed img {
   width: 100%; display: block; height: auto;
-  clip-path: inset(0 0 100% 0);
-  filter: brightness(1.4) saturate(0.4) contrast(1.05);
-  transition: transform 0.6s ease, clip-path 2.6s cubic-bezier(.16, .84, .44, 1), filter 2.6s ease;
+  clip-path: circle(0% at 50% 50%);
+  filter: brightness(1.15) contrast(1.05);
+  transition: transform 0.6s ease, clip-path 1.3s cubic-bezier(.22, .9, .28, 1) 0.32s, filter 1.3s ease 0.32s;
 }
-.about-photo-bleed.is-scanned img { clip-path: inset(0 0 0% 0); filter: brightness(1) saturate(1) contrast(1); }
+.about-photo-bleed.is-scanned img { clip-path: circle(146% at 50% 50%); filter: brightness(1) contrast(1); }
 .about-photo-bleed:hover img { transform: scale(1.045); }
 
-/* Reveal — a soft light sweep uncovers the photo top to bottom the first
-   time it scrolls into view. */
-.about-scan-line {
-  position: absolute; left: 0; right: 0; top: 0; height: 3px; z-index: 2;
-  background: linear-gradient(90deg, transparent, var(--gold-bright) 30%, var(--gold) 50%, var(--gold-bright) 70%, transparent);
-  box-shadow: 0 0 18px 4px rgba(222, 175, 103, 0.75), 0 0 46px 10px rgba(222, 175, 103, 0.3);
+/* Reveal — a camera-flash pop, then the aperture opens from the centre to
+   uncover the photo, the first time it scrolls into view. */
+.about-photo-flash {
+  position: absolute; inset: 0; z-index: 3;
+  background: #fff;
   opacity: 0; pointer-events: none;
 }
-.about-photo-bleed.is-scanned .about-scan-line { animation: aboutScanSweep 2.6s cubic-bezier(.16, .84, .44, 1) forwards; }
-@keyframes aboutScanSweep {
-  0% { top: 0; opacity: 1; }
-  90% { opacity: 1; }
-  100% { top: 100%; opacity: 0; }
+.about-photo-bleed.is-scanned .about-photo-flash { animation: aboutPhotoFlash 0.5s ease-out forwards; }
+@keyframes aboutPhotoFlash {
+  0% { opacity: 0; }
+  10% { opacity: 0.95; }
+  100% { opacity: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .about-photo-bleed img { clip-path: inset(0 0 0% 0) !important; filter: none !important; transition: none; }
-  .about-scan-line { display: none; }
+  .about-photo-bleed img { clip-path: circle(146% at 50% 50%) !important; filter: none !important; transition: none; }
+  .about-photo-flash { display: none; }
 }
 .about-photo-fade {
   position: absolute; inset: 0; z-index: 1;
