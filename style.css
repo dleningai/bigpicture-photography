@@ -1109,6 +1109,8 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   border: 1px solid var(--gold-border);
   box-shadow: 0 20px 44px rgba(0, 0, 0, 0.45);
   --pos: 50%;
+  touch-action: none;
+  cursor: ew-resize;
 }
 .ba-frame[hidden] { display: none; }
 .ba-frame img {

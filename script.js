@@ -438,10 +438,34 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Vorher/Nachher-Slider — Range-Input steuert den Clip-Path des "Vorher"-Bilds.
+  // Vorher/Nachher-Slider — Pointer-Events auf dem ganzen Rahmen steuern den
+  // Clip-Path direkt (zuverlässiger als das native Range-Dragging allein,
+  // besonders auf iOS). Das Range-Input bleibt für Tastatur/Screenreader.
   document.querySelectorAll('.ba-frame').forEach((frame) => {
     const range = frame.querySelector('.ba-range');
     if (!range) return;
+
+    const setFromClientX = (clientX) => {
+      const rect = frame.getBoundingClientRect();
+      const pct = Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
+      frame.style.setProperty('--pos', `${pct}%`);
+      range.value = pct;
+    };
+
+    let dragging = false;
+    frame.addEventListener('pointerdown', (e) => {
+      dragging = true;
+      frame.setPointerCapture(e.pointerId);
+      setFromClientX(e.clientX);
+    });
+    frame.addEventListener('pointermove', (e) => {
+      if (!dragging) return;
+      setFromClientX(e.clientX);
+    });
+    const stopDrag = () => { dragging = false; };
+    frame.addEventListener('pointerup', stopDrag);
+    frame.addEventListener('pointercancel', stopDrag);
+
     range.addEventListener('input', () => {
       frame.style.setProperty('--pos', `${range.value}%`);
     });
