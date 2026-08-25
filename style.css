@@ -610,37 +610,20 @@ a { color: inherit; }
 }
 
 /* Below ~720px, 13 city pills packed into two concentric rings gets
-   cramped and hard to read. Swap the circular radar for a clean grouped
-   list instead — same information, same HUD styling, no crowding. */
-.region-list { display: none; }
+   cramped and hard to read. Swap to a reduced single-ring radar with
+   just the 6 most relevant cities instead — same sweep/pulse
+   animation, no crowding. */
+.region-radar-mobile { display: none; }
 @media (max-width: 720px) {
-  .region-radar { display: none; }
-  .region-list {
+  .region-radar:not(.region-radar-mobile) { display: none; }
+  .region-radar-mobile {
     display: block;
-    max-width: 420px; margin: 36px auto 0;
+    width: min(360px, 84vw); height: min(360px, 84vw);
   }
-  .region-list-center {
-    display: flex; align-items: center; justify-content: center; gap: 10px;
-    font-family: var(--font-mono); font-size: 0.82rem; font-weight: 700;
-    letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold-bright);
-    padding-bottom: 18px; margin-bottom: 20px;
-    border-bottom: 1px dashed var(--gold-border);
-  }
-  .region-list-group + .region-list-group { margin-top: 22px; }
-  .region-list-heading {
-    font-family: var(--font-mono); font-size: 0.68rem; font-weight: 700;
-    letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint);
-    margin: 0 0 12px;
-  }
-  .region-list-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .region-list-row {
-    display: flex; align-items: center; gap: 8px;
-    padding: 8px 12px;
-    border: 1px solid var(--gold-border);
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.02);
-    font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700;
-    color: var(--ink-dim);
+  .region-radar-mobile .region-radar-node.outer .region-radar-node-inner {
+    transform: rotate(var(--angle)) translate(min(40vw, 172px)) rotate(calc(-1 * var(--angle))) translate(-50%, -50%);
+    font-size: 0.66rem;
+    padding: 5px 10px;
   }
 }
 
