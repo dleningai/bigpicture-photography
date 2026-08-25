@@ -1028,30 +1028,43 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 /* Side photos — three behind-the-scenes shots fanned out from behind the
    main portrait, fanning into place the first time the stack scrolls into
    view instead of sitting in their own separate section. */
+.about-photo-stack { max-width: 700px; margin-bottom: 270px; }
+.about-photo-bleed { max-width: 380px; margin: 0 auto; }
 .about-side-photo {
   position: absolute; top: 8%; left: 50%; z-index: 1;
-  width: 62%; aspect-ratio: 3 / 4;
+  width: 44%; aspect-ratio: 3 / 4;
   border-radius: 16px; overflow: hidden;
   border: 1px solid var(--gold-border);
   box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
   opacity: 0;
   transform: translate(-50%, -8%) scale(0.7) rotate(0deg);
   transition: transform 0.9s cubic-bezier(.2, .8, .2, 1), opacity 0.7s ease;
+  cursor: pointer;
 }
 .about-side-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .about-side-photo.is-visible { opacity: 1; }
-.about-side-photo.pos-a.is-visible { transform: translate(calc(-50% + 130px), -14%) rotate(9deg); transition-delay: 0.05s; }
-.about-side-photo.pos-b.is-visible { transform: translate(calc(-50% - 128px), 8%) rotate(-8deg); transition-delay: 0.2s; }
-.about-side-photo.pos-c.is-visible { transform: translate(calc(-50% + 96px), 46%) rotate(7deg); transition-delay: 0.35s; }
+.about-side-photo.pos-a.is-visible { transform: translate(calc(-50% + 260px), -20%) rotate(8deg); transition-delay: 0.05s; }
+.about-side-photo.pos-b.is-visible { transform: translate(calc(-50% - 258px), 12%) rotate(-7deg); transition-delay: 0.2s; }
+.about-side-photo.pos-c.is-visible { transform: translate(calc(-50% + 205px), 78%) rotate(6deg); transition-delay: 0.35s; }
 .about-side-photo:hover { z-index: 3; box-shadow: 0 22px 44px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--gold); }
-.about-side-photo.pos-a:hover { transform: translate(calc(-50% + 130px), -14%) rotate(0deg) scale(1.08); }
-.about-side-photo.pos-b:hover { transform: translate(calc(-50% - 128px), 8%) rotate(0deg) scale(1.08); }
-.about-side-photo.pos-c:hover { transform: translate(calc(-50% + 96px), 46%) rotate(0deg) scale(1.08); }
+.about-side-photo.pos-a:hover { transform: translate(calc(-50% + 260px), -20%) rotate(0deg) scale(1.08); }
+.about-side-photo.pos-b:hover { transform: translate(calc(-50% - 258px), 12%) rotate(0deg) scale(1.08); }
+.about-side-photo.pos-c:hover { transform: translate(calc(-50% + 205px), 78%) rotate(0deg) scale(1.08); }
+@media (max-width: 900px) {
+  .about-photo-stack { max-width: 460px; margin-bottom: 140px; }
+  .about-photo-bleed { max-width: 300px; }
+  .about-side-photo { width: 42%; }
+  .about-side-photo.pos-a.is-visible, .about-side-photo.pos-a:hover { transform: translate(calc(-50% + 148px), -18%) rotate(8deg); }
+  .about-side-photo.pos-b.is-visible, .about-side-photo.pos-b:hover { transform: translate(calc(-50% - 146px), 10%) rotate(-7deg); }
+  .about-side-photo.pos-c.is-visible, .about-side-photo.pos-c:hover { transform: translate(calc(-50% + 116px), 74%) rotate(6deg); }
+}
 @media (max-width: 640px) {
-  .about-photo-stack { max-width: 300px; }
-  .about-side-photo.pos-a.is-visible { transform: translate(calc(-50% + 82px), -10%) rotate(9deg); }
-  .about-side-photo.pos-b.is-visible { transform: translate(calc(-50% - 80px), 6%) rotate(-8deg); }
-  .about-side-photo.pos-c.is-visible { transform: translate(calc(-50% + 60px), 42%) rotate(7deg); }
+  .about-photo-stack { max-width: 340px; margin-bottom: 110px; }
+  .about-photo-bleed { max-width: 230px; }
+  .about-side-photo { width: 44%; }
+  .about-side-photo.pos-a.is-visible, .about-side-photo.pos-a:hover { transform: translate(calc(-50% + 108px), -16%) rotate(8deg); }
+  .about-side-photo.pos-b.is-visible, .about-side-photo.pos-b:hover { transform: translate(calc(-50% - 106px), 10%) rotate(-7deg); }
+  .about-side-photo.pos-c.is-visible, .about-side-photo.pos-c:hover { transform: translate(calc(-50% + 84px), 70%) rotate(6deg); }
 }
 @media (prefers-reduced-motion: reduce) {
   .about-side-photo { transition: opacity 0.4s ease; }
