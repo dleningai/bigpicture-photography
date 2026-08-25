@@ -135,8 +135,8 @@ document.addEventListener('DOMContentLoaded', () => {
   );
   revealEls.forEach((el) => revealObserver.observe(el));
 
-  // About-Foto Scan-Reveal — Scanlinie läuft einmal über das Bild, dann
-  // erscheint das Foto scharf, sobald es in den Viewport scrollt.
+  // About-Foto Reveal — kurzer Kamera-Blitz, dann öffnet sich die Blende
+  // zur Bildmitte, sobald das Foto in den Viewport scrollt.
   const scanPhoto = document.querySelector('.about-photo-bleed');
   if (scanPhoto) {
     const scanObserver = new IntersectionObserver(
