@@ -371,14 +371,30 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   animation: heroGlowDrift 16s ease-in-out infinite;
 }
 .hero-fx-glow-b { width: 420px; height: 420px; bottom: -18%; right: -10%; animation-delay: -8s; }
-.hero-fx-scan {
-  position: absolute; left: 0; right: 0; height: 140px; top: -140px;
-  background: linear-gradient(180deg, transparent, rgba(222, 175, 103, 0.16), transparent);
-  animation: heroScanDrift 9s ease-in-out infinite;
-}
 .hero-fx-vignette {
   position: absolute; inset: 0;
   background: radial-gradient(circle at 50% 40%, transparent 0%, transparent 50%, rgba(10, 10, 10, 0.22) 82%, transparent 100%);
+}
+/* Bokeh lights — soft out-of-focus circles drifting through the hero
+   background, like defocused background lights in a photo. */
+.hero-fx-bokeh {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(222, 175, 103, 0.4), transparent 72%);
+  filter: blur(3px);
+  opacity: 0;
+  animation: bokehFloat 16s ease-in-out infinite;
+}
+.hero-fx-bokeh:nth-child(3) { width: 90px; height: 90px; left: 12%; top: 22%; animation-delay: 0s; }
+.hero-fx-bokeh:nth-child(4) { width: 140px; height: 140px; left: 80%; top: 58%; animation-duration: 20s; animation-delay: -5s; }
+.hero-fx-bokeh:nth-child(5) { width: 60px; height: 60px; left: 58%; top: 12%; animation-duration: 13s; animation-delay: -9s; }
+.hero-fx-bokeh:nth-child(6) { width: 105px; height: 105px; left: 28%; top: 78%; animation-duration: 18s; animation-delay: -12s; }
+@keyframes bokehFloat {
+  0% { transform: translate(0, 0) scale(0.9); opacity: 0; }
+  18% { opacity: 0.55; }
+  50% { transform: translate(20px, -24px) scale(1.08); opacity: 0.38; }
+  82% { opacity: 0.5; }
+  100% { transform: translate(-12px, 16px) scale(0.92); opacity: 0; }
 }
 @keyframes heroGridDrift {
   from { transform: translate(0, 0); }
@@ -388,14 +404,8 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   0%, 100% { transform: translate(0, 0) scale(1); }
   50% { transform: translate(26px, -18px) scale(1.12); }
 }
-@keyframes heroScanDrift {
-  0% { top: -140px; opacity: 0; }
-  10% { opacity: 1; }
-  90% { opacity: 1; }
-  100% { top: 100%; opacity: 0; }
-}
 @media (prefers-reduced-motion: reduce) {
-  .hero-fx-grid, .hero-fx-glow, .hero-fx-scan { animation: none; }
+  .hero-fx-grid, .hero-fx-glow, .hero-fx-bokeh { animation: none; opacity: 0.3; }
 }
 
 .hero-box {
@@ -414,21 +424,22 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   border: 1px solid var(--gold-border);
   animation: heroLogoFloat 6s ease-in-out infinite, heroLogoPulse 3.2s ease-in-out infinite;
 }
+/* Aperture rings — two dashed "blade" rings that periodically blink shut
+   and open again, like a camera lens taking a breath, instead of spinning
+   continuously like a loading indicator. */
 .hero-logo-badge::before {
   content: '';
   position: absolute; inset: -18px;
   border-radius: 50%;
-  border: 1px solid transparent;
-  border-top-color: rgba(222, 175, 103, 0.65);
-  border-right-color: rgba(222, 175, 103, 0.65);
-  animation: heroLogoSpin 6s linear infinite;
+  border: 1px dashed rgba(222, 175, 103, 0.55);
+  animation: apertureBreathe 6s ease-in-out infinite;
 }
 .hero-logo-badge::after {
   content: '';
   position: absolute; inset: -38px;
   border-radius: 50%;
   border: 1px dashed rgba(222, 175, 103, 0.3);
-  animation: heroLogoSpin 18s linear infinite reverse;
+  animation: apertureBreathe 6s ease-in-out infinite 0.15s;
 }
 .hero-logo-badge img {
   width: 190px; height: 190px; object-fit: contain;
@@ -439,7 +450,11 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-9px); }
 }
-@keyframes heroLogoSpin { to { transform: rotate(360deg); } }
+@keyframes apertureBreathe {
+  0%, 82%, 100% { transform: scale(1); opacity: 0.7; }
+  89% { transform: scale(0.85); opacity: 1; }
+  95% { transform: scale(1.03); opacity: 0.85; }
+}
 @keyframes heroLogoPulse {
   0%, 100% { box-shadow: 0 0 0 1px rgba(222, 175, 103, 0.08), 0 24px 60px rgba(0, 0, 0, 0.5), 0 0 0 0 rgba(222, 175, 103, 0.32); }
   50% { box-shadow: 0 0 0 1px rgba(222, 175, 103, 0.08), 0 24px 60px rgba(0, 0, 0, 0.5), 0 0 36px 8px rgba(222, 175, 103, 0.24); }
@@ -449,6 +464,9 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   .hero-logo-badge img { width: 144px; height: 144px; }
   .hero-logo-badge::before { inset: -13px; }
   .hero-logo-badge::after { inset: -28px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-logo-badge::before, .hero-logo-badge::after { animation: none; }
 }
 .hero-title {
   font-size: clamp(1.7rem, 5vw, 2.6rem);
