@@ -1627,3 +1627,41 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   .pf-chapternav { gap: 4px; padding: 10px 12px; }
   .pf-chapternav a { padding: 7px 12px; font-size: 0.8rem; }
 }
+
+/* Behind-the-scenes fan — three photos fanned like a loose stack of
+   prints, straightening and lifting on hover instead of a static grid. */
+.bts-fan {
+  position: relative;
+  display: flex; align-items: flex-end; justify-content: center;
+  height: 380px;
+  margin-top: 20px;
+}
+.bts-card {
+  position: absolute;
+  width: 220px; aspect-ratio: 3 / 4;
+  border-radius: 16px; overflow: hidden;
+  border: 1px solid var(--gold-border);
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.45);
+  transform-origin: bottom center;
+  transition: transform 0.4s cubic-bezier(.2, .8, .3, 1), box-shadow 0.4s ease, z-index 0s;
+  cursor: pointer;
+}
+.bts-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.bts-card:nth-child(1) { transform: translateX(-160px) rotate(-9deg); z-index: 1; }
+.bts-card:nth-child(2) { transform: translateX(0) rotate(0deg) translateY(-14px); z-index: 2; }
+.bts-card:nth-child(3) { transform: translateX(160px) rotate(9deg); z-index: 1; }
+.bts-card:hover {
+  transform: translateY(-22px) rotate(0deg) scale(1.06) !important;
+  box-shadow: 0 30px 56px rgba(0, 0, 0, 0.55), 0 0 0 1px var(--gold);
+  z-index: 5 !important;
+}
+@media (max-width: 720px) {
+  .bts-fan { height: 300px; }
+  .bts-card { width: 160px; }
+  .bts-card:nth-child(1) { transform: translateX(-92px) rotate(-8deg); }
+  .bts-card:nth-child(2) { transform: translateX(0) rotate(0deg) translateY(-10px); }
+  .bts-card:nth-child(3) { transform: translateX(92px) rotate(8deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bts-card { transition: none; }
+}
