@@ -953,9 +953,12 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 .name-box .name { font-size: clamp(2.1rem, 5vw, 3rem); font-weight: 800; color: #fff; margin: 4px 0 10px; }
 .name-box .role { font-size: 0.95rem; color: var(--ink-dim); font-weight: 500; }
 
-.about-photo-bleed {
+.about-photo-stack {
   position: relative; margin: 34px auto 0;
   max-width: 480px;
+}
+.about-photo-bleed {
+  position: relative; z-index: 2;
   border-radius: 20px;
   border: 1px solid var(--gold-border);
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(222, 175, 103, 0.08);
@@ -998,19 +1001,60 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   pointer-events: none;
 }
 .about-photo-tag {
-  position: absolute; left: 20px; bottom: 18px; z-index: 3;
-  display: flex; align-items: center; gap: 9px;
+  position: absolute; left: 20px; bottom: 18px; right: 20px; z-index: 3;
+  display: flex; align-items: flex-start; gap: 9px;
   font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700;
   letter-spacing: 0.06em; text-transform: uppercase; color: #fff;
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.85);
+  line-height: 1.6;
   pointer-events: none;
 }
 .about-photo-tag em { font-style: normal; color: var(--gold-bright); font-weight: 600; }
 .about-photo-tag-dot {
   width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+  margin-top: 5px;
   background: var(--gold);
   box-shadow: 0 0 8px 2px rgba(222, 175, 103, 0.6);
   animation: navDotPulse 1.8s ease-in-out infinite;
+}
+.about-photo-tag-sub {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.62rem; font-weight: 600;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+/* Side photos — three behind-the-scenes shots fanned out from behind the
+   main portrait, fanning into place the first time the stack scrolls into
+   view instead of sitting in their own separate section. */
+.about-side-photo {
+  position: absolute; top: 8%; left: 50%; z-index: 1;
+  width: 62%; aspect-ratio: 3 / 4;
+  border-radius: 16px; overflow: hidden;
+  border: 1px solid var(--gold-border);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transform: translate(-50%, -8%) scale(0.7) rotate(0deg);
+  transition: transform 0.9s cubic-bezier(.2, .8, .2, 1), opacity 0.7s ease;
+}
+.about-side-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.about-side-photo.is-visible { opacity: 1; }
+.about-side-photo.pos-a.is-visible { transform: translate(calc(-50% + 130px), -14%) rotate(9deg); transition-delay: 0.05s; }
+.about-side-photo.pos-b.is-visible { transform: translate(calc(-50% - 128px), 8%) rotate(-8deg); transition-delay: 0.2s; }
+.about-side-photo.pos-c.is-visible { transform: translate(calc(-50% + 96px), 46%) rotate(7deg); transition-delay: 0.35s; }
+.about-side-photo:hover { z-index: 3; box-shadow: 0 22px 44px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--gold); }
+.about-side-photo.pos-a:hover { transform: translate(calc(-50% + 130px), -14%) rotate(0deg) scale(1.08); }
+.about-side-photo.pos-b:hover { transform: translate(calc(-50% - 128px), 8%) rotate(0deg) scale(1.08); }
+.about-side-photo.pos-c:hover { transform: translate(calc(-50% + 96px), 46%) rotate(0deg) scale(1.08); }
+@media (max-width: 640px) {
+  .about-photo-stack { max-width: 300px; }
+  .about-side-photo.pos-a.is-visible { transform: translate(calc(-50% + 82px), -10%) rotate(9deg); }
+  .about-side-photo.pos-b.is-visible { transform: translate(calc(-50% - 80px), 6%) rotate(-8deg); }
+  .about-side-photo.pos-c.is-visible { transform: translate(calc(-50% + 60px), 42%) rotate(7deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .about-side-photo { transition: opacity 0.4s ease; }
 }
 
 .about-interview { text-align: center; padding-top: 30px; }
@@ -1627,40 +1671,3 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   .pf-chapternav a { padding: 7px 12px; font-size: 0.8rem; }
 }
 
-/* Behind-the-scenes fan — three photos fanned like a loose stack of
-   prints, straightening and lifting on hover instead of a static grid. */
-.bts-fan {
-  position: relative;
-  display: flex; align-items: flex-end; justify-content: center;
-  height: 380px;
-  margin-top: 20px;
-}
-.bts-card {
-  position: absolute;
-  width: 220px; aspect-ratio: 3 / 4;
-  border-radius: 16px; overflow: hidden;
-  border: 1px solid var(--gold-border);
-  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.45);
-  transform-origin: bottom center;
-  transition: transform 0.4s cubic-bezier(.2, .8, .3, 1), box-shadow 0.4s ease, z-index 0s;
-  cursor: pointer;
-}
-.bts-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.bts-card:nth-child(1) { transform: translateX(-160px) rotate(-9deg); z-index: 1; }
-.bts-card:nth-child(2) { transform: translateX(0) rotate(0deg) translateY(-14px); z-index: 2; }
-.bts-card:nth-child(3) { transform: translateX(160px) rotate(9deg); z-index: 1; }
-.bts-card:hover {
-  transform: translateY(-22px) rotate(0deg) scale(1.06) !important;
-  box-shadow: 0 30px 56px rgba(0, 0, 0, 0.55), 0 0 0 1px var(--gold);
-  z-index: 5 !important;
-}
-@media (max-width: 720px) {
-  .bts-fan { height: 300px; }
-  .bts-card { width: 160px; }
-  .bts-card:nth-child(1) { transform: translateX(-92px) rotate(-8deg); }
-  .bts-card:nth-child(2) { transform: translateX(0) rotate(0deg) translateY(-10px); }
-  .bts-card:nth-child(3) { transform: translateX(92px) rotate(8deg); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .bts-card { transition: none; }
-}
