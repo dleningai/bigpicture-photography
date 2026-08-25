@@ -10,9 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
   if (bootIntro && !bootIntro.classList.contains('boot-intro-hidden')) {
     const linesEl = document.getElementById('bootIntroLines');
     const lines = [
-      'INITIALISIERE BIG PICTURE PHOTOGRAPHY…',
-      'STANDORT: DETMOLD · OSTWESTFALEN-LIPPE',
-      'FOTOGRAF & VIDEOGRAF — SYSTEM BEREIT.',
+      'BIG PICTURE PHOTOGRAPHY',
+      'FOTOGRAF & VIDEOGRAF · DETMOLD, OWL',
+      'BEREIT, DEINEN MOMENT EINZUFANGEN.',
     ];
     document.body.style.overflow = 'hidden';
 
