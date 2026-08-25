@@ -82,6 +82,24 @@ document.addEventListener('DOMContentLoaded', () => {
   );
   revealEls.forEach((el) => revealObserver.observe(el));
 
+  // About-Foto Scan-Reveal — Scanlinie läuft einmal über das Bild, dann
+  // erscheint das Foto scharf, sobald es in den Viewport scrollt.
+  const scanPhoto = document.querySelector('.about-photo-bleed');
+  if (scanPhoto) {
+    const scanObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            scanPhoto.classList.add('is-scanned');
+            scanObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.35 }
+    );
+    scanObserver.observe(scanPhoto);
+  }
+
   // Scroll-spy — highlights the in-page nav link (chapter nav / TOC) whose
   // section is currently in view.
   document.querySelectorAll('.pf-chapternav, .legal-toc').forEach((nav) => {
