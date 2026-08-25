@@ -122,8 +122,57 @@ a { color: inherit; }
   text-transform: uppercase;
 }
 
-.reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.7s ease, transform 0.7s ease; }
-.reveal.is-visible { opacity: 1; transform: translateY(0); }
+.reveal {
+  opacity: 0; transform: translateY(26px) scale(0.985);
+  transition: opacity 0.9s cubic-bezier(.16, .84, .44, 1), transform 0.9s cubic-bezier(.16, .84, .44, 1);
+  will-change: opacity, transform;
+}
+.reveal.is-visible { opacity: 1; transform: translateY(0) scale(1); }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* Custom cursor — desktop-only (fine pointer + hover capable), a small gold
+   dot with a trailing ring that widens over interactive elements. */
+.cursor-dot, .cursor-ring {
+  position: fixed; top: 0; left: 0; z-index: 9999;
+  pointer-events: none;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.25s ease, width 0.25s cubic-bezier(.16, .84, .44, 1), height 0.25s cubic-bezier(.16, .84, .44, 1), background 0.25s ease, border-color 0.25s ease;
+}
+.cursor-dot {
+  width: 6px; height: 6px;
+  background: var(--gold);
+  box-shadow: 0 0 8px 2px rgba(222, 175, 103, 0.6);
+}
+.cursor-ring {
+  width: 34px; height: 34px;
+  border: 1px solid rgba(222, 175, 103, 0.55);
+}
+body.cursor-ready .cursor-dot, body.cursor-ready .cursor-ring { opacity: 1; }
+body.cursor-hover .cursor-ring { width: 54px; height: 54px; background: rgba(222, 175, 103, 0.1); border-color: var(--gold); }
+body.cursor-hover .cursor-dot { opacity: 0; }
+@media (hover: hover) and (pointer: fine) {
+  body.cursor-ready, body.cursor-ready a, body.cursor-ready button, body.cursor-ready input[type="range"] { cursor: none; }
+}
+@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .cursor-dot, .cursor-ring { display: none; }
+}
+
+/* Blur-up image load — photos ease in from a soft blur instead of popping
+   in hard the instant they finish downloading. */
+img { transition: opacity 0.6s ease, filter 0.6s ease; }
+img:not(.img-loaded) { opacity: 0; filter: blur(16px); }
+img.img-loaded { opacity: 1; filter: blur(0); }
+/* These images already run their own reveal/compare animations with a
+   dedicated filter — leave them out of the generic blur-up so the two
+   don't fight over the filter property. */
+.about-photo-bleed img:not(.img-loaded), .ba-frame img:not(.img-loaded) { opacity: 1; filter: none; }
+@media (prefers-reduced-motion: reduce) {
+  img:not(.img-loaded) { opacity: 1; filter: none; }
+}
 
 /* Staggered reveal — cards in the same grid ease in a beat apart instead of
    all at once, a small but noticeable "considered" touch. */
