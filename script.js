@@ -67,47 +67,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Custom cursor — a gold dot plus a trailing ring that eases toward the
-  // pointer, widening over links/buttons/cards. Desktop-only (see CSS media
-  // query), so touch devices keep their native cursor untouched.
-  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    const cursorDot = document.createElement('div');
-    cursorDot.className = 'cursor-dot';
-    const cursorRing = document.createElement('div');
-    cursorRing.className = 'cursor-ring';
-    document.body.append(cursorDot, cursorRing);
-
-    let mouseX = window.innerWidth / 2;
-    let mouseY = window.innerHeight / 2;
-    let ringX = mouseX;
-    let ringY = mouseY;
-
-    window.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      cursorDot.style.left = `${mouseX}px`;
-      cursorDot.style.top = `${mouseY}px`;
-      document.body.classList.add('cursor-ready');
-    });
-
-    const animateRing = () => {
-      ringX += (mouseX - ringX) * 0.18;
-      ringY += (mouseY - ringY) * 0.18;
-      cursorRing.style.left = `${ringX}px`;
-      cursorRing.style.top = `${ringY}px`;
-      requestAnimationFrame(animateRing);
-    };
-    requestAnimationFrame(animateRing);
-
-    const hoverSelector = 'a, button, input[type="range"], .glow-card, .pf-stack-photo, .social-link';
-    document.addEventListener('mouseover', (e) => {
-      if (e.target.closest(hoverSelector)) document.body.classList.add('cursor-hover');
-    });
-    document.addEventListener('mouseout', (e) => {
-      if (e.target.closest(hoverSelector)) document.body.classList.remove('cursor-hover');
-    });
-    document.addEventListener('mouseleave', () => document.body.classList.remove('cursor-ready'));
-  }
 
   // Blur-up image load — mark each image loaded (already-cached images fire
   // "complete" instantly, so check that first instead of waiting on load).
