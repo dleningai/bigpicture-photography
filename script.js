@@ -70,14 +70,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Blur-up image load — mark each image loaded (already-cached images fire
   // "complete" instantly, so check that first instead of waiting on load).
-  document.querySelectorAll('img').forEach((img) => {
+  // Kept as a named function (not inline) so images created later, like the
+  // stack grid preview thumbnails, can reuse it instead of staying invisible.
+  const markImgLoaded = (img) => {
     if (img.complete) {
       img.classList.add('img-loaded');
     } else {
       img.addEventListener('load', () => img.classList.add('img-loaded'), { once: true });
       img.addEventListener('error', () => img.classList.add('img-loaded'), { once: true });
     }
-  });
+  };
+  document.querySelectorAll('img').forEach(markImgLoaded);
 
   // Scroll reveal
   const revealEls = document.querySelectorAll('.reveal');
@@ -319,6 +322,7 @@ document.addEventListener('DOMContentLoaded', () => {
           closePreview();
           photos[idx].click();
         });
+        markImgLoaded(thumb);
         grid.appendChild(thumb);
       });
 
