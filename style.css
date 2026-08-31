@@ -1326,39 +1326,6 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   margin: 0 auto;
   padding: 0 20px 64px;
 }
-.pf-chapter-badges { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
-.pf-chapter-icon {
-  position: relative;
-  width: 52px; height: 52px;
-  display: flex; align-items: center; justify-content: center;
-  border-radius: 50%;
-  border: 1px solid var(--gold-border);
-  background: radial-gradient(circle at 50% 40%, rgba(222, 175, 103, 0.16), rgba(10, 10, 10, 0.9) 75%);
-  box-shadow: 0 0 0 1px rgba(222, 175, 103, 0.08), 0 8px 20px rgba(0, 0, 0, 0.35);
-}
-.pf-chapter-icon::before {
-  content: '';
-  position: absolute; inset: -7px;
-  border-radius: 50%;
-  border: 1px solid transparent;
-  border-top-color: rgba(222, 175, 103, 0.55);
-  border-right-color: rgba(222, 175, 103, 0.55);
-  animation: heroLogoSpin 9s linear infinite;
-}
-.pf-chapter-icon svg {
-  width: 22px; height: 22px;
-  fill: none; stroke: var(--gold); stroke-width: 1.6;
-  stroke-linecap: round; stroke-linejoin: round;
-  position: relative; z-index: 1;
-}
-.pf-chapter-number {
-  display: inline-flex; align-items: center; justify-content: center;
-  min-width: 52px; height: 52px; padding: 0 12px;
-  border-radius: 14px;
-  background: linear-gradient(180deg, var(--gold-bright), var(--gold));
-  color: #171717; font-family: var(--font-mono); font-weight: 700; font-size: 1.1rem;
-  box-shadow: 0 0 0 1px rgba(222,175,103,0.3), 0 0 24px rgba(222,175,103,0.35);
-}
 .pf-chapter-title {
   font-size: clamp(2.2rem, 6vw, 4rem);
   font-weight: 800;
