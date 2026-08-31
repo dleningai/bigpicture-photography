@@ -1372,13 +1372,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   margin: 0;
 }
 
-/* Per-chapter photo stack — replaces the old fixed image grid so the page
-   doesn't grow endlessly as more photos get added. Same rotating-queue
-   mechanic as the testimonial stack; clicking the front card opens it full
-   size (glightbox), the arrow button rotates to the next photo. */
-.pf-more { position: relative; max-width: var(--max-width); margin: 0 auto 90px; padding: 0 20px; }
-
-/* Visual bridge from the chapter hero image down to the photo stack —
+/* Visual bridge from the chapter hero image down to the photo gallery —
    without it the stack reads as disconnected, floating on plain
    background instead of belonging to the image above it. A soft light
    bleed continues the mood of the photo above, with a small label
@@ -1396,13 +1390,6 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   background: linear-gradient(90deg, transparent, var(--gold-border));
 }
 .pf-more-label::after { transform: scaleX(-1); }
-.pf-more::before {
-  content: '';
-  position: absolute; top: -90px; left: 50%; transform: translateX(-50%);
-  width: 620px; max-width: 100%; height: 480px;
-  background: radial-gradient(ellipse at 50% 0%, rgba(222, 175, 103, 0.14), transparent 62%);
-  pointer-events: none; z-index: 0;
-}
 
 /* Chapter divider — marks the handoff to the next chapter clearly, now
    that the chapter photos fade seamlessly into the page background and
@@ -1433,85 +1420,6 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700;
   letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold);
 }
-.pf-stack-wrap { position: relative; z-index: 1; width: 220px; margin: 0 auto; padding-bottom: 54px; }
-.pf-stack { position: relative; height: 270px; }
-.pf-stack-photo {
-  position: absolute; inset: 0;
-  border-radius: 16px; overflow: hidden;
-  border: 1px solid var(--gold-border);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
-  cursor: pointer;
-  transform-origin: 85% 15%;
-  transition: transform 0.55s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.5s ease, box-shadow 0.4s ease;
-}
-.pf-stack-photo img { width: 100%; height: 100%; object-fit: cover; }
-.pf-stack-photo.stack-pos-0 { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; z-index: 5; box-shadow: 0 20px 44px rgba(0, 0, 0, 0.45); }
-.pf-stack-photo.stack-pos-0:hover { transform: translateY(-4px) rotate(0deg) scale(1.02); }
-.pf-stack-photo.stack-pos-1 { transform: translate(14px, 12px) rotate(-4deg) scale(0.95); opacity: 0.85; z-index: 4; pointer-events: none; }
-.pf-stack-photo.stack-pos-2 { transform: translate(22px, 20px) rotate(5deg) scale(0.9); opacity: 0.55; z-index: 3; pointer-events: none; }
-.pf-stack-photo.stack-pos-3 { transform: translate(28px, 26px) rotate(-6deg) scale(0.86); opacity: 0.28; z-index: 2; pointer-events: none; }
-.pf-stack-photo.stack-pos-4 { transform: translate(32px, 30px) rotate(6deg) scale(0.82); opacity: 0; z-index: 1; pointer-events: none; }
-.pf-stack-photo.stack-leaving {
-  transition: transform 0.5s cubic-bezier(0.55, 0, 1, 0.45), opacity 0.45s ease;
-  transform: translate(120%, -20%) rotate(22deg) scale(0.92);
-  opacity: 0;
-  z-index: 6;
-}
-.pf-stack-actions { position: absolute; right: 0; bottom: 0; z-index: 10; display: flex; gap: 10px; }
-.pf-stack-next, .pf-stack-grid-toggle {
-  width: 44px; height: 44px;
-  background: linear-gradient(155deg, rgba(60, 47, 24, 0.9), rgba(30, 25, 16, 0.95));
-  border: 1px solid var(--gold-border);
-  border-radius: 50%; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 18px; color: var(--gold); transition: 0.22s ease;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
-}
-.pf-stack-next:hover, .pf-stack-grid-toggle:hover { background: var(--gold); color: #1e1e1e; border-color: var(--gold); box-shadow: 0 0 18px rgba(222, 175, 103, 0.4); transform: scale(1.06); }
-.pf-stack-grid-toggle svg { width: 17px; height: 17px; fill: currentColor; }
-.pf-stack-grid-toggle.active { background: var(--gold); color: #1e1e1e; border-color: var(--gold); }
-.pf-stack-counter {
-  position: absolute; left: 0; bottom: 12px; z-index: 10;
-  font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700;
-  letter-spacing: 0.08em; color: var(--ink-faint);
-}
-
-/* All-photos preview popover, opened via the grid-toggle button */
-.pf-stack-preview {
-  position: absolute; z-index: 30;
-  top: 0; left: 50%;
-  width: 260px;
-  padding: 16px;
-  border-radius: 16px;
-  background: linear-gradient(180deg, rgba(30, 30, 30, 0.98), rgba(14, 14, 14, 0.99));
-  border: 1px solid var(--gold-border);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-  opacity: 0; visibility: hidden;
-  transform: translate(-50%, -8px) scale(0.96);
-  transform-origin: top center;
-  transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s;
-}
-.pf-stack-preview.active { opacity: 1; visibility: visible; transform: translate(-50%, 0) scale(1); }
-.pf-stack-preview-label {
-  font-family: var(--font-mono); font-size: 0.68rem; font-weight: 700;
-  letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint);
-  margin: 0 0 12px;
-}
-.pf-stack-preview-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-.pf-stack-preview-grid img {
-  width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 8px;
-  cursor: pointer; border: 1px solid var(--gold-border);
-  transition: transform 0.2s ease, border-color 0.2s ease;
-}
-.pf-stack-preview-grid img:hover { transform: scale(1.06); border-color: var(--gold); }
-.pf-stack-preview-close {
-  position: absolute; top: -12px; right: -12px;
-  width: 28px; height: 28px; border-radius: 50%;
-  background: var(--gold); color: #1e1e1e; border: none; cursor: pointer;
-  font-size: 15px; line-height: 1; font-weight: 700;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-}
-
 /* ==========================================================
    Contact + legal panels
    ========================================================== */
@@ -1684,3 +1592,31 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   .pf-chapternav a { padding: 7px 12px; font-size: 0.8rem; }
 }
 
+
+/* Horizontal scroll gallery — "weitere Eindrücke" per chapter. The section
+   pins while the photo track translates right-to-left with scroll, then
+   releases back into normal vertical scroll (see script.js). */
+.pf-hscroll { position: relative; height: 260vh; }
+.pf-hscroll-inner { position: sticky; top: 0; height: 100vh; overflow: hidden; display: flex; align-items: center; }
+.pf-hscroll-inner .pf-more-label { position: absolute; top: 130px; left: 0; right: 0; z-index: 2; margin: 0; }
+.pf-hscroll-track { display: flex; gap: 28px; padding: 0 8vw; will-change: transform; }
+.pf-hcard { position: relative; flex: 0 0 auto; overflow: hidden; border-radius: 4px; }
+.pf-hcard.size-a { width: 26vw; height: 56vh; align-self: flex-start; margin-top: 4vh; }
+.pf-hcard.size-b { width: 32vw; height: 66vh; align-self: center; }
+.pf-hcard.size-c { width: 22vw; height: 48vh; align-self: flex-end; margin-bottom: 6vh; }
+.pf-hcard img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s cubic-bezier(.2,.8,.2,1); }
+.pf-hcard:hover img { transform: scale(1.05); }
+.pf-hcard-cap {
+  position: absolute; left: 14px; bottom: 12px; z-index: 2;
+  color: #fff; font-family: var(--font-mono); font-size: 0.66rem; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase; text-shadow: 0 1px 6px rgba(0,0,0,.8);
+}
+@media (max-width: 720px) {
+  .pf-hscroll { height: 220vh; }
+  .pf-hcard.size-a, .pf-hcard.size-b, .pf-hcard.size-c { width: 72vw; height: 52vh; align-self: center; margin: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pf-hscroll { height: auto; }
+  .pf-hscroll-inner { position: static; height: auto; overflow-x: auto; }
+  .pf-hscroll-track { transform: none !important; }
+}
