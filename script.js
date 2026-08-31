@@ -262,31 +262,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (nextBtn) nextBtn.addEventListener('click', advance);
   }
 
-  // Portfolio "weitere Eindrücke" galleries — the section pins (position:
-  // sticky) while vertical scroll drives the photo track horizontally,
-  // right to left, then releases back into normal page scroll.
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!reduceMotion) {
-    const hscrolls = Array.from(document.querySelectorAll('.pf-hscroll')).map((section) => ({
-      section,
-      track: section.querySelector('.pf-hscroll-track'),
-    }));
-    if (hscrolls.length) {
-      const updateHscrolls = () => {
-        hscrolls.forEach(({ section, track }) => {
-          const total = section.offsetHeight - window.innerHeight;
-          if (total <= 0) return;
-          const progress = Math.min(1, Math.max(0, -section.getBoundingClientRect().top / total));
-          const maxShift = Math.max(0, track.scrollWidth - window.innerWidth + 160);
-          track.style.transform = `translateX(${-progress * maxShift}px)`;
-        });
-      };
-      updateHscrolls();
-      window.addEventListener('scroll', updateHscrolls, { passive: true });
-      window.addEventListener('resize', updateHscrolls);
-    }
-  }
-
   // GLightbox for portfolio galleries
   if (window.GLightbox) {
     GLightbox({ selector: '.glightbox', touchNavigation: true, loop: true });
