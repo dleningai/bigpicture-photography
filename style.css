@@ -1229,63 +1229,6 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* Chapter jump links — sit inside the Portfolio hero box itself
-   instead of a separate sticky bar. */
-.pf-chapternav {
-  display: flex; justify-content: center; flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 28px;
-}
-/* Same card treatment as .about-card / .contact-item, icon badge and
-   all, so the chapter links read as the same component everywhere. */
-.pf-chapternav a {
-  position: relative;
-  overflow: hidden;
-  display: flex; align-items: center; gap: 12px;
-  padding: 16px 22px;
-  border-radius: 18px;
-  color: var(--ink-dim);
-  text-decoration: none;
-  font-family: var(--font-mono);
-  font-size: 0.86rem;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  border: 1px solid var(--gold-border);
-  background: radial-gradient(circle at top right, rgba(222, 175, 103, 0.05) 0%, transparent 32%),
-    linear-gradient(180deg, rgba(30, 30, 30, 0.96) 0%, rgba(18, 18, 18, 0.99) 100%);
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.24);
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, color 0.25s ease;
-}
-.pf-chapternav a::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--gold) 50%, transparent);
-  background-size: 220% 100%;
-  animation: sidebarShimmer 6s ease-in-out infinite;
-  opacity: 0.5;
-}
-.pf-chapternav a:hover {
-  color: #fff;
-  transform: translateY(-5px);
-  border-color: rgba(222, 175, 103, 0.35);
-  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.32), 0 0 20px rgba(222, 175, 103, 0.14);
-}
-.pf-chapternav a:hover .contact-icon {
-  border-color: var(--gold);
-  background: rgba(222, 175, 103, 0.18);
-  box-shadow: 0 0 12px rgba(222, 175, 103, 0.35);
-}
-.pf-chapternav a.active {
-  color: var(--gold);
-  border-color: var(--gold);
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.24), 0 0 16px rgba(222, 175, 103, 0.2);
-}
-.pf-chapternav a.active .contact-icon { border-color: var(--gold); background: rgba(222, 175, 103, 0.18); }
-@media (max-width: 640px) {
-  .pf-chapternav { gap: 8px; margin-top: 22px; }
-  .pf-chapternav a { padding: 8px 14px; font-size: 0.72rem; }
-}
 
 /* Full-bleed chapter title card — the image itself carries the heading */
 .pf-chapter {
@@ -1362,35 +1305,6 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 }
 .pf-more-label::after { transform: scaleX(-1); }
 
-/* Chapter divider — marks the handoff to the next chapter clearly, now
-   that the chapter photos fade seamlessly into the page background and
-   would otherwise blur together. */
-.pf-divider {
-  display: flex; align-items: center; justify-content: center; gap: 18px;
-  max-width: 460px; margin: 0 auto 70px; padding: 0 20px;
-}
-.pf-divider-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--gold-border)); }
-.pf-divider-line.flip { background: linear-gradient(90deg, var(--gold-border), transparent); }
-.pf-divider-tag {
-  display: flex; align-items: center; gap: 10px;
-  padding: 8px 16px;
-  border: 1px solid var(--gold-border);
-  border-radius: 999px;
-  background: var(--gold-soft);
-  white-space: nowrap;
-}
-.pf-divider-num {
-  font-family: var(--font-mono); font-weight: 700; font-size: 0.72rem;
-  color: #171717;
-  background: linear-gradient(180deg, var(--gold-bright), var(--gold));
-  border-radius: 999px;
-  min-width: 22px; height: 22px;
-  display: flex; align-items: center; justify-content: center;
-}
-.pf-divider-text {
-  font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700;
-  letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold);
-}
 /* ==========================================================
    Contact + legal panels
    ========================================================== */
