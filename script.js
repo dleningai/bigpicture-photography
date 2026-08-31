@@ -262,92 +262,30 @@ document.addEventListener('DOMContentLoaded', () => {
     if (nextBtn) nextBtn.addEventListener('click', advance);
   }
 
-  // Portfolio photo stacks — same rotating-queue mechanic as the testimonial
-  // stack, one independent instance per chapter. Unlike the testimonial
-  // stack, clicking the front photo opens it full size via glightbox
-  // (bound separately below), so only the arrow button advances the stack.
-  document.querySelectorAll('.pf-stack').forEach((pfStack) => {
-    const wrap = pfStack.closest('.pf-stack-wrap');
-    const nextBtn = wrap.querySelector('.pf-stack-next');
-    const counter = wrap.querySelector('.pf-stack-counter');
-    const photos = Array.from(pfStack.querySelectorAll('.pf-stack-photo'));
-    const total = photos.length;
-    let order = photos.map((_, i) => i);
-    let animating = false;
-    const pad = (n) => String(n).padStart(2, '0');
-
-    const layout = () => {
-      order.forEach((photoIdx, pos) => {
-        const el = photos[photoIdx];
-        el.classList.remove('stack-pos-0', 'stack-pos-1', 'stack-pos-2', 'stack-pos-3', 'stack-pos-4');
-        el.classList.add(`stack-pos-${Math.min(pos, 4)}`);
-      });
-      if (counter) counter.textContent = `${pad(order[0] + 1)} / ${pad(total)}`;
-    };
-    layout();
-
-    const advance = () => {
-      if (animating || total < 2) return;
-      animating = true;
-      const frontEl = photos[order[0]];
-      frontEl.classList.add('stack-leaving');
-      setTimeout(() => {
-        frontEl.classList.remove('stack-leaving', 'stack-pos-0');
-        order.push(order.shift());
-        layout();
-        animating = false;
-      }, 500);
-    };
-
-    if (nextBtn) nextBtn.addEventListener('click', advance);
-
-    // Grid-preview popover — lets visitors jump straight to a specific
-    // photo instead of clicking through the whole stack one by one.
-    const gridToggle = wrap.querySelector('.pf-stack-grid-toggle');
-    const preview = wrap.querySelector('.pf-stack-preview');
-    if (gridToggle && preview) {
-      preview.innerHTML = `
-        <button type="button" class="pf-stack-preview-close" aria-label="Vorschau schließen">&times;</button>
-        <p class="pf-stack-preview-label">Alle Bilder</p>
-        <div class="pf-stack-preview-grid"></div>
-      `;
-      const grid = preview.querySelector('.pf-stack-preview-grid');
-      photos.forEach((photo, idx) => {
-        const thumb = document.createElement('img');
-        thumb.src = photo.querySelector('img').src;
-        thumb.loading = 'lazy';
-        thumb.decoding = 'async';
-        thumb.alt = photo.querySelector('img').alt;
-        thumb.addEventListener('click', () => {
-          closePreview();
-          photos[idx].click();
+  // Portfolio "weitere Eindrücke" galleries — the section pins (position:
+  // sticky) while vertical scroll drives the photo track horizontally,
+  // right to left, then releases back into normal page scroll.
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduceMotion) {
+    const hscrolls = Array.from(document.querySelectorAll('.pf-hscroll')).map((section) => ({
+      section,
+      track: section.querySelector('.pf-hscroll-track'),
+    }));
+    if (hscrolls.length) {
+      const updateHscrolls = () => {
+        hscrolls.forEach(({ section, track }) => {
+          const total = section.offsetHeight - window.innerHeight;
+          if (total <= 0) return;
+          const progress = Math.min(1, Math.max(0, -section.getBoundingClientRect().top / total));
+          const maxShift = Math.max(0, track.scrollWidth - window.innerWidth + 160);
+          track.style.transform = `translateX(${-progress * maxShift}px)`;
         });
-        markImgLoaded(thumb);
-        grid.appendChild(thumb);
-      });
-
-      const openPreview = () => {
-        preview.classList.add('active');
-        gridToggle.classList.add('active');
-        gridToggle.setAttribute('aria-expanded', 'true');
       };
-      const closePreview = () => {
-        preview.classList.remove('active');
-        gridToggle.classList.remove('active');
-        gridToggle.setAttribute('aria-expanded', 'false');
-      };
-      gridToggle.addEventListener('click', () => {
-        preview.classList.contains('active') ? closePreview() : openPreview();
-      });
-      preview.querySelector('.pf-stack-preview-close').addEventListener('click', closePreview);
-      document.addEventListener('click', (e) => {
-        if (!wrap.contains(e.target)) closePreview();
-      });
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closePreview();
-      });
+      updateHscrolls();
+      window.addEventListener('scroll', updateHscrolls, { passive: true });
+      window.addEventListener('resize', updateHscrolls);
     }
-  });
+  }
 
   // GLightbox for portfolio galleries
   if (window.GLightbox) {
