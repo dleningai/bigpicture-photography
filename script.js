@@ -337,9 +337,19 @@ document.addEventListener('DOMContentLoaded', () => {
     if (nextBtn) nextBtn.addEventListener('click', advance);
   }
 
-  // GLightbox for portfolio galleries
+  // GLightbox for portfolio galleries — slide images are created fresh by
+  // GLightbox at runtime, so the sitewide blur-up loader never sees them and
+  // they'd stay stuck at opacity:0 (a black-looking lightbox). Mark them
+  // loaded the same way as any other image once their slide is ready.
   if (window.GLightbox) {
-    GLightbox({ selector: '.glightbox', touchNavigation: true, loop: true });
+    GLightbox({
+      selector: '.glightbox',
+      touchNavigation: true,
+      loop: true,
+      afterSlideLoad: ({ slide }) => {
+        slide.querySelectorAll('img').forEach(markImgLoaded);
+      },
+    });
   }
 
   // Preis-Rechner — 2-step price estimator in the Leistungen section.
