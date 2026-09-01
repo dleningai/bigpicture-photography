@@ -1463,28 +1463,8 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 .pf-fan-main img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; display: block; }
 .pf-fan-wrap { position: relative; max-width: var(--max-width); margin: 60px auto 130px; padding: 0 20px; }
 
-/* Mobile — the overlapping fan is hard to browse by touch, so it becomes a
-   swipeable snap-scroll carousel instead, main photo leading. */
-@media (max-width: 640px) {
-  .pf-fan-wrap { margin: 40px auto 60px; padding: 0; }
-  .pf-fan-wrap .about-photo-stack {
-    display: flex; overflow-x: auto; scroll-snap-type: x mandatory;
-    gap: 14px; max-width: none; margin: 0; padding: 0 12vw;
-    -webkit-overflow-scrolling: touch; scrollbar-width: none;
-  }
-  .pf-fan-wrap .about-photo-stack::-webkit-scrollbar { display: none; }
-  .pf-fan-wrap .about-side-photo {
-    position: relative; top: auto; left: auto; z-index: 1 !important;
-    flex: 0 0 76vw; width: auto; aspect-ratio: 3 / 4;
-    scroll-snap-align: center;
-    opacity: 1 !important; transform: none !important;
-    transition: none;
-  }
-  .pf-fan-wrap .pf-fan-main { flex: 0 0 76vw; max-width: none; order: -1; scroll-snap-align: center; }
-}
-
-/* Swipe hint — nudges the arrow left-right once to signal the carousel is
-   swipeable, fades out on first scroll (see script.js) or after a while. */
+/* Swipe hint — nudges the arrow left-right to signal the fan can be swiped
+   through, fades out on first swipe (see script.js). */
 .pf-swipe-hint {
   display: none;
   align-items: center; justify-content: center; gap: 8px;

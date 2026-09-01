@@ -2,13 +2,44 @@ document.addEventListener('DOMContentLoaded', () => {
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  // Portfolio photo-fan swipe hint — fades out the first time its carousel
-  // is actually scrolled, so it doesn't linger once the visitor gets it.
+  // Portfolio photo fan — swipe left/right cycles which photo occupies
+  // which slot (main + 4 fanned cards), keeping the fanned layout exactly
+  // as-is instead of switching to a different mobile layout. The category
+  // tag/fade stay put since they belong to the main slot, not a photo.
   document.querySelectorAll('.pf-fan-wrap').forEach((wrap) => {
-    const track = wrap.querySelector('.about-photo-stack');
+    const stack = wrap.querySelector('.about-photo-stack');
+    const mainSlot = wrap.querySelector('.pf-fan-main');
+    const sideSlots = Array.from(wrap.querySelectorAll('.about-side-photo'));
     const hint = wrap.querySelector('.pf-swipe-hint');
-    if (!track || !hint) return;
-    track.addEventListener('scroll', () => hint.classList.add('is-hidden'), { once: true, passive: true });
+    if (!stack || !mainSlot || !sideSlots.length) return;
+
+    const slots = [mainSlot, ...sideSlots];
+    const links = slots.map((slot) => slot.querySelector('a'));
+    const photos = links.map((a) => ({ href: a.href, src: a.querySelector('img').src, alt: a.querySelector('img').alt }));
+    let offset = 0;
+
+    const render = () => {
+      links.forEach((a, i) => {
+        const photo = photos[(i + offset) % photos.length];
+        const img = a.querySelector('img');
+        a.href = photo.href;
+        img.src = photo.src;
+        img.alt = photo.alt;
+      });
+    };
+
+    let startX = null;
+    stack.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; }, { passive: true });
+    stack.addEventListener('touchend', (e) => {
+      if (startX === null) return;
+      const dx = e.changedTouches[0].clientX - startX;
+      if (Math.abs(dx) > 40) {
+        offset = (offset + (dx < 0 ? 1 : -1) + photos.length) % photos.length;
+        render();
+        if (hint) hint.classList.add('is-hidden');
+      }
+      startX = null;
+    }, { passive: true });
   });
 
   // Boot-up intro — one-time-per-session HUD startup sequence on the
