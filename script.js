@@ -28,17 +28,52 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     };
 
+    // Live finger-tracking drag on the front card: it follows the touch
+    // 1:1 while dragging, flies off-screen on release past the threshold
+    // (swap happens while it's off-screen, then it settles back in from
+    // the opposite side), or springs back to centre below the threshold.
     let startX = null;
-    stack.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; }, { passive: true });
+    let dragging = false;
+
+    stack.addEventListener('touchstart', (e) => {
+      startX = e.touches[0].clientX;
+      dragging = true;
+      mainSlot.style.transition = 'none';
+    }, { passive: true });
+
+    stack.addEventListener('touchmove', (e) => {
+      if (!dragging || startX === null) return;
+      const dx = e.touches[0].clientX - startX;
+      mainSlot.style.transform = `translateX(${dx}px) rotate(${dx / 24}deg)`;
+    }, { passive: true });
+
     stack.addEventListener('touchend', (e) => {
-      if (startX === null) return;
+      if (!dragging || startX === null) return;
+      dragging = false;
       const dx = e.changedTouches[0].clientX - startX;
-      if (Math.abs(dx) > 40) {
-        offset = (offset + (dx < 0 ? 1 : -1) + photos.length) % photos.length;
-        render();
-        if (hint) hint.classList.add('is-hidden');
-      }
       startX = null;
+
+      if (Math.abs(dx) > 40) {
+        const dir = dx < 0 ? -1 : 1;
+        mainSlot.style.transition = 'transform 0.3s cubic-bezier(.4,0,1,1), opacity 0.3s ease';
+        mainSlot.style.transform = `translateX(${dir * 420}px) rotate(${dir * 18}deg)`;
+        mainSlot.style.opacity = '0';
+        if (hint) hint.classList.add('is-hidden');
+        setTimeout(() => {
+          offset = (offset + (dir < 0 ? 1 : -1) + photos.length) % photos.length;
+          render();
+          mainSlot.style.transition = 'none';
+          mainSlot.style.transform = `translateX(${-dir * 60}px) rotate(${-dir * 6}deg)`;
+          requestAnimationFrame(() => {
+            mainSlot.style.transition = 'transform 0.4s cubic-bezier(.2,.8,.2,1), opacity 0.3s ease';
+            mainSlot.style.transform = 'translateX(0) rotate(0deg)';
+            mainSlot.style.opacity = '1';
+          });
+        }, 260);
+      } else {
+        mainSlot.style.transition = 'transform 0.4s cubic-bezier(.2,.8,.2,1)';
+        mainSlot.style.transform = 'translateX(0) rotate(0deg)';
+      }
     }, { passive: true });
   });
 

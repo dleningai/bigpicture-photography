@@ -1463,25 +1463,40 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 .pf-fan-main img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; display: block; }
 .pf-fan-wrap { position: relative; max-width: var(--max-width); margin: 60px auto 130px; padding: 0 20px; }
 
-/* Swipe hint — nudges the arrow left-right to signal the fan can be swiped
-   through, fades out on first swipe (see script.js). */
+/* Swipe hint — a translucent overlay laid directly on the front card,
+   pulsing gently to signal it can be swiped through. Fades out on first
+   swipe (see script.js). */
 .pf-swipe-hint {
   display: none;
-  align-items: center; justify-content: center; gap: 8px;
-  margin: 14px auto 0;
-  font-family: var(--font-mono); font-size: 0.68rem; font-weight: 700;
-  letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint);
+  position: absolute; inset: 0; z-index: 5;
+  align-items: center; justify-content: center; gap: 10px;
+  pointer-events: none;
+  font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700;
+  letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6);
+  background: rgba(10, 10, 10, 0.28);
   opacity: 1; transition: opacity 0.5s ease;
+  animation: swipeHintPulse 2s ease-in-out infinite;
 }
-.pf-swipe-hint.is-hidden { opacity: 0; }
-.pf-swipe-hint-arrow { display: inline-flex; animation: swipeNudge 1.6s ease-in-out infinite; }
-@keyframes swipeNudge {
+.pf-swipe-hint.is-hidden { opacity: 0; animation: none; }
+.pf-swipe-hint-arrow { display: inline-flex; font-size: 1.1em; color: var(--gold-bright); }
+.pf-swipe-hint-arrow.left { animation: swipeArrowLeft 1.6s ease-in-out infinite; }
+.pf-swipe-hint-arrow.right { animation: swipeArrowRight 1.6s ease-in-out infinite; }
+@keyframes swipeHintPulse {
+  0%, 100% { opacity: 0.75; }
+  50% { opacity: 1; }
+}
+@keyframes swipeArrowLeft {
   0%, 100% { transform: translateX(0); }
-  50% { transform: translateX(6px); }
+  50% { transform: translateX(-5px); }
+}
+@keyframes swipeArrowRight {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(5px); }
 }
 @media (max-width: 640px) {
   .pf-swipe-hint { display: flex; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .pf-swipe-hint-arrow { animation: none; }
+  .pf-swipe-hint, .pf-swipe-hint-arrow.left, .pf-swipe-hint-arrow.right { animation: none; }
 }
