@@ -1047,28 +1047,45 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 .about-side-photo.pos-b.is-visible { transform: translate(calc(-50% - 258px), 12%) rotate(-7deg); transition-delay: 0.2s; }
 .about-side-photo.pos-c.is-visible { transform: translate(calc(-50% + 205px), 38%) rotate(6deg); transition-delay: 0.35s; }
 .about-side-photo.pos-d.is-visible { transform: translate(calc(-50% - 205px), -14%) rotate(-6deg); transition-delay: 0.5s; }
-.about-side-photo:hover { z-index: 3; box-shadow: 0 22px 44px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--gold); }
-.about-side-photo.pos-a:hover { transform: translate(calc(-50% + 260px), -20%) rotate(0deg) scale(1.08); }
-.about-side-photo.pos-b:hover { transform: translate(calc(-50% - 258px), 12%) rotate(0deg) scale(1.08); }
-.about-side-photo.pos-c:hover { transform: translate(calc(-50% + 205px), 38%) rotate(0deg) scale(1.08); }
-.about-side-photo.pos-d:hover { transform: translate(calc(-50% - 205px), -14%) rotate(0deg) scale(1.08); }
+/* Hover-only on devices that actually have a mouse — on touch, a :hover
+   rule on the tap target makes the first tap merely simulate hover and
+   swallows the click, so the card needs a second tap to actually open. */
+@media (hover: hover) and (pointer: fine) {
+  .about-side-photo:hover { z-index: 3; box-shadow: 0 22px 44px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--gold); }
+  .about-side-photo.pos-a:hover { transform: translate(calc(-50% + 260px), -20%) rotate(0deg) scale(1.08); }
+  .about-side-photo.pos-b:hover { transform: translate(calc(-50% - 258px), 12%) rotate(0deg) scale(1.08); }
+  .about-side-photo.pos-c:hover { transform: translate(calc(-50% + 205px), 38%) rotate(0deg) scale(1.08); }
+  .about-side-photo.pos-d:hover { transform: translate(calc(-50% - 205px), -14%) rotate(0deg) scale(1.08); }
+}
 @media (max-width: 900px) {
   .about-photo-stack { max-width: 460px; margin-bottom: 65px; }
   .about-photo-bleed { max-width: 300px; }
   .about-side-photo { width: 42%; }
-  .about-side-photo.pos-a.is-visible, .about-side-photo.pos-a:hover { transform: translate(calc(-50% + 148px), -18%) rotate(8deg); }
-  .about-side-photo.pos-b.is-visible, .about-side-photo.pos-b:hover { transform: translate(calc(-50% - 146px), 10%) rotate(-7deg); }
-  .about-side-photo.pos-c.is-visible, .about-side-photo.pos-c:hover { transform: translate(calc(-50% + 116px), 36%) rotate(6deg); }
-  .about-side-photo.pos-d.is-visible, .about-side-photo.pos-d:hover { transform: translate(calc(-50% - 116px), -12%) rotate(-6deg); }
+  .about-side-photo.pos-a.is-visible { transform: translate(calc(-50% + 148px), -18%) rotate(8deg); }
+  .about-side-photo.pos-b.is-visible { transform: translate(calc(-50% - 146px), 10%) rotate(-7deg); }
+  .about-side-photo.pos-c.is-visible { transform: translate(calc(-50% + 116px), 36%) rotate(6deg); }
+  .about-side-photo.pos-d.is-visible { transform: translate(calc(-50% - 116px), -12%) rotate(-6deg); }
+}
+@media (max-width: 900px) and (hover: hover) and (pointer: fine) {
+  .about-side-photo.pos-a:hover { transform: translate(calc(-50% + 148px), -18%) rotate(8deg); }
+  .about-side-photo.pos-b:hover { transform: translate(calc(-50% - 146px), 10%) rotate(-7deg); }
+  .about-side-photo.pos-c:hover { transform: translate(calc(-50% + 116px), 36%) rotate(6deg); }
+  .about-side-photo.pos-d:hover { transform: translate(calc(-50% - 116px), -12%) rotate(-6deg); }
 }
 @media (max-width: 640px) {
   .about-photo-stack { max-width: 340px; margin-bottom: 50px; }
   .about-photo-bleed { max-width: 230px; }
   .about-side-photo { width: 44%; }
-  .about-side-photo.pos-a.is-visible, .about-side-photo.pos-a:hover { transform: translate(calc(-50% + 108px), -16%) rotate(8deg); }
-  .about-side-photo.pos-b.is-visible, .about-side-photo.pos-b:hover { transform: translate(calc(-50% - 106px), 10%) rotate(-7deg); }
-  .about-side-photo.pos-c.is-visible, .about-side-photo.pos-c:hover { transform: translate(calc(-50% + 84px), 34%) rotate(6deg); }
-  .about-side-photo.pos-d.is-visible, .about-side-photo.pos-d:hover { transform: translate(calc(-50% - 84px), -10%) rotate(-6deg); }
+  .about-side-photo.pos-a.is-visible { transform: translate(calc(-50% + 108px), -16%) rotate(8deg); }
+  .about-side-photo.pos-b.is-visible { transform: translate(calc(-50% - 106px), 10%) rotate(-7deg); }
+  .about-side-photo.pos-c.is-visible { transform: translate(calc(-50% + 84px), 34%) rotate(6deg); }
+  .about-side-photo.pos-d.is-visible { transform: translate(calc(-50% - 84px), -10%) rotate(-6deg); }
+}
+@media (max-width: 640px) and (hover: hover) and (pointer: fine) {
+  .about-side-photo.pos-a:hover { transform: translate(calc(-50% + 108px), -16%) rotate(8deg); }
+  .about-side-photo.pos-b:hover { transform: translate(calc(-50% - 106px), 10%) rotate(-7deg); }
+  .about-side-photo.pos-c:hover { transform: translate(calc(-50% + 84px), 34%) rotate(6deg); }
+  .about-side-photo.pos-d:hover { transform: translate(calc(-50% - 84px), -10%) rotate(-6deg); }
 }
 @media (prefers-reduced-motion: reduce) {
   .about-side-photo { transition: opacity 0.4s ease; }
@@ -1445,3 +1462,46 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 }
 .pf-fan-main img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; display: block; }
 .pf-fan-wrap { position: relative; max-width: var(--max-width); margin: 60px auto 130px; padding: 0 20px; }
+
+/* Mobile — the overlapping fan is hard to browse by touch, so it becomes a
+   swipeable snap-scroll carousel instead, main photo leading. */
+@media (max-width: 640px) {
+  .pf-fan-wrap { margin: 40px auto 60px; padding: 0; }
+  .pf-fan-wrap .about-photo-stack {
+    display: flex; overflow-x: auto; scroll-snap-type: x mandatory;
+    gap: 14px; max-width: none; margin: 0; padding: 0 12vw;
+    -webkit-overflow-scrolling: touch; scrollbar-width: none;
+  }
+  .pf-fan-wrap .about-photo-stack::-webkit-scrollbar { display: none; }
+  .pf-fan-wrap .about-side-photo {
+    position: relative; top: auto; left: auto; z-index: 1 !important;
+    flex: 0 0 76vw; width: auto; aspect-ratio: 3 / 4;
+    scroll-snap-align: center;
+    opacity: 1 !important; transform: none !important;
+    transition: none;
+  }
+  .pf-fan-wrap .pf-fan-main { flex: 0 0 76vw; max-width: none; order: -1; scroll-snap-align: center; }
+}
+
+/* Swipe hint — nudges the arrow left-right once to signal the carousel is
+   swipeable, fades out on first scroll (see script.js) or after a while. */
+.pf-swipe-hint {
+  display: none;
+  align-items: center; justify-content: center; gap: 8px;
+  margin: 14px auto 0;
+  font-family: var(--font-mono); font-size: 0.68rem; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint);
+  opacity: 1; transition: opacity 0.5s ease;
+}
+.pf-swipe-hint.is-hidden { opacity: 0; }
+.pf-swipe-hint-arrow { display: inline-flex; animation: swipeNudge 1.6s ease-in-out infinite; }
+@keyframes swipeNudge {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(6px); }
+}
+@media (max-width: 640px) {
+  .pf-swipe-hint { display: flex; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pf-swipe-hint-arrow { animation: none; }
+}
