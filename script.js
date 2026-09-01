@@ -2,6 +2,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
+  // Portfolio photo-fan swipe hint — fades out the first time its carousel
+  // is actually scrolled, so it doesn't linger once the visitor gets it.
+  document.querySelectorAll('.pf-fan-wrap').forEach((wrap) => {
+    const track = wrap.querySelector('.about-photo-stack');
+    const hint = wrap.querySelector('.pf-swipe-hint');
+    if (!track || !hint) return;
+    track.addEventListener('scroll', () => hint.classList.add('is-hidden'), { once: true, passive: true });
+  });
+
   // Boot-up intro — one-time-per-session HUD startup sequence on the
   // homepage. The inline script in index.html already hides it instantly
   // for returning visitors this session; this only runs the typewriter for
