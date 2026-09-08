@@ -28,21 +28,6 @@ document.addEventListener('DOMContentLoaded', () => {
         gsap.ticker.lagSmoothing(0);
       }
     }
-
-    const heroBgImg = document.querySelector('.hero-bg img');
-    if (heroBgImg && window.gsap && window.ScrollTrigger && !reduceMotion) {
-      gsap.to(heroBgImg, {
-        yPercent: 10,
-        scale: 1.08,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: '.hero-photo',
-          start: 'top top',
-          end: 'bottom top',
-          scrub: true,
-        },
-      });
-    }
   } catch (err) {
     console.error('Scroll motion setup failed, continuing without it:', err);
   }
