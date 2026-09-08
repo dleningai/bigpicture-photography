@@ -3,7 +3,7 @@
    ========================================================== */
 
 :root {
-  --bg: #121212;
+  --bg: #000000;
   --bg-raised: #1b1b1b;
   --bg-panel: #161616;
   --ink: #ffffff;
@@ -64,7 +64,7 @@ body::before {
   position: absolute; inset: 0; z-index: 6;
   display: none; flex-direction: column; align-items: center; justify-content: center;
   gap: 32px;
-  background: var(--bg);
+  background: #000;
 }
 .hero-logo-intro.js-active { display: flex; }
 .hero-logo-intro img {
@@ -73,7 +73,7 @@ body::before {
   will-change: transform, opacity, filter;
 }
 .hero-logo-scroll-hint {
-  display: none;
+  display: flex;
   flex-direction: column; align-items: center; gap: 6px;
   font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase;
   color: var(--ink-faint);
@@ -86,9 +86,6 @@ body::before {
 @keyframes heroScrollHintBounce {
   0%, 100% { transform: translateY(0); opacity: 0.6; }
   50% { transform: translateY(8px); opacity: 1; }
-}
-@media (max-width: 760px) {
-  .hero-logo-scroll-hint { display: flex; }
 }
 @media (prefers-reduced-motion: reduce) {
   .hero-logo-scroll-hint { animation: none; }
