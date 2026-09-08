@@ -725,7 +725,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   box-shadow: 0 0 6px 1px rgba(222, 175, 103, 0.6);
   flex-shrink: 0;
 }
-.region-radar-fallback {
+.region-radar-fallback, .sr-only {
   position: absolute; width: 1px; height: 1px;
   padding: 0; margin: -1px; overflow: hidden;
   clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
