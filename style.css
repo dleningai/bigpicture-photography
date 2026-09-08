@@ -857,6 +857,58 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 }
 
 /* ==========================================================
+   Scroll progress — a fixed side rail with one dot per major section.
+   Hidden by default; script.js reveals it only when ScrollTrigger is
+   available to drive the fill/active states, so there's no dead UI when
+   the enhancement can't run.
+   ========================================================== */
+.scroll-progress {
+  position: fixed; right: 26px; top: 50%; transform: translateY(-50%);
+  z-index: 900;
+  display: none; flex-direction: column; align-items: center; gap: 18px;
+}
+.scroll-progress.js-active { display: flex; }
+.scroll-progress-track {
+  position: absolute; top: 0; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 1px;
+  background: var(--border);
+  z-index: -1;
+}
+.scroll-progress-fill {
+  position: absolute; top: 0; left: 0; width: 100%; height: 0%;
+  background: linear-gradient(180deg, var(--gold), var(--gold-bright));
+  box-shadow: 0 0 8px rgba(222, 175, 103, 0.6);
+}
+.scroll-progress-dot {
+  position: relative;
+  width: 16px; height: 16px;
+  display: flex; align-items: center; justify-content: center;
+}
+.scroll-progress-dot span {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--ink-faint);
+  transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+}
+.scroll-progress-dot.is-active span {
+  background: var(--gold-bright);
+  transform: scale(1.5);
+  box-shadow: 0 0 10px 2px rgba(222, 175, 103, 0.7);
+}
+.scroll-progress-dot::before {
+  content: attr(data-label);
+  position: absolute; right: 26px; top: 50%; transform: translateY(-50%);
+  font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--ink-dim);
+  white-space: nowrap;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.scroll-progress-dot:hover::before { opacity: 1; }
+@media (max-width: 900px) {
+  .scroll-progress { display: none !important; }
+}
+
+/* ==========================================================
    Sticky-Kontakt-Leiste
    ========================================================== */
 .sticky-cta {

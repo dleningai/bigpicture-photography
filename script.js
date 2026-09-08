@@ -109,6 +109,42 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }
     }
+
+    // Scroll progress rail — a fill bar + one dot per major section, so
+    // visitors always see where they are on the page. Hidden entirely
+    // unless ScrollTrigger can drive it.
+    const scrollProgress = document.getElementById('scrollProgress');
+    if (scrollProgress && hasScrollFx) {
+      const dots = Array.from(scrollProgress.querySelectorAll('.scroll-progress-dot'));
+      const sections = dots
+        .map((dot) => document.querySelector(dot.getAttribute('href')))
+        .filter(Boolean);
+      if (sections.length) {
+        scrollProgress.classList.add('js-active');
+        const fill = document.getElementById('scrollProgressFill');
+
+        ScrollTrigger.create({
+          trigger: document.body,
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: true,
+          onUpdate: (self) => {
+            if (fill) fill.style.height = `${self.progress * 100}%`;
+          },
+        });
+
+        sections.forEach((section, i) => {
+          ScrollTrigger.create({
+            trigger: section,
+            start: 'top center',
+            end: 'bottom center',
+            onToggle: (self) => {
+              if (self.isActive) dots.forEach((dot, j) => dot.classList.toggle('is-active', j === i));
+            },
+          });
+        });
+      }
+    }
   } catch (err) {
     console.error('Scroll motion setup failed, continuing without it:', err);
   }
