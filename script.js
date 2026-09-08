@@ -10,22 +10,60 @@ document.addEventListener('DOMContentLoaded', () => {
   // everything below it (boot intro, reveals, nav, etc.).
   try {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const hasScrollFx = window.gsap && window.ScrollTrigger && !reduceMotion;
+    if (hasScrollFx) gsap.registerPlugin(ScrollTrigger);
+
+    let lenis = null;
     if (window.Lenis && !reduceMotion) {
       // Native CSS smooth-scroll fights Lenis's own smoothing (both try to
       // animate the same scroll position independently), causing visible
       // stutter — disable it wherever Lenis is driving the page.
       document.documentElement.style.scrollBehavior = 'auto';
-      const lenis = new Lenis({ duration: 1.1, smoothWheel: true });
+      lenis = new Lenis({ duration: 1.1, smoothWheel: true });
       function raf(time) {
         lenis.raf(time);
         requestAnimationFrame(raf);
       }
       requestAnimationFrame(raf);
-
-      if (window.gsap && window.ScrollTrigger) {
-        gsap.registerPlugin(ScrollTrigger);
+      if (hasScrollFx) {
         lenis.on('scroll', ScrollTrigger.update);
         gsap.ticker.lagSmoothing(0);
+      }
+    }
+
+    // Pinned services sequence — the section holds scroll in place while
+    // crossfading through each service, only releasing once all four have
+    // been shown. Falls back to a plain scrolling stack (see CSS) when
+    // ScrollTrigger isn't available.
+    const servicesPin = document.getElementById('servicesPin');
+    if (servicesPin && hasScrollFx) {
+      const steps = Array.from(servicesPin.querySelectorAll('.services-pin-step'));
+      if (steps.length > 1) {
+        servicesPin.classList.add('js-pinned');
+        steps.forEach((step, i) => {
+          gsap.set(step, { opacity: i === 0 ? 1 : 0 });
+          step.classList.toggle('is-active', i === 0);
+        });
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: servicesPin,
+            start: 'top top',
+            end: () => `+=${window.innerHeight * (steps.length - 1)}`,
+            pin: true,
+            scrub: 0.4,
+            anticipatePin: 1,
+            onUpdate: (self) => {
+              const active = Math.min(steps.length - 1, Math.round(self.progress * (steps.length - 1)));
+              steps.forEach((step, i) => step.classList.toggle('is-active', i === active));
+            },
+          },
+        });
+        steps.forEach((step, i) => {
+          if (i === 0) return;
+          const prev = steps[i - 1];
+          tl.to(prev, { opacity: 0, duration: 0.5 }, `step${i}`)
+            .to(step, { opacity: 1, duration: 0.5 }, `step${i}`);
+        });
       }
     }
   } catch (err) {

@@ -782,60 +782,64 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   .services-marquee-track { animation: none; }
 }
 
-/* Borderless service list — a numbered index instead of cards. */
-.services-list { border-top: 1px solid var(--border); }
-.service-row {
-  position: relative;
-  display: flex; align-items: center; gap: 24px;
-  padding: 28px 6px;
-  text-decoration: none;
-  border-bottom: 1px solid var(--border);
-  transition: padding-left 0.3s ease, background 0.3s ease;
-}
-.service-row::before {
-  content: '';
-  position: absolute; inset: 0;
-  background: linear-gradient(90deg, var(--gold-soft), transparent 60%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-.service-row:hover {
-  padding-left: 18px;
-  background: rgba(255, 255, 255, 0.02);
-}
-.service-row:hover::before { opacity: 1; }
+/* Pinned services sequence — by default (no JS) a plain vertical stack, so
+   the content is always fully present and readable. When GSAP/ScrollTrigger
+   are available, script.js adds .js-pinned: the section is pinned in place
+   while scroll progress crossfades from one step to the next, only
+   releasing once all four have been shown. */
 .service-row-num {
-  position: relative;
+  display: block;
   font-family: var(--font-mono); font-size: 0.85rem; color: var(--gold);
-  min-width: 28px; flex-shrink: 0;
-}
-.service-row-main {
-  position: relative;
-  display: flex; flex-direction: column; gap: 6px;
-  flex: 1;
+  margin-bottom: 10px;
 }
 .service-row-title {
-  font-family: var(--font-heading); font-weight: 700;
-  font-size: clamp(1.15rem, 2.4vw, 1.5rem);
+  display: block;
+  font-family: var(--font-heading); font-weight: 800;
+  font-size: clamp(2.2rem, 6vw, 4rem);
   color: #fff;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
 }
 .service-row-text {
-  color: var(--ink-dim); font-size: 0.92rem; line-height: 1.6;
+  display: block;
+  color: var(--ink-dim); font-size: 1.05rem; line-height: 1.6;
   max-width: 560px;
 }
-.service-row-arrow {
-  position: relative;
-  font-size: 1.3rem; color: var(--gold);
-  transform: translateX(-6px);
-  opacity: 0;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-  flex-shrink: 0;
+.services-pin-inner {
+  border-top: 1px solid var(--border);
+  max-width: var(--max-width); margin: 0 auto; padding: 0 20px;
 }
-.service-row:hover .service-row-arrow { transform: translateX(0); opacity: 1; }
-@media (max-width: 640px) {
-  .service-row { align-items: flex-start; gap: 14px; padding: 22px 4px; }
-  .service-row-arrow { display: none; }
+.services-pin.js-pinned .services-pin-inner { max-width: none; padding: 0; }
+.services-pin-step {
+  padding: 64px 0;
+  border-bottom: 1px solid var(--border);
+}
+.services-pin.js-pinned {
+  height: 100vh;
+  overflow: hidden;
+}
+.services-pin.js-pinned .services-pin-inner {
+  position: relative;
+  height: 100%;
+  border-top: none;
+}
+.services-pin.js-pinned .services-pin-step {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center;
+  padding: 0 20px;
+  border-bottom: none;
+  opacity: 0;
+  visibility: hidden;
+}
+.services-pin.js-pinned .services-pin-step.is-active { visibility: visible; }
+@media (prefers-reduced-motion: reduce) {
+  .services-pin.js-pinned { height: auto; overflow: visible; }
+  .services-pin.js-pinned .services-pin-inner { height: auto; }
+  .services-pin.js-pinned .services-pin-step {
+    position: static; opacity: 1; visibility: visible;
+    text-align: left; padding: 64px 0; border-bottom: 1px solid var(--border);
+  }
 }
 
 /* ==========================================================
