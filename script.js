@@ -11,6 +11,10 @@ document.addEventListener('DOMContentLoaded', () => {
   try {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (window.Lenis && !reduceMotion) {
+      // Native CSS smooth-scroll fights Lenis's own smoothing (both try to
+      // animate the same scroll position independently), causing visible
+      // stutter — disable it wherever Lenis is driving the page.
+      document.documentElement.style.scrollBehavior = 'auto';
       const lenis = new Lenis({ duration: 1.1, smoothWheel: true });
       function raf(time) {
         lenis.raf(time);
