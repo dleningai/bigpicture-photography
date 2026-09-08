@@ -88,6 +88,27 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }
     }
+
+    // Reach statement — words light up one by one as the section scrolls
+    // through view, scrubbed to scroll position (not pinned, unlike the
+    // services sequence, for some rhythm variety between sections).
+    const reachText = document.getElementById('reachText');
+    if (reachText && hasScrollFx) {
+      const words = Array.from(reachText.querySelectorAll('.reach-word'));
+      if (words.length) {
+        reachText.classList.add('js-scrubbed');
+        ScrollTrigger.create({
+          trigger: reachText,
+          start: 'top 75%',
+          end: 'bottom 55%',
+          scrub: 0.3,
+          onUpdate: (self) => {
+            const lit = Math.round(self.progress * words.length);
+            words.forEach((word, i) => word.classList.toggle('is-lit', i < lit));
+          },
+        });
+      }
+    }
   } catch (err) {
     console.error('Scroll motion setup failed, continuing without it:', err);
   }
