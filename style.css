@@ -989,10 +989,10 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   margin-bottom: 4px;
 }
 .testi-photo.stack-pos-0 { transform: translateY(0) scale(1); opacity: 1; z-index: 5; filter: blur(0); }
-.testi-photo.stack-pos-1 { transform: translateY(14px) scale(0.97); opacity: 0.35; z-index: 4; pointer-events: none; filter: blur(1px); }
-.testi-photo.stack-pos-2 { transform: translateY(24px) scale(0.94); opacity: 0.16; z-index: 3; pointer-events: none; filter: blur(2px); }
-.testi-photo.stack-pos-3 { transform: translateY(32px) scale(0.91); opacity: 0; z-index: 2; pointer-events: none; }
-.testi-photo.stack-pos-4 { transform: translateY(36px) scale(0.88); opacity: 0; z-index: 1; pointer-events: none; }
+.testi-photo.stack-pos-1 { transform: translateY(10px) scale(0.96); opacity: 0.06; z-index: 4; pointer-events: none; filter: blur(6px); }
+.testi-photo.stack-pos-2 { transform: translateY(16px) scale(0.93); opacity: 0; z-index: 3; pointer-events: none; filter: blur(8px); }
+.testi-photo.stack-pos-3 { transform: translateY(20px) scale(0.9); opacity: 0; z-index: 2; pointer-events: none; }
+.testi-photo.stack-pos-4 { transform: translateY(24px) scale(0.87); opacity: 0; z-index: 1; pointer-events: none; }
 .testi-photo.stack-leaving {
   transition: transform 0.5s cubic-bezier(0.55, 0, 1, 0.45), opacity 0.4s ease;
   transform: translateY(-40px) scale(0.95);
