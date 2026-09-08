@@ -145,6 +145,26 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
+    // Section-fade bridges — a brief black curtain at each major section
+    // boundary instead of a hard cut. One shared fixed overlay, scrubbed
+    // in and back out per marker as it crosses the viewport.
+    const fadeCurtain = document.getElementById('fadeCurtain');
+    const bridges = Array.from(document.querySelectorAll('[data-bridge]'));
+    if (fadeCurtain && bridges.length && hasScrollFx) {
+      bridges.forEach((bridge) => {
+        gsap.timeline({
+          scrollTrigger: {
+            trigger: bridge,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 0.3,
+          },
+        })
+          .to(fadeCurtain, { opacity: 1, ease: 'power1.in' })
+          .to(fadeCurtain, { opacity: 0, ease: 'power1.out' });
+      });
+    }
+
     // Scroll progress rail — a fill bar + one dot per major section, so
     // visitors always see where they are on the page. Hidden entirely
     // unless ScrollTrigger can drive it.
