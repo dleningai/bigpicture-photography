@@ -38,6 +38,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (heroLogoIntro && hasScrollFx) {
       heroLogoIntro.classList.add('js-active');
       const heroLogoImg = heroLogoIntro.querySelector('img');
+      // Fix the starting point explicitly — otherwise GSAP captures
+      // whatever filter/scale the element happens to have at setup time
+      // (e.g. still the sitewide blur-up loader's blur) as the tween's
+      // "from" value, leaving the logo permanently soft-focused at rest.
+      gsap.set(heroLogoImg, { scale: 1, filter: 'blur(0px)' });
       const heroLogoTl = gsap.timeline({
         scrollTrigger: {
           trigger: '.hero-photo',

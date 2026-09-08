@@ -151,7 +151,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 /* These images already run their own reveal/compare animations with a
    dedicated filter — leave them out of the generic blur-up so the two
    don't fight over the filter property. */
-.about-photo-bleed img:not(.img-loaded), .ba-frame img:not(.img-loaded), .hero-bg img:not(.img-loaded) { opacity: 1; filter: none; }
+.about-photo-bleed img:not(.img-loaded), .ba-frame img:not(.img-loaded), .hero-bg img:not(.img-loaded), .hero-logo-intro img:not(.img-loaded) { opacity: 1; filter: none; }
 @media (prefers-reduced-motion: reduce) {
   img:not(.img-loaded) { opacity: 1; filter: none; }
 }
