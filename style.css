@@ -470,6 +470,13 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 @media (prefers-reduced-motion: reduce) {
   .hero-photo .hero-box > * { animation: none; }
 }
+.hero-photo .hero-eyebrow {
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--gold-bright);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+}
 .hero-photo .hero-cta { justify-content: flex-start; }
 @media (max-width: 760px) {
   .hero-photo .hero-box { text-align: center; margin: 0 auto; padding: 0 20px; }
