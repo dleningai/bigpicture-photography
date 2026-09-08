@@ -236,78 +236,44 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 
 .site-nav {
   position: fixed;
-  top: 20px; left: 50%;
-  transform: translateX(-50%);
+  top: 0; left: 0; right: 0;
   z-index: 1001;
-  display: flex; justify-content: center; align-items: center;
-  gap: 28px;
-  max-width: 92vw;
-  padding: 18px 36px;
-  border-radius: 999px;
-  background: linear-gradient(180deg, rgba(24, 24, 24, 0.98), rgba(12, 12, 12, 0.99));
-  border: 1px solid var(--gold-border);
-  backdrop-filter: blur(12px);
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+  display: flex; align-items: center;
+  gap: 32px;
+  padding: 24px clamp(20px, 5vw, 64px);
+  background: linear-gradient(180deg, rgba(10, 9, 8, 0.7), transparent);
   overflow: hidden;
-}
-.site-nav::before {
-  content: '';
-  position: absolute; top: 0; left: -30%; width: 30%; height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(222, 175, 103, 0.16), transparent);
-  pointer-events: none;
-  animation: navScan 1.3s ease-out 0.4s 1;
-}
-@keyframes navScan {
-  0% { left: -30%; opacity: 0; }
-  15% { opacity: 1; }
-  85% { opacity: 1; }
-  100% { left: 100%; opacity: 0; }
 }
 /* Per-category hover — no filled shape behind the text, just a lift,
    color change and a small light-sweep confined to that one word. */
 .site-nav a {
   position: relative; z-index: 1;
   display: inline-block;
-  padding: 2px 1px;
-  font-family: var(--font-mono); font-size: 0.84rem; font-weight: 700;
+  padding: 2px 1px 8px;
+  font-family: var(--font-mono); font-size: 0.82rem; font-weight: 700;
   letter-spacing: 0.08em; text-transform: uppercase;
   color: var(--ink-dim); text-decoration: none;
-  transition: color 0.2s ease, transform 0.2s ease;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+  transition: color 0.2s ease;
   white-space: nowrap;
 }
-.site-nav a:hover { color: var(--gold); transform: translateY(-1px); }
-.site-nav-a-inner { position: relative; display: inline-block; overflow: hidden; }
-.site-nav-a-inner::after {
-  content: '';
-  position: absolute;
-  top: 0; left: -60%;
-  width: 40%; height: 100%;
-  background: linear-gradient(115deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-  transform: skewX(-20deg);
-  transition: left 0.5s ease;
-  pointer-events: none;
-}
-.site-nav a:hover .site-nav-a-inner::after { left: 130%; }
-/* Active page — a small persistent pulsing dot instead of a hover-style
-   highlight, so "you are here" reads differently from a mouse-over. */
+.site-nav a:hover { color: var(--gold-bright); }
+.site-nav-a-inner { position: relative; display: inline-block; }
+/* Active page — a gold underline that grows in from the left, instead of
+   a pill/dot highlight. */
 .site-nav a.active { color: var(--gold); }
-.site-nav a.active::before {
+.site-nav a.active::after {
   content: '';
-  position: absolute; left: 50%; bottom: -7px; transform: translateX(-50%);
-  width: 4px; height: 4px; border-radius: 50%;
-  background: var(--gold);
-  box-shadow: 0 0 8px 2px rgba(222, 175, 103, 0.6);
-  animation: sidebarPulse 1.8s ease-in-out infinite;
+  position: absolute; left: 0; bottom: 0;
+  width: 100%; height: 2px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-bright));
+  box-shadow: 0 0 8px rgba(222, 175, 103, 0.6);
 }
-.site-nav-divider { position: relative; z-index: 1; width: 1px; height: 14px; background: var(--gold-border); flex-shrink: 0; }
+.site-nav-divider { display: none; }
 
 @media (max-width: 640px) {
-  .site-nav { gap: 14px; padding: 11px 18px; }
+  .site-nav { gap: 18px; padding: 18px 20px; }
   .site-nav a { font-size: 0.68rem; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .site-nav::before { animation: none; }
-  .site-nav a.active::before { animation: none; }
 }
 
 
