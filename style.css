@@ -366,8 +366,8 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   position: absolute; inset: -6% -6% -6% -6%;
   width: 112%; height: 112%;
   object-fit: cover;
-  object-position: 78% 30%;
-  filter: saturate(1.05) contrast(1.04);
+  object-position: 68% 22%;
+  filter: saturate(1) contrast(1.08);
   will-change: transform;
   animation: heroKenBurns 22s ease-in-out infinite alternate;
 }
