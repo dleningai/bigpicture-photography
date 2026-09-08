@@ -2,6 +2,49 @@ document.addEventListener('DOMContentLoaded', () => {
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
+  // Smooth scroll (Lenis) + scroll-driven hero parallax (GSAP). Both
+  // libraries are only loaded on pages that need them (currently just the
+  // homepage), so everything here is guarded.
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (window.Lenis && !reduceMotion) {
+    const lenis = new Lenis({ duration: 1.1, smoothWheel: true });
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    if (window.gsap && window.ScrollTrigger) {
+      gsap.registerPlugin(ScrollTrigger);
+      lenis.on('scroll', ScrollTrigger.update);
+      gsap.ticker.add((time) => lenis.raf(time * 1000));
+      gsap.ticker.lagSmoothing(0);
+    }
+  }
+
+  const heroBgImg = document.querySelector('.hero-bg img');
+  if (heroBgImg && window.gsap && window.ScrollTrigger && !reduceMotion) {
+    gsap.to(heroBgImg, {
+      yPercent: 10,
+      scale: 1.08,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '.hero-photo',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: true,
+      },
+    });
+    gsap.from('.hero-box > *', {
+      y: 24,
+      opacity: 0,
+      duration: 1,
+      stagger: 0.08,
+      ease: 'power2.out',
+      delay: 0.2,
+    });
+  }
+
   // Portfolio photo fan — swipe left/right cycles which photo occupies
   // which slot (main + 4 fanned cards), keeping the fanned layout exactly
   // as-is instead of switching to a different mobile layout. The category

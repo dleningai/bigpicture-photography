@@ -84,20 +84,16 @@
     <a href="kontakt.html"><span class="site-nav-a-inner">Kontakt</span></a>
   </nav>
 
-  <section class="hero" style="min-height:46vh;">
+  <section class="hero hero-photo" id="hero">
+    <div class="hero-bg" id="heroBg" aria-hidden="true">
+      <img src="assets/images/hero/slide-boxen.jpg" alt="" fetchpriority="high" />
+    </div>
     <div class="hero-fx" aria-hidden="true">
-      <div class="hero-fx-glow hero-fx-glow-b"></div>
       <div class="hero-fx-grain"></div>
-      <div class="hero-fx-bokeh"></div>
-      <div class="hero-fx-bokeh"></div>
-      <div class="hero-fx-bokeh"></div>
-      <div class="hero-fx-bokeh"></div>
+      <div class="hero-scrim"></div>
       <div class="hero-fx-vignette"></div>
     </div>
-    <div class="hero-box reveal">
-      <div class="hero-logo-badge">
-        <img src="assets/images/logo.png" alt="Big Picture Photography Logo" />
-      </div>
+    <div class="hero-box">
       <p class="hero-eyebrow">Fotograf &amp; Videograf aus Detmold</p>
       <h1 class="hero-title">Bilder &amp; Videos, die nicht nur gut aussehen – sondern wirken</h1>
       <p class="hero-sub">Für Events, Unternehmen und Sport: Content, der Aufmerksamkeit erzeugt, Vertrauen aufbaut und im Kopf bleibt.</p>
@@ -106,17 +102,16 @@
         <a href="portfolio.html" class="btn btn-ghost">Portfolio ansehen</a>
       </div>
     </div>
+    <div class="stats-strip hero-stats reveal">
+      <div class="stat"><span class="stat-val" data-target="100" data-suffix="+">0</span><span class="stat-label">Shootings</span></div>
+      <div class="stat-divider"></div>
+      <div class="stat"><span class="stat-val" data-target="10" data-suffix="+">0</span><span class="stat-label">Jahre Erfahrung</span></div>
+      <div class="stat-divider"></div>
+      <div class="stat"><span class="stat-val" data-target="5" data-suffix=" ★">0</span><span class="stat-label">Bewertung</span></div>
+      <div class="stat-divider"></div>
+      <div class="stat"><span class="stat-val" data-target="12" data-prefix="&lt; ">0</span><span class="stat-label">Stunden Antwortzeit</span></div>
+    </div>
   </section>
-
-  <div class="stats-strip reveal">
-    <div class="stat"><span class="stat-val" data-target="100" data-suffix="+">0</span><span class="stat-label">Shootings</span></div>
-    <div class="stat-divider"></div>
-    <div class="stat"><span class="stat-val" data-target="10" data-suffix="+">0</span><span class="stat-label">Jahre Erfahrung</span></div>
-    <div class="stat-divider"></div>
-    <div class="stat"><span class="stat-val" data-target="5" data-suffix=" ★">0</span><span class="stat-label">Bewertung</span></div>
-    <div class="stat-divider"></div>
-    <div class="stat"><span class="stat-val" data-target="12" data-prefix="&lt; ">0</span><span class="stat-label">Stunden Antwortzeit</span></div>
-  </div>
 
   <section class="section" id="leistungen">
     <div class="wrap">
@@ -321,6 +316,9 @@
     <button type="button" class="sticky-cta-close" id="stickyCtaClose" aria-label="Leiste schließen">&times;</button>
   </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lenis/1.1.18/lenis.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
