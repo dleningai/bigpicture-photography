@@ -325,8 +325,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Animated stat counters — staggered reveal with a HUD-style digit
   // scramble before each counter locks onto its real value.
-  const statStrip = document.querySelector('.stats-strip');
-  if (statStrip) {
+  const statStrips = document.querySelectorAll('.stats-strip, .stats-highlight');
+  if (statStrips.length) {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const statObserver = new IntersectionObserver(
       (entries) => {
@@ -401,7 +401,7 @@ document.addEventListener('DOMContentLoaded', () => {
       },
       { threshold: 0.4 }
     );
-    statObserver.observe(statStrip);
+    statStrips.forEach((el) => statObserver.observe(el));
   }
 
   // Testimonial photo stack — click the card or the arrow to flip the
