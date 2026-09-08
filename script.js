@@ -44,6 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
           start: 'top top',
           end: () => `+=${window.innerHeight * 0.8}`,
           scrub: true,
+          pin: true,
+          anticipatePin: 1,
         },
       });
       heroLogoTl
