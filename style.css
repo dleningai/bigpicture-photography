@@ -60,7 +60,8 @@ body::before {
    actually available, so the hero is never blocked without JS. */
 .hero-logo-intro {
   position: absolute; inset: 0; z-index: 6;
-  display: none; align-items: center; justify-content: center;
+  display: none; flex-direction: column; align-items: center; justify-content: center;
+  gap: 32px;
   background: var(--bg);
 }
 .hero-logo-intro.js-active { display: flex; }
@@ -68,6 +69,27 @@ body::before {
   width: min(420px, 70vw); height: auto;
   filter: drop-shadow(0 0 50px rgba(222, 175, 103, 0.45));
   will-change: transform, opacity, filter;
+}
+.hero-logo-scroll-hint {
+  display: none;
+  flex-direction: column; align-items: center; gap: 6px;
+  font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--ink-faint);
+  animation: heroScrollHintBounce 1.6s ease-in-out infinite;
+}
+.hero-logo-scroll-hint svg {
+  width: 18px; height: 18px;
+  fill: none; stroke: var(--gold); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+@keyframes heroScrollHintBounce {
+  0%, 100% { transform: translateY(0); opacity: 0.6; }
+  50% { transform: translateY(8px); opacity: 1; }
+}
+@media (max-width: 760px) {
+  .hero-logo-scroll-hint { display: flex; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-logo-scroll-hint { animation: none; }
 }
 
 /* Thin glowing scrollbar */
