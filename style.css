@@ -351,8 +351,12 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 }
 .hero-photo {
   min-height: 100vh;
-  padding-bottom: 110px;
+  padding-top: 190px;
+  padding-bottom: 90px;
   flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-end;
+  gap: 40px;
 }
 .hero-bg {
   position: absolute; inset: 0; z-index: -4;
@@ -362,15 +366,23 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   position: absolute; inset: -6% -6% -6% -6%;
   width: 112%; height: 112%;
   object-fit: cover;
-  object-position: 62% 32%;
+  object-position: 78% 30%;
   filter: saturate(1.05) contrast(1.04);
   will-change: transform;
+  animation: heroKenBurns 22s ease-in-out infinite alternate;
+}
+@keyframes heroKenBurns {
+  0% { transform: scale(1) translate(0, 0); }
+  100% { transform: scale(1.08) translate(-1.5%, -0.5%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-bg img { animation: none; }
 }
 .hero-scrim {
   position: absolute; inset: 0;
   background:
-    linear-gradient(180deg, rgba(10, 9, 8, 0.72) 0%, rgba(10, 9, 8, 0.32) 38%, rgba(10, 9, 8, 0.55) 72%, rgba(10, 9, 8, 0.95) 100%),
-    radial-gradient(ellipse 70% 55% at 50% 38%, rgba(10, 9, 8, 0.1), rgba(10, 9, 8, 0.68) 100%);
+    linear-gradient(100deg, rgba(8, 7, 6, 0.94) 0%, rgba(8, 7, 6, 0.82) 32%, rgba(8, 7, 6, 0.4) 55%, rgba(8, 7, 6, 0.12) 72%, transparent 88%),
+    linear-gradient(180deg, rgba(8, 7, 6, 0.55) 0%, transparent 18%, transparent 72%, rgba(8, 7, 6, 0.9) 100%);
 }
 .hero-stats {
   position: relative;
@@ -441,6 +453,17 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   margin: 0 auto;
   padding: 48px 28px 26px;
 }
+.hero-photo .hero-box {
+  text-align: left;
+  max-width: 620px;
+  margin: 0;
+  padding: 0 20px 0 clamp(20px, 6vw, 72px);
+}
+.hero-photo .hero-cta { justify-content: flex-start; }
+@media (max-width: 760px) {
+  .hero-photo .hero-box { text-align: center; margin: 0 auto; padding: 0 20px; }
+  .hero-photo .hero-cta { justify-content: center; }
+}
 .hero-logo-badge {
   position: relative;
   width: 216px; height: 216px;
@@ -509,10 +532,6 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   color: var(--ink-dim);
   line-height: 1.65;
   text-shadow: 0 2px 16px rgba(0, 0, 0, 0.5);
-}
-.hero-photo .hero-box {
-  margin-top: auto;
-  margin-bottom: auto;
 }
 .hero-cta { margin-top: 24px; display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
 
