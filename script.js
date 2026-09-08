@@ -43,11 +43,20 @@ document.addEventListener('DOMContentLoaded', () => {
       // (e.g. still the sitewide blur-up loader's blur) as the tween's
       // "from" value, leaving the logo permanently soft-focused at rest.
       gsap.set(heroLogoImg, { scale: 1, filter: 'blur(0px)' });
+      // Two phases in one pin: (1) logo zooms/blurs out revealing the
+      // photo, (2) only once that's done does the hero text slide down
+      // into view — instead of the text sitting there the whole time.
+      // The .js-hero-sequence class hands opacity/transform control on the
+      // hero text over to GSAP, switching off the CSS-only reveal so the
+      // two don't fight over the same properties.
+      document.querySelector('.hero-photo').classList.add('js-hero-sequence');
+      const heroTextEls = gsap.utils.toArray('.hero-box > *, .hero-stats');
+      gsap.set(heroTextEls, { opacity: 0, y: -36 });
       const heroLogoTl = gsap.timeline({
         scrollTrigger: {
           trigger: '.hero-photo',
           start: 'top top',
-          end: () => `+=${window.innerHeight * 0.8}`,
+          end: () => `+=${window.innerHeight * 1.5}`,
           scrub: true,
           pin: true,
           anticipatePin: 1,
@@ -55,7 +64,8 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       heroLogoTl
         .to(heroLogoImg, { scale: 5.5, filter: 'blur(24px)', ease: 'none' }, 0)
-        .to(heroLogoIntro, { autoAlpha: 0, ease: 'none' }, 0.15);
+        .to(heroLogoIntro, { autoAlpha: 0, ease: 'none' }, 0.15)
+        .to(heroTextEls, { opacity: 1, y: 0, ease: 'power2.out', stagger: 0.06 }, 0.55);
     }
 
     // Pinned services sequence — the section holds scroll in place while
