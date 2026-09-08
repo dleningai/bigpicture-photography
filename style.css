@@ -363,10 +363,10 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   overflow: hidden;
 }
 .hero-bg img {
-  position: absolute; inset: -3% -3% -3% -3%;
-  width: 106%; height: 106%;
+  position: absolute; inset: -25% -25% -25% -25%;
+  width: 150%; height: 150%;
   object-fit: cover;
-  object-position: 100% 42%;
+  object-position: 88% 40%;
   filter: saturate(1) contrast(1.08);
   will-change: transform;
   animation: heroKenBurns 22s ease-in-out infinite alternate;
