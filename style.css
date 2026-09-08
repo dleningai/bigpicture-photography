@@ -463,6 +463,11 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 @media (max-width: 760px) {
   .hero-photo .hero-box { text-align: center; margin: 0 auto; padding: 0 20px; }
   .hero-photo .hero-cta { justify-content: center; }
+  .hero-bg img { object-position: 62% 18%; }
+  .hero-scrim {
+    background:
+      linear-gradient(180deg, rgba(8, 7, 6, 0.6) 0%, rgba(8, 7, 6, 0.2) 22%, rgba(8, 7, 6, 0.55) 55%, rgba(8, 7, 6, 0.96) 100%);
+  }
 }
 .hero-logo-badge {
   position: relative;
