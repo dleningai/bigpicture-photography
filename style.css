@@ -147,10 +147,10 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 
 /* Staggered reveal — cards in the same grid ease in a beat apart instead of
    all at once, a small but noticeable "considered" touch. */
-.services-grid .reveal:nth-child(1), .about-grid .reveal:nth-child(1), .contact-items .reveal:nth-child(1) { transition-delay: 0s; }
-.services-grid .reveal:nth-child(2), .about-grid .reveal:nth-child(2), .contact-items .reveal:nth-child(2) { transition-delay: 0.09s; }
-.services-grid .reveal:nth-child(3), .about-grid .reveal:nth-child(3), .contact-items .reveal:nth-child(3) { transition-delay: 0.18s; }
-.services-grid .reveal:nth-child(4), .about-grid .reveal:nth-child(4), .contact-items .reveal:nth-child(4) { transition-delay: 0.27s; }
+.services-list .reveal:nth-child(1), .about-grid .reveal:nth-child(1), .contact-items .reveal:nth-child(1) { transition-delay: 0s; }
+.services-list .reveal:nth-child(2), .about-grid .reveal:nth-child(2), .contact-items .reveal:nth-child(2) { transition-delay: 0.09s; }
+.services-list .reveal:nth-child(3), .about-grid .reveal:nth-child(3), .contact-items .reveal:nth-child(3) { transition-delay: 0.18s; }
+.services-list .reveal:nth-child(4), .about-grid .reveal:nth-child(4), .contact-items .reveal:nth-child(4) { transition-delay: 0.27s; }
 
 /* Cursor-tracked glow — a soft, mouse-following highlight on premium
    interactive surfaces. JS (script.js) writes --mx/--my per pointer move. */
@@ -740,59 +740,91 @@ img.img-loaded { opacity: 1; filter: blur(0); }
    Services grid
    ========================================================== */
 
-.services-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 22px;
-}
-.service-card {
-  position: relative;
-  display: block;
+/* Marquee — endless scrolling ticker of service names, pure motion and
+   typography instead of another bordered box. */
+.services-marquee {
   overflow: hidden;
+  margin: 0 0 56px;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.services-marquee-track {
+  display: flex; align-items: center;
+  gap: 20px;
+  width: max-content;
+  white-space: nowrap;
+  animation: servicesMarquee 26s linear infinite;
+}
+.services-marquee-track span {
+  font-family: var(--font-heading); font-weight: 700;
+  font-size: clamp(1.3rem, 3.4vw, 2.1rem);
+  color: var(--ink-faint);
+  letter-spacing: -0.01em;
+}
+.services-marquee-dot { color: var(--gold); font-size: 0.9rem !important; }
+@keyframes servicesMarquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .services-marquee-track { animation: none; }
+}
+
+/* Borderless service list — a numbered index instead of cards. */
+.services-list { border-top: 1px solid var(--border); }
+.service-row {
+  position: relative;
+  display: flex; align-items: center; gap: 24px;
+  padding: 28px 6px;
   text-decoration: none;
-  padding: 22px;
-  border-radius: 18px;
-  background: radial-gradient(circle at top right, rgba(222, 175, 103, 0.05) 0%, transparent 32%),
-    linear-gradient(180deg, rgba(30, 30, 30, 0.96) 0%, rgba(18, 18, 18, 0.99) 100%);
-  border: 1px solid var(--gold-border);
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.24);
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  border-bottom: 1px solid var(--border);
+  transition: padding-left 0.3s ease, background 0.3s ease;
 }
-.service-card::before {
+.service-row::before {
   content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--gold) 50%, transparent);
-  background-size: 220% 100%;
-  animation: sidebarShimmer 6s ease-in-out infinite;
-  opacity: 0.5;
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, var(--gold-soft), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
-.service-card:hover {
-  transform: translateY(-5px);
-  border-color: rgba(222, 175, 103, 0.35);
-  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.32), 0 0 20px rgba(222, 175, 103, 0.14);
+.service-row:hover {
+  padding-left: 18px;
+  background: rgba(255, 255, 255, 0.02);
 }
-.service-top { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-.service-number {
-  min-width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;
+.service-row:hover::before { opacity: 1; }
+.service-row-num {
+  position: relative;
+  font-family: var(--font-mono); font-size: 0.85rem; color: var(--gold);
+  min-width: 28px; flex-shrink: 0;
+}
+.service-row-main {
+  position: relative;
+  display: flex; flex-direction: column; gap: 6px;
+  flex: 1;
+}
+.service-row-title {
+  font-family: var(--font-heading); font-weight: 700;
+  font-size: clamp(1.15rem, 2.4vw, 1.5rem);
+  color: #fff;
+  letter-spacing: -0.01em;
+}
+.service-row-text {
+  color: var(--ink-dim); font-size: 0.92rem; line-height: 1.6;
+  max-width: 560px;
+}
+.service-row-arrow {
+  position: relative;
+  font-size: 1.3rem; color: var(--gold);
+  transform: translateX(-6px);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
   flex-shrink: 0;
-  border-radius: 9px;
-  border: 1px solid rgba(222, 175, 103, 0.3);
-  background: rgba(222, 175, 103, 0.08);
-  color: var(--gold);
-  font-family: var(--font-mono); font-weight: 700; font-size: 0.8rem;
-  transition: 0.22s ease;
 }
-.service-card:hover .service-number {
-  border-color: var(--gold);
-  background: rgba(222, 175, 103, 0.18);
-  box-shadow: 0 0 12px rgba(222, 175, 103, 0.35);
+.service-row:hover .service-row-arrow { transform: translateX(0); opacity: 1; }
+@media (max-width: 640px) {
+  .service-row { align-items: flex-start; gap: 14px; padding: 22px 4px; }
+  .service-row-arrow { display: none; }
 }
-.service-card h3 {
-  margin: 0;
-  font-family: var(--font-mono); font-weight: 700; font-size: 0.86rem;
-  letter-spacing: 0.03em; text-transform: uppercase; color: #fff;
-}
-.service-card p { margin: 0; color: var(--ink-dim); font-size: 0.95rem; line-height: 1.65; }
 
 /* ==========================================================
    Preis-Rechner
