@@ -51,12 +51,12 @@ document.addEventListener('DOMContentLoaded', () => {
       // two don't fight over the same properties.
       document.querySelector('.hero-photo').classList.add('js-hero-sequence');
       const heroTextEls = gsap.utils.toArray('.hero-box > *, .hero-stats');
-      gsap.set(heroTextEls, { opacity: 0, y: -36 });
+      gsap.set(heroTextEls, { opacity: 0, x: '60vw' });
       const heroLogoTl = gsap.timeline({
         scrollTrigger: {
           trigger: '.hero-photo',
           start: 'top top',
-          end: () => `+=${window.innerHeight * 2.1}`,
+          end: () => `+=${window.innerHeight * 2.6}`,
           scrub: true,
           pin: true,
           anticipatePin: 1,
@@ -65,11 +65,18 @@ document.addEventListener('DOMContentLoaded', () => {
       heroLogoTl
         .to(heroLogoImg, { scale: 5.5, filter: 'blur(24px)', ease: 'none' }, 0)
         .to(heroLogoIntro, { autoAlpha: 0, ease: 'none' }, 0.15)
-        .to(heroTextEls, { opacity: 1, y: 0, ease: 'power2.out', stagger: 0.06 }, 0.55)
+        .to(heroTextEls, { opacity: 1, x: 0, ease: 'power2.out', stagger: 0.06 }, 0.55)
         // Phase 3: once the text has landed, further scrolling slides it
         // out to the left (behind the portrait) instead of it just
         // sitting there until the pin releases.
-        .to(heroTextEls, { opacity: 0, x: '-60vw', ease: 'power1.in', stagger: 0.04 }, 1.15);
+        .to(heroTextEls, { opacity: 0, x: '-60vw', ease: 'power1.in', stagger: 0.04 }, 1.15)
+        // Phase 4: a beat of black bridges into Leistungen instead of a
+        // hard cut — the photo pushes in slightly as it fades out. Scale
+        // the .hero-bg container, not the img (which already has its own
+        // CSS Ken Burns animation running — animating the same element
+        // from both would fight over the transform property).
+        .to('.hero-bg', { scale: 1.15, ease: 'power1.in' }, 1.5)
+        .to('#heroFadeOut', { opacity: 1, ease: 'power1.in' }, 1.55);
     }
 
     // Pinned services sequence — the section holds scroll in place while
