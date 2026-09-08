@@ -364,7 +364,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 }
 .hero-bg img {
   position: absolute; inset: -4% -4% -4% -4%;
-  width: 108%; height: 108%;
+  width: 108%; height: 108%; max-width: none;
   object-fit: cover;
   object-position: 68% 38%;
   filter: saturate(1) contrast(1.08);
