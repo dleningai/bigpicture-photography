@@ -628,6 +628,28 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 .stat-label { display: block; font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-faint); letter-spacing: 0.05em; margin-top: 4px; text-transform: uppercase; }
 .stat-divider { width: 1px; height: 40px; background: var(--border); }
 
+/* Stats highlight — the same numbers as the hero strip, restated as big
+   individual statement rows further down the page instead of repeating
+   the compact strip verbatim. */
+.stats-highlight { padding: 60px 0; }
+.stats-highlight .wrap { display: flex; flex-direction: column; }
+.stats-highlight-row {
+  display: flex; align-items: baseline; justify-content: center; gap: 22px;
+  padding: 28px 0;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.stats-highlight-row:first-child { border-top: 1px solid var(--border); }
+.stats-highlight-row .stat-val {
+  font-size: clamp(2.4rem, 7vw, 4.2rem);
+  text-shadow: 0 0 30px rgba(222, 175, 103, 0.4);
+}
+.stats-highlight-text {
+  font-family: var(--font-heading); font-weight: 700;
+  font-size: clamp(1.1rem, 2.4vw, 1.5rem);
+  color: var(--ink-dim);
+}
+
 /* ==========================================================
    Section heads
    ========================================================== */
