@@ -35,14 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
         scrub: true,
       },
     });
-    gsap.from('.hero-box > *', {
-      y: 24,
-      opacity: 0,
-      duration: 1,
-      stagger: 0.08,
-      ease: 'power2.out',
-      delay: 0.2,
-    });
   }
 
   // Portfolio photo fan — swipe left/right cycles which photo occupies
