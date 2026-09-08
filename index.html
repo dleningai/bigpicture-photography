@@ -62,18 +62,6 @@
 </head>
 <body>
 
-  <div class="boot-intro" id="bootIntro" aria-hidden="true">
-    <div class="boot-intro-lines" id="bootIntroLines"></div>
-    <div class="boot-intro-hint">Klicken zum Überspringen</div>
-  </div>
-  <script>
-    // Runs synchronously before paint so returning visitors this session
-    // never see a flash of the boot intro.
-    if (sessionStorage.getItem('bpIntroSeen')) {
-      document.getElementById('bootIntro').classList.add('boot-intro-hidden');
-    }
-  </script>
-
   <nav class="site-nav" aria-label="Hauptnavigation">
     <a href="index.html" class="active"><span class="site-nav-a-inner">Home</span></a>
     <span class="site-nav-divider" aria-hidden="true"></span>
@@ -84,20 +72,23 @@
     <a href="kontakt.html"><span class="site-nav-a-inner">Kontakt</span></a>
   </nav>
 
-  <section class="hero" style="min-height:46vh;">
+  <section class="hero hero-photo" id="hero">
+    <div class="hero-logo-intro" id="heroLogoIntro" aria-hidden="true">
+      <img src="assets/images/logo.png" alt="" />
+      <div class="hero-logo-scroll-hint">
+        <span>Scrollen</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg>
+      </div>
+    </div>
+    <div class="hero-bg" id="heroBg" aria-hidden="true">
+      <img src="assets/images/hero/dimitri-portrait-bw-2.png" alt="" fetchpriority="high" />
+    </div>
     <div class="hero-fx" aria-hidden="true">
-      <div class="hero-fx-glow hero-fx-glow-b"></div>
       <div class="hero-fx-grain"></div>
-      <div class="hero-fx-bokeh"></div>
-      <div class="hero-fx-bokeh"></div>
-      <div class="hero-fx-bokeh"></div>
-      <div class="hero-fx-bokeh"></div>
+      <div class="hero-scrim"></div>
       <div class="hero-fx-vignette"></div>
     </div>
-    <div class="hero-box reveal">
-      <div class="hero-logo-badge">
-        <img src="assets/images/logo.png" alt="Big Picture Photography Logo" />
-      </div>
+    <div class="hero-box">
       <p class="hero-eyebrow">Fotograf &amp; Videograf aus Detmold</p>
       <h1 class="hero-title">Bilder &amp; Videos, die nicht nur gut aussehen – sondern wirken</h1>
       <p class="hero-sub">Für Events, Unternehmen und Sport: Content, der Aufmerksamkeit erzeugt, Vertrauen aufbaut und im Kopf bleibt.</p>
@@ -106,67 +97,36 @@
         <a href="portfolio.html" class="btn btn-ghost">Portfolio ansehen</a>
       </div>
     </div>
+    <div class="stats-strip hero-stats reveal">
+      <div class="stat"><span class="stat-val" data-target="100" data-suffix="+">0</span><span class="stat-label">Shootings</span></div>
+      <div class="stat-divider"></div>
+      <div class="stat"><span class="stat-val" data-target="10" data-suffix="+">0</span><span class="stat-label">Jahre Erfahrung</span></div>
+      <div class="stat-divider"></div>
+      <div class="stat"><span class="stat-val" data-target="5" data-suffix=" ★">0</span><span class="stat-label">Bewertung</span></div>
+      <div class="stat-divider"></div>
+      <div class="stat"><span class="stat-val" data-target="12" data-prefix="&lt; ">0</span><span class="stat-label">Stunden Antwortzeit</span></div>
+    </div>
   </section>
 
-  <div class="stats-strip reveal">
-    <div class="stat"><span class="stat-val" data-target="100" data-suffix="+">0</span><span class="stat-label">Shootings</span></div>
-    <div class="stat-divider"></div>
-    <div class="stat"><span class="stat-val" data-target="10" data-suffix="+">0</span><span class="stat-label">Jahre Erfahrung</span></div>
-    <div class="stat-divider"></div>
-    <div class="stat"><span class="stat-val" data-target="5" data-suffix=" ★">0</span><span class="stat-label">Bewertung</span></div>
-    <div class="stat-divider"></div>
-    <div class="stat"><span class="stat-val" data-target="12" data-prefix="&lt; ">0</span><span class="stat-label">Stunden Antwortzeit</span></div>
-  </div>
-
-  <section class="section" id="leistungen">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <p class="label">Leistungen</p>
-        <h2>Was ich für dich produziere</h2>
-      </div>
-      <div class="services-grid">
-        <a href="https://wa.me/4916096290806?text=Hallo,%20ich%20interessiere%20mich%20für%20Eventfotografie.%20Können%20Sie%20mir%20mehr%20Infos%20geben?" class="service-card glow-card reveal" target="_blank" rel="noopener">
-          <div class="service-top"><div class="service-number">01</div><h3>Eventfotografie</h3></div>
-          <p>Echte Momente statt gestellter Bilder – ich halte dein Event so fest, wie es sich wirklich angefühlt hat.</p>
-        </a>
-        <a href="https://wa.me/4916096290806?text=Hallo,%20ich%20benötige%20professionelle%20Business%20und%20Branding%20Fotos.%20Können%20Sie%20mir%20ein%20Angebot%20machen?" class="service-card glow-card reveal" target="_blank" rel="noopener">
-          <div class="service-top"><div class="service-number">02</div><h3>Business &amp; Branding</h3></div>
-          <p>Bilder, die Vertrauen schaffen und dein Unternehmen professionell wirken lassen – nicht austauschbar, sondern klar positioniert.</p>
-        </a>
-        <a href="https://wa.me/4916096290806?text=Hallo,%20ich%20interessiere%20mich%20für%20Sportfotografie.%20Können%20Sie%20mir%20mehr%20Infos%20geben?" class="service-card glow-card reveal" target="_blank" rel="noopener">
-          <div class="service-top"><div class="service-number">03</div><h3>Sportfotografie</h3></div>
-          <p>Der richtige Moment entscheidet – ich fange genau die Sekunden ein, die Kraft, Fokus und Emotion transportieren.</p>
-        </a>
-        <a href="https://wa.me/4916096290806?text=Hallo,%20ich%20benötige%20Video%20Content%20für%20Social%20Media.%20Können%20Sie%20mir%20mehr%20Infos%20geben?" class="service-card glow-card reveal" target="_blank" rel="noopener">
-          <div class="service-top"><div class="service-number">04</div><h3>Videografie &amp; Content</h3></div>
-          <p>Content, der nicht ignoriert wird – Reels und Videos, die Aufmerksamkeit ziehen und deine Reichweite sichtbar steigern.</p>
-        </a>
-      </div>
-
-      <div class="calc reveal" id="priceCalc">
-        <div class="calc-step">
-          <div class="calc-step-label"><span class="calc-step-num">1</span> Was brauchst du?</div>
-          <div class="calc-options" id="calcCategory">
-            <button type="button" class="calc-opt" data-cat="event">Eventfotografie<small>Firmenfeiern, Konzerte</small></button>
-            <button type="button" class="calc-opt" data-cat="business">Business &amp; Branding<small>Portraits, Content</small></button>
-            <button type="button" class="calc-opt" data-cat="sport">Sportfotografie<small>Wettkämpfe, Vereine</small></button>
-            <button type="button" class="calc-opt" data-cat="video">Videografie &amp; Content<small>Reels, Imagefilm</small></button>
-          </div>
+  <section class="section" id="leistungen" style="padding-top:0; padding-bottom:0;">
+    <h2 class="sr-only">Leistungen: Eventfotografie, Business &amp; Branding, Sportfotografie, Videografie &amp; Content</h2>
+    <div class="services-pin" id="servicesPin">
+      <div class="services-pin-inner">
+        <div class="services-pin-step">
+          <span class="service-row-title">Eventfotografie</span>
+          <span class="service-row-text">Echte Momente statt gestellter Bilder – ich halte dein Event so fest, wie es sich wirklich angefühlt hat.</span>
         </div>
-
-        <div class="calc-step" id="calcScopeStep" style="display:none;">
-          <div class="calc-step-label"><span class="calc-step-num">2</span> Wie umfangreich?</div>
-          <div class="calc-options" id="calcScope"></div>
+        <div class="services-pin-step">
+          <span class="service-row-title">Business &amp; Branding</span>
+          <span class="service-row-text">Bilder, die Vertrauen schaffen und dein Unternehmen professionell wirken lassen.</span>
         </div>
-
-        <div class="calc-result" id="calcResult">
-          <div class="calc-result-label">Richtwert</div>
-          <div class="calc-price" id="calcPrice">—</div>
-          <p class="calc-price-note" id="calcNote"></p>
-          <div class="calc-cta">
-            <a href="#" class="btn btn-primary" id="calcWaBtn" target="_blank" rel="noopener">Jetzt per WhatsApp anfragen</a>
-            <span class="calc-cta-note">Nachricht ist schon vorausgefüllt</span>
-          </div>
+        <div class="services-pin-step">
+          <span class="service-row-title">Sportfotografie</span>
+          <span class="service-row-text">Der richtige Moment entscheidet – Kraft, Fokus und Emotion in einer Sekunde eingefangen.</span>
+        </div>
+        <div class="services-pin-step">
+          <span class="service-row-title">Videografie &amp; Content</span>
+          <span class="service-row-text">Content, der nicht ignoriert wird – Reels und Videos, die Reichweite sichtbar steigern.</span>
         </div>
       </div>
     </div>
@@ -175,48 +135,63 @@
   <section class="section" style="padding-top:0;">
     <div class="wrap">
       <div class="section-head reveal">
-        <p class="label">Einsatzgebiet</p>
         <h2>Fotograf &amp; Videograf für Detmold und die Region</h2>
         <p>Mein Standort ist Detmold — für Shootings und Produktionen bin ich in ganz Ostwestfalen-Lippe und darüber hinaus unterwegs.</p>
       </div>
-      <div class="region-radar reveal" aria-hidden="true">
-        <span class="region-radar-ring ring-1"></span>
-        <span class="region-radar-ring ring-2"></span>
-        <span class="region-radar-ring ring-3"></span>
-        <div class="region-radar-sweep"></div>
-        <div class="region-radar-center">
-          <span class="region-radar-center-dot"></span>
-          <span class="region-radar-center-label">Detmold</span>
+      <div class="region-map reveal" aria-hidden="true">
+        <svg class="region-map-lines" viewBox="-260 -220 520 440" preserveAspectRatio="xMidYMid meet">
+          <line x1="0" y1="0" x2="-36.8" y2="-63.7"></line>
+          <line x1="0" y1="0" x2="-14.3" y2="-81.0"></line>
+          <line x1="0" y1="0" x2="-61.0" y2="-61.0"></line>
+          <line x1="0" y1="0" x2="52.9" y2="63.0"></line>
+          <line x1="0" y1="0" x2="-100.7" y2="-100.7" class="far"></line>
+          <line x1="0" y1="0" x2="-48.7" y2="133.8" class="far"></line>
+          <line x1="0" y1="0" x2="-11.3" y2="-129.5" class="far"></line>
+          <line x1="0" y1="0" x2="-144.6" y2="-52.6" class="far"></line>
+          <line x1="0" y1="0" x2="-59.6" y2="-163.8" class="far"></line>
+          <line x1="0" y1="0" x2="173.6" y2="15.2" class="far"></line>
+          <line x1="0" y1="0" x2="-171.7" y2="120.2" class="far"></line>
+          <line x1="0" y1="0" x2="-160.6" y2="-134.8" class="far"></line>
+          <line x1="0" y1="0" x2="149.5" y2="-178.1" class="far"></line>
+        </svg>
+        <div class="region-map-center">
+          <span class="region-map-dot center"></span>
+          <span class="region-map-label center">Detmold</span>
         </div>
-        <div class="region-radar-node inner" style="--angle:-90deg;"><div class="region-radar-node-inner"><span class="region-radar-dot"></span>Lage</div></div>
-        <div class="region-radar-node inner" style="--angle:0deg;"><div class="region-radar-node-inner"><span class="region-radar-dot"></span>Bad Salzuflen</div></div>
-        <div class="region-radar-node inner" style="--angle:90deg;"><div class="region-radar-node-inner"><span class="region-radar-dot"></span>Lemgo</div></div>
-        <div class="region-radar-node inner" style="--angle:180deg;"><div class="region-radar-node-inner"><span class="region-radar-dot"></span>Horn-Bad Meinberg</div></div>
-        <div class="region-radar-node outer" style="--angle:-90deg;"><div class="region-radar-node-inner"><span class="region-radar-dot"></span>Bielefeld</div></div>
-        <div class="region-radar-node outer" style="--angle:-50deg;"><div class="region-radar-node-inner"><span class="region-radar-dot"></span>Paderborn</div></div>
-        <div class="region-radar-node outer" style="--angle:-10deg;"><div class="region-radar-node-inner"><span class="region-radar-dot"></span>Herford</div></div>
-        <div class="region-radar-node outer" style="--angle:30deg;"><div class="region-radar-node-inner"><span class="region-radar-dot"></span>Gütersloh</div></div>
-        <div class="region-radar-node outer" style="--angle:70deg;"><div class="region-radar-node-inner"><span class="region-radar-dot"></span>Minden</div></div>
-        <div class="region-radar-node outer" style="--angle:110deg;"><div class="region-radar-node-inner"><span class="region-radar-dot"></span>Hameln</div></div>
-        <div class="region-radar-node outer" style="--angle:150deg;"><div class="region-radar-node-inner"><span class="region-radar-dot"></span>Hamm</div></div>
-        <div class="region-radar-node outer" style="--angle:190deg;"><div class="region-radar-node-inner"><span class="region-radar-dot"></span>Osnabrück</div></div>
-        <div class="region-radar-node outer" style="--angle:230deg;"><div class="region-radar-node-inner"><span class="region-radar-dot"></span>Hannover</div></div>
+        <div class="region-map-node" style="--x:-7.08%; --y:-14.48%;"><span class="region-map-dot"></span><span class="region-map-label">Lage</span></div>
+        <div class="region-map-node" style="--x:-2.75%; --y:-18.41%;"><span class="region-map-dot"></span><span class="region-map-label">Bad Salzuflen</span></div>
+        <div class="region-map-node" style="--x:-11.73%; --y:-13.86%;"><span class="region-map-dot"></span><span class="region-map-label">Lemgo</span></div>
+        <div class="region-map-node" style="--x:10.17%; --y:14.32%;"><span class="region-map-dot"></span><span class="region-map-label">Horn-Bad Meinberg</span></div>
+        <div class="region-map-node far" style="--x:-19.37%; --y:-22.89%;"><span class="region-map-dot"></span><span class="region-map-label">Bielefeld</span></div>
+        <div class="region-map-node far" style="--x:-9.37%; --y:30.41%;"><span class="region-map-dot"></span><span class="region-map-label">Paderborn</span></div>
+        <div class="region-map-node far" style="--x:-2.17%; --y:-29.43%;"><span class="region-map-dot"></span><span class="region-map-label">Herford</span></div>
+        <div class="region-map-node far" style="--x:-27.81%; --y:-11.95%;"><span class="region-map-dot"></span><span class="region-map-label">Gütersloh</span></div>
+        <div class="region-map-node far" style="--x:-11.46%; --y:-37.23%;"><span class="region-map-dot"></span><span class="region-map-label">Minden</span></div>
+        <div class="region-map-node far" style="--x:33.38%; --y:3.45%;"><span class="region-map-dot"></span><span class="region-map-label">Hameln</span></div>
+        <div class="region-map-node far" style="--x:-33.02%; --y:27.32%;"><span class="region-map-dot"></span><span class="region-map-label">Hamm</span></div>
+        <div class="region-map-node far" style="--x:-30.88%; --y:-30.64%;"><span class="region-map-dot"></span><span class="region-map-label">Osnabrück</span></div>
+        <div class="region-map-node far" style="--x:28.75%; --y:-40.48%;"><span class="region-map-dot"></span><span class="region-map-label">Hannover</span></div>
       </div>
 
-      <div class="region-radar region-radar-mobile reveal" aria-hidden="true">
-        <span class="region-radar-ring ring-1"></span>
-        <span class="region-radar-ring ring-3"></span>
-        <div class="region-radar-sweep"></div>
-        <div class="region-radar-center">
-          <span class="region-radar-center-dot"></span>
-          <span class="region-radar-center-label">Detmold</span>
+      <div class="region-map region-map-mobile reveal" aria-hidden="true">
+        <svg class="region-map-lines" viewBox="-190 -190 380 380" preserveAspectRatio="xMidYMid meet">
+          <line x1="0" y1="0" x2="-61.0" y2="-61.0"></line>
+          <line x1="0" y1="0" x2="-14.3" y2="-81.0"></line>
+          <line x1="0" y1="0" x2="-100.7" y2="-100.7" class="far"></line>
+          <line x1="0" y1="0" x2="-48.7" y2="133.8" class="far"></line>
+          <line x1="0" y1="0" x2="149.5" y2="-178.1" class="far"></line>
+          <line x1="0" y1="0" x2="-160.6" y2="-134.8" class="far"></line>
+        </svg>
+        <div class="region-map-center">
+          <span class="region-map-dot center"></span>
+          <span class="region-map-label center">Detmold</span>
         </div>
-        <div class="region-radar-node outer" style="--angle:-90deg;"><div class="region-radar-node-inner"><span class="region-radar-dot"></span>Lemgo</div></div>
-        <div class="region-radar-node outer" style="--angle:-30deg;"><div class="region-radar-node-inner"><span class="region-radar-dot"></span>Bad Salzuflen</div></div>
-        <div class="region-radar-node outer" style="--angle:30deg;"><div class="region-radar-node-inner"><span class="region-radar-dot"></span>Bielefeld</div></div>
-        <div class="region-radar-node outer" style="--angle:90deg;"><div class="region-radar-node-inner"><span class="region-radar-dot"></span>Paderborn</div></div>
-        <div class="region-radar-node outer" style="--angle:150deg;"><div class="region-radar-node-inner"><span class="region-radar-dot"></span>Hannover</div></div>
-        <div class="region-radar-node outer" style="--angle:210deg;"><div class="region-radar-node-inner"><span class="region-radar-dot"></span>Osnabrück</div></div>
+        <div class="region-map-node" style="--x:-16.05%; --y:-16.05%;"><span class="region-map-dot"></span><span class="region-map-label">Lemgo</span></div>
+        <div class="region-map-node" style="--x:-3.76%; --y:-21.32%;"><span class="region-map-dot"></span><span class="region-map-label">Bad Salzuflen</span></div>
+        <div class="region-map-node far" style="--x:-26.5%; --y:-26.5%;"><span class="region-map-dot"></span><span class="region-map-label">Bielefeld</span></div>
+        <div class="region-map-node far" style="--x:-12.82%; --y:35.21%;"><span class="region-map-dot"></span><span class="region-map-label">Paderborn</span></div>
+        <div class="region-map-node far" style="--x:39.34%; --y:-46.87%;"><span class="region-map-dot"></span><span class="region-map-label">Hannover</span></div>
+        <div class="region-map-node far" style="--x:-42.26%; --y:-35.47%;"><span class="region-map-dot"></span><span class="region-map-label">Osnabrück</span></div>
       </div>
 
       <p class="region-radar-fallback">Detmold · Lage · Bad Salzuflen · Lemgo · Horn-Bad Meinberg · Bielefeld · Paderborn · Herford · Gütersloh · Minden · Hameln · Hamm · Osnabrück · Hannover · und ganz Ostwestfalen-Lippe (OWL)</p>
@@ -226,7 +201,6 @@
   <section class="section">
     <div class="wrap">
       <div class="section-head reveal">
-        <p class="label">Kundenstimmen</p>
         <h2>Was Kunden sagen</h2>
       </div>
       <div class="testi-stack-wrap reveal">
@@ -282,7 +256,6 @@
   <section class="section">
     <div class="wrap">
       <div class="panel cta-box glow-card reveal">
-        <p class="label">Lass uns starten</p>
         <h2>Lass uns dein Projekt einfach kurz durchsprechen.</h2>
         <p>Schreib mir direkt bei WhatsApp – ich gebe dir eine ehrliche Einschätzung und sage dir klar, was sinnvoll ist und was nicht.</p>
         <a href="https://wa.me/4916096290806?text=Hallo,%20ich%20h%C3%A4tte%20gern%20eine%20kurze%20Einsch%C3%A4tzung%20zu%20meinem%20Projekt." target="_blank" rel="noopener" class="btn btn-primary">Jetzt unverbindlich anfragen</a>
@@ -321,6 +294,9 @@
     <button type="button" class="sticky-cta-close" id="stickyCtaClose" aria-label="Leiste schließen">&times;</button>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

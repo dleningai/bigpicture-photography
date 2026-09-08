@@ -53,41 +53,43 @@ body::before {
   mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 0%, transparent 75%);
 }
 
-/* Boot-up intro — a one-time-per-session HUD "system startup" overlay on
-   the homepage. Skippable by click/keypress, respects reduced-motion, and
-   never re-shows once dismissed within the same browser session. */
-.boot-intro {
-  position: fixed; inset: 0; z-index: 9999;
+/* Hero logo intro — a curtain over the hero that fades/scales out as the
+   visitor scrolls, tied directly to scroll position (GSAP scrub) rather
+   than a timer, so scrolling back up brings it right back. Hidden by
+   default: only script.js activates it, and only when ScrollTrigger is
+   actually available, so the hero is never blocked without JS. */
+.hero-logo-intro {
+  position: absolute; inset: 0; z-index: 6;
+  display: none; flex-direction: column; align-items: center; justify-content: center;
+  gap: 32px;
   background: var(--bg);
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 24px;
-  cursor: pointer;
-  transition: opacity 0.5s ease, visibility 0.5s;
 }
-.boot-intro.boot-intro-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-.boot-intro-lines {
-  font-family: var(--font-mono); font-size: clamp(0.82rem, 2.2vw, 1.05rem);
-  color: var(--gold);
-  text-align: left;
-  min-height: 5.5em;
-  letter-spacing: 0.02em;
+.hero-logo-intro.js-active { display: flex; }
+.hero-logo-intro img {
+  width: min(420px, 70vw); height: auto;
+  filter: drop-shadow(0 0 50px rgba(222, 175, 103, 0.45));
+  will-change: transform, opacity, filter;
 }
-.boot-intro-lines div { margin: 0 0 10px; opacity: 0.92; }
-.boot-intro-lines div:last-child { margin-bottom: 0; }
-.boot-intro-cursor {
-  display: inline-block; width: 0.55em; height: 1em; margin-left: 2px;
-  background: var(--gold); vertical-align: -0.15em;
-  animation: bootCursorBlink 0.9s step-end infinite;
-}
-@keyframes bootCursorBlink { 50% { opacity: 0; } }
-.boot-intro-hint {
-  font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
+.hero-logo-scroll-hint {
+  display: none;
+  flex-direction: column; align-items: center; gap: 6px;
+  font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase;
   color: var(--ink-faint);
-  opacity: 0; transition: opacity 0.4s ease 0.6s;
+  animation: heroScrollHintBounce 1.6s ease-in-out infinite;
 }
-.boot-intro.boot-intro-ready .boot-intro-hint { opacity: 0.7; }
+.hero-logo-scroll-hint svg {
+  width: 18px; height: 18px;
+  fill: none; stroke: var(--gold); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+@keyframes heroScrollHintBounce {
+  0%, 100% { transform: translateY(0); opacity: 0.6; }
+  50% { transform: translateY(8px); opacity: 1; }
+}
+@media (max-width: 760px) {
+  .hero-logo-scroll-hint { display: flex; }
+}
 @media (prefers-reduced-motion: reduce) {
-  .boot-intro { display: none; }
+  .hero-logo-scroll-hint { animation: none; }
 }
 
 /* Thin glowing scrollbar */
@@ -110,10 +112,6 @@ a { color: inherit; }
 .label, .hero-eyebrow {
   display: inline-block;
   margin-bottom: 14px;
-  padding: 7px 14px;
-  border-radius: 999px;
-  background: var(--gold-soft);
-  border: 1px solid var(--gold-border);
   color: var(--gold);
   font-family: var(--font-mono);
   font-size: 0.74rem;
@@ -132,6 +130,19 @@ a { color: inherit; }
   .reveal { opacity: 1; transform: none; transition: none; }
 }
 
+/* Stronger "arrival" reveal for headline-style moments (the services
+   marquee) — a bigger scale + blur-in so the eye catches it instead of
+   scrolling straight past a section that's already mid-animation. */
+.marquee-reveal {
+  opacity: 0; transform: scale(0.85);
+  filter: blur(6px);
+  transition: opacity 0.8s cubic-bezier(.16, .84, .44, 1), transform 0.8s cubic-bezier(.16, .84, .44, 1), filter 0.8s ease;
+}
+.marquee-reveal.is-visible { opacity: 1; transform: scale(1); filter: blur(0); }
+@media (prefers-reduced-motion: reduce) {
+  .marquee-reveal { opacity: 1; transform: none; filter: none; transition: none; }
+}
+
 /* Blur-up image load — photos ease in from a soft blur instead of popping
    in hard the instant they finish downloading. */
 img { transition: opacity 0.6s ease, filter 0.6s ease; }
@@ -140,17 +151,17 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 /* These images already run their own reveal/compare animations with a
    dedicated filter — leave them out of the generic blur-up so the two
    don't fight over the filter property. */
-.about-photo-bleed img:not(.img-loaded), .ba-frame img:not(.img-loaded) { opacity: 1; filter: none; }
+.about-photo-bleed img:not(.img-loaded), .ba-frame img:not(.img-loaded), .hero-bg img:not(.img-loaded) { opacity: 1; filter: none; }
 @media (prefers-reduced-motion: reduce) {
   img:not(.img-loaded) { opacity: 1; filter: none; }
 }
 
 /* Staggered reveal — cards in the same grid ease in a beat apart instead of
    all at once, a small but noticeable "considered" touch. */
-.services-grid .reveal:nth-child(1), .about-grid .reveal:nth-child(1), .contact-items .reveal:nth-child(1) { transition-delay: 0s; }
-.services-grid .reveal:nth-child(2), .about-grid .reveal:nth-child(2), .contact-items .reveal:nth-child(2) { transition-delay: 0.09s; }
-.services-grid .reveal:nth-child(3), .about-grid .reveal:nth-child(3), .contact-items .reveal:nth-child(3) { transition-delay: 0.18s; }
-.services-grid .reveal:nth-child(4), .about-grid .reveal:nth-child(4), .contact-items .reveal:nth-child(4) { transition-delay: 0.27s; }
+.services-list .reveal:nth-child(1), .about-grid .reveal:nth-child(1), .contact-items .reveal:nth-child(1) { transition-delay: 0s; }
+.services-list .reveal:nth-child(2), .about-grid .reveal:nth-child(2), .contact-items .reveal:nth-child(2) { transition-delay: 0.09s; }
+.services-list .reveal:nth-child(3), .about-grid .reveal:nth-child(3), .contact-items .reveal:nth-child(3) { transition-delay: 0.18s; }
+.services-list .reveal:nth-child(4), .about-grid .reveal:nth-child(4), .contact-items .reveal:nth-child(4) { transition-delay: 0.27s; }
 
 /* Cursor-tracked glow — a soft, mouse-following highlight on premium
    interactive surfaces. JS (script.js) writes --mx/--my per pointer move. */
@@ -349,6 +360,59 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   padding: 105px 20px 80px;
   background: var(--bg);
 }
+.hero-photo {
+  min-height: 100vh;
+  padding-top: 190px;
+  padding-bottom: 90px;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-end;
+  gap: 40px;
+}
+.hero-bg {
+  position: absolute; inset: 0; z-index: -4;
+  overflow: hidden;
+}
+.hero-bg img {
+  position: absolute; inset: -4% -4% -4% -4%;
+  width: 108%; height: 108%; max-width: none;
+  object-fit: cover;
+  object-position: 68% 38%;
+  filter: saturate(1) contrast(1.08);
+  will-change: transform;
+  animation: heroKenBurns 22s ease-in-out infinite alternate;
+}
+@keyframes heroKenBurns {
+  0% { transform: scale(1) translate(0, 0); }
+  100% { transform: scale(1.08) translate(-1.5%, -0.5%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-bg img { animation: none; }
+}
+.hero-scrim {
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(100deg, rgba(8, 7, 6, 0.94) 0%, rgba(8, 7, 6, 0.82) 32%, rgba(8, 7, 6, 0.4) 55%, rgba(8, 7, 6, 0.12) 72%, transparent 88%),
+    linear-gradient(180deg, rgba(8, 7, 6, 0.55) 0%, transparent 18%, transparent 72%, rgba(8, 7, 6, 0.9) 100%);
+}
+.stats-strip.hero-stats {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  justify-content: flex-start;
+  gap: 36px;
+  padding: 0 20px 0 clamp(20px, 6vw, 72px);
+  border: none;
+  background: none;
+  box-shadow: none;
+  border-radius: 0;
+  overflow: visible;
+}
+.stats-strip.hero-stats::before { display: none; }
+.hero-stats .stat-divider { background: rgba(255, 255, 255, 0.16); }
+@media (max-width: 760px) {
+  .stats-strip.hero-stats { justify-content: center; gap: 22px; padding: 0 20px; }
+}
 .hero-fx {
   position: absolute; inset: 0; z-index: -3; overflow: hidden;
   -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 78%, transparent 100%);
@@ -413,6 +477,40 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   margin: 0 auto;
   padding: 48px 28px 26px;
 }
+.hero-photo .hero-box {
+  text-align: left;
+  max-width: 620px;
+  margin: 0;
+  padding: 0 20px 0 clamp(20px, 6vw, 72px);
+}
+.hero-photo .hero-box > * { animation: heroTextIn 0.8s ease-out both; }
+.hero-photo .hero-box > *:nth-child(2) { animation-delay: 0.08s; }
+.hero-photo .hero-box > *:nth-child(3) { animation-delay: 0.16s; }
+.hero-photo .hero-box > *:nth-child(4) { animation-delay: 0.24s; }
+@keyframes heroTextIn {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-photo .hero-box > * { animation: none; }
+}
+.hero-photo .hero-eyebrow {
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--gold-bright);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+}
+.hero-photo .hero-cta { justify-content: flex-start; }
+@media (max-width: 760px) {
+  .hero-photo .hero-box { text-align: center; margin: 0 auto; padding: 0 20px; }
+  .hero-photo .hero-cta { justify-content: center; }
+  .hero-bg img { object-position: 78% 30%; }
+  .hero-scrim {
+    background:
+      linear-gradient(180deg, rgba(8, 7, 6, 0.6) 0%, rgba(8, 7, 6, 0.2) 22%, rgba(8, 7, 6, 0.55) 55%, rgba(8, 7, 6, 0.96) 100%);
+  }
+}
 .hero-logo-badge {
   position: relative;
   width: 216px; height: 216px;
@@ -468,17 +566,19 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   .hero-logo-badge::before, .hero-logo-badge::after { animation: none; }
 }
 .hero-title {
-  font-size: clamp(1.7rem, 5vw, 2.6rem);
-  font-weight: 800; line-height: 1.22; letter-spacing: -0.02em;
+  font-size: clamp(1.9rem, 5.6vw, 3.1rem);
+  font-weight: 800; line-height: 1.18; letter-spacing: -0.02em;
   color: #f7e3b4;
   margin: 0;
   text-wrap: balance;
+  text-shadow: 0 4px 28px rgba(0, 0, 0, 0.55);
 }
 .hero-sub {
   margin-top: 14px;
-  font-size: 0.98rem; font-weight: 500; letter-spacing: 0.02em;
+  font-size: 1.02rem; font-weight: 500; letter-spacing: 0.02em;
   color: var(--ink-dim);
   line-height: 1.65;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.5);
 }
 .hero-cta { margin-top: 24px; display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
 
@@ -566,102 +666,63 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 .section-head h2 { font-size: clamp(1.7rem, 4vw, 2.3rem); font-weight: 800; color: var(--ink); margin: 0 0 12px; text-wrap: balance; }
 .section-head p:not(.label) { color: var(--ink-dim); font-size: 0.98rem; line-height: 1.8; margin: 0; }
 
-/* Region radar — an abstract, futuristic stand-in for a map: Detmold at the
-   center, service-area cities placed radially, with a rotating sweep like a
-   radar screen. Avoids needing real map tiles while still reading as "here's
-   where I work". */
-.region-radar {
+/* Region map — Detmold at the center with service-area cities placed by
+   their real approximate compass bearing and distance (distance scaled by
+   sqrt so the farthest towns don't blow out the layout), connected by thin
+   lines like a network diagram. Reads as an actual map of where the
+   business operates instead of an abstract, evenly-spaced radar. */
+.region-map {
   position: relative;
-  width: min(560px, 92vw); height: min(560px, 92vw);
+  width: min(680px, 94vw); aspect-ratio: 520 / 440;
   margin: 40px auto 0;
-  border-radius: 50%;
 }
-.region-radar-ring {
+.region-map-lines {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  overflow: visible;
+}
+.region-map-lines line {
+  stroke: var(--gold-border); stroke-width: 1; stroke-dasharray: 3 4;
+}
+.region-map-lines line.far { stroke: rgba(255, 255, 255, 0.08); }
+.region-map-center, .region-map-node {
   position: absolute; top: 50%; left: 50%;
-  border-radius: 50%;
-  border: 1px dashed var(--gold-border);
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
   transform: translate(-50%, -50%);
 }
-.region-radar-ring.ring-1 { width: 46%; height: 46%; }
-.region-radar-ring.ring-2 { width: 90%; height: 90%; }
-.region-radar-ring.ring-3 { width: 100%; height: 100%; border-style: solid; }
-.region-radar-sweep {
-  position: absolute; inset: 0;
-  border-radius: 50%;
-  background: conic-gradient(from 0deg, rgba(222, 175, 103, 0.4), transparent 22%, transparent 100%);
-  animation: radarSweep 7s linear infinite;
-  pointer-events: none;
-}
-@keyframes radarSweep { to { transform: rotate(360deg); } }
-.region-radar-center {
-  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-  display: flex; flex-direction: column; align-items: center; gap: 6px;
-  z-index: 2;
-}
-.region-radar-center-dot {
-  width: 10px; height: 10px; border-radius: 50%;
-  background: var(--gold);
-  box-shadow: 0 0 0 4px rgba(222, 175, 103, 0.18), 0 0 16px 4px rgba(222, 175, 103, 0.5);
-  animation: navDotPulse 1.8s ease-in-out infinite;
-}
-.region-radar-center-label {
-  font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700;
-  letter-spacing: 0.06em; text-transform: uppercase; color: var(--gold-bright);
-  white-space: nowrap;
-}
-.region-radar-node {
-  position: absolute; top: 50%; left: 50%;
-  width: 0; height: 0;
-}
-.region-radar-node-inner {
-  position: absolute;
-  display: flex; align-items: center; gap: 7px;
-  padding: 6px 12px;
-  border: 1px solid var(--gold-border);
-  border-radius: 999px;
-  background: rgba(18, 18, 18, 0.85);
-  backdrop-filter: blur(2px);
-  font-family: var(--font-mono); font-size: 0.68rem; font-weight: 700;
-  letter-spacing: 0.02em; color: var(--ink-dim);
-  white-space: nowrap;
-}
-.region-radar-node.inner .region-radar-node-inner {
-  transform: rotate(var(--angle)) translate(min(24vw, 122px)) rotate(calc(-1 * var(--angle))) translate(-50%, -50%);
-}
-.region-radar-node.outer .region-radar-node-inner {
-  transform: rotate(var(--angle)) translate(min(46vw, 250px)) rotate(calc(-1 * var(--angle))) translate(-50%, -50%);
-  font-size: 0.72rem; font-weight: 700; color: var(--gold-bright);
-  border-color: rgba(222, 175, 103, 0.3);
-}
-.region-radar-node.outer .region-radar-dot { width: 6px; height: 6px; }
-.region-radar-dot {
+.region-map-node { left: calc(50% + var(--x)); top: calc(50% + var(--y)); }
+.region-map-dot {
   width: 5px; height: 5px; border-radius: 50%;
   background: var(--gold);
   box-shadow: 0 0 6px 1px rgba(222, 175, 103, 0.6);
   flex-shrink: 0;
 }
-.region-radar-fallback {
+.region-map-dot.center {
+  width: 10px; height: 10px;
+  box-shadow: 0 0 0 4px rgba(222, 175, 103, 0.18), 0 0 16px 4px rgba(222, 175, 103, 0.5);
+  animation: navDotPulse 1.8s ease-in-out infinite;
+}
+.region-map-label {
+  font-family: var(--font-mono); font-size: 0.68rem; font-weight: 700;
+  letter-spacing: 0.02em; color: var(--ink-dim);
+  white-space: nowrap;
+}
+.region-map-node.far .region-map-label { color: var(--gold-bright); }
+.region-map-label.center {
+  font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--gold-bright);
+}
+.region-map-mobile { display: none; }
+@media (max-width: 720px) {
+  .region-map:not(.region-map-mobile) { display: none; }
+  .region-map-mobile {
+    display: block;
+    width: min(380px, 88vw); aspect-ratio: 1;
+  }
+}
+.region-radar-fallback, .sr-only {
   position: absolute; width: 1px; height: 1px;
   padding: 0; margin: -1px; overflow: hidden;
   clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
-}
-
-/* Below ~720px, 13 city pills packed into two concentric rings gets
-   cramped and hard to read. Swap to a reduced single-ring radar with
-   just the 6 most relevant cities instead — same sweep/pulse
-   animation, no crowding. */
-.region-radar-mobile { display: none; }
-@media (max-width: 720px) {
-  .region-radar:not(.region-radar-mobile) { display: none; }
-  .region-radar-mobile {
-    display: block;
-    width: min(360px, 84vw); height: min(360px, 84vw);
-  }
-  .region-radar-mobile .region-radar-node.outer .region-radar-node-inner {
-    transform: rotate(var(--angle)) translate(min(40vw, 172px)) rotate(calc(-1 * var(--angle))) translate(-50%, -50%);
-    font-size: 0.66rem;
-    padding: 5px 10px;
-  }
 }
 
 /* ==========================================================
@@ -687,59 +748,109 @@ img.img-loaded { opacity: 1; filter: blur(0); }
    Services grid
    ========================================================== */
 
-.services-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 22px;
+/* Marquee — endless scrolling ticker of service names, pure motion and
+   typography instead of another bordered box. */
+.services-marquee {
+  overflow: hidden;
+  margin: 0 0 56px;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
 }
-.service-card {
+.services-marquee-track {
+  display: flex; align-items: center;
+  gap: 20px;
+  width: max-content;
+  white-space: nowrap;
+  animation: servicesMarquee 26s linear infinite;
+}
+.services-marquee-item {
+  font-family: var(--font-heading); font-weight: 800;
+  font-size: clamp(1.9rem, 5.4vw, 3.4rem);
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  transition: color 0.3s ease, -webkit-text-stroke-color 0.3s ease;
+}
+.services-marquee-item:nth-child(4n+3) {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--ink-dim);
+}
+.services-marquee-item:nth-child(4n+1) { color: var(--gold-bright); }
+.services-marquee-dot { color: var(--gold); font-size: 1rem !important; }
+@keyframes servicesMarquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .services-marquee-track { animation: none; }
+}
+
+/* Pinned services sequence — by default (no JS) a plain vertical stack, so
+   the content is always fully present and readable. When GSAP/ScrollTrigger
+   are available, script.js adds .js-pinned: the section is pinned in place
+   while scroll progress crossfades from one step to the next, only
+   releasing once all four have been shown. */
+.service-row-title {
   position: relative;
   display: block;
-  overflow: hidden;
-  text-decoration: none;
-  padding: 22px;
-  border-radius: 18px;
-  background: radial-gradient(circle at top right, rgba(222, 175, 103, 0.05) 0%, transparent 32%),
-    linear-gradient(180deg, rgba(30, 30, 30, 0.96) 0%, rgba(18, 18, 18, 0.99) 100%);
-  border: 1px solid var(--gold-border);
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.24);
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  font-family: var(--font-heading); font-weight: 800;
+  font-size: clamp(2.6rem, 8vw, 5.5rem);
+  color: #fff;
+  letter-spacing: -0.02em;
+  margin-bottom: 22px;
+  text-shadow: 0 0 40px rgba(222, 175, 103, 0.35);
 }
-.service-card::before {
+.service-row-title::after {
   content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--gold) 50%, transparent);
-  background-size: 220% 100%;
-  animation: sidebarShimmer 6s ease-in-out infinite;
-  opacity: 0.5;
+  display: block;
+  width: 64px; height: 3px; margin: 22px auto 0;
+  background: linear-gradient(90deg, var(--gold), var(--gold-bright));
+  box-shadow: 0 0 16px rgba(222, 175, 103, 0.7);
 }
-.service-card:hover {
-  transform: translateY(-5px);
-  border-color: rgba(222, 175, 103, 0.35);
-  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.32), 0 0 20px rgba(222, 175, 103, 0.14);
+.services-pin.js-pinned .services-pin-step:not(.is-active) .service-row-title::after { width: 0; }
+.services-pin.js-pinned .services-pin-step.is-active .service-row-title::after {
+  transition: width 0.6s ease 0.2s;
 }
-.service-top { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-.service-number {
-  min-width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-  border-radius: 9px;
-  border: 1px solid rgba(222, 175, 103, 0.3);
-  background: rgba(222, 175, 103, 0.08);
-  color: var(--gold);
-  font-family: var(--font-mono); font-weight: 700; font-size: 0.8rem;
-  transition: 0.22s ease;
+.service-row-text {
+  display: block;
+  color: var(--ink-dim); font-size: 1.15rem; line-height: 1.65;
+  max-width: 560px;
 }
-.service-card:hover .service-number {
-  border-color: var(--gold);
-  background: rgba(222, 175, 103, 0.18);
-  box-shadow: 0 0 12px rgba(222, 175, 103, 0.35);
+.services-pin-inner {
+  border-top: 1px solid var(--border);
+  max-width: var(--max-width); margin: 0 auto; padding: 0 20px;
 }
-.service-card h3 {
-  margin: 0;
-  font-family: var(--font-mono); font-weight: 700; font-size: 0.86rem;
-  letter-spacing: 0.03em; text-transform: uppercase; color: #fff;
+.services-pin.js-pinned .services-pin-inner { max-width: none; padding: 0; }
+.services-pin-step {
+  padding: 64px 0;
+  border-bottom: 1px solid var(--border);
 }
-.service-card p { margin: 0; color: var(--ink-dim); font-size: 0.95rem; line-height: 1.65; }
+.services-pin.js-pinned {
+  height: 100vh;
+  overflow: hidden;
+}
+.services-pin.js-pinned .services-pin-inner {
+  position: relative;
+  height: 100%;
+  border-top: none;
+}
+.services-pin.js-pinned .services-pin-step {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center;
+  padding: 0 20px;
+  border-bottom: none;
+  opacity: 0;
+  visibility: hidden;
+}
+.services-pin.js-pinned .services-pin-step.is-active { visibility: visible; }
+@media (prefers-reduced-motion: reduce) {
+  .services-pin.js-pinned { height: auto; overflow: visible; }
+  .services-pin.js-pinned .services-pin-inner { height: auto; }
+  .services-pin.js-pinned .services-pin-step {
+    position: static; opacity: 1; visibility: visible;
+    text-align: left; padding: 64px 0; border-bottom: 1px solid var(--border);
+  }
+}
 
 /* ==========================================================
    Preis-Rechner

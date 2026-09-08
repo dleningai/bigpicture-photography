@@ -2,6 +2,96 @@ document.addEventListener('DOMContentLoaded', () => {
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
+  // Smooth scroll (Lenis) + scroll-driven hero parallax (GSAP). Both are
+  // pure enhancements on top of content that is already visible via CSS,
+  // so any failure here (blocked CDN, ad-blocker, version mismatch) must
+  // never be allowed to stop the rest of this script from running — wrap
+  // it in its own try/catch instead of letting an exception skip
+  // everything below it (boot intro, reveals, nav, etc.).
+  try {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const hasScrollFx = window.gsap && window.ScrollTrigger && !reduceMotion;
+    if (hasScrollFx) gsap.registerPlugin(ScrollTrigger);
+
+    let lenis = null;
+    if (window.Lenis && !reduceMotion) {
+      // Native CSS smooth-scroll fights Lenis's own smoothing (both try to
+      // animate the same scroll position independently), causing visible
+      // stutter — disable it wherever Lenis is driving the page.
+      document.documentElement.style.scrollBehavior = 'auto';
+      lenis = new Lenis({ duration: 1.1, smoothWheel: true });
+      function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+      requestAnimationFrame(raf);
+      if (hasScrollFx) {
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.lagSmoothing(0);
+      }
+    }
+
+    // Hero logo curtain — fades/scales out as the visitor scrolls past the
+    // hero, scrubbed directly to scroll position so scrolling back up to
+    // the top brings it right back (not a one-time, timer-based intro).
+    const heroLogoIntro = document.getElementById('heroLogoIntro');
+    if (heroLogoIntro && hasScrollFx) {
+      heroLogoIntro.classList.add('js-active');
+      const heroLogoImg = heroLogoIntro.querySelector('img');
+      const heroLogoTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: '.hero-photo',
+          start: 'top top',
+          end: () => `+=${window.innerHeight * 0.8}`,
+          scrub: true,
+          pin: true,
+          anticipatePin: 1,
+        },
+      });
+      heroLogoTl
+        .to(heroLogoImg, { scale: 5.5, filter: 'blur(24px)', ease: 'none' }, 0)
+        .to(heroLogoIntro, { autoAlpha: 0, ease: 'none' }, 0.15);
+    }
+
+    // Pinned services sequence — the section holds scroll in place while
+    // crossfading through each service, only releasing once all four have
+    // been shown. Falls back to a plain scrolling stack (see CSS) when
+    // ScrollTrigger isn't available.
+    const servicesPin = document.getElementById('servicesPin');
+    if (servicesPin && hasScrollFx) {
+      const steps = Array.from(servicesPin.querySelectorAll('.services-pin-step'));
+      if (steps.length > 1) {
+        servicesPin.classList.add('js-pinned');
+        steps.forEach((step, i) => {
+          gsap.set(step, { opacity: i === 0 ? 1 : 0, scale: i === 0 ? 1 : 0.82 });
+          step.classList.toggle('is-active', i === 0);
+        });
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: servicesPin,
+            start: 'top top',
+            end: () => `+=${window.innerHeight * (steps.length - 1)}`,
+            pin: true,
+            scrub: 0.4,
+            anticipatePin: 1,
+            onUpdate: (self) => {
+              const active = Math.min(steps.length - 1, Math.round(self.progress * (steps.length - 1)));
+              steps.forEach((step, i) => step.classList.toggle('is-active', i === active));
+            },
+          },
+        });
+        steps.forEach((step, i) => {
+          if (i === 0) return;
+          const prev = steps[i - 1];
+          tl.to(prev, { opacity: 0, scale: 1.14, duration: 0.5, ease: 'power1.in' }, `step${i}`)
+            .to(step, { opacity: 1, scale: 1, duration: 0.5, ease: 'power2.out' }, `step${i}`);
+        });
+      }
+    }
+  } catch (err) {
+    console.error('Scroll motion setup failed, continuing without it:', err);
+  }
+
   // Portfolio photo fan — swipe left/right cycles which photo occupies
   // which slot (main + 4 fanned cards), keeping the fanned layout exactly
   // as-is instead of switching to a different mobile layout. The category
@@ -76,61 +166,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }, { passive: true });
   });
-
-  // Boot-up intro — one-time-per-session HUD startup sequence on the
-  // homepage. The inline script in index.html already hides it instantly
-  // for returning visitors this session; this only runs the typewriter for
-  // a genuinely first view.
-  const bootIntro = document.getElementById('bootIntro');
-  if (bootIntro && !bootIntro.classList.contains('boot-intro-hidden')) {
-    const linesEl = document.getElementById('bootIntroLines');
-    const lines = [
-      'BIG PICTURE PHOTOGRAPHY',
-      'FOTOGRAF & VIDEOGRAF · DETMOLD, OWL',
-      'BEREIT, DEINEN MOMENT EINZUFANGEN.',
-    ];
-    document.body.style.overflow = 'hidden';
-
-    const finishIntro = () => {
-      if (bootIntro.classList.contains('boot-intro-hidden')) return;
-      bootIntro.classList.add('boot-intro-hidden');
-      document.body.style.overflow = '';
-      sessionStorage.setItem('bpIntroSeen', '1');
-      document.removeEventListener('click', finishIntro);
-      document.removeEventListener('keydown', finishIntro);
-    };
-    document.addEventListener('click', finishIntro);
-    document.addEventListener('keydown', finishIntro);
-
-    let lineIndex = 0;
-    let charIndex = 0;
-    const typeSpeed = 22;
-
-    const typeNextChar = () => {
-      if (bootIntro.classList.contains('boot-intro-hidden')) return;
-      if (lineIndex >= lines.length) {
-        bootIntro.classList.add('boot-intro-ready');
-        setTimeout(finishIntro, 700);
-        return;
-      }
-      let lineEl = linesEl.children[lineIndex];
-      if (!lineEl) {
-        lineEl = document.createElement('div');
-        linesEl.appendChild(lineEl);
-      }
-      const currentLine = lines[lineIndex];
-      charIndex += 1;
-      lineEl.textContent = currentLine.slice(0, charIndex);
-      if (charIndex >= currentLine.length) {
-        lineIndex += 1;
-        charIndex = 0;
-        setTimeout(typeNextChar, 260);
-      } else {
-        setTimeout(typeNextChar, typeSpeed);
-      }
-    };
-    setTimeout(typeNextChar, 350);
-  }
 
   // Cursor-tracked glow on premium cards — writes pointer position as CSS
   // custom properties so the radial highlight in style.css follows the mouse.
@@ -349,78 +384,6 @@ document.addEventListener('DOMContentLoaded', () => {
       afterSlideLoad: ({ slide }) => {
         slide.querySelectorAll('img').forEach(markImgLoaded);
       },
-    });
-  }
-
-  // Preis-Rechner — 2-step price estimator in the Leistungen section.
-  const calcEl = document.getElementById('priceCalc');
-  if (calcEl) {
-    const CALC_DATA = {
-      event: { label: 'Eventfotografie', scopes: [
-        { key: 'klein', label: 'Bis 3 Std.', note: 'z.B. Feier im kleinen Rahmen', price: '349 – 549 €' },
-        { key: 'mittel', label: 'Halbtags', note: 'z.B. Firmenfeier, Konzert', price: '549 – 899 €' },
-        { key: 'gross', label: 'Ganztags', note: 'z.B. mehrtägiges Event', price: 'ab 899 €' },
-      ]},
-      business: { label: 'Business & Branding', scopes: [
-        { key: 'klein', label: 'Einzelportrait', note: '1 Person, 1 Std.', price: '199 – 349 €' },
-        { key: 'mittel', label: 'Team-Shooting', note: 'bis 10 Personen', price: '449 – 799 €' },
-        { key: 'gross', label: 'Markenauftritt', note: 'Content-Paket', price: 'ab 899 €' },
-      ]},
-      sport: { label: 'Sportfotografie', scopes: [
-        { key: 'klein', label: 'Einzeltermin', note: 'ein Wettkampf/Training', price: '299 – 449 €' },
-        { key: 'mittel', label: 'Saisonpaket', note: 'mehrere Termine', price: '799 – 1.299 €' },
-        { key: 'gross', label: 'Vereinsbetreuung', note: 'laufende Begleitung', price: 'auf Anfrage' },
-      ]},
-      video: { label: 'Videografie & Content', scopes: [
-        { key: 'klein', label: 'Reel-Paket', note: '3–5 kurze Clips', price: '349 – 599 €' },
-        { key: 'mittel', label: 'Imagefilm', note: '1–2 Min., geschnitten', price: '899 – 1.499 €' },
-        { key: 'gross', label: 'Produktion', note: 'mehrtägig, mehrere Formate', price: 'ab 1.899 €' },
-      ]},
-    };
-
-    const categoryEl = document.getElementById('calcCategory');
-    const scopeStepEl = document.getElementById('calcScopeStep');
-    const scopeEl = document.getElementById('calcScope');
-    const resultEl = document.getElementById('calcResult');
-    const priceEl = document.getElementById('calcPrice');
-    const noteEl = document.getElementById('calcNote');
-    const waBtn = document.getElementById('calcWaBtn');
-    let selectedCat = null;
-
-    categoryEl.addEventListener('click', (e) => {
-      const btn = e.target.closest('.calc-opt');
-      if (!btn) return;
-      selectedCat = btn.dataset.cat;
-      [...categoryEl.children].forEach((b) => b.classList.toggle('active', b === btn));
-      resultEl.classList.remove('visible');
-
-      scopeEl.innerHTML = '';
-      CALC_DATA[selectedCat].scopes.forEach((s) => {
-        const b = document.createElement('button');
-        b.type = 'button';
-        b.className = 'calc-opt';
-        b.dataset.scope = s.key;
-        b.innerHTML = `${s.label}<small>${s.note}</small>`;
-        scopeEl.appendChild(b);
-      });
-      scopeStepEl.style.display = '';
-      scopeStepEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    });
-
-    scopeEl.addEventListener('click', (e) => {
-      const btn = e.target.closest('.calc-opt');
-      if (!btn) return;
-      const selectedScope = btn.dataset.scope;
-      [...scopeEl.children].forEach((b) => b.classList.toggle('active', b === btn));
-
-      const cat = CALC_DATA[selectedCat];
-      const scope = cat.scopes.find((s) => s.key === selectedScope);
-      priceEl.textContent = scope.price;
-      noteEl.textContent = `${cat.label} — ${scope.label}. Unverbindlicher Richtwert, das genaue Angebot hängt von deinen Details ab.`;
-      const msg = encodeURIComponent(`Hallo, ich interessiere mich für ${cat.label} (${scope.label}) und hätte gern ein Angebot.`);
-      waBtn.href = `https://wa.me/4916096290806?text=${msg}`;
-      resultEl.classList.add('visible');
-      resultEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     });
   }
 
