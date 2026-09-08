@@ -363,10 +363,10 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   overflow: hidden;
 }
 .hero-bg img {
-  position: absolute; inset: -25% -25% -25% -25%;
-  width: 150%; height: 150%;
+  position: absolute; inset: -4% -4% -4% -4%;
+  width: 108%; height: 108%;
   object-fit: cover;
-  object-position: 88% 40%;
+  object-position: 68% 38%;
   filter: saturate(1) contrast(1.08);
   will-change: transform;
   animation: heroKenBurns 22s ease-in-out infinite alternate;
@@ -481,7 +481,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 @media (max-width: 760px) {
   .hero-photo .hero-box { text-align: center; margin: 0 auto; padding: 0 20px; }
   .hero-photo .hero-cta { justify-content: center; }
-  .hero-bg img { object-position: 55% 14%; }
+  .hero-bg img { object-position: 78% 30%; }
   .hero-scrim {
     background:
       linear-gradient(180deg, rgba(8, 7, 6, 0.6) 0%, rgba(8, 7, 6, 0.2) 22%, rgba(8, 7, 6, 0.55) 55%, rgba(8, 7, 6, 0.96) 100%);
