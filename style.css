@@ -53,38 +53,20 @@ body::before {
   mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 0%, transparent 75%);
 }
 
-/* Boot-up intro — a one-time-per-session HUD "system startup" overlay on
-   the homepage. Skippable by click/keypress, respects reduced-motion, and
-   never re-shows once dismissed within the same browser session. */
-.boot-intro {
-  position: fixed; inset: 0; z-index: 9999;
+/* Hero logo intro — a curtain over the hero that fades/scales out as the
+   visitor scrolls, tied directly to scroll position (GSAP scrub) rather
+   than a timer, so scrolling back up brings it right back. Hidden by
+   default: only script.js activates it, and only when ScrollTrigger is
+   actually available, so the hero is never blocked without JS. */
+.hero-logo-intro {
+  position: absolute; inset: 0; z-index: 6;
+  display: none; align-items: center; justify-content: center;
   background: var(--bg);
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 24px;
-  cursor: pointer;
-  transition: opacity 0.6s ease, visibility 0.6s, transform 0.6s ease;
 }
-.boot-intro.boot-intro-hidden {
-  opacity: 0; visibility: hidden; pointer-events: none;
-  transform: scale(1.15);
-}
-.boot-intro-logo {
+.hero-logo-intro.js-active { display: flex; }
+.hero-logo-intro img {
   width: min(200px, 42vw); height: auto;
   filter: drop-shadow(0 0 30px rgba(222, 175, 103, 0.4));
-  opacity: 0; transform: scale(0.8);
-  animation: bootLogoIn 0.9s cubic-bezier(.16, .84, .44, 1) 0.15s forwards;
-}
-@keyframes bootLogoIn {
-  to { opacity: 1; transform: scale(1); }
-}
-.boot-intro-hint {
-  font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--ink-faint);
-  opacity: 0; transition: opacity 0.4s ease 0.6s;
-}
-.boot-intro.boot-intro-ready .boot-intro-hint { opacity: 0.7; }
-@media (prefers-reduced-motion: reduce) {
-  .boot-intro { display: none; }
 }
 
 /* Thin glowing scrollbar */

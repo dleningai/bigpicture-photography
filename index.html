@@ -62,18 +62,6 @@
 </head>
 <body>
 
-  <div class="boot-intro" id="bootIntro" aria-hidden="true">
-    <img class="boot-intro-logo" id="bootIntroLogo" src="assets/images/logo.png" alt="" />
-    <div class="boot-intro-hint">Scrollen zum Überspringen</div>
-  </div>
-  <script>
-    // Runs synchronously before paint so returning visitors this session
-    // never see a flash of the boot intro.
-    if (sessionStorage.getItem('bpIntroSeen')) {
-      document.getElementById('bootIntro').classList.add('boot-intro-hidden');
-    }
-  </script>
-
   <nav class="site-nav" aria-label="Hauptnavigation">
     <a href="index.html" class="active"><span class="site-nav-a-inner">Home</span></a>
     <span class="site-nav-divider" aria-hidden="true"></span>
@@ -85,6 +73,9 @@
   </nav>
 
   <section class="hero hero-photo" id="hero">
+    <div class="hero-logo-intro" id="heroLogoIntro" aria-hidden="true">
+      <img src="assets/images/logo.png" alt="" />
+    </div>
     <div class="hero-bg" id="heroBg" aria-hidden="true">
       <img src="assets/images/hero/dimitri-portrait-bw-2.png" alt="" fetchpriority="high" />
     </div>

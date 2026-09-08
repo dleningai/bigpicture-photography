@@ -31,6 +31,25 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
+    // Hero logo curtain — fades/scales out as the visitor scrolls past the
+    // hero, scrubbed directly to scroll position so scrolling back up to
+    // the top brings it right back (not a one-time, timer-based intro).
+    const heroLogoIntro = document.getElementById('heroLogoIntro');
+    if (heroLogoIntro && hasScrollFx) {
+      heroLogoIntro.classList.add('js-active');
+      gsap.to(heroLogoIntro, {
+        autoAlpha: 0,
+        scale: 1.15,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.hero-photo',
+          start: 'top top',
+          end: () => `+=${window.innerHeight * 0.6}`,
+          scrub: true,
+        },
+      });
+    }
+
     // Pinned services sequence — the section holds scroll in place while
     // crossfading through each service, only releasing once all four have
     // been shown. Falls back to a plain scrolling stack (see CSS) when
@@ -144,33 +163,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }, { passive: true });
   });
-
-  // Boot-up intro — one-time-per-session HUD startup sequence on the
-  // homepage. The inline script in index.html already hides it instantly
-  // for returning visitors this session; this only runs for a genuinely
-  // first view — the logo pops in, then either a scroll/click/keypress or
-  // a short timeout dismisses it, zooming out into the hero underneath.
-  const bootIntro = document.getElementById('bootIntro');
-  if (bootIntro && !bootIntro.classList.contains('boot-intro-hidden')) {
-    document.body.style.overflow = 'hidden';
-    bootIntro.classList.add('boot-intro-ready');
-
-    const finishIntro = () => {
-      if (bootIntro.classList.contains('boot-intro-hidden')) return;
-      bootIntro.classList.add('boot-intro-hidden');
-      document.body.style.overflow = '';
-      sessionStorage.setItem('bpIntroSeen', '1');
-      document.removeEventListener('click', finishIntro);
-      document.removeEventListener('keydown', finishIntro);
-      document.removeEventListener('wheel', finishIntro);
-      document.removeEventListener('touchmove', finishIntro);
-    };
-    document.addEventListener('click', finishIntro);
-    document.addEventListener('keydown', finishIntro);
-    document.addEventListener('wheel', finishIntro, { passive: true });
-    document.addEventListener('touchmove', finishIntro, { passive: true });
-    setTimeout(finishIntro, 2200);
-  }
 
   // Cursor-tracked glow on premium cards — writes pointer position as CSS
   // custom properties so the radial highlight in style.css follows the mouse.
