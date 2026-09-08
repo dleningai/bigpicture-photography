@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (steps.length > 1) {
         servicesPin.classList.add('js-pinned');
         steps.forEach((step, i) => {
-          gsap.set(step, { opacity: i === 0 ? 1 : 0 });
+          gsap.set(step, { opacity: i === 0 ? 1 : 0, scale: i === 0 ? 1 : 0.82 });
           step.classList.toggle('is-active', i === 0);
         });
         const tl = gsap.timeline({
@@ -61,8 +61,8 @@ document.addEventListener('DOMContentLoaded', () => {
         steps.forEach((step, i) => {
           if (i === 0) return;
           const prev = steps[i - 1];
-          tl.to(prev, { opacity: 0, duration: 0.5 }, `step${i}`)
-            .to(step, { opacity: 1, duration: 0.5 }, `step${i}`);
+          tl.to(prev, { opacity: 0, scale: 1.14, duration: 0.5, ease: 'power1.in' }, `step${i}`)
+            .to(step, { opacity: 1, scale: 1, duration: 0.5, ease: 'power2.out' }, `step${i}`);
         });
       }
     }
