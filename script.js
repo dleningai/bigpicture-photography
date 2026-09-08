@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const heroIntroName = document.getElementById('heroIntroName');
       if (heroIntroName) heroIntroName.classList.add('js-active');
       const heroIntroNameEls = gsap.utils.toArray('.hero-intro-name > *');
-      gsap.set(heroIntroNameEls, { opacity: 0, y: 16 });
+      gsap.set(heroIntroNameEls, { opacity: 0, x: '60vw' });
       const heroTextEls = gsap.utils.toArray('.hero-box > *, .hero-stats');
       gsap.set(heroTextEls, { opacity: 0, x: '-60vw' });
       const heroLogoTl = gsap.timeline({
@@ -71,8 +71,8 @@ document.addEventListener('DOMContentLoaded', () => {
         .to(heroLogoIntro, { autoAlpha: 0, ease: 'none' }, 0.15)
         // Phase 2: name + short description, a personal beat before the
         // main copy takes over.
-        .to(heroIntroNameEls, { opacity: 1, y: 0, ease: 'power2.out', stagger: 0.08 }, 0.35)
-        .to(heroIntroNameEls, { opacity: 0, y: -16, ease: 'power1.in', stagger: 0.05 }, 0.85)
+        .to(heroIntroNameEls, { opacity: 1, x: 0, ease: 'power2.out', stagger: 0.08 }, 0.35)
+        .to(heroIntroNameEls, { opacity: 0, x: '60vw', ease: 'power1.in', stagger: 0.05 }, 0.85)
         // Phase 3: the main hero copy slides in from the left this time.
         .to(heroTextEls, { opacity: 1, x: 0, ease: 'power2.out', stagger: 0.06 }, 1.05)
         // Phase 4: once the text has landed, further scrolling slides it
