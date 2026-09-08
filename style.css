@@ -412,6 +412,42 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   opacity: 0;
   pointer-events: none;
 }
+/* Curtain used for the short black beat between later sections (Leistungen
+   → Einsatzgebiet, → Zahlen, → Stimmen, → Kontakt). One fixed overlay, its
+   opacity scrubbed per-boundary by the .section-fade-bridge markers. */
+.fade-curtain {
+  position: fixed; inset: 0; z-index: 950;
+  background: #000;
+  opacity: 0;
+  pointer-events: none;
+}
+.section-fade-bridge {
+  height: 1px;
+}
+/* A personal beat between the photo reveal and the main hero copy — name
+   + one-line role, shown only as part of the JS scroll sequence (default
+   hidden so nothing's lost when that can't run). */
+.hero-intro-name {
+  position: absolute; inset: 0; z-index: 6;
+  display: none; flex-direction: column; align-items: center; justify-content: center;
+  gap: 10px;
+  text-align: center;
+  pointer-events: none;
+}
+.hero-intro-name.js-active { display: flex; }
+.hero-intro-name-title {
+  font-family: var(--font-heading); font-weight: 800;
+  font-size: clamp(2rem, 5.5vw, 3.6rem);
+  color: #f7e3b4;
+  margin: 0;
+  text-shadow: 0 4px 28px rgba(0, 0, 0, 0.55);
+}
+.hero-intro-name-sub {
+  font-family: var(--font-mono); font-size: 0.85rem; letter-spacing: 0.04em;
+  color: var(--ink-dim);
+  margin: 0;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.5);
+}
 /* Bokeh lights — soft out-of-focus circles drifting through the hero
    background, like defocused background lights in a photo. */
 .hero-fx-bokeh {
