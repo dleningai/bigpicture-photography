@@ -65,8 +65,9 @@ body::before {
 }
 .hero-logo-intro.js-active { display: flex; }
 .hero-logo-intro img {
-  width: min(200px, 42vw); height: auto;
-  filter: drop-shadow(0 0 30px rgba(222, 175, 103, 0.4));
+  width: min(420px, 70vw); height: auto;
+  filter: drop-shadow(0 0 50px rgba(222, 175, 103, 0.45));
+  will-change: transform, opacity, filter;
 }
 
 /* Thin glowing scrollbar */

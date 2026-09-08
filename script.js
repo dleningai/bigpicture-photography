@@ -37,17 +37,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const heroLogoIntro = document.getElementById('heroLogoIntro');
     if (heroLogoIntro && hasScrollFx) {
       heroLogoIntro.classList.add('js-active');
-      gsap.to(heroLogoIntro, {
-        autoAlpha: 0,
-        scale: 1.15,
-        ease: 'none',
+      const heroLogoImg = heroLogoIntro.querySelector('img');
+      const heroLogoTl = gsap.timeline({
         scrollTrigger: {
           trigger: '.hero-photo',
           start: 'top top',
-          end: () => `+=${window.innerHeight * 0.6}`,
+          end: () => `+=${window.innerHeight * 0.8}`,
           scrub: true,
         },
       });
+      heroLogoTl
+        .to(heroLogoImg, { scale: 5.5, filter: 'blur(24px)', ease: 'none' }, 0)
+        .to(heroLogoIntro, { autoAlpha: 0, ease: 'none' }, 0.15);
     }
 
     // Pinned services sequence — the section holds scroll in place while
