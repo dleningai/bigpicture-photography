@@ -448,11 +448,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const stickyCta = document.getElementById('stickyCta');
   if (stickyCta) {
     const stickyCtaClose = document.getElementById('stickyCtaClose');
+    const footerEl = document.querySelector('.site-footer');
     let dismissed = false;
     window.addEventListener('scroll', () => {
       if (dismissed) return;
-      const show = window.scrollY > window.innerHeight * 0.7;
-      stickyCta.classList.toggle('visible', show);
+      const pastHero = window.scrollY > window.innerHeight * 0.7;
+      const overFooter = footerEl && footerEl.getBoundingClientRect().top < window.innerHeight;
+      stickyCta.classList.toggle('visible', pastHero && !overFooter);
     }, { passive: true });
     stickyCtaClose.addEventListener('click', () => {
       dismissed = true;
