@@ -110,10 +110,6 @@ a { color: inherit; }
 .label, .hero-eyebrow {
   display: inline-block;
   margin-bottom: 14px;
-  padding: 7px 14px;
-  border-radius: 999px;
-  background: var(--gold-soft);
-  border: 1px solid var(--gold-border);
   color: var(--gold);
   font-family: var(--font-mono);
   font-size: 0.74rem;
