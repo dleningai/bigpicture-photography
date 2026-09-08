@@ -62,24 +62,21 @@ body::before {
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   gap: 24px;
   cursor: pointer;
-  transition: opacity 0.5s ease, visibility 0.5s;
+  transition: opacity 0.6s ease, visibility 0.6s, transform 0.6s ease;
 }
-.boot-intro.boot-intro-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-.boot-intro-lines {
-  font-family: var(--font-mono); font-size: clamp(0.82rem, 2.2vw, 1.05rem);
-  color: var(--gold);
-  text-align: left;
-  min-height: 5.5em;
-  letter-spacing: 0.02em;
+.boot-intro.boot-intro-hidden {
+  opacity: 0; visibility: hidden; pointer-events: none;
+  transform: scale(1.15);
 }
-.boot-intro-lines div { margin: 0 0 10px; opacity: 0.92; }
-.boot-intro-lines div:last-child { margin-bottom: 0; }
-.boot-intro-cursor {
-  display: inline-block; width: 0.55em; height: 1em; margin-left: 2px;
-  background: var(--gold); vertical-align: -0.15em;
-  animation: bootCursorBlink 0.9s step-end infinite;
+.boot-intro-logo {
+  width: min(200px, 42vw); height: auto;
+  filter: drop-shadow(0 0 30px rgba(222, 175, 103, 0.4));
+  opacity: 0; transform: scale(0.8);
+  animation: bootLogoIn 0.9s cubic-bezier(.16, .84, .44, 1) 0.15s forwards;
 }
-@keyframes bootCursorBlink { 50% { opacity: 0; } }
+@keyframes bootLogoIn {
+  to { opacity: 1; transform: scale(1); }
+}
 .boot-intro-hint {
   font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
   color: var(--ink-faint);

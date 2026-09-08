@@ -147,17 +147,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Boot-up intro — one-time-per-session HUD startup sequence on the
   // homepage. The inline script in index.html already hides it instantly
-  // for returning visitors this session; this only runs the typewriter for
-  // a genuinely first view.
+  // for returning visitors this session; this only runs for a genuinely
+  // first view — the logo pops in, then either a scroll/click/keypress or
+  // a short timeout dismisses it, zooming out into the hero underneath.
   const bootIntro = document.getElementById('bootIntro');
   if (bootIntro && !bootIntro.classList.contains('boot-intro-hidden')) {
-    const linesEl = document.getElementById('bootIntroLines');
-    const lines = [
-      'BIG PICTURE PHOTOGRAPHY',
-      'FOTOGRAF & VIDEOGRAF · DETMOLD, OWL',
-      'BEREIT, DEINEN MOMENT EINZUFANGEN.',
-    ];
     document.body.style.overflow = 'hidden';
+    bootIntro.classList.add('boot-intro-ready');
 
     const finishIntro = () => {
       if (bootIntro.classList.contains('boot-intro-hidden')) return;
@@ -166,38 +162,14 @@ document.addEventListener('DOMContentLoaded', () => {
       sessionStorage.setItem('bpIntroSeen', '1');
       document.removeEventListener('click', finishIntro);
       document.removeEventListener('keydown', finishIntro);
+      document.removeEventListener('wheel', finishIntro);
+      document.removeEventListener('touchmove', finishIntro);
     };
     document.addEventListener('click', finishIntro);
     document.addEventListener('keydown', finishIntro);
-
-    let lineIndex = 0;
-    let charIndex = 0;
-    const typeSpeed = 22;
-
-    const typeNextChar = () => {
-      if (bootIntro.classList.contains('boot-intro-hidden')) return;
-      if (lineIndex >= lines.length) {
-        bootIntro.classList.add('boot-intro-ready');
-        setTimeout(finishIntro, 700);
-        return;
-      }
-      let lineEl = linesEl.children[lineIndex];
-      if (!lineEl) {
-        lineEl = document.createElement('div');
-        linesEl.appendChild(lineEl);
-      }
-      const currentLine = lines[lineIndex];
-      charIndex += 1;
-      lineEl.textContent = currentLine.slice(0, charIndex);
-      if (charIndex >= currentLine.length) {
-        lineIndex += 1;
-        charIndex = 0;
-        setTimeout(typeNextChar, 260);
-      } else {
-        setTimeout(typeNextChar, typeSpeed);
-      }
-    };
-    setTimeout(typeNextChar, 350);
+    document.addEventListener('wheel', finishIntro, { passive: true });
+    document.addEventListener('touchmove', finishIntro, { passive: true });
+    setTimeout(finishIntro, 2200);
   }
 
   // Cursor-tracked glow on premium cards — writes pointer position as CSS
