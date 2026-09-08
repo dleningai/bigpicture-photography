@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
         scrollTrigger: {
           trigger: '.hero-photo',
           start: 'top top',
-          end: () => `+=${window.innerHeight * 1.5}`,
+          end: () => `+=${window.innerHeight * 2.1}`,
           scrub: true,
           pin: true,
           anticipatePin: 1,
@@ -65,7 +65,11 @@ document.addEventListener('DOMContentLoaded', () => {
       heroLogoTl
         .to(heroLogoImg, { scale: 5.5, filter: 'blur(24px)', ease: 'none' }, 0)
         .to(heroLogoIntro, { autoAlpha: 0, ease: 'none' }, 0.15)
-        .to(heroTextEls, { opacity: 1, y: 0, ease: 'power2.out', stagger: 0.06 }, 0.55);
+        .to(heroTextEls, { opacity: 1, y: 0, ease: 'power2.out', stagger: 0.06 }, 0.55)
+        // Phase 3: once the text has landed, further scrolling slides it
+        // out to the left (behind the portrait) instead of it just
+        // sitting there until the pin releases.
+        .to(heroTextEls, { opacity: 0, x: '-60vw', ease: 'power1.in', stagger: 0.04 }, 1.15);
     }
 
     // Pinned services sequence — the section holds scroll in place while
