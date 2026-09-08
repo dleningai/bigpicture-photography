@@ -403,6 +403,15 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   position: absolute; inset: 0;
   background: radial-gradient(circle at 50% 40%, transparent 0%, transparent 50%, rgba(10, 10, 10, 0.22) 82%, transparent 100%);
 }
+/* Chapter-change fade — bridges the hero into Leistungen with a beat of
+   black instead of a hard cut, driven by script.js as the last step of
+   the hero scroll sequence. Invisible/inert until JS opts in. */
+.hero-fade-out {
+  position: absolute; inset: 0; z-index: 7;
+  background: #000;
+  opacity: 0;
+  pointer-events: none;
+}
 /* Bokeh lights — soft out-of-focus circles drifting through the hero
    background, like defocused background lights in a photo. */
 .hero-fx-bokeh {
