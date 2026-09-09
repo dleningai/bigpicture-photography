@@ -163,14 +163,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Portfolio case-study parallax — each chapter's hero image drifts
-    // slightly as its section scrolls through view, on top of the plain
-    // CSS reveal already handling the fade/slide-in.
+    // as its section scrolls through view, on top of the plain CSS
+    // reveal already handling the fade/slide-in.
     const pfCaseImgs = document.querySelectorAll('.pf-case-main img');
     if (pfCaseImgs.length && hasScrollFx) {
       pfCaseImgs.forEach((img) => {
-        gsap.set(img, { yPercent: -8 });
+        gsap.set(img, { yPercent: -14 });
         gsap.to(img, {
-          yPercent: 8,
+          yPercent: 14,
           ease: 'none',
           scrollTrigger: {
             trigger: img.closest('.pf-case-media'),
@@ -180,6 +180,51 @@ document.addEventListener('DOMContentLoaded', () => {
           },
         });
       });
+    }
+
+    // Thumbnails drift at slightly different speeds as their row scrolls
+    // through view — a lively "cards shifting" feel instead of a static
+    // grid that only fades in once.
+    const pfCaseThumbRows = document.querySelectorAll('.pf-case-thumbs');
+    if (pfCaseThumbRows.length && hasScrollFx) {
+      pfCaseThumbRows.forEach((row) => {
+        // Target the inner wrapper, not the <a> (CSS already animates its
+        // transform for the reveal) or the <img> (CSS animates its
+        // transform on hover) — a separate element avoids fighting either.
+        const thumbs = Array.from(row.querySelectorAll('.pf-thumb-parallax'));
+        thumbs.forEach((thumb, i) => {
+          const distance = 18 + (i % 4) * 10;
+          gsap.set(thumb, { y: -distance });
+          gsap.to(thumb, {
+            y: distance,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: row,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: true,
+            },
+          });
+        });
+      });
+    }
+
+    // Signature Lenis touch: images skew slightly with scroll velocity,
+    // snapping back to level once scrolling settles — makes the page
+    // feel fluid rather than static while scrolling fast.
+    if (lenis && window.gsap) {
+      const skewImgs = document.querySelectorAll('.pf-case-main img');
+      if (skewImgs.length) {
+        let skewSettleTimer;
+        lenis.on('scroll', ({ velocity }) => {
+          const skew = gsap.utils.clamp(-6, 6, velocity * 0.6);
+          gsap.to(skewImgs, { skewY: skew, duration: 0.5, ease: 'power3.out', overwrite: 'auto' });
+          clearTimeout(skewSettleTimer);
+          skewSettleTimer = setTimeout(() => {
+            gsap.to(skewImgs, { skewY: 0, duration: 0.6, ease: 'power3.out' });
+          }, 80);
+        });
+      }
     }
 
     // Section-fade bridges — a brief black curtain at each major section
