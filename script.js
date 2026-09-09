@@ -134,6 +134,27 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
+    // Leistungen → Einsatzgebiet cross-fade — no pin involved, just two
+    // transforms scrubbed to the same scroll range. Every scroll position
+    // maps to one well-defined visual state, so there's no pin-release
+    // hand-off to time correctly (unlike the fade-curtain bridges this
+    // replaces).
+    const leistungenSection = document.getElementById('leistungen');
+    const reachSection = document.getElementById('reach');
+    if (leistungenSection && reachSection && hasScrollFx) {
+      gsap.set(reachSection, { autoAlpha: 0, y: '6vh' });
+      gsap.timeline({
+        scrollTrigger: {
+          trigger: reachSection,
+          start: 'top bottom',
+          end: 'top 40%',
+          scrub: true,
+        },
+      })
+        .to(leistungenSection, { opacity: 0.3, scale: 0.97, ease: 'none' }, 0)
+        .to(reachSection, { autoAlpha: 1, y: 0, ease: 'none' }, 0);
+    }
+
     // Reach statement — words light up one by one as the section scrolls
     // through view, scrubbed to scroll position (not pinned, unlike the
     // services sequence, for some rhythm variety between sections).
