@@ -169,6 +169,9 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 .services-list .reveal:nth-child(2), .about-grid .reveal:nth-child(2), .contact-items .reveal:nth-child(2) { transition-delay: 0.09s; }
 .services-list .reveal:nth-child(3), .about-grid .reveal:nth-child(3), .contact-items .reveal:nth-child(3) { transition-delay: 0.18s; }
 .services-list .reveal:nth-child(4), .about-grid .reveal:nth-child(4), .contact-items .reveal:nth-child(4) { transition-delay: 0.27s; }
+.pf-extra-grid .reveal:nth-child(3n+1) { transition-delay: 0s; }
+.pf-extra-grid .reveal:nth-child(3n+2) { transition-delay: 0.08s; }
+.pf-extra-grid .reveal:nth-child(3n+3) { transition-delay: 0.16s; }
 
 /* Cursor-tracked glow — a soft, mouse-following highlight on premium
    interactive surfaces. JS (script.js) writes --mx/--my per pointer move. */
@@ -1641,6 +1644,53 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 /* Extra gallery photos beyond the visible collage — present so the
    lightbox can page through the full set, not meant to be seen. */
 .pf-case-hidden { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+/* Full-set grid beneath each collage — every remaining photo in that
+   category, browsable and part of the same lightbox gallery. Masonry
+   via CSS columns (no JS layout needed) so mixed aspect ratios sit
+   naturally instead of being cropped into uniform tiles. Perspective
+   on the wrapper + a per-item cursor-tracked tilt (script.js) is what
+   keeps it from reading as a flat, dated photo-grid template. */
+.pf-extra-grid {
+  max-width: 1400px; margin: 70px auto 0; padding: 0 5vw;
+  column-count: 3; column-gap: 22px;
+  perspective: 1600px;
+}
+@media (max-width: 900px) { .pf-extra-grid { column-count: 2; } }
+@media (max-width: 560px) { .pf-extra-grid { column-count: 1; } }
+.pf-extra-item {
+  position: relative;
+  display: block; break-inside: avoid; margin-bottom: 22px;
+  border-radius: 6px; overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: transform 0.5s cubic-bezier(.16, .84, .44, 1), box-shadow 0.4s ease;
+}
+.pf-extra-item::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 55%, rgba(0, 0, 0, 0.55) 100%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+.pf-extra-item:hover {
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.55), 0 0 0 1px var(--gold-border);
+}
+.pf-extra-item:hover::after { opacity: 1; }
+.pf-extra-item img {
+  width: 100%; display: block;
+  transition: transform 0.6s cubic-bezier(.16, .84, .44, 1), filter 0.5s ease;
+  transform: translateZ(0) scale(1.001);
+}
+.pf-extra-item:hover img { transform: scale(1.08); }
+@media (hover: none) {
+  .pf-extra-item { transform: none !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pf-extra-item, .pf-extra-item img { transition: none; }
+}
 @media (max-width: 900px) {
   .pf-collage { padding: 70px 0 60px; }
   .pf-collage-stage { height: auto; min-height: 0; max-height: none; padding: 0 20px; }

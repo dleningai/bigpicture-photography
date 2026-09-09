@@ -220,6 +220,24 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
+    // Full-set grid tiles — a cursor-tracked 3D tilt on hover, only for
+    // pointer devices that can actually hover (touch gets a plain tap,
+    // no tilt to fight with scrolling) and only without reduced motion.
+    const pfExtraItems = document.querySelectorAll('.pf-extra-item');
+    if (pfExtraItems.length && window.matchMedia('(hover: hover)').matches && !reduceMotion) {
+      pfExtraItems.forEach((item) => {
+        item.addEventListener('mousemove', (e) => {
+          const rect = item.getBoundingClientRect();
+          const px = (e.clientX - rect.left) / rect.width - 0.5;
+          const py = (e.clientY - rect.top) / rect.height - 0.5;
+          item.style.transform = `rotateX(${py * -14}deg) rotateY(${px * 14}deg) scale(1.03)`;
+        });
+        item.addEventListener('mouseleave', () => {
+          item.style.transform = '';
+        });
+      });
+    }
+
     // Scroll progress rail — a fill bar + one dot per major section, so
     // visitors always see where they are on the page. Hidden entirely
     // unless ScrollTrigger can drive it.
