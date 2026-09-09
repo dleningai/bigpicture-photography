@@ -708,6 +708,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   padding: 0 24px;
   border-left: 1px solid var(--border);
   text-align: left;
+  perspective: 500px;
 }
 .stats-highlight-row:first-child { border-left: none; padding-left: 0; }
 .stats-highlight-row .stat-val {
@@ -715,6 +716,21 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   font-size: clamp(2.4rem, 4.6vw, 3.6rem);
   color: var(--ink);
   text-shadow: none;
+  display: inline-block;
+  transform-origin: 50% 100%;
+  opacity: 0;
+  transform: rotateX(-90deg);
+}
+.stat.is-visible .stat-val {
+  animation: statFlipIn 0.65s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+@keyframes statFlipIn {
+  0% { opacity: 0; transform: rotateX(-90deg); }
+  65% { opacity: 1; transform: rotateX(12deg); }
+  100% { opacity: 1; transform: rotateX(0deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .stats-highlight-row .stat-val { opacity: 1; transform: none; animation: none; }
 }
 .stats-highlight-text {
   font-family: var(--font-heading); font-weight: 500;
