@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (steps.length > 1) {
         servicesPin.classList.add('js-pinned');
         steps.forEach((step, i) => {
-          gsap.set(step, { opacity: i === 0 ? 1 : 0, scale: i === 0 ? 1 : 0.82 });
+          gsap.set(step, { opacity: i === 0 ? 1 : 0, scale: i === 0 ? 1 : 0.72 });
           step.classList.toggle('is-active', i === 0);
         });
         const stepsUnits = steps.length - 1;
@@ -128,10 +128,34 @@ document.addEventListener('DOMContentLoaded', () => {
         steps.forEach((step, i) => {
           if (i === 0) return;
           const prev = steps[i - 1];
-          tl.to(prev, { opacity: 0, scale: 1.14, duration: 0.5, ease: 'power1.in' }, `step${i}`)
+          tl.to(prev, { opacity: 0, scale: 1.28, duration: 0.5, ease: 'power1.in' }, `step${i}`)
             .to(step, { opacity: 1, scale: 1, duration: 0.5, ease: 'power2.out' }, `step${i}`);
         });
       }
+    }
+
+    // Leistungen → Einsatzgebiet cross-fade — no pin involved, just two
+    // opacity/position tweens scrubbed to the same scroll range. Every
+    // scroll position maps to one well-defined visual state, so there's
+    // no pin-release hand-off to time correctly (unlike the fade-curtain
+    // bridges this replaces). Opacity only on #leistungen, never a
+    // transform: it's the pinned servicesPin's ancestor, and any
+    // transform on it (even scale(1)) makes it a new containing block,
+    // which breaks position:fixed pinning for the whole page.
+    const leistungenSection = document.getElementById('leistungen');
+    const reachSection = document.getElementById('reach');
+    if (leistungenSection && reachSection && hasScrollFx) {
+      gsap.set(reachSection, { autoAlpha: 0, y: '6vh' });
+      gsap.timeline({
+        scrollTrigger: {
+          trigger: reachSection,
+          start: 'top bottom',
+          end: 'top 40%',
+          scrub: true,
+        },
+      })
+        .to(leistungenSection, { opacity: 0.3, ease: 'none' }, 0)
+        .to(reachSection, { autoAlpha: 1, y: 0, ease: 'none' }, 0);
     }
 
     // Reach statement — words light up one by one as the section scrolls
