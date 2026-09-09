@@ -369,77 +369,81 @@ document.addEventListener('DOMContentLoaded', () => {
     sections.forEach((sec) => spyObserver.observe(sec));
   });
 
-  // Animated stat counters — staggered reveal with a HUD-style digit
-  // scramble before each counter locks onto its real value.
+  // Animated stat counters — a split-flap "flip clock" reveal: each
+  // character gets its own card that flips through a couple of random
+  // states before settling on its real value, cascading left to right.
   const statStrips = document.querySelectorAll('.stats-strip, .stats-highlight');
   if (statStrips.length) {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Flips one character card from its current face to `nextChar` via a
+    // two-phase rotateX (hide old face, swap text, reveal new face), then
+    // calls back once settled.
+    function flipChar(el, nextChar, halfMs, onDone) {
+      el.style.animation = `flipHalfOut ${halfMs}ms cubic-bezier(0.4, 0, 1, 1) forwards`;
+      const handleOut = () => {
+        el.removeEventListener('animationend', handleOut);
+        el.textContent = nextChar;
+        el.style.animation = `flipHalfIn ${halfMs}ms cubic-bezier(0.2, 0.9, 0.25, 1) forwards`;
+        const handleIn = () => {
+          el.removeEventListener('animationend', handleIn);
+          if (onDone) onDone();
+        };
+        el.addEventListener('animationend', handleIn);
+      };
+      el.addEventListener('animationend', handleOut);
+    }
+
+    // Runs a queue of characters through one card in sequence, each a
+    // full flip, landing on the last entry.
+    function runFlipQueue(el, queue, halfMs) {
+      let i = 0;
+      function step() {
+        if (i >= queue.length - 1) return;
+        i += 1;
+        flipChar(el, queue[i], halfMs, step);
+      }
+      step();
+    }
+
     const statObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
           const counters = Array.from(entry.target.querySelectorAll('.stat-val'));
 
-          if (reduceMotion) {
-            counters.forEach((counter) => {
-              const target = parseFloat(counter.dataset.target);
-              const prefix = counter.dataset.prefix || '';
-              const suffix = counter.dataset.suffix || '';
-              counter.textContent = `${prefix}${target}${suffix}`;
-              counter.closest('.stat').classList.add('is-visible');
-            });
-            return;
-          }
-
-          entry.target.classList.add('is-scanning');
-          setTimeout(() => entry.target.classList.remove('is-scanning'), 1200);
-
-          counters.forEach((counter, i) => {
-            const target = parseFloat(counter.dataset.target);
+          counters.forEach((counter) => {
+            const target = Math.round(parseFloat(counter.dataset.target));
             const prefix = counter.dataset.prefix || '';
             const suffix = counter.dataset.suffix || '';
-            const digits = String(Math.round(target)).length;
+            const finalText = `${prefix}${target}${suffix}`;
             const statEl = counter.closest('.stat');
 
-            setTimeout(() => {
+            if (reduceMotion) {
+              counter.textContent = finalText;
               statEl.classList.add('is-visible');
-              counter.classList.add('is-counting');
+              return;
+            }
 
-              const scrambleDuration = 380;
-              const scrambleStart = performance.now();
-              function scramble(ts) {
-                const elapsed = ts - scrambleStart;
-                if (elapsed < scrambleDuration) {
-                  const rnd = Math.floor(Math.random() * Math.pow(10, digits));
-                  counter.textContent = `${prefix}${rnd}${suffix}`;
-                  requestAnimationFrame(scramble);
-                } else {
-                  countUp();
-                }
-              }
+            statEl.classList.add('is-visible');
+            counter.textContent = '';
+            const chars = finalText.split('');
+            const cards = chars.map((ch) => {
+              const card = document.createElement('span');
+              card.className = 'flip-digit';
+              card.textContent = /[0-9]/.test(ch) ? String(Math.floor(Math.random() * 10)) : ch;
+              counter.appendChild(card);
+              return card;
+            });
 
-              function countUp() {
-                let start = null;
-                const duration = 900;
-                function animate(ts) {
-                  if (!start) start = ts;
-                  const progress = Math.min((ts - start) / duration, 1);
-                  const eased = 1 - Math.pow(1 - progress, 3);
-                  counter.textContent = `${prefix}${Math.round(eased * target)}${suffix}`;
-                  if (progress < 1) {
-                    requestAnimationFrame(animate);
-                  } else {
-                    counter.textContent = `${prefix}${target}${suffix}`;
-                    counter.classList.remove('is-counting');
-                    counter.classList.add('is-landed');
-                    setTimeout(() => counter.classList.remove('is-landed'), 550);
-                  }
-                }
-                requestAnimationFrame(animate);
-              }
-
-              requestAnimationFrame(scramble);
-            }, i * 150);
+            cards.forEach((card, ci) => {
+              const finalChar = chars[ci];
+              const isDigit = /[0-9]/.test(finalChar);
+              const queue = isDigit
+                ? [card.textContent, String(Math.floor(Math.random() * 10)), finalChar]
+                : [card.textContent, finalChar];
+              setTimeout(() => runFlipQueue(card, queue, 90), ci * 70);
+            });
           });
 
           statObserver.unobserve(entry.target);
