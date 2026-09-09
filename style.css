@@ -716,21 +716,23 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   font-size: clamp(2.4rem, 4.6vw, 3.6rem);
   color: var(--ink);
   text-shadow: none;
+  display: inline-flex;
+}
+.flip-digit {
   display: inline-block;
-  transform-origin: 50% 100%;
-  opacity: 0;
-  transform: rotateX(-90deg);
+  transform-origin: 50% 50%;
+  backface-visibility: hidden;
 }
-.stat.is-visible .stat-val {
-  animation: statFlipIn 0.65s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+@keyframes flipHalfOut {
+  from { transform: rotateX(0deg); opacity: 1; }
+  to { transform: rotateX(-90deg); opacity: 0.5; }
 }
-@keyframes statFlipIn {
-  0% { opacity: 0; transform: rotateX(-90deg); }
-  65% { opacity: 1; transform: rotateX(12deg); }
-  100% { opacity: 1; transform: rotateX(0deg); }
+@keyframes flipHalfIn {
+  from { transform: rotateX(90deg); opacity: 0.5; }
+  to { transform: rotateX(0deg); opacity: 1; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .stats-highlight-row .stat-val { opacity: 1; transform: none; animation: none; }
+  .flip-digit { animation: none !important; transform: none !important; opacity: 1 !important; }
 }
 .stats-highlight-text {
   font-family: var(--font-heading); font-weight: 500;
