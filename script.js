@@ -92,24 +92,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // out to the left (behind the portrait) instead of it just
         // sitting there until the pin releases.
         .to(heroTextEls, { opacity: 0, x: '-60vw', ease: 'power1.in', stagger: 0.04 }, 1.65)
-        // Phase 5: a beat of black bridges into Leistungen instead of a
-        // hard cut — the photo pushes in slightly as it fades out. Scale
-        // the .hero-bg container, not the img (which already has its own
-        // CSS Ken Burns animation running — animating the same element
-        // from both would fight over the transform property).
-        //
-        // Fades the shared, viewport-fixed #fadeCurtain rather than the
-        // hero-local #heroFadeOut: once this pin releases, .hero-photo
-        // sits statically right where it was (still a full viewport
-        // tall) and needs a further scroll's worth of distance to
-        // actually clear the screen before Leistungen's own pin can
-        // engage — during that whole stretch nothing else covers the
-        // transition. #heroFadeOut scrolls away with the hero section
-        // and can't help there; the fixed curtain stays put and is
-        // faded back out at the *start* of the services-pin timeline
-        // below, so it only clears once Leistungen is truly in place.
-        .to('.hero-bg', { scale: 1.15, ease: 'power1.in' }, 2.1)
-        .to('#fadeCurtain', { opacity: 1, ease: 'power1.in' }, 2.15);
+        // Phase 5: the photo pushes in slightly as the text clears out.
+        // Scale the .hero-bg container, not the img (which already has
+        // its own CSS Ken Burns animation running — animating the same
+        // element from both would fight over the transform property).
+        .to('.hero-bg', { scale: 1.15, ease: 'power1.in' }, 2.1);
       // The CTA row gets its own little punch-in on top of the shared
       // slide, so it reads as the thing to act on rather than just more
       // copy scrolling by.
@@ -118,13 +105,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Pinned services sequence — the section holds scroll in place while
     // crossfading through each service, only releasing once all four have
-    // been shown. A fade-to-black bridge is baked into the tail end of
-    // this same pin (not a separate scroll-linked marker), so it always
-    // finishes exactly when the pin releases into Einsatzgebiet — no gap
-    // where the curtain has cleared but the next section is already
-    // half-scrolled.
+    // been shown.
     const servicesPin = document.getElementById('servicesPin');
-    const fadeCurtainEl = document.getElementById('fadeCurtain');
     if (servicesPin && hasScrollFx) {
       const steps = Array.from(servicesPin.querySelectorAll('.services-pin-step'));
       if (steps.length > 1) {
@@ -134,49 +116,16 @@ document.addEventListener('DOMContentLoaded', () => {
           step.classList.toggle('is-active', i === 0);
         });
         const stepsUnits = steps.length - 1;
-        // Extra scroll for the fade-to-black tacked onto the end of the
-        // same pin. Only the fade-IN lives here (ending fully opaque
-        // exactly at pin release) — fading back out happens afterwards,
-        // during normal scroll into Einsatzgebiet, so the last step is
-        // never visible again once the curtain starts clearing.
-        const totalUnits = stepsUnits + 0.28;
-        const stepsEndTime = stepsUnits * 0.5;
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: servicesPin,
             start: 'top top',
-            end: () => `+=${window.innerHeight * totalUnits}`,
+            end: () => `+=${window.innerHeight * stepsUnits}`,
             pin: true,
             scrub: 0.4,
             anticipatePin: 1,
-            // Hard snaps, independent of scrub smoothing/lag, for the
-            // two curtain hand-offs at either end of this pin:
-            // - entering forward (from the hero's covered gap): clear
-            //   the curtain instantly so Leistungen's first step is
-            //   revealed exactly as its own pin engages, not before.
-            // - leaving backward (back toward hero): re-cover instantly,
-            //   since hero's own reverse scrub won't reach that tween
-            //   again until further up.
-            // - leaving forward / entering backward at the *other* end
-            //   of this pin (into/from Einsatzgebiet): unchanged from
-            //   before — covers the last step disappearing on unpin.
-            onEnter: () => gsap.set(fadeCurtainEl, { opacity: 0 }),
-            onLeaveBack: () => gsap.set(fadeCurtainEl, { opacity: 1 }),
-            onLeave: () => {
-              gsap.set(fadeCurtainEl, { opacity: 1 });
-              gsap.set(servicesPin, { autoAlpha: 0 });
-            },
-            onEnterBack: () => {
-              gsap.set(servicesPin, { autoAlpha: 1 });
-            },
             onUpdate: (self) => {
-              // Map scroll progress through the *whole* pin (steps +
-              // bridge) back onto just the steps portion of the
-              // timeline, so the active-step highlight doesn't drift
-              // once the bridge extends the pin's total duration.
-              const tlTime = self.progress * tl.duration();
-              const stepProgress = Math.min(1, tlTime / stepsEndTime);
-              const active = Math.min(steps.length - 1, Math.round(stepProgress * stepsUnits));
+              const active = Math.min(steps.length - 1, Math.round(self.progress * stepsUnits));
               steps.forEach((step, i) => step.classList.toggle('is-active', i === active));
             },
           },
@@ -187,25 +136,6 @@ document.addEventListener('DOMContentLoaded', () => {
           tl.to(prev, { opacity: 0, scale: 1.14, duration: 0.5, ease: 'power1.in' }, `step${i}`)
             .to(step, { opacity: 1, scale: 1, duration: 0.5, ease: 'power2.out' }, `step${i}`);
         });
-        if (fadeCurtainEl) {
-          tl.to(fadeCurtainEl, { opacity: 1, ease: 'power1.in', duration: 0.5 })
-            // Once fully covered, hide the whole pinned block outright.
-            // Unpinning returns it to normal document flow, where it
-            // would otherwise still sit fully visible (last step and
-            // all) for a moment as it scrolls out of view above —
-            // exactly the "flashes back into view" glitch this fixes.
-            .set(servicesPin, { autoAlpha: 0 });
-          // Fade the curtain back out only once normal scrolling
-          // resumes, tied to absolute scroll position right after this
-          // pin's own end — there's nothing but black underneath now,
-          // whatever the timing.
-          ScrollTrigger.create({
-            start: () => tl.scrollTrigger.end,
-            end: () => tl.scrollTrigger.end + window.innerHeight * 0.25,
-            scrub: true,
-            onUpdate: (self) => gsap.set(fadeCurtainEl, { opacity: 1 - self.progress }),
-          });
-        }
       }
     }
 
@@ -268,26 +198,6 @@ document.addEventListener('DOMContentLoaded', () => {
             scrub: true,
           },
         });
-      });
-    }
-
-    // Section-fade bridges — a brief black curtain at each major section
-    // boundary instead of a hard cut. One shared fixed overlay, scrubbed
-    // in and back out per marker as it crosses the viewport.
-    const fadeCurtain = document.getElementById('fadeCurtain');
-    const bridges = Array.from(document.querySelectorAll('[data-bridge]'));
-    if (fadeCurtain && bridges.length && hasScrollFx) {
-      bridges.forEach((bridge) => {
-        gsap.timeline({
-          scrollTrigger: {
-            trigger: bridge,
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: 0.3,
-          },
-        })
-          .to(fadeCurtain, { opacity: 1, ease: 'power1.in' })
-          .to(fadeCurtain, { opacity: 0, ease: 'power1.out' });
       });
     }
 

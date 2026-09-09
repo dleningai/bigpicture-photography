@@ -448,27 +448,6 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   position: absolute; inset: 0;
   background: radial-gradient(circle at 50% 40%, transparent 0%, transparent 50%, rgba(10, 10, 10, 0.22) 82%, transparent 100%);
 }
-/* Chapter-change fade — bridges the hero into Leistungen with a beat of
-   black instead of a hard cut, driven by script.js as the last step of
-   the hero scroll sequence. Invisible/inert until JS opts in. */
-.hero-fade-out {
-  position: absolute; inset: 0; z-index: 7;
-  background: #000;
-  opacity: 0;
-  pointer-events: none;
-}
-/* Curtain used for the short black beat between later sections (Leistungen
-   → Einsatzgebiet, → Zahlen, → Stimmen, → Kontakt). One fixed overlay, its
-   opacity scrubbed per-boundary by the .section-fade-bridge markers. */
-.fade-curtain {
-  position: fixed; inset: 0; z-index: 950;
-  background: #000;
-  opacity: 0;
-  pointer-events: none;
-}
-.section-fade-bridge {
-  height: 1px;
-}
 /* A personal beat between the photo reveal and the main hero copy — name
    + one-line role, shown only as part of the JS scroll sequence (default
    hidden so nothing's lost when that can't run). */
