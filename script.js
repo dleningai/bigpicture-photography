@@ -386,11 +386,11 @@ document.addEventListener('DOMContentLoaded', () => {
         reel.textContent = finalChar;
         reel.classList.add('reel-static');
         counter.appendChild(reel);
-        setTimeout(() => reel.classList.add('is-in'), ci * 90);
+        setTimeout(() => reel.classList.add('is-in'), ci * 180);
         return;
       }
 
-      const randomCount = 4 + Math.floor(Math.random() * 2);
+      const randomCount = 9 + Math.floor(Math.random() * 3);
       const strip = document.createElement('span');
       strip.className = 'reel-strip';
       const finalSpan = document.createElement('span');
@@ -406,9 +406,9 @@ document.addEventListener('DOMContentLoaded', () => {
       counter.appendChild(reel);
 
       setTimeout(() => {
-        strip.style.transition = 'transform 0.65s cubic-bezier(0.16, 1, 0.3, 1)';
+        strip.style.transition = 'transform 1.4s cubic-bezier(0.16, 1, 0.3, 1)';
         strip.style.transform = 'translateY(0)';
-      }, ci * 140);
+      }, ci * 180);
     }
 
     const statObserver = new IntersectionObserver(
