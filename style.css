@@ -377,6 +377,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 .hero-stats .stat-divider { background: rgba(255, 255, 255, 0.16); }
 @media (max-width: 760px) {
   .stats-strip.hero-stats { justify-content: center; gap: 22px; padding: 0 20px; }
+  .hero-intro-name { align-items: center; text-align: center; padding-left: 24px; padding-right: 24px; }
 }
 .hero-fx {
   position: absolute; inset: 0; z-index: -3; overflow: hidden;
@@ -429,9 +430,11 @@ img.img-loaded { opacity: 1; filter: blur(0); }
    hidden so nothing's lost when that can't run). */
 .hero-intro-name {
   position: absolute; inset: 0; z-index: 6;
-  display: none; flex-direction: column; align-items: center; justify-content: center;
+  display: none; flex-direction: column; align-items: flex-start; justify-content: center;
   gap: 10px;
-  text-align: center;
+  text-align: left;
+  padding-left: clamp(24px, 8vw, 96px);
+  padding-right: 40%;
   pointer-events: none;
 }
 .hero-intro-name.js-active { display: flex; }
