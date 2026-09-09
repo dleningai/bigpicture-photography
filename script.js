@@ -29,6 +29,17 @@ document.addEventListener('DOMContentLoaded', () => {
         lenis.on('scroll', ScrollTrigger.update);
         gsap.ticker.lagSmoothing(0);
       }
+      // With native scroll-behavior disabled above, in-page anchor links
+      // (nav's Kontakt link, the scroll-progress dots, AGB's TOC) would
+      // otherwise jump instantly — route them through Lenis instead.
+      document.addEventListener('click', (e) => {
+        const link = e.target.closest('a[href^="#"]');
+        if (!link || link.getAttribute('href') === '#') return;
+        const target = document.getElementById(link.getAttribute('href').slice(1));
+        if (!target) return;
+        e.preventDefault();
+        lenis.scrollTo(target);
+      });
     }
 
     // Hero logo curtain — fades/scales out as the visitor scrolls past the
