@@ -1184,7 +1184,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 .testi-stars { color: var(--gold); font-size: 15px; margin-bottom: 18px; letter-spacing: 2px; }
 .testi-text {
   position: relative; flex: 1;
-  font-family: var(--font-heading); font-weight: 700;
+  font-family: var(--font); font-weight: 700;
   font-size: clamp(1.15rem, 2.6vw, 1.6rem); line-height: 1.45;
   color: var(--ink);
   margin: 0 0 24px;
