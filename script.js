@@ -97,8 +97,19 @@ document.addEventListener('DOMContentLoaded', () => {
         // the .hero-bg container, not the img (which already has its own
         // CSS Ken Burns animation running — animating the same element
         // from both would fight over the transform property).
+        //
+        // Fades the shared, viewport-fixed #fadeCurtain rather than the
+        // hero-local #heroFadeOut: once this pin releases, .hero-photo
+        // sits statically right where it was (still a full viewport
+        // tall) and needs a further scroll's worth of distance to
+        // actually clear the screen before Leistungen's own pin can
+        // engage — during that whole stretch nothing else covers the
+        // transition. #heroFadeOut scrolls away with the hero section
+        // and can't help there; the fixed curtain stays put and is
+        // faded back out at the *start* of the services-pin timeline
+        // below, so it only clears once Leistungen is truly in place.
         .to('.hero-bg', { scale: 1.15, ease: 'power1.in' }, 2.1)
-        .to('#heroFadeOut', { opacity: 1, ease: 'power1.in' }, 2.15);
+        .to('#fadeCurtain', { opacity: 1, ease: 'power1.in' }, 2.15);
       // The CTA row gets its own little punch-in on top of the shared
       // slide, so it reads as the thing to act on rather than just more
       // copy scrolling by.
@@ -138,13 +149,19 @@ document.addEventListener('DOMContentLoaded', () => {
             pin: true,
             scrub: 0.4,
             anticipatePin: 1,
-            // The scrub above smooths the tween over ~0.4s, so it can
-            // still be catching up to the fully-covered state for a
-            // couple of frames after the pin has already hard-released
-            // at this boundary — exactly the brief flash that scrub
-            // timing alone can't prevent. Snap both states instantly
-            // the moment the raw scroll position crosses the boundary,
-            // in either direction.
+            // Hard snaps, independent of scrub smoothing/lag, for the
+            // two curtain hand-offs at either end of this pin:
+            // - entering forward (from the hero's covered gap): clear
+            //   the curtain instantly so Leistungen's first step is
+            //   revealed exactly as its own pin engages, not before.
+            // - leaving backward (back toward hero): re-cover instantly,
+            //   since hero's own reverse scrub won't reach that tween
+            //   again until further up.
+            // - leaving forward / entering backward at the *other* end
+            //   of this pin (into/from Einsatzgebiet): unchanged from
+            //   before — covers the last step disappearing on unpin.
+            onEnter: () => gsap.set(fadeCurtainEl, { opacity: 0 }),
+            onLeaveBack: () => gsap.set(fadeCurtainEl, { opacity: 1 }),
             onLeave: () => {
               gsap.set(fadeCurtainEl, { opacity: 1 });
               gsap.set(servicesPin, { autoAlpha: 0 });
