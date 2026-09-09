@@ -58,29 +58,11 @@ document.addEventListener('DOMContentLoaded', () => {
       gsap.set(heroTextEls, { opacity: 0, x: '-60vw' });
       const heroCta = document.querySelector('.hero-cta');
       if (heroCta) gsap.set(heroCta, { scale: 0.82 });
-
-      // Camera beat — after the logo, a real camera appears, "clicks" a
-      // shot, flips over in 3D to its back, shows the portrait on its
-      // display, then the view dives into that display (scaling around
-      // the screen's own position) until it fills the frame and hands
-      // off to the real hero photo underneath.
-      const heroCamera = document.getElementById('heroCamera');
-      const heroCameraZoom = document.getElementById('heroCameraZoom');
-      const heroCameraCard = document.getElementById('heroCameraCard');
-      const heroCameraFlash = document.getElementById('heroCameraFlash');
-      const heroCameraScreenPhoto = document.getElementById('heroCameraScreenPhoto');
-      if (heroCameraCard) gsap.set(heroCameraCard, { rotateY: 0 });
-      if (heroCamera) gsap.set(heroCamera, { scale: 0.85 });
-      // Scale around the screen's own position (its box spans
-      // 42.5%-72.5% horizontally, 37%-76% vertically) so zooming in
-      // reads as diving into the display, not just growing in place.
-      if (heroCameraZoom) gsap.set(heroCameraZoom, { transformOrigin: '57.5% 56.5%' });
-
       const heroLogoTl = gsap.timeline({
         scrollTrigger: {
           trigger: '.hero-photo',
           start: 'top top',
-          end: () => `+=${window.innerHeight * 5.8}`,
+          end: () => `+=${window.innerHeight * 3.2}`,
           scrub: true,
           pin: true,
           anticipatePin: 1,
@@ -89,43 +71,27 @@ document.addEventListener('DOMContentLoaded', () => {
       heroLogoTl
         .to(heroLogoImg, { scale: 5.5, filter: 'blur(24px)', ease: 'none' }, 0)
         .to(heroLogoIntro, { autoAlpha: 0, ease: 'none' }, 0.15)
-        // The camera fades/scales in just after the logo clears.
-        .to(heroCamera, { opacity: 1, scale: 1, ease: 'power2.out' }, 0.25)
-        // A quick shutter-click flash once it's settled.
-        .to(heroCameraFlash, { opacity: 0.9, ease: 'none', duration: 0.08 }, 0.65)
-        .to(heroCameraFlash, { opacity: 0, ease: 'power1.out', duration: 0.25 }, 0.73)
-        // The camera flips over in real 3D to its back.
-        .to(heroCameraCard, { rotateY: 180, ease: 'power2.inOut', duration: 0.8 }, 0.9)
-        // The portrait appears on its display once the flip has landed.
-        .to(heroCameraScreenPhoto, { opacity: 1, ease: 'power1.out', duration: 0.4 }, 1.55)
-        // Dive into the display: zoom around the screen's own position
-        // until it dominates the frame, then a quick flash disguises
-        // the handoff to the real hero photo already sitting beneath.
-        .to(heroCameraZoom, { scale: 5, ease: 'power2.in', duration: 0.6 }, 2)
-        .to(heroCameraFlash, { opacity: 1, ease: 'power1.in', duration: 0.15 }, 2.3)
-        .to(heroCamera, { opacity: 0, ease: 'power1.out', duration: 0.3 }, 2.35)
-        .to(heroCameraFlash, { opacity: 0, ease: 'power1.out', duration: 0.3 }, 2.4)
         // Phase 2: name + short description, a personal beat before the
         // main copy takes over.
-        .to(heroIntroNameEls, { opacity: 1, x: 0, ease: 'power2.out', stagger: 0.08 }, 2.8)
-        .to(heroIntroNameEls, { opacity: 0, x: '60vw', ease: 'power1.in', stagger: 0.05 }, 3.3)
+        .to(heroIntroNameEls, { opacity: 1, x: 0, ease: 'power2.out', stagger: 0.08 }, 0.35)
+        .to(heroIntroNameEls, { opacity: 0, x: '60vw', ease: 'power1.in', stagger: 0.05 }, 0.85)
         // Phase 3: the main hero copy slides in from the left this time.
-        .to(heroTextEls, { opacity: 1, x: 0, ease: 'power2.out', stagger: 0.06 }, 3.5)
+        .to(heroTextEls, { opacity: 1, x: 0, ease: 'power2.out', stagger: 0.06 }, 1.05)
         // Phase 4: once the text has landed, further scrolling slides it
         // out to the left (behind the portrait) instead of it just
         // sitting there until the pin releases.
-        .to(heroTextEls, { opacity: 0, x: '-60vw', ease: 'power1.in', stagger: 0.04 }, 4.1)
+        .to(heroTextEls, { opacity: 0, x: '-60vw', ease: 'power1.in', stagger: 0.04 }, 1.65)
         // Phase 5: a beat of black bridges into Leistungen instead of a
         // hard cut — the photo pushes in slightly as it fades out. Scale
         // the .hero-bg container, not the img (which already has its own
         // CSS Ken Burns animation running — animating the same element
         // from both would fight over the transform property).
-        .to('.hero-bg', { scale: 1.15, ease: 'power1.in' }, 4.55)
-        .to('#heroFadeOut', { opacity: 1, ease: 'power1.in' }, 4.6);
+        .to('.hero-bg', { scale: 1.15, ease: 'power1.in' }, 2.1)
+        .to('#heroFadeOut', { opacity: 1, ease: 'power1.in' }, 2.15);
       // The CTA row gets its own little punch-in on top of the shared
       // slide, so it reads as the thing to act on rather than just more
       // copy scrolling by.
-      if (heroCta) heroLogoTl.to(heroCta, { scale: 1, ease: 'back.out(2.4)' }, 3.75);
+      if (heroCta) heroLogoTl.to(heroCta, { scale: 1, ease: 'back.out(2.4)' }, 1.3);
     }
 
     // Pinned services sequence — the section holds scroll in place while
