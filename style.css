@@ -169,9 +169,6 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 .services-list .reveal:nth-child(2), .about-grid .reveal:nth-child(2), .contact-items .reveal:nth-child(2) { transition-delay: 0.09s; }
 .services-list .reveal:nth-child(3), .about-grid .reveal:nth-child(3), .contact-items .reveal:nth-child(3) { transition-delay: 0.18s; }
 .services-list .reveal:nth-child(4), .about-grid .reveal:nth-child(4), .contact-items .reveal:nth-child(4) { transition-delay: 0.27s; }
-.pf-extra-grid .reveal:nth-child(3n+1) { transition-delay: 0s; }
-.pf-extra-grid .reveal:nth-child(3n+2) { transition-delay: 0.08s; }
-.pf-extra-grid .reveal:nth-child(3n+3) { transition-delay: 0.16s; }
 
 /* Cursor-tracked glow — a soft, mouse-following highlight on premium
    interactive surfaces. JS (script.js) writes --mx/--my per pointer move. */
@@ -331,6 +328,13 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   color: #f7e3b4;
   text-wrap: balance;
   text-shadow: 0 4px 28px rgba(0, 0, 0, 0.55);
+}
+/* Plain footer caption used on every page except the homepage, which
+   gets the full social-stage section instead. */
+.social-label {
+  text-align: center; margin: 0 0 14px;
+  font-family: var(--font); font-size: 0.78rem; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--ink-dim);
 }
 .social-row {
   position: relative;
@@ -1645,51 +1649,62 @@ img.img-loaded { opacity: 1; filter: blur(0); }
    lightbox can page through the full set, not meant to be seen. */
 .pf-case-hidden { position: absolute; width: 0; height: 0; overflow: hidden; }
 
-/* Full-set grid beneath each collage — every remaining photo in that
-   category, browsable and part of the same lightbox gallery. Masonry
-   via CSS columns (no JS layout needed) so mixed aspect ratios sit
-   naturally instead of being cropped into uniform tiles. Perspective
-   on the wrapper + a per-item cursor-tracked tilt (script.js) is what
-   keeps it from reading as a flat, dated photo-grid template. */
-.pf-extra-grid {
-  max-width: 1400px; margin: 70px auto 0; padding: 0 5vw;
-  column-count: 3; column-gap: 22px;
-  perspective: 1600px;
-}
-@media (max-width: 900px) { .pf-extra-grid { column-count: 2; } }
-@media (max-width: 560px) { .pf-extra-grid { column-count: 1; } }
-.pf-extra-item {
+/* Full-set carousel beneath each collage — every remaining photo in
+   that category, in a 3D coverflow deck driven by script.js (drag with
+   1:1 pointer tracking, spring physics that carry the release velocity
+   forward, no scroll-hijacking — an isolated widget, not another
+   ScrollTrigger pin). Stays the same footprint regardless of how many
+   photos get added later, unlike a grid that grows forever. */
+.pf-carousel {
   position: relative;
-  display: block; break-inside: avoid; margin-bottom: 22px;
-  border-radius: 6px; overflow: hidden;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+  max-width: 1400px; margin: 70px auto 0; padding: 0 5vw;
+  height: 420px;
+  perspective: 1400px;
+  outline: none;
+  touch-action: pan-y;
+  overflow: hidden;
+}
+.pf-carousel-track {
+  position: relative; width: 100%; height: 100%;
   transform-style: preserve-3d;
-  will-change: transform;
-  transition: transform 0.5s cubic-bezier(.16, .84, .44, 1), box-shadow 0.4s ease;
 }
-.pf-extra-item::after {
-  content: '';
-  position: absolute; inset: 0;
-  background: linear-gradient(180deg, transparent 55%, rgba(0, 0, 0, 0.55) 100%);
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  pointer-events: none;
+.pf-carousel.is-dragging { cursor: grabbing; }
+.pf-carousel:not(.is-dragging) { cursor: grab; }
+.pf-carousel-item {
+  position: absolute; top: 50%; left: 50%;
+  width: 300px; aspect-ratio: 3 / 4;
+  border-radius: 10px; overflow: hidden;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.55);
+  will-change: transform, filter, opacity;
+  -webkit-user-drag: none;
 }
-.pf-extra-item:hover {
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.55), 0 0 0 1px var(--gold-border);
+.pf-carousel-item img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  pointer-events: none; -webkit-user-drag: none;
 }
-.pf-extra-item:hover::after { opacity: 1; }
-.pf-extra-item img {
-  width: 100%; display: block;
-  transition: transform 0.6s cubic-bezier(.16, .84, .44, 1), filter 0.5s ease;
-  transform: translateZ(0) scale(1.001);
+.pf-carousel-arrow {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 52px; height: 52px; border-radius: 50%;
+  background: rgba(20, 18, 14, 0.7);
+  border: 1px solid var(--gold-border);
+  color: var(--gold);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; z-index: 200;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
-.pf-extra-item:hover img { transform: scale(1.08); }
-@media (hover: none) {
-  .pf-extra-item { transform: none !important; }
+.pf-carousel-arrow svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.4; }
+.pf-carousel-arrow:hover { background: var(--gold-soft); border-color: var(--gold); transform: translateY(-50%) scale(1.08); }
+.pf-carousel-arrow-prev { left: 6vw; }
+.pf-carousel-arrow-next { right: 6vw; }
+@media (max-width: 720px) {
+  .pf-carousel { height: 320px; }
+  .pf-carousel-item { width: 220px; }
+  .pf-carousel-arrow { width: 42px; height: 42px; }
+  .pf-carousel-arrow-prev { left: 3vw; }
+  .pf-carousel-arrow-next { right: 3vw; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .pf-extra-item, .pf-extra-item img { transition: none; }
+  .pf-carousel-item { transition: none; }
 }
 @media (max-width: 900px) {
   .pf-collage { padding: 70px 0 60px; }
