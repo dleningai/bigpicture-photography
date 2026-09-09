@@ -421,47 +421,6 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   opacity: 0;
   pointer-events: none;
 }
-/* Camera beat — a real camera appears after the logo, "clicks" a shot,
-   flips over in 3D to its back, and the portrait shows up on its
-   display, before the whole rig glides away. JS-driven only; hidden by
-   default so nothing's lost if GSAP/ScrollTrigger can't run. */
-.hero-camera {
-  position: absolute; inset: 0; z-index: 9;
-  display: flex; align-items: center; justify-content: center;
-  perspective: 1600px;
-  opacity: 0;
-  pointer-events: none;
-}
-.hero-camera-flash {
-  position: absolute; inset: 0; z-index: 2;
-  background: #fff;
-  opacity: 0;
-  pointer-events: none;
-}
-.hero-camera-card {
-  position: relative;
-  width: min(58vw, 620px);
-  aspect-ratio: 1536 / 1024;
-  transform-style: preserve-3d;
-}
-.hero-camera-face {
-  position: absolute; inset: 0;
-  backface-visibility: hidden;
-  border-radius: 6px;
-  overflow: hidden;
-}
-.hero-camera-face img { width: 100%; height: 100%; object-fit: contain; display: block; }
-.hero-camera-back { transform: rotateY(180deg); }
-.hero-camera-screen {
-  position: absolute;
-  left: 42.5%; top: 37%; width: 30%; height: 39%;
-  overflow: hidden;
-  border-radius: 2px;
-}
-.hero-camera-screen img { width: 100%; height: 100%; object-fit: cover; opacity: 0; display: block; }
-@media (max-width: 760px) {
-  .hero-camera-card { width: min(78vw, 420px); }
-}
 /* Curtain used for the short black beat between later sections (Leistungen
    → Einsatzgebiet, → Zahlen, → Stimmen, → Kontakt). One fixed overlay, its
    opacity scrubbed per-boundary by the .section-fade-bridge markers. */
