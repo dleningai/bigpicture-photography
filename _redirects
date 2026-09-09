@@ -1,3 +1,6 @@
 https://www.bigpicture.photography/*  https://bigpicture.photography/:splat  301!
 
+/about.html    /    301
+/kontakt.html  /#kontakt  301
+
 /*    /404.html   404
