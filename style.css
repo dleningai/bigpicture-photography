@@ -737,15 +737,53 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 .stats-highlight .wrap {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
 }
 .stats-highlight-row {
   display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start;
-  gap: 14px;
-  padding: 0 24px;
-  border-left: 1px solid var(--border);
   text-align: left;
 }
-.stats-highlight-row:first-child { border-left: none; padding-left: 0; }
+/* Glow card — a subtle Uiverse-style touch for the stat tiles only: a
+   faint radial-gradient border with a small light orbiting the edge.
+   Kept off the rest of the site (testimonials, hero) to preserve the
+   borderless, personal feel there. */
+.glow-outer {
+  width: 100%; border-radius: 10px; padding: 1px;
+  background: radial-gradient(circle 160px at 15% 0%, rgba(255, 255, 255, 0.4), rgba(12, 13, 13, 0));
+  position: relative;
+}
+.glow-dot {
+  width: 4px; aspect-ratio: 1; position: absolute;
+  background-color: var(--gold-bright);
+  box-shadow: 0 0 10px var(--gold-bright);
+  border-radius: 100px; z-index: 2;
+  right: 12%; top: 12%;
+  animation: glowDotMove 6s linear infinite;
+}
+@keyframes glowDotMove {
+  0%, 100% { top: 12%; right: 12%; }
+  25% { top: 12%; right: calc(100% - 22px); }
+  50% { top: calc(100% - 22px); right: calc(100% - 22px); }
+  75% { top: calc(100% - 22px); right: 12%; }
+}
+.glow-card {
+  position: relative; z-index: 1;
+  border-radius: 9px;
+  border: solid 1px rgba(255, 255, 255, 0.07);
+  background: radial-gradient(circle 200px at 10% 0%, rgba(255, 255, 255, 0.05), #050505);
+  padding: 28px 22px;
+  display: flex; flex-direction: column; gap: 12px;
+  min-height: 168px;
+  overflow: hidden;
+}
+.glow-card .line { position: absolute; background: rgba(255, 255, 255, 0.06); }
+.glow-card .topl { top: 16%; left: 0; right: 0; height: 1px; }
+.glow-card .bottoml { bottom: 16%; left: 0; right: 0; height: 1px; }
+.glow-card .leftl { left: 14%; top: 0; bottom: 0; width: 1px; }
+.glow-card .rightl { right: 14%; top: 0; bottom: 0; width: 1px; }
+@media (prefers-reduced-motion: reduce) {
+  .glow-dot { animation: none; }
+}
 .stats-highlight-row .stat-val {
   font-family: var(--font-heading); font-weight: 600;
   font-size: clamp(2.4rem, 4.6vw, 3.6rem);
@@ -782,8 +820,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   line-height: 1.4;
 }
 @media (max-width: 760px) {
-  .stats-highlight .wrap { grid-template-columns: repeat(2, 1fr); row-gap: 32px; }
-  .stats-highlight-row:nth-child(3) { border-left: none; padding-left: 0; }
+  .stats-highlight .wrap { grid-template-columns: repeat(2, 1fr); }
 }
 
 /* ==========================================================
