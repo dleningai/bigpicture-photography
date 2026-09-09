@@ -2,6 +2,14 @@
    Big Picture Photography — shared design system
    ========================================================== */
 
+@font-face {
+  font-family: 'Bounded';
+  src: url('assets/fonts/BoundedBlack.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --bg: #000000;
   --bg-raised: #1b1b1b;
@@ -15,7 +23,7 @@
   --gold-border: rgba(222, 175, 103, 0.18);
   --border: rgba(255, 255, 255, 0.08);
   --font: 'Montserrat', Arial, sans-serif;
-  --font-heading: 'Space Grotesk', 'Montserrat', Arial, sans-serif;
+  --font-heading: 'Bounded', 'Montserrat', Arial, sans-serif;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
   --max-width: 1100px;
   --radius: 22px;
