@@ -369,41 +369,46 @@ document.addEventListener('DOMContentLoaded', () => {
     sections.forEach((sec) => spyObserver.observe(sec));
   });
 
-  // Animated stat counters — a split-flap "flip clock" reveal: each
-  // character gets its own card that flips through a couple of random
-  // states before settling on its real value, cascading left to right.
+  // Animated stat counters — a slot-machine reel reveal: each character
+  // gets its own vertical strip of random digits above the real value,
+  // sliding top-to-bottom into place, cascading left to right so the
+  // leading digit lands first and the rest follow.
   const statStrips = document.querySelectorAll('.stats-strip, .stats-highlight');
   if (statStrips.length) {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Flips one character card from its current face to `nextChar` via a
-    // two-phase rotateX (hide old face, swap text, reveal new face), then
-    // calls back once settled.
-    function flipChar(el, nextChar, halfMs, onDone) {
-      el.style.animation = `flipHalfOut ${halfMs}ms cubic-bezier(0.4, 0, 1, 1) forwards`;
-      const handleOut = () => {
-        el.removeEventListener('animationend', handleOut);
-        el.textContent = nextChar;
-        el.style.animation = `flipHalfIn ${halfMs}ms cubic-bezier(0.2, 0.9, 0.25, 1) forwards`;
-        const handleIn = () => {
-          el.removeEventListener('animationend', handleIn);
-          if (onDone) onDone();
-        };
-        el.addEventListener('animationend', handleIn);
-      };
-      el.addEventListener('animationend', handleOut);
-    }
+    function buildReel(counter, finalChar, ci) {
+      const isDigit = /[0-9]/.test(finalChar);
+      const reel = document.createElement('span');
+      reel.className = 'reel-digit';
 
-    // Runs a queue of characters through one card in sequence, each a
-    // full flip, landing on the last entry.
-    function runFlipQueue(el, queue, halfMs) {
-      let i = 0;
-      function step() {
-        if (i >= queue.length - 1) return;
-        i += 1;
-        flipChar(el, queue[i], halfMs, step);
+      if (!isDigit) {
+        reel.textContent = finalChar;
+        reel.classList.add('reel-static');
+        counter.appendChild(reel);
+        setTimeout(() => reel.classList.add('is-in'), ci * 90);
+        return;
       }
-      step();
+
+      const randomCount = 4 + Math.floor(Math.random() * 2);
+      const strip = document.createElement('span');
+      strip.className = 'reel-strip';
+      const finalSpan = document.createElement('span');
+      finalSpan.textContent = finalChar;
+      strip.appendChild(finalSpan);
+      for (let i = 0; i < randomCount; i += 1) {
+        const s = document.createElement('span');
+        s.textContent = String(Math.floor(Math.random() * 10));
+        strip.appendChild(s);
+      }
+      strip.style.transform = `translateY(-${randomCount}em)`;
+      reel.appendChild(strip);
+      counter.appendChild(reel);
+
+      setTimeout(() => {
+        strip.style.transition = 'transform 0.65s cubic-bezier(0.16, 1, 0.3, 1)';
+        strip.style.transform = 'translateY(0)';
+      }, ci * 140);
     }
 
     const statObserver = new IntersectionObserver(
@@ -427,23 +432,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             statEl.classList.add('is-visible');
             counter.textContent = '';
-            const chars = finalText.split('');
-            const cards = chars.map((ch) => {
-              const card = document.createElement('span');
-              card.className = 'flip-digit';
-              card.textContent = /[0-9]/.test(ch) ? String(Math.floor(Math.random() * 10)) : ch;
-              counter.appendChild(card);
-              return card;
-            });
-
-            cards.forEach((card, ci) => {
-              const finalChar = chars[ci];
-              const isDigit = /[0-9]/.test(finalChar);
-              const queue = isDigit
-                ? [card.textContent, String(Math.floor(Math.random() * 10)), finalChar]
-                : [card.textContent, finalChar];
-              setTimeout(() => runFlipQueue(card, queue, 90), ci * 70);
-            });
+            finalText.split('').forEach((ch, ci) => buildReel(counter, ch, ci));
           });
 
           statObserver.unobserve(entry.target);

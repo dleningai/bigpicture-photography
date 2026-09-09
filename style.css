@@ -708,7 +708,6 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   padding: 0 24px;
   border-left: 1px solid var(--border);
   text-align: left;
-  perspective: 500px;
 }
 .stats-highlight-row:first-child { border-left: none; padding-left: 0; }
 .stats-highlight-row .stat-val {
@@ -717,22 +716,27 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   color: var(--ink);
   text-shadow: none;
   display: inline-flex;
+  font-variant-numeric: tabular-nums;
 }
-.flip-digit {
+.reel-digit {
   display: inline-block;
-  transform-origin: 50% 50%;
-  backface-visibility: hidden;
+  height: 1em;
+  line-height: 1;
+  overflow: hidden;
+  position: relative;
+  vertical-align: bottom;
 }
-@keyframes flipHalfOut {
-  from { transform: rotateX(0deg); opacity: 1; }
-  to { transform: rotateX(-90deg); opacity: 0.5; }
+.reel-digit.reel-static {
+  opacity: 0;
+  transform: translateY(-0.5em);
+  transition: opacity 0.4s ease, transform 0.4s ease;
 }
-@keyframes flipHalfIn {
-  from { transform: rotateX(90deg); opacity: 0.5; }
-  to { transform: rotateX(0deg); opacity: 1; }
-}
+.reel-digit.reel-static.is-in { opacity: 1; transform: translateY(0); }
+.reel-strip { display: flex; flex-direction: column; will-change: transform; }
+.reel-strip span { display: block; height: 1em; line-height: 1; }
 @media (prefers-reduced-motion: reduce) {
-  .flip-digit { animation: none !important; transform: none !important; opacity: 1 !important; }
+  .reel-strip { transition: none !important; transform: none !important; }
+  .reel-digit.reel-static { opacity: 1 !important; transform: none !important; }
 }
 .stats-highlight-text {
   font-family: var(--font-heading); font-weight: 500;
