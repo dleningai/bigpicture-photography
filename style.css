@@ -799,7 +799,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
    default fully visible (each word at full opacity) so it reads fine
    without JS. When ScrollTrigger is available, script.js dims the words
    and scrubs them bright one by one as the section scrolls through view. */
-.reach-section { padding: 140px 0; }
+.reach-section { padding: 50px 0 140px; }
 .reach-text {
   max-width: 920px; margin: 0 auto;
   font-family: var(--font-heading); font-weight: 800;
@@ -809,10 +809,10 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   text-align: center;
 }
 .reach-word { display: inline-block; }
-.reach-word-accent { color: var(--gold); }
+.reach-word-accent { color: var(--gold); font-weight: 800; }
 .reach-text.js-scrubbed .reach-word { color: var(--ink-faint); transition: color 0.1s linear; }
 .reach-text.js-scrubbed .reach-word.is-lit { color: var(--ink); }
-.reach-text.js-scrubbed .reach-word-accent.is-lit { color: var(--gold-bright); text-shadow: 0 0 24px rgba(222, 175, 103, 0.5); }
+.reach-text.js-scrubbed .reach-word-accent.is-lit { color: var(--gold-bright); text-shadow: 0 0 42px rgba(222, 175, 103, 0.75), 0 0 14px rgba(222, 175, 103, 0.9); }
 
 .sr-only {
   position: absolute; width: 1px; height: 1px;
