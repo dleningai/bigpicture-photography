@@ -56,6 +56,8 @@ document.addEventListener('DOMContentLoaded', () => {
       gsap.set(heroIntroNameEls, { opacity: 0, x: '60vw' });
       const heroTextEls = gsap.utils.toArray('.hero-box > *, .hero-stats');
       gsap.set(heroTextEls, { opacity: 0, x: '-60vw' });
+      const heroCta = document.querySelector('.hero-cta');
+      if (heroCta) gsap.set(heroCta, { scale: 0.82 });
       const heroLogoTl = gsap.timeline({
         scrollTrigger: {
           trigger: '.hero-photo',
@@ -86,6 +88,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // from both would fight over the transform property).
         .to('.hero-bg', { scale: 1.15, ease: 'power1.in' }, 2.1)
         .to('#heroFadeOut', { opacity: 1, ease: 'power1.in' }, 2.15);
+      // The CTA row gets its own little punch-in on top of the shared
+      // slide, so it reads as the thing to act on rather than just more
+      // copy scrolling by.
+      if (heroCta) heroLogoTl.to(heroCta, { scale: 1, ease: 'back.out(2.4)' }, 1.3);
     }
 
     // Pinned services sequence — the section holds scroll in place while
