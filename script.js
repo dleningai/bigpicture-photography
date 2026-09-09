@@ -157,11 +157,17 @@ document.addEventListener('DOMContentLoaded', () => {
             .to(step, { opacity: 1, scale: 1, duration: 0.5, ease: 'power2.out' }, `step${i}`);
         });
         if (fadeCurtainEl) {
-          tl.to(fadeCurtainEl, { opacity: 1, ease: 'power1.in', duration: 0.5 });
-          // Fade back out only once normal scrolling resumes, tied to
-          // absolute scroll position right after this pin's own end —
-          // never while still pinned, so the last step can't flash back
-          // into view underneath the clearing curtain.
+          tl.to(fadeCurtainEl, { opacity: 1, ease: 'power1.in', duration: 0.5 })
+            // Once fully covered, hide the whole pinned block outright.
+            // Unpinning returns it to normal document flow, where it
+            // would otherwise still sit fully visible (last step and
+            // all) for a moment as it scrolls out of view above —
+            // exactly the "flashes back into view" glitch this fixes.
+            .set(servicesPin, { autoAlpha: 0 });
+          // Fade the curtain back out only once normal scrolling
+          // resumes, tied to absolute scroll position right after this
+          // pin's own end — there's nothing but black underneath now,
+          // whatever the timing.
           ScrollTrigger.create({
             start: () => tl.scrollTrigger.end,
             end: () => tl.scrollTrigger.end + window.innerHeight * 0.6,
