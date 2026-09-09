@@ -336,12 +336,28 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   transition: 0.22s ease;
 }
 .social-link:hover {
-  transform: translateY(-3px);
-  background: rgba(222, 175, 103, 0.16);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25), 0 0 16px rgba(222, 175, 103, 0.3);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  animation: socialBounce 0.4s linear;
 }
 .social-link:hover::after { opacity: 1; transform: scale(1); }
-.social-link:hover svg { fill: var(--gold-bright); }
+.social-link:hover svg { fill: #fff; }
+@keyframes socialBounce {
+  40% { transform: scale(1.22); }
+  60% { transform: scale(0.9); }
+  80% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+/* Brand-colored fill per platform on hover, in place of the flat gold
+   highlight — a quick flash of recognizable identity rather than a
+   permanent departure from the site's gold accent. */
+.social-link-whatsapp:hover { background: #25d366; border-color: #25d366; }
+.social-link-instagram:hover {
+  border-color: transparent;
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+}
+.social-link-linkedin:hover { background: #0a66c2; border-color: #0a66c2; }
+.social-link-tiktok:hover { background: #000; border-color: #000; }
+.social-link-facebook:hover { background: #1877f2; border-color: #1877f2; }
 .social-tooltip {
   position: absolute; bottom: calc(100% + 10px); left: 50%;
   transform: translate(-50%, 6px);
@@ -361,7 +377,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   .social-tooltip { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .social-link { opacity: 1; transform: none; animation: none; }
+  .social-link, .social-link:hover { opacity: 1; transform: none; animation: none; }
 }
 
 /* ==========================================================
