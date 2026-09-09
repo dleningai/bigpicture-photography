@@ -162,18 +162,22 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    // Portfolio case-study parallax — each full-bleed image drifts on
-    // its own as it scrolls through view, on top of the plain CSS
-    // reveal already handling the fade/slide-in.
-    const pfCaseImgs = document.querySelectorAll('.pf-case-main img');
-    if (pfCaseImgs.length && hasScrollFx) {
-      pfCaseImgs.forEach((img) => {
-        gsap.set(img, { yPercent: -14 });
-        gsap.to(img, {
-          yPercent: 14,
+    // Portfolio collage parallax — the main image holds still (just a
+    // subtle Ken Burns via CSS elsewhere); the two side cards drift in
+    // opposite directions tied directly to scroll position, so scrolling
+    // up moves them up and scrolling down moves them down — no velocity
+    // or easing lag, just position-linked depth.
+    const pfCollageSides = document.querySelectorAll('.pf-collage-side');
+    if (pfCollageSides.length && hasScrollFx) {
+      pfCollageSides.forEach((side) => {
+        const dir = side.classList.contains('pf-collage-side-b') ? -1 : 1;
+        const range = 70 * dir;
+        gsap.set(side, { y: -range });
+        gsap.to(side, {
+          y: range,
           ease: 'none',
           scrollTrigger: {
-            trigger: img.closest('.pf-case-main'),
+            trigger: side.closest('.pf-collage'),
             start: 'top bottom',
             end: 'bottom top',
             scrub: true,
