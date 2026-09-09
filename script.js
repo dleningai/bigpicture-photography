@@ -162,6 +162,26 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
+    // Portfolio case-study parallax — each chapter's hero image drifts
+    // slightly as its section scrolls through view, on top of the plain
+    // CSS reveal already handling the fade/slide-in.
+    const pfCaseImgs = document.querySelectorAll('.pf-case-main img');
+    if (pfCaseImgs.length && hasScrollFx) {
+      pfCaseImgs.forEach((img) => {
+        gsap.set(img, { yPercent: -8 });
+        gsap.to(img, {
+          yPercent: 8,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: img.closest('.pf-case-media'),
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true,
+          },
+        });
+      });
+    }
+
     // Section-fade bridges — a brief black curtain at each major section
     // boundary instead of a hard cut. One shared fixed overlay, scrubbed
     // in and back out per marker as it crosses the viewport.

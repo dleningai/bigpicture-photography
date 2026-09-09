@@ -1498,6 +1498,97 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   line-height: 1.75;
   margin: 0;
 }
+/* Portfolio case-study rows — replaces the old fan/swipe stack with an
+   editorial layout: big title + growing divider + label, then a large
+   hero image (with scroll-linked parallax) plus a thumbnail grid,
+   everything staggered in on scroll. */
+.pf-case { padding: 90px 0; scroll-margin-top: 64px; }
+.pf-case-row {
+  display: flex; align-items: baseline; gap: 24px; flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+.pf-case-title {
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  font-weight: 800; line-height: 1.05;
+  color: #fff; margin: 0; max-width: 640px; text-wrap: balance;
+  opacity: 0; transform: translateX(-30px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+.pf-case-row.is-visible .pf-case-title { opacity: 1; transform: translateX(0); }
+.pf-case-divider {
+  flex: 1; height: 1px; min-width: 40px; background: var(--border);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.8s ease 0.15s;
+}
+.pf-case-row.is-visible .pf-case-divider { transform: scaleX(1); }
+.pf-case-label {
+  font-family: var(--font-mono); font-size: 0.82rem; letter-spacing: 0.05em;
+  color: var(--ink-dim); white-space: nowrap;
+  opacity: 0; transform: translateX(20px);
+  transition: opacity 0.6s ease 0.3s, transform 0.6s ease 0.3s;
+}
+.pf-case-row.is-visible .pf-case-label { opacity: 1; transform: translateX(0); }
+.pf-case-text { max-width: 620px; color: var(--ink-dim); margin: 0 0 36px; line-height: 1.7; }
+.pf-case-main {
+  position: relative; display: block;
+  overflow: hidden; border-radius: 4px;
+  aspect-ratio: 16 / 9;
+}
+.pf-case-main img {
+  width: 100%; height: 130%; object-fit: cover; display: block;
+  transition: filter 0.5s ease;
+  will-change: transform;
+}
+.pf-case-main:hover img { filter: brightness(0.75); }
+.pf-case-view {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%) scale(0.7);
+  width: 108px; height: 108px; border-radius: 50%;
+  background: rgba(255, 255, 255, 0.94); color: #17140f;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem;
+  opacity: 0;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  pointer-events: none;
+}
+.pf-case-main:hover .pf-case-view { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+.pf-case-thumbs {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+  margin-top: 12px;
+}
+.pf-case-thumbs a {
+  display: block; aspect-ratio: 1; overflow: hidden; border-radius: 4px;
+  opacity: 0; transform: translateY(24px) scale(0.96);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.pf-case-media.is-visible .pf-case-thumbs a { opacity: 1; transform: translateY(0) scale(1); }
+.pf-case-thumbs a:nth-child(1) { transition-delay: 0.05s; }
+.pf-case-thumbs a:nth-child(2) { transition-delay: 0.11s; }
+.pf-case-thumbs a:nth-child(3) { transition-delay: 0.17s; }
+.pf-case-thumbs a:nth-child(4) { transition-delay: 0.23s; }
+.pf-case-thumbs a:nth-child(5) { transition-delay: 0.29s; }
+.pf-case-thumbs a:nth-child(6) { transition-delay: 0.35s; }
+.pf-case-thumbs a:nth-child(7) { transition-delay: 0.41s; }
+.pf-case-thumbs a:nth-child(8) { transition-delay: 0.47s; }
+.pf-case-thumbs img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform 0.45s ease, opacity 0.3s ease;
+}
+.pf-case-thumbs a:hover img { transform: scale(1.06); opacity: 0.88; }
+@media (max-width: 900px) {
+  .pf-case-thumbs { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 640px) {
+  .pf-case { padding: 60px 0; }
+  .pf-case-row { gap: 14px; }
+  .pf-case-divider { display: none; }
+  .pf-case-thumbs { grid-template-columns: repeat(2, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pf-case-title, .pf-case-divider, .pf-case-label, .pf-case-thumbs a {
+    opacity: 1; transform: none; transition: none;
+  }
+}
 
 
 /* ==========================================================
