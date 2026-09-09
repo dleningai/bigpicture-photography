@@ -91,12 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Phase 4: once the text has landed, further scrolling slides it
         // out to the left (behind the portrait) instead of it just
         // sitting there until the pin releases.
-        .to(heroTextEls, { opacity: 0, x: '-60vw', ease: 'power1.in', stagger: 0.04 }, 1.65)
-        // Phase 5: the photo pushes in slightly as the text clears out.
-        // Scale the .hero-bg container, not the img (which already has
-        // its own CSS Ken Burns animation running — animating the same
-        // element from both would fight over the transform property).
-        .to('.hero-bg', { scale: 1.15, ease: 'power1.in' }, 2.1);
+        .to(heroTextEls, { opacity: 0, x: '-60vw', ease: 'power1.in', stagger: 0.04 }, 1.65);
       // The CTA row gets its own little punch-in on top of the shared
       // slide, so it reads as the thing to act on rather than just more
       // copy scrolling by.
