@@ -107,9 +107,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Pinned services sequence — the section holds scroll in place while
     // crossfading through each service, only releasing once all four have
-    // been shown. Falls back to a plain scrolling stack (see CSS) when
-    // ScrollTrigger isn't available.
+    // been shown. A fade-to-black bridge is baked into the tail end of
+    // this same pin (not a separate scroll-linked marker), so it always
+    // finishes exactly when the pin releases into Einsatzgebiet — no gap
+    // where the curtain has cleared but the next section is already
+    // half-scrolled.
     const servicesPin = document.getElementById('servicesPin');
+    const fadeCurtainEl = document.getElementById('fadeCurtain');
     if (servicesPin && hasScrollFx) {
       const steps = Array.from(servicesPin.querySelectorAll('.services-pin-step'));
       if (steps.length > 1) {
@@ -118,16 +122,27 @@ document.addEventListener('DOMContentLoaded', () => {
           gsap.set(step, { opacity: i === 0 ? 1 : 0, scale: i === 0 ? 1 : 0.82 });
           step.classList.toggle('is-active', i === 0);
         });
+        const stepsUnits = steps.length - 1;
+        // One extra viewport-height of scroll for the fade-to-black
+        // bridge tacked onto the end of the same pin.
+        const totalUnits = stepsUnits + 1;
+        const stepsEndTime = stepsUnits * 0.5;
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: servicesPin,
             start: 'top top',
-            end: () => `+=${window.innerHeight * (steps.length - 1)}`,
+            end: () => `+=${window.innerHeight * totalUnits}`,
             pin: true,
             scrub: 0.4,
             anticipatePin: 1,
             onUpdate: (self) => {
-              const active = Math.min(steps.length - 1, Math.round(self.progress * (steps.length - 1)));
+              // Map scroll progress through the *whole* pin (steps +
+              // bridge) back onto just the steps portion of the
+              // timeline, so the active-step highlight doesn't drift
+              // once the bridge extends the pin's total duration.
+              const tlTime = self.progress * tl.duration();
+              const stepProgress = Math.min(1, tlTime / stepsEndTime);
+              const active = Math.min(steps.length - 1, Math.round(stepProgress * stepsUnits));
               steps.forEach((step, i) => step.classList.toggle('is-active', i === active));
             },
           },
@@ -138,6 +153,10 @@ document.addEventListener('DOMContentLoaded', () => {
           tl.to(prev, { opacity: 0, scale: 1.14, duration: 0.5, ease: 'power1.in' }, `step${i}`)
             .to(step, { opacity: 1, scale: 1, duration: 0.5, ease: 'power2.out' }, `step${i}`);
         });
+        if (fadeCurtainEl) {
+          tl.to(fadeCurtainEl, { opacity: 1, ease: 'power1.in', duration: 0.5 })
+            .to(fadeCurtainEl, { opacity: 0, ease: 'power1.out', duration: 0.5 });
+        }
       }
     }
 
