@@ -182,24 +182,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Signature Lenis touch: images skew slightly with scroll velocity,
-    // snapping back to level once scrolling settles — makes the page
-    // feel fluid rather than static while scrolling fast.
-    if (lenis && window.gsap) {
-      const skewImgs = document.querySelectorAll('.pf-case-main img');
-      if (skewImgs.length) {
-        let skewSettleTimer;
-        lenis.on('scroll', ({ velocity }) => {
-          const skew = gsap.utils.clamp(-6, 6, velocity * 0.6);
-          gsap.to(skewImgs, { skewY: skew, duration: 0.5, ease: 'power3.out', overwrite: 'auto' });
-          clearTimeout(skewSettleTimer);
-          skewSettleTimer = setTimeout(() => {
-            gsap.to(skewImgs, { skewY: 0, duration: 0.6, ease: 'power3.out' });
-          }, 80);
-        });
-      }
-    }
-
     // Section-fade bridges — a brief black curtain at each major section
     // boundary instead of a hard cut. One shared fixed overlay, scrubbed
     // in and back out per marker as it crosses the viewport.
