@@ -288,6 +288,11 @@ img.img-loaded { opacity: 1; filter: blur(0); }
    Social row (footer)
    ========================================================== */
 
+.social-label {
+  text-align: center; margin: 0 0 14px;
+  font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--ink-dim);
+}
 .social-row {
   display: flex; justify-content: center; align-items: center;
   gap: 14px; margin: 0 0 22px;
@@ -301,6 +306,16 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   background: var(--gold-soft);
   color: var(--gold);
   transition: 0.22s ease;
+  opacity: 0; transform: translateY(14px) scale(0.9);
+  animation: socialLinkIn 0.5s ease forwards;
+}
+.social-link:nth-child(1) { animation-delay: 0s; }
+.social-link:nth-child(2) { animation-delay: 0.06s; }
+.social-link:nth-child(3) { animation-delay: 0.12s; }
+.social-link:nth-child(4) { animation-delay: 0.18s; }
+.social-link:nth-child(5) { animation-delay: 0.24s; }
+@keyframes socialLinkIn {
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 .social-link svg { width: 19px; height: 19px; fill: var(--gold); transition: 0.22s ease; }
 .social-link::after {
@@ -319,6 +334,27 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 }
 .social-link:hover::after { opacity: 1; transform: scale(1); }
 .social-link:hover svg { fill: var(--gold-bright); }
+.social-tooltip {
+  position: absolute; bottom: calc(100% + 10px); left: 50%;
+  transform: translate(-50%, 6px);
+  background: #17140f; color: var(--gold-bright);
+  font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.04em;
+  white-space: nowrap; padding: 5px 9px; border-radius: 4px;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.social-tooltip::after {
+  content: ''; position: absolute; top: 100%; left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent; border-top-color: #17140f;
+}
+.social-link:hover .social-tooltip { opacity: 1; transform: translate(-50%, 0); }
+@media (hover: none) {
+  .social-tooltip { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .social-link { opacity: 1; transform: none; animation: none; }
+}
 
 /* ==========================================================
    Hero
