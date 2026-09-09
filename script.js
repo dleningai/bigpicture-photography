@@ -162,22 +162,39 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    // Portfolio collage parallax — the main image holds still (just a
-    // subtle Ken Burns via CSS elsewhere); the two side cards drift in
-    // opposite directions tied directly to scroll position, so scrolling
-    // up moves them up and scrolling down moves them down — no velocity
-    // or easing lag, just position-linked depth.
+    // Portfolio collage parallax — the main image holds still except for
+    // a slow zoom; the two side cards drift in opposite directions tied
+    // directly to scroll position (a large swing relative to the
+    // viewport), so scrolling up moves them up and scrolling down moves
+    // them down — no velocity or easing lag, just position-linked depth.
     const pfCollageSides = document.querySelectorAll('.pf-collage-side');
     if (pfCollageSides.length && hasScrollFx) {
       pfCollageSides.forEach((side) => {
         const dir = side.classList.contains('pf-collage-side-b') ? -1 : 1;
-        const range = 70 * dir;
+        const range = window.innerHeight * 0.32 * dir;
         gsap.set(side, { y: -range });
         gsap.to(side, {
           y: range,
           ease: 'none',
           scrollTrigger: {
             trigger: side.closest('.pf-collage'),
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true,
+            invalidateOnRefresh: true,
+          },
+        });
+      });
+    }
+    const pfCollageMains = document.querySelectorAll('.pf-collage-main img');
+    if (pfCollageMains.length && hasScrollFx) {
+      pfCollageMains.forEach((img) => {
+        gsap.set(img, { scale: 1.06 });
+        gsap.to(img, {
+          scale: 1.22,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: img.closest('.pf-collage'),
             start: 'top bottom',
             end: 'bottom top',
             scrub: true,
