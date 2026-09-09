@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // exactly at pin release) — fading back out happens afterwards,
         // during normal scroll into Einsatzgebiet, so the last step is
         // never visible again once the curtain starts clearing.
-        const totalUnits = stepsUnits + 0.6;
+        const totalUnits = stepsUnits + 0.28;
         const stepsEndTime = stepsUnits * 0.5;
         const tl = gsap.timeline({
           scrollTrigger: {
@@ -138,6 +138,20 @@ document.addEventListener('DOMContentLoaded', () => {
             pin: true,
             scrub: 0.4,
             anticipatePin: 1,
+            // The scrub above smooths the tween over ~0.4s, so it can
+            // still be catching up to the fully-covered state for a
+            // couple of frames after the pin has already hard-released
+            // at this boundary — exactly the brief flash that scrub
+            // timing alone can't prevent. Snap both states instantly
+            // the moment the raw scroll position crosses the boundary,
+            // in either direction.
+            onLeave: () => {
+              gsap.set(fadeCurtainEl, { opacity: 1 });
+              gsap.set(servicesPin, { autoAlpha: 0 });
+            },
+            onEnterBack: () => {
+              gsap.set(servicesPin, { autoAlpha: 1 });
+            },
             onUpdate: (self) => {
               // Map scroll progress through the *whole* pin (steps +
               // bridge) back onto just the steps portion of the
@@ -170,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
           // whatever the timing.
           ScrollTrigger.create({
             start: () => tl.scrollTrigger.end,
-            end: () => tl.scrollTrigger.end + window.innerHeight * 0.6,
+            end: () => tl.scrollTrigger.end + window.innerHeight * 0.25,
             scrub: true,
             onUpdate: (self) => gsap.set(fadeCurtainEl, { opacity: 1 - self.progress }),
           });
