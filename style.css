@@ -1502,79 +1502,80 @@ img.img-loaded { opacity: 1; filter: blur(0); }
    editorial layout: big title + growing divider + label, then a large
    hero image (with scroll-linked parallax) plus a thumbnail grid,
    everything staggered in on scroll. */
-.pf-case { padding: 90px 0; scroll-margin-top: 64px; }
-.pf-case-row {
-  display: flex; align-items: baseline; gap: 24px; flex-wrap: wrap;
-  margin-bottom: 18px;
-}
-.pf-case-title {
-  font-size: clamp(2rem, 5vw, 3.4rem);
-  font-weight: 800; line-height: 1.05;
-  color: #fff; margin: 0; max-width: 640px; text-wrap: balance;
-  opacity: 0; transform: translateX(-30px);
-  transition: opacity 0.65s ease, transform 0.65s ease;
-}
-.pf-case-row.is-visible .pf-case-title { opacity: 1; transform: translateX(0); }
-.pf-case-divider {
-  flex: 1; height: 1px; min-width: 40px; background: var(--border);
-  transform: scaleX(0); transform-origin: left;
-  transition: transform 0.8s ease 0.15s;
-}
-.pf-case-row.is-visible .pf-case-divider { transform: scaleX(1); }
-.pf-case-label {
+/* Portfolio chapters as an asymmetric collage — a big main image, two
+   smaller overlapping cards, and bold type layered over the top, per
+   the lenis.dev-style references. The main image holds still; the two
+   side cards drift opposite directions as the chapter scrolls through
+   view (JS, position-linked to scroll — not velocity-based). */
+.pf-collage { position: relative; padding: 120px 0 90px; scroll-margin-top: 64px; overflow: hidden; }
+.pf-collage-label {
+  display: block; margin: 0 auto 28px; max-width: 1400px; padding: 0 5vw;
   font-family: var(--font-mono); font-size: 0.82rem; letter-spacing: 0.05em;
-  color: var(--ink-dim); white-space: nowrap;
-  opacity: 0; transform: translateX(20px);
-  transition: opacity 0.6s ease 0.3s, transform 0.6s ease 0.3s;
+  color: var(--ink-dim);
 }
-.pf-case-row.is-visible .pf-case-label { opacity: 1; transform: translateX(0); }
-.pf-case-text { max-width: 620px; color: var(--ink-dim); margin: 0 0 36px; line-height: 1.7; }
-/* Full-bleed image stream — edge to edge, stacked with a hairline gap,
-   like the lenis.dev case-study references (no boxed grid). */
-.pf-case-media { display: flex; flex-direction: column; gap: 10px; }
-.pf-case-main {
-  position: relative; display: block;
-  width: 100vw; margin-left: calc(50% - 50vw);
-  overflow: hidden;
-  aspect-ratio: 21 / 9;
+.pf-collage-stage {
+  position: relative; max-width: 1400px; margin: 0 auto;
+  height: 76vh; min-height: 460px; max-height: 780px;
+  padding: 0 5vw;
 }
-.pf-case-main img {
+.pf-collage-main {
+  position: absolute; inset: 5% 8% 5% 26%;
+  display: block; overflow: hidden; border-radius: 4px; z-index: 1;
+}
+.pf-collage-main img {
   width: 100%; height: 130%; object-fit: cover; display: block;
-  transition: filter 0.5s ease;
-  will-change: transform;
+  transition: filter 0.5s ease; will-change: transform;
 }
-.pf-case-main:hover img { filter: brightness(0.75); }
-.pf-case-main:nth-of-type(1) { transition-delay: 0s; }
-.pf-case-main:nth-of-type(2) { transition-delay: 0.12s; }
-.pf-case-main:nth-of-type(3) { transition-delay: 0.24s; }
-.pf-case-view {
+.pf-collage-main:hover img { filter: brightness(0.75); }
+.pf-collage-side {
+  position: absolute; display: block; overflow: hidden; border-radius: 4px;
+  z-index: 3; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.55);
+}
+.pf-collage-side img {
+  width: 100%; height: 130%; object-fit: cover; display: block;
+  transition: filter 0.4s ease; will-change: transform;
+}
+.pf-collage-side:hover img { filter: brightness(0.8); }
+.pf-collage-side-a { top: -6%; left: 4%; width: 27%; aspect-ratio: 3 / 4; }
+.pf-collage-side-b { bottom: -6%; right: 2%; width: 24%; aspect-ratio: 4 / 3; }
+.pf-collage-title {
+  position: absolute; top: 6%; left: 0; z-index: 4;
+  font-size: clamp(2rem, 4.6vw, 3.8rem);
+  font-weight: 800; line-height: 1.04;
+  color: #fff; margin: 0; max-width: 40%; text-wrap: balance;
+  text-shadow: 0 8px 34px rgba(0, 0, 0, 0.65);
+}
+.pf-collage-view {
   position: absolute; top: 50%; left: 50%;
   transform: translate(-50%, -50%) scale(0.7);
-  width: 120px; height: 120px; border-radius: 50%;
+  width: 108px; height: 108px; border-radius: 50%;
   background: rgba(255, 255, 255, 0.94); color: #17140f;
   display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-heading); font-weight: 700; font-size: 0.95rem;
+  font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem;
   opacity: 0;
   transition: opacity 0.35s ease, transform 0.35s ease;
   pointer-events: none;
 }
-.pf-case-main:hover .pf-case-view { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-/* Extra gallery photos beyond the visible stream — present so the
+.pf-collage-main:hover .pf-collage-view,
+.pf-collage-side:hover .pf-collage-view { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+.pf-collage-text {
+  max-width: 620px; margin: 44px auto 0; padding: 0 5vw;
+  color: var(--ink-dim); line-height: 1.7;
+}
+/* Extra gallery photos beyond the visible collage — present so the
    lightbox can page through the full set, not meant to be seen. */
 .pf-case-hidden { position: absolute; width: 0; height: 0; overflow: hidden; }
 @media (max-width: 900px) {
-  .pf-case-main { aspect-ratio: 4 / 3; }
-}
-@media (max-width: 640px) {
-  .pf-case { padding: 60px 0; }
-  .pf-case-row { gap: 14px; }
-  .pf-case-divider { display: none; }
-  .pf-case-main { aspect-ratio: 1 / 1; }
+  .pf-collage { padding: 70px 0 60px; }
+  .pf-collage-stage { height: auto; min-height: 0; max-height: none; padding: 0 20px; }
+  .pf-collage-main { position: relative; inset: auto; width: 100%; aspect-ratio: 4 / 3; }
+  .pf-collage-side { display: none; }
+  .pf-collage-title { position: relative; top: auto; max-width: 100%; margin: 0 0 20px; }
+  .pf-collage-label { padding: 0 20px; }
+  .pf-collage-text { padding: 0 20px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .pf-case-title, .pf-case-divider, .pf-case-label {
-    opacity: 1; transform: none; transition: none;
-  }
+  .pf-collage-title, .pf-collage-label { opacity: 1; transform: none; transition: none; }
 }
 
 
