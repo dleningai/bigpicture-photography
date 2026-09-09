@@ -2,6 +2,14 @@
    Big Picture Photography — shared design system
    ========================================================== */
 
+@font-face {
+  font-family: 'Bounded';
+  src: url('assets/fonts/BoundedBlack.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --bg: #000000;
   --bg-raised: #1b1b1b;
@@ -15,8 +23,8 @@
   --gold-border: rgba(222, 175, 103, 0.18);
   --border: rgba(255, 255, 255, 0.08);
   --font: 'Montserrat', Arial, sans-serif;
-  --font-heading: 'Space Grotesk', 'Montserrat', Arial, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+  --font-heading: 'Bounded', 'Montserrat', Arial, sans-serif;
+  --font-mono: 'Montserrat', Arial, sans-serif;
   --max-width: 1100px;
   --radius: 22px;
 }
@@ -469,7 +477,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   text-shadow: 0 4px 28px rgba(0, 0, 0, 0.55);
 }
 .hero-intro-name-sub {
-  font-family: var(--font-mono); font-size: 0.85rem; letter-spacing: 0.04em;
+  font-family: var(--font); font-size: 0.85rem; letter-spacing: 0.04em;
   color: var(--ink-dim);
   margin: 0;
   text-shadow: 0 2px 16px rgba(0, 0, 0, 0.5);
@@ -613,11 +621,13 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   text-shadow: 0 4px 28px rgba(0, 0, 0, 0.55);
 }
 .hero-sub {
-  margin-top: 14px;
-  font-size: 1.02rem; font-weight: 500; letter-spacing: 0.02em;
-  color: var(--ink-dim);
-  line-height: 1.65;
-  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.5);
+  margin: 0;
+  font-size: clamp(1.6rem, 4.6vw, 2.5rem);
+  font-weight: 800; letter-spacing: -0.02em;
+  color: #f7e3b4;
+  line-height: 1.3;
+  text-wrap: balance;
+  text-shadow: 0 4px 28px rgba(0, 0, 0, 0.55);
 }
 .hero-cta { margin-top: 24px; display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
 .hero-photo .hero-cta .btn-primary { padding: 20px 46px; font-size: 1.02rem; }
@@ -625,7 +635,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   display: inline-block;
   margin-top: 16px;
   color: var(--ink-dim);
-  font-family: var(--font-mono);
+  font-family: var(--font);
   font-size: 0.85rem;
   letter-spacing: 0.03em;
   text-decoration: none;
