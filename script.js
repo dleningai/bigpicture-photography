@@ -123,9 +123,12 @@ document.addEventListener('DOMContentLoaded', () => {
           step.classList.toggle('is-active', i === 0);
         });
         const stepsUnits = steps.length - 1;
-        // One extra viewport-height of scroll for the fade-to-black
-        // bridge tacked onto the end of the same pin.
-        const totalUnits = stepsUnits + 1;
+        // Extra scroll for the fade-to-black tacked onto the end of the
+        // same pin. Only the fade-IN lives here (ending fully opaque
+        // exactly at pin release) — fading back out happens afterwards,
+        // during normal scroll into Einsatzgebiet, so the last step is
+        // never visible again once the curtain starts clearing.
+        const totalUnits = stepsUnits + 0.6;
         const stepsEndTime = stepsUnits * 0.5;
         const tl = gsap.timeline({
           scrollTrigger: {
@@ -154,8 +157,17 @@ document.addEventListener('DOMContentLoaded', () => {
             .to(step, { opacity: 1, scale: 1, duration: 0.5, ease: 'power2.out' }, `step${i}`);
         });
         if (fadeCurtainEl) {
-          tl.to(fadeCurtainEl, { opacity: 1, ease: 'power1.in', duration: 0.5 })
-            .to(fadeCurtainEl, { opacity: 0, ease: 'power1.out', duration: 0.5 });
+          tl.to(fadeCurtainEl, { opacity: 1, ease: 'power1.in', duration: 0.5 });
+          // Fade back out only once normal scrolling resumes, tied to
+          // absolute scroll position right after this pin's own end —
+          // never while still pinned, so the last step can't flash back
+          // into view underneath the clearing curtain.
+          ScrollTrigger.create({
+            start: () => tl.scrollTrigger.end,
+            end: () => tl.scrollTrigger.end + window.innerHeight * 0.6,
+            scrub: true,
+            onUpdate: (self) => gsap.set(fadeCurtainEl, { opacity: 1 - self.progress }),
+          });
         }
       }
     }
