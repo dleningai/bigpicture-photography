@@ -66,11 +66,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // name ends up overlapping the strip's last row of photos -- clear
     // it dynamically too, from the strip's actual measured bottom edge.
     const heroIntroName = document.getElementById('heroIntroName');
+    // The hero portrait (.hero-bg) fills the whole section behind the
+    // strip (inset: 0). On wide screens object-fit: contain happens to
+    // letterbox it away from the very top, so it never reaches the strip
+    // -- but that's incidental, not a rule: on narrow screens the image
+    // is both narrower and pushed up by its own object-position tweak
+    // (see style.css, 760px breakpoint), so it reaches right into the
+    // strip's band and visibly overlaps it. Pin the image's top to the
+    // strip's actual bottom edge instead, so it always starts clear of
+    // the strip the way it only accidentally does on desktop.
+    const heroBg = document.getElementById('heroBg');
     if (editorialStrip && siteNav) {
       const positionEditorialStrip = () => {
         editorialStrip.style.top = siteNav.getBoundingClientRect().height + 'px';
+        const stripBottom = editorialStrip.getBoundingClientRect().bottom;
+        if (heroBg) heroBg.style.top = stripBottom + 'px';
         if (heroIntroName && window.innerWidth <= 760) {
-          const stripBottom = editorialStrip.getBoundingClientRect().bottom;
           heroIntroName.style.paddingTop = (stripBottom + 24) + 'px';
         } else if (heroIntroName) {
           heroIntroName.style.paddingTop = '';
