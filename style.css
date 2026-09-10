@@ -781,7 +781,18 @@ img.img-loaded { opacity: 1; filter: blur(0); }
    individual statement rows further down the page instead of repeating
    the compact strip verbatim. Deliberate white-on-dark contrast break
    (lenis.dev-style), the one light section on an otherwise dark page. */
-.stats-highlight { padding: 90px 0; background: #fff; }
+.stats-highlight {
+  padding: 130px 0;
+  background: #fff;
+  /* Diagonal top/bottom edge instead of a straight cut, so the
+     black/white boundary reads as a deliberate wipe rather than a
+     flat line -- on top of the scrub color crossfade already in
+     place, not instead of it. */
+  clip-path: polygon(0 60px, 100% 0, 100% calc(100% - 60px), 0 100%);
+}
+@media (max-width: 700px) {
+  .stats-highlight { clip-path: polygon(0 28px, 100% 0, 100% calc(100% - 28px), 0 100%); }
+}
 .stats-highlight .wrap {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
