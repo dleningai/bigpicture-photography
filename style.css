@@ -30,11 +30,11 @@
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; overflow-x: hidden; }
+html { scroll-behavior: smooth; overflow-x: clip; }
 
 body {
   position: relative;
-  overflow-x: hidden;
+  overflow-x: clip;
   max-width: 100vw;
   background-color: var(--bg);
   color: var(--ink);
@@ -779,24 +779,46 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 
 /* Stats highlight — the same numbers as the hero strip, restated as big
    individual statement rows further down the page instead of repeating
-   the compact strip verbatim. */
-.stats-highlight { padding: 70px 0; }
+   the compact strip verbatim. Deliberate white-on-dark contrast break
+   (lenis.dev-style), the one light section on an otherwise dark page. */
+.stats-highlight {
+  padding: 130px 0;
+  background: #fff;
+  /* Diagonal top/bottom edge instead of a straight cut, so the
+     black/white boundary reads as a deliberate wipe rather than a
+     flat line -- on top of the scrub color crossfade already in
+     place, not instead of it. */
+  clip-path: polygon(0 60px, 100% 0, 100% calc(100% - 60px), 0 100%);
+}
+@media (max-width: 700px) {
+  .stats-highlight { clip-path: polygon(0 28px, 100% 0, 100% calc(100% - 28px), 0 100%); }
+}
 .stats-highlight .wrap {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
+  gap: 48px 64px;
 }
 .stats-highlight-row {
+  position: relative;
   display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start;
-  gap: 14px;
-  padding: 0 24px;
-  border-left: 1px solid var(--border);
+  gap: 12px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.14);
   text-align: left;
 }
-.stats-highlight-row:first-child { border-left: none; padding-left: 0; }
+/* Small corner-bracket mark, top-right of each stat -- purely
+   decorative, matching the reference. */
+.stats-highlight-row::after {
+  content: '';
+  position: absolute; top: 20px; right: 0;
+  width: 14px; height: 14px;
+  border-top: 1.5px solid rgba(0, 0, 0, 0.35);
+  border-right: 1.5px solid rgba(0, 0, 0, 0.35);
+}
 .stats-highlight-row .stat-val {
   font-family: var(--font-heading); font-weight: 600;
-  font-size: clamp(2.4rem, 4.6vw, 3.6rem);
-  color: var(--ink);
+  font-size: clamp(2.6rem, 5vw, 4rem);
+  color: #111;
   text-shadow: none;
   display: inline-flex;
   font-variant-numeric: tabular-nums;
@@ -825,12 +847,11 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   font-family: var(--font-heading); font-weight: 500;
   font-size: clamp(0.72rem, 1.1vw, 0.8rem);
   letter-spacing: 0.06em; text-transform: uppercase;
-  color: var(--ink-dim);
+  color: #555;
   line-height: 1.4;
 }
-@media (max-width: 760px) {
-  .stats-highlight .wrap { grid-template-columns: repeat(2, 1fr); row-gap: 32px; }
-  .stats-highlight-row:nth-child(3) { border-left: none; padding-left: 0; }
+@media (max-width: 560px) {
+  .stats-highlight .wrap { grid-template-columns: 1fr; gap: 28px; }
 }
 
 /* ==========================================================
@@ -926,74 +947,77 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   .services-marquee-track { animation: none; }
 }
 
-/* Pinned services sequence — by default (no JS) a plain vertical stack, so
-   the content is always fully present and readable. When GSAP/ScrollTrigger
-   are available, script.js adds .js-pinned: the section is pinned in place
-   while scroll progress crossfades from one step to the next, only
-   releasing once all four have been shown. */
-.service-row-title {
-  position: relative;
-  display: block;
-  font-family: var(--font-heading); font-weight: 800;
-  font-size: clamp(2.6rem, 8vw, 5.5rem);
-  color: #fff;
-  letter-spacing: -0.02em;
-  margin-bottom: 22px;
-  text-shadow: 0 0 40px rgba(222, 175, 103, 0.35);
-}
-.service-row-title::after {
-  content: '';
-  display: block;
-  width: 64px; height: 3px; margin: 22px auto 0;
-  background: linear-gradient(90deg, var(--gold), var(--gold-bright));
-  box-shadow: 0 0 16px rgba(222, 175, 103, 0.7);
-}
-.services-pin.js-pinned .services-pin-step:not(.is-active) .service-row-title::after { width: 0; }
-.services-pin.js-pinned .services-pin-step.is-active .service-row-title::after {
-  transition: width 0.6s ease 0.2s;
-}
-.service-row-text {
-  display: block;
-  color: var(--ink-dim); font-size: 1.15rem; line-height: 1.65;
-  max-width: 560px;
-  margin-left: auto; margin-right: auto;
-}
-.services-pin-inner {
-  border-top: 1px solid var(--border);
+/* Leistungen as an editorial numbered list — number, title, short text,
+   one per row with a hairline divider between them. Same visual family
+   as the portfolio's numbered chapters, but static (no stacking, no
+   pin): a plain, always-fully-readable list suits a handful of short
+   service descriptions better than more scroll machinery. */
+.service-list {
   max-width: var(--max-width); margin: 0 auto; padding: 0 20px;
 }
-.services-pin.js-pinned .services-pin-inner { max-width: none; padding: 0; }
-.services-pin-step {
-  padding: 64px 0;
-  border-bottom: 1px solid var(--border);
-  text-align: center;
+.service-row {
+  display: flex; align-items: center; gap: 32px;
+  padding: 56px 0;
+  border-top: 1px solid var(--border);
+  transition: padding 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.services-pin.js-pinned {
-  height: 100vh;
+.service-list .service-row:first-child { border-top: none; }
+.service-row-num {
+  font-family: var(--font-heading); font-weight: 800;
+  font-size: clamp(2rem, 3.4vw, 2.8rem); line-height: 1;
+  color: var(--ink-dim); opacity: 0.5; flex-shrink: 0;
+  transition: opacity 0.4s ease, color 0.4s ease;
+}
+.service-row-body { flex: 1 1 auto; min-width: 0; }
+.service-row-title {
+  font-family: var(--font-heading); font-weight: 800;
+  font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+  color: #fff;
+  letter-spacing: -0.01em;
+  margin: 0 0 12px;
+}
+.service-row-text {
+  color: var(--ink-dim); font-size: 1rem; line-height: 1.7;
+  max-width: 620px;
+  margin: 0;
+}
+.service-row-media {
+  flex: 0 0 auto;
+  width: 0;
+  aspect-ratio: 4 / 3;
+  border-radius: 6px;
   overflow: hidden;
-}
-.services-pin.js-pinned .services-pin-inner {
-  position: relative;
-  height: 100%;
-  border-top: none;
-}
-.services-pin.js-pinned .services-pin-step {
-  position: absolute; inset: 0;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  text-align: center;
-  padding: 0 20px;
-  border-bottom: none;
   opacity: 0;
-  visibility: hidden;
+  transform: scale(0.94);
+  transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.4s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.services-pin.js-pinned .services-pin-step.is-active { visibility: visible; }
-@media (prefers-reduced-motion: reduce) {
-  .services-pin.js-pinned { height: auto; overflow: visible; }
-  .services-pin.js-pinned .services-pin-inner { height: auto; }
-  .services-pin.js-pinned .services-pin-step {
-    position: static; opacity: 1; visibility: visible;
-    text-align: left; padding: 64px 0; border-bottom: 1px solid var(--border);
-  }
+.service-row-media img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+}
+.service-row:hover,
+.service-row:focus-within {
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+.service-row:hover .service-row-num,
+.service-row:focus-within .service-row-num {
+  opacity: 1;
+  color: var(--accent, #fff);
+}
+.service-row:hover .service-row-media,
+.service-row:focus-within .service-row-media {
+  width: min(260px, 30vw);
+  opacity: 1;
+  transform: scale(1);
+}
+@media (hover: none) {
+  .service-row-media { display: none; }
+}
+@media (max-width: 640px) {
+  .service-row { gap: 16px; padding: 40px 0; }
+  .service-row-num { font-size: 1.6rem; }
+  .service-row-media { display: none; }
 }
 
 /* ==========================================================
@@ -1120,45 +1144,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   .scroll-progress { display: none !important; }
 }
 
-/* ==========================================================
-   Sticky-Kontakt-Leiste
-   ========================================================== */
-.sticky-cta {
-  position: fixed; left: 50%; bottom: 22px; z-index: 150;
-  transform: translate(-50%, 140%);
-  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-  display: flex; align-items: center; gap: 14px;
-  padding: 10px 12px 10px 18px;
-  border-radius: 999px;
-  background: linear-gradient(180deg, rgba(28, 28, 28, 0.97), rgba(14, 14, 14, 0.98));
-  border: 1px solid var(--gold-border);
-  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(222, 175, 103, 0.06);
-  max-width: calc(100vw - 32px);
-}
-.sticky-cta.visible { transform: translate(-50%, 0); }
-.sticky-cta-status { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-dim); white-space: nowrap; }
-.sticky-cta-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 8px 2px rgba(222, 175, 103, 0.55); animation: dotPulse 1.8s ease-in-out infinite; flex-shrink: 0; }
-@keyframes dotPulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.75); } }
-.sticky-cta-btn {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 10px 20px; border-radius: 999px;
-  background: linear-gradient(135deg, var(--gold), var(--gold-bright)); color: #17140f;
-  font-family: var(--font); font-weight: 700; font-size: 0.84rem; text-decoration: none;
-  white-space: nowrap;
-}
-.sticky-cta-close {
-  width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
-  border: 1px solid var(--gold-border); background: transparent; color: var(--ink-faint);
-  display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px; line-height: 1;
-}
-.sticky-cta-close:hover { color: var(--ink); border-color: var(--gold); }
-
-@media (max-width: 640px) {
-  .sticky-cta-status span:last-child { display: none; }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .sticky-cta-dot { animation: none; }
   .calc-result.visible { animation: none; }
 }
 
@@ -1585,138 +1571,130 @@ img.img-loaded { opacity: 1; filter: blur(0); }
    editorial layout: big title + growing divider + label, then a large
    hero image (with scroll-linked parallax) plus a thumbnail grid,
    everything staggered in on scroll. */
-/* Portfolio chapters as an asymmetric collage — a big main image, two
-   smaller overlapping cards, and bold type layered over the top, per
-   the lenis.dev-style references. The main image holds still; the two
-   side cards drift opposite directions as the chapter scrolls through
-   view (JS, position-linked to scroll — not velocity-based). */
-.pf-collage { position: relative; padding: 120px 0 90px; scroll-margin-top: 64px; overflow: hidden; }
-.pf-collage-label {
-  display: block; margin: 0 auto 28px; max-width: 1400px; padding: 0 5vw;
+/* Portfolio chapters as a classic CSS sticky-note stack: each card
+   sticks at a slightly larger `top` offset than the one before it, so
+   as the next one slides up and covers it, a thin sliver of every
+   earlier card stays peeking above -- pure CSS position:sticky, no JS
+   pin. (A GSAP ScrollTrigger pin was tried instead, on the theory that
+   Lenis's smoothed scroll wouldn't drive native sticky precisely
+   enough -- that theory doesn't hold up: the pin engaged fine, but
+   pin's own mechanics (a fixed-position overlay + reserved spacer)
+   can't produce a card visibly sliding over the one before it the way
+   sticky does for free, so it's not the right tool here regardless.)
+   All three cards share ONE wrapper (.pf-stack), not one each -- a
+   sticky element stays stuck until its CONTAINING BLOCK'S bottom edge
+   is reached, so sharing one tall wrapper is what keeps earlier cards
+   peeking for the entire rest of the sequence instead of releasing
+   the moment their own short content scrolls by. */
+/* Must exceed the combined natural height of all 3 sticky children or
+   the last one overflows the wrapper's set height, throwing off where
+   the CTA section after it lands and causing the two to visibly
+   overlap. Cards are their own natural (content) height, not forced to
+   100vh -- a full-viewport card would drag its whole blank background
+   along as "the thing covering the previous card" instead of just the
+   actual heading+image content, which is the part meant to visibly
+   stack. Wrapper height only needs to comfortably clear 3 natural
+   card heights plus some scroll pacing. */
+.pf-stack { position: relative; height: 280vh; }
+.pf-card {
+  position: sticky;
+  background: var(--bg);
+  /* Depth cue for the stack: each card casts a shadow onto whatever
+     is peeking behind it, reinforcing that it's a card lying on top,
+     not just flat content replacing the last. */
+  box-shadow: 0 -24px 60px rgba(0, 0, 0, 0.55);
+}
+#sport { top: 0; }
+#portrait { top: 28px; }
+#event { top: 56px; }
+.pf-row-head {
+  display: flex; align-items: flex-start; gap: 32px;
+  max-width: 900px; margin: 0 auto; padding: 90px 5vw 28px;
+  width: 100%;
+  border-top: 1px solid var(--border);
+}
+#sport .pf-row-head { border-top: none; padding-top: 120px; }
+.pf-row-num {
+  font-family: var(--font-heading); font-weight: 800;
+  font-size: clamp(2rem, 3.4vw, 2.8rem); line-height: 1;
+  color: var(--ink-dim); opacity: 0.5; flex-shrink: 0;
+}
+.pf-row-label {
+  display: block; margin-bottom: 14px;
   font-family: var(--font-mono); font-size: 0.82rem; letter-spacing: 0.05em;
   color: var(--ink-dim);
 }
-.pf-collage-stage {
-  position: relative; max-width: 1400px; margin: 0 auto;
-  height: 76vh; min-height: 460px; max-height: 780px;
-  padding: 0 5vw;
+.pf-row-title {
+  font-size: clamp(1.3rem, 2vw, 1.8rem); font-weight: 800; line-height: 1.15;
+  margin: 0 0 10px;
 }
-.pf-collage-main {
-  position: absolute; inset: 5% 8% 5% 26%;
-  display: block; overflow: hidden; border-radius: 4px; z-index: 1;
+.pf-row-text p { color: var(--ink-dim); line-height: 1.6; margin: 0; max-width: 620px; font-size: 0.94rem; }
+
+.pf-row-media {
+  position: relative;
+  max-width: 780px; margin: 0 auto; padding: 0 5vw 90px;
+  width: 100%;
 }
-.pf-collage-main img {
-  width: 100%; height: 130%; object-fit: cover; display: block;
-  transition: filter 0.5s ease; will-change: transform;
+#event .pf-row-media { padding-bottom: 40px; }
+.pf-row-media-bg {
+  position: relative; overflow: hidden; border-radius: 6px;
+  aspect-ratio: 16 / 11;
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
 }
-.pf-collage-main:hover img { filter: brightness(0.75); }
-.pf-collage-side {
-  position: absolute; display: block; overflow: hidden; border-radius: 4px;
-  z-index: 3; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.55);
+.pf-row-media-bg > img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  filter: blur(14px) brightness(0.75); transform: scale(1.15);
 }
-.pf-collage-side img {
-  width: 100%; height: 130%; object-fit: cover; display: block;
-  transition: filter 0.4s ease; will-change: transform;
+.pf-row-media-fg {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  display: block; overflow: hidden; border-radius: 4px;
+  width: 62%; aspect-ratio: 4 / 3;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
 }
-.pf-collage-side:hover img { filter: brightness(0.8); }
-.pf-collage-side-a { top: -6%; left: 4%; width: 27%; aspect-ratio: 3 / 4; }
-.pf-collage-side-b { bottom: -6%; right: 2%; width: 24%; aspect-ratio: 4 / 3; }
-.pf-collage-title {
-  position: absolute; top: 6%; left: 0; z-index: 4;
-  font-size: clamp(2rem, 4.6vw, 3.8rem);
-  font-weight: 800; line-height: 1.04;
-  color: #fff; margin: 0; max-width: 40%; text-wrap: balance;
-  text-shadow: 0 8px 34px rgba(0, 0, 0, 0.65);
+.pf-row-media-fg img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: filter 0.4s ease, transform 0.6s ease; will-change: transform;
 }
-.pf-collage-view {
+.pf-row-media-fg:hover img { filter: brightness(0.85); transform: scale(1.03); }
+/* Click hint -- signals the sharp image opens the lightbox, appearing
+   only on hover so it doesn't clutter the card at rest. */
+.pf-row-media-view {
   position: absolute; top: 50%; left: 50%;
   transform: translate(-50%, -50%) scale(0.7);
-  width: 108px; height: 108px; border-radius: 50%;
+  width: 96px; height: 96px; border-radius: 50%;
   background: rgba(255, 255, 255, 0.94); color: #17140f;
   display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem;
+  font-family: var(--font-heading); font-weight: 700; font-size: 0.85rem;
   opacity: 0;
   transition: opacity 0.35s ease, transform 0.35s ease;
   pointer-events: none;
 }
-.pf-collage-main:hover .pf-collage-view,
-.pf-collage-side:hover .pf-collage-view { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-.pf-collage-text {
-  max-width: 620px; margin: 44px auto 0; padding: 0 5vw;
-  color: var(--ink-dim); line-height: 1.7;
+.pf-row-media-fg:hover .pf-row-media-view { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+@media (hover: none) {
+  .pf-row-media-view { display: none; }
 }
-/* Extra gallery photos beyond the visible collage — present so the
-   lightbox can page through the full set, not meant to be seen. */
+.pf-row-meta {
+  display: flex; justify-content: space-between; gap: 16px;
+  margin-top: 14px;
+  font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.03em;
+  color: var(--ink-dim);
+}
+/* Extra gallery photos beyond the one shown per chapter — present so
+   the lightbox can page through the full set, not meant to be seen. */
 .pf-case-hidden { position: absolute; width: 0; height: 0; overflow: hidden; }
-
-/* Full-set carousel beneath each collage — every remaining photo in
-   that category, in a 3D coverflow deck driven by script.js (drag with
-   1:1 pointer tracking, spring physics that carry the release velocity
-   forward, no scroll-hijacking — an isolated widget, not another
-   ScrollTrigger pin). Stays the same footprint regardless of how many
-   photos get added later, unlike a grid that grows forever. */
-.pf-carousel {
-  position: relative;
-  max-width: 1400px; margin: 70px auto 0; padding: 0 5vw;
-  height: 420px;
-  perspective: 1400px;
-  outline: none;
-  touch-action: pan-y;
-  overflow: hidden;
-}
-.pf-carousel-track {
-  position: relative; width: 100%; height: 100%;
-  transform-style: preserve-3d;
-}
-.pf-carousel.is-dragging { cursor: grabbing; }
-.pf-carousel:not(.is-dragging) { cursor: grab; }
-.pf-carousel-item {
-  position: absolute; top: 50%; left: 50%;
-  width: 300px; aspect-ratio: 3 / 4;
-  border-radius: 10px; overflow: hidden;
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.55);
-  will-change: transform, filter, opacity;
-  -webkit-user-drag: none;
-}
-.pf-carousel-item img {
-  width: 100%; height: 100%; object-fit: cover; display: block;
-  pointer-events: none; -webkit-user-drag: none;
-}
-.pf-carousel-arrow {
-  position: absolute; top: 50%; transform: translateY(-50%);
-  width: 52px; height: 52px; border-radius: 50%;
-  background: rgba(20, 18, 14, 0.7);
-  border: 1px solid var(--gold-border);
-  color: var(--gold);
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; z-index: 200;
-  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
-}
-.pf-carousel-arrow svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.4; }
-.pf-carousel-arrow:hover { background: var(--gold-soft); border-color: var(--gold); transform: translateY(-50%) scale(1.08); }
-.pf-carousel-arrow-prev { left: 6vw; }
-.pf-carousel-arrow-next { right: 6vw; }
-@media (max-width: 720px) {
-  .pf-carousel { height: 320px; }
-  .pf-carousel-item { width: 220px; }
-  .pf-carousel-arrow { width: 42px; height: 42px; }
-  .pf-carousel-arrow-prev { left: 3vw; }
-  .pf-carousel-arrow-next { right: 3vw; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .pf-carousel-item { transition: none; }
-}
 @media (max-width: 900px) {
-  .pf-collage { padding: 70px 0 60px; }
-  .pf-collage-stage { height: auto; min-height: 0; max-height: none; padding: 0 20px; }
-  .pf-collage-main { position: relative; inset: auto; width: 100%; aspect-ratio: 4 / 3; }
-  .pf-collage-side { display: none; }
-  .pf-collage-title { position: relative; top: auto; max-width: 100%; margin: 0 0 20px; }
-  .pf-collage-label { padding: 0 20px; }
-  .pf-collage-text { padding: 0 20px; }
+  /* The sticky stack is a desktop-only affordance -- mobile keeps the
+     plain stacked layout at its natural height, in normal flow. */
+  .pf-stack { height: auto; }
+  .pf-card { position: relative; top: auto; min-height: 0; display: block; }
+  .pf-row-head { padding: 44px 20px 20px; gap: 16px; }
+  #sport .pf-row-head { padding-top: 100px; }
+  .pf-row-num { font-size: 1.6rem; }
+  .pf-row-media { padding: 0 20px 44px; }
+  .pf-row-media-fg { width: 78%; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .pf-collage-title, .pf-collage-label { opacity: 1; transform: none; transition: none; }
+  .pf-row-media-fg img, .pf-row-media-bg img { transition: none; }
 }
 
 

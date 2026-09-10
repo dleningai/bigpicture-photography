@@ -12,6 +12,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const hasScrollFx = window.gsap && window.ScrollTrigger && !reduceMotion;
     if (hasScrollFx) gsap.registerPlugin(ScrollTrigger);
+    // Every trigger below is created on DOMContentLoaded, before
+    // below-the-fold images (most are loading="lazy") have finished
+    // loading and settled their layout height. That shifts section
+    // heights afterwards, silently invalidating start/end positions
+    // computed against the stale layout -- refresh once everything
+    // (including images) has actually loaded to pick up the real sizes.
+    if (hasScrollFx) window.addEventListener('load', () => ScrollTrigger.refresh());
 
     let lenis = null;
     if (window.Lenis && !reduceMotion) {
@@ -98,50 +105,11 @@ document.addEventListener('DOMContentLoaded', () => {
       if (heroCta) heroLogoTl.to(heroCta, { scale: 1, ease: 'back.out(2.4)' }, 1.3);
     }
 
-    // Pinned services sequence — the section holds scroll in place while
-    // crossfading through each service, only releasing once all four have
-    // been shown.
-    const servicesPin = document.getElementById('servicesPin');
-    if (servicesPin && hasScrollFx) {
-      const steps = Array.from(servicesPin.querySelectorAll('.services-pin-step'));
-      if (steps.length > 1) {
-        servicesPin.classList.add('js-pinned');
-        steps.forEach((step, i) => {
-          gsap.set(step, { opacity: i === 0 ? 1 : 0, scale: i === 0 ? 1 : 0.72 });
-          step.classList.toggle('is-active', i === 0);
-        });
-        const stepsUnits = steps.length - 1;
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: servicesPin,
-            start: 'top top',
-            end: () => `+=${window.innerHeight * stepsUnits}`,
-            pin: true,
-            scrub: 0.4,
-            anticipatePin: 1,
-            onUpdate: (self) => {
-              const active = Math.min(steps.length - 1, Math.round(self.progress * stepsUnits));
-              steps.forEach((step, i) => step.classList.toggle('is-active', i === active));
-            },
-          },
-        });
-        steps.forEach((step, i) => {
-          if (i === 0) return;
-          const prev = steps[i - 1];
-          tl.to(prev, { opacity: 0, scale: 1.28, duration: 0.5, ease: 'power1.in' }, `step${i}`)
-            .to(step, { opacity: 1, scale: 1, duration: 0.5, ease: 'power2.out' }, `step${i}`);
-        });
-      }
-    }
-
-    // Leistungen → Einsatzgebiet cross-fade — no pin involved, just two
-    // opacity/position tweens scrubbed to the same scroll range. Every
-    // scroll position maps to one well-defined visual state, so there's
-    // no pin-release hand-off to time correctly (unlike the fade-curtain
-    // bridges this replaces). Opacity only on #leistungen, never a
-    // transform: it's the pinned servicesPin's ancestor, and any
-    // transform on it (even scale(1)) makes it a new containing block,
-    // which breaks position:fixed pinning for the whole page.
+    // Leistungen → Einsatzgebiet cross-fade — two opacity/position
+    // tweens scrubbed to the same scroll range. Every scroll position
+    // maps to one well-defined visual state, so there's no pin-release
+    // hand-off to time correctly (unlike the fade-curtain bridges this
+    // replaces).
     const leistungenSection = document.getElementById('leistungen');
     const reachSection = document.getElementById('reach');
     if (leistungenSection && reachSection && hasScrollFx) {
@@ -179,224 +147,70 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    // Portfolio collage parallax — the main image holds still except for
-    // a slow zoom; the two side cards drift in opposite directions tied
-    // directly to scroll position (a large swing relative to the
-    // viewport), so scrolling up moves them up and scrolling down moves
-    // them down — no velocity or easing lag, just position-linked depth.
-    const pfCollageSides = document.querySelectorAll('.pf-collage-side');
-    if (pfCollageSides.length && hasScrollFx) {
-      pfCollageSides.forEach((side) => {
-        const dir = side.classList.contains('pf-collage-side-b') ? -1 : 1;
-        const range = window.innerHeight * 0.32 * dir;
-        gsap.set(side, { y: -range });
-        gsap.to(side, {
-          y: range,
+    // Stats section black-to-white crossfade — the page's one deliberate
+    // light section would otherwise just cut in hard against the dark
+    // page; fading its own background in as it scrolls into view (and
+    // back out as it leaves) makes the switch feel intentional rather
+    // than abrupt.
+    const statsHighlight = document.querySelector('.stats-highlight');
+    if (statsHighlight && hasScrollFx) {
+      const statsVals = gsap.utils.toArray(statsHighlight.querySelectorAll('.stat-val'));
+      const statsLabels = gsap.utils.toArray(statsHighlight.querySelectorAll('.stats-highlight-text'));
+      const statsRows = gsap.utils.toArray(statsHighlight.querySelectorAll('.stats-highlight-row'));
+      gsap.fromTo(
+        statsHighlight,
+        { backgroundColor: '#000000' },
+        {
+          backgroundColor: '#ffffff',
           ease: 'none',
           scrollTrigger: {
-            trigger: side.closest('.pf-collage'),
+            trigger: statsHighlight,
             start: 'top bottom',
-            end: 'bottom top',
+            end: 'top 40%',
             scrub: true,
-            invalidateOnRefresh: true,
           },
-        });
+        }
+      );
+      gsap.fromTo(statsVals, { color: '#ffffff' }, {
+        color: '#111111', ease: 'none',
+        scrollTrigger: { trigger: statsHighlight, start: 'top bottom', end: 'top 40%', scrub: true },
       });
-    }
-    const pfCollageMains = document.querySelectorAll('.pf-collage-main img');
-    if (pfCollageMains.length && hasScrollFx) {
-      pfCollageMains.forEach((img) => {
-        gsap.set(img, { scale: 1.06 });
-        gsap.to(img, {
-          scale: 1.22,
+      gsap.fromTo(statsLabels, { color: 'rgba(255,255,255,0.7)' }, {
+        color: '#555555', ease: 'none',
+        scrollTrigger: { trigger: statsHighlight, start: 'top bottom', end: 'top 40%', scrub: true },
+      });
+      gsap.fromTo(statsRows, { borderTopColor: 'rgba(255,255,255,0.25)' }, {
+        borderTopColor: 'rgba(0,0,0,0.14)', ease: 'none',
+        scrollTrigger: { trigger: statsHighlight, start: 'top bottom', end: 'top 40%', scrub: true },
+      });
+
+      gsap.fromTo(
+        statsHighlight,
+        { backgroundColor: '#ffffff' },
+        {
+          backgroundColor: '#000000',
           ease: 'none',
           scrollTrigger: {
-            trigger: img.closest('.pf-collage'),
-            start: 'top bottom',
+            trigger: statsHighlight,
+            start: 'bottom 60%',
             end: 'bottom top',
             scrub: true,
           },
-        });
+        }
+      );
+      gsap.fromTo(statsVals, { color: '#111111' }, {
+        color: '#ffffff', ease: 'none',
+        scrollTrigger: { trigger: statsHighlight, start: 'bottom 60%', end: 'bottom top', scrub: true },
+      });
+      gsap.fromTo(statsLabels, { color: '#555555' }, {
+        color: 'rgba(255,255,255,0.7)', ease: 'none',
+        scrollTrigger: { trigger: statsHighlight, start: 'bottom 60%', end: 'bottom top', scrub: true },
+      });
+      gsap.fromTo(statsRows, { borderTopColor: 'rgba(0,0,0,0.14)' }, {
+        borderTopColor: 'rgba(255,255,255,0.25)', ease: 'none',
+        scrollTrigger: { trigger: statsHighlight, start: 'bottom 60%', end: 'bottom top', scrub: true },
       });
     }
-
-    // Full-set carousel — a 3D coverflow deck for every remaining photo
-    // in a category. Self-contained widget (no ScrollTrigger, no page
-    // scroll hijacking): drag tracks the pointer 1:1, release hands the
-    // gesture's velocity to a critically-damped spring that carries the
-    // motion forward and snaps to the nearest card, per Apple's fluid
-    // interface model (respond immediately, animate from the live
-    // value, stay interruptible). Reduced motion gets a plain snap with
-    // no tilt/blur, no physics.
-    document.querySelectorAll('.pf-carousel').forEach((root) => {
-      const track = root.querySelector('.pf-carousel-track');
-      const items = Array.from(root.querySelectorAll('.pf-carousel-item'));
-      const prevBtn = root.querySelector('.pf-carousel-arrow-prev');
-      const nextBtn = root.querySelector('.pf-carousel-arrow-next');
-      const count = items.length;
-      if (!track || !count) return;
-      if (count <= 1) {
-        if (prevBtn) prevBtn.style.display = 'none';
-        if (nextBtn) nextBtn.style.display = 'none';
-      }
-
-      const SPACING = window.innerWidth < 720 ? 150 : 190;
-      let position = 0;
-      let velocity = 0;
-      let rafId = null;
-      let dragging = false;
-      let pending = false;
-      let didDrag = false;
-      let startX = 0;
-      let startY = 0;
-      let dragStartPosition = 0;
-      const history = [];
-
-      const clamp = (p) => Math.max(0, Math.min(count - 1, p));
-
-      function render() {
-        items.forEach((item, i) => {
-          const offset = i - position;
-          const abs = Math.abs(offset);
-          if (reduceMotion) {
-            item.style.transform = `translate(-50%, -50%) translateX(${offset * SPACING}px)`;
-            item.style.opacity = abs > 2.5 ? '0' : '1';
-            item.style.zIndex = String(100 - Math.round(abs * 10));
-            item.style.pointerEvents = abs > 2.5 ? 'none' : '';
-            return;
-          }
-          const clampedAbs = Math.min(abs, 5);
-          const scale = 1 - Math.min(abs * 0.12, 0.45);
-          const blur = Math.min(abs * 2.4, 9);
-          const rotate = Math.max(-58, Math.min(58, offset * -32));
-          const translateZ = -clampedAbs * 90;
-          const opacity = abs > 4.2 ? 0 : 1 - Math.min(abs * 0.14, 0.72);
-          item.style.transform = `translate(-50%, -50%) translateX(${offset * SPACING}px) translateZ(${translateZ}px) rotateY(${rotate}deg) scale(${scale})`;
-          item.style.filter = blur > 0.05 ? `blur(${blur}px)` : '';
-          item.style.opacity = String(Math.max(opacity, 0));
-          item.style.zIndex = String(100 - Math.round(abs * 10));
-          item.style.pointerEvents = abs > 4.2 ? 'none' : '';
-        });
-      }
-
-      function stopAnimation() {
-        if (rafId) cancelAnimationFrame(rafId);
-        rafId = null;
-      }
-
-      function springTo(target, initialVelocity) {
-        stopAnimation();
-        if (reduceMotion) {
-          position = clamp(target);
-          velocity = 0;
-          render();
-          return;
-        }
-        let vel = initialVelocity;
-        let last = performance.now();
-        const stiffness = 170;
-        const damping = Math.abs(initialVelocity) > 2 ? 20 : 26;
-        const step = (now) => {
-          const dt = Math.min((now - last) / 1000, 0.032);
-          last = now;
-          const acc = -stiffness * (position - target) - damping * vel;
-          vel += acc * dt;
-          position += vel * dt;
-          position = clamp(position);
-          render();
-          if (Math.abs(vel) < 0.01 && Math.abs(position - target) < 0.002) {
-            position = target;
-            velocity = 0;
-            render();
-            rafId = null;
-            return;
-          }
-          rafId = requestAnimationFrame(step);
-        };
-        rafId = requestAnimationFrame(step);
-      }
-
-      const goTo = (index) => springTo(clamp(Math.round(index)), velocity);
-
-      if (prevBtn) prevBtn.addEventListener('click', () => goTo(Math.round(position) - 1));
-      if (nextBtn) nextBtn.addEventListener('click', () => goTo(Math.round(position) + 1));
-      root.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(Math.round(position) - 1); }
-        else if (e.key === 'ArrowRight') { e.preventDefault(); goTo(Math.round(position) + 1); }
-      });
-
-      root.addEventListener('pointerdown', (e) => {
-        if (e.pointerType === 'mouse' && e.button !== 0) return;
-        pending = true;
-        didDrag = false;
-        startX = e.clientX;
-        startY = e.clientY;
-        dragStartPosition = position;
-        history.length = 0;
-        history.push({ x: e.clientX, t: performance.now() });
-      });
-      root.addEventListener('pointermove', (e) => {
-        if (!pending && !dragging) return;
-        const dx = e.clientX - startX;
-        const dy = e.clientY - startY;
-        if (pending && !dragging) {
-          if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return;
-          if (Math.abs(dy) > Math.abs(dx)) { pending = false; return; }
-          dragging = true;
-          didDrag = true;
-          stopAnimation();
-          root.setPointerCapture(e.pointerId);
-          root.classList.add('is-dragging');
-        }
-        if (!dragging) return;
-        e.preventDefault();
-        position = clamp(dragStartPosition - dx / SPACING);
-        render();
-        history.push({ x: e.clientX, t: performance.now() });
-        if (history.length > 5) history.shift();
-      });
-      const endDrag = () => {
-        pending = false;
-        if (!dragging) return;
-        dragging = false;
-        root.classList.remove('is-dragging');
-        let v = 0;
-        if (history.length >= 2) {
-          const a = history[0];
-          const b = history[history.length - 1];
-          const dt = b.t - a.t;
-          if (dt > 0) v = (b.x - a.x) / dt;
-        }
-        velocity = -v / SPACING;
-        const projectedPx = v * 499;
-        const target = clamp(Math.round(position - projectedPx / SPACING));
-        springTo(target, velocity);
-      };
-      root.addEventListener('pointerup', endDrag);
-      root.addEventListener('pointercancel', endDrag);
-
-      items.forEach((item, i) => {
-        item.addEventListener(
-          'click',
-          (e) => {
-            if (didDrag) {
-              e.preventDefault();
-              e.stopImmediatePropagation();
-              didDrag = false;
-              return;
-            }
-            if (Math.abs(i - position) > 0.5) {
-              e.preventDefault();
-              e.stopImmediatePropagation();
-              goTo(i);
-            }
-          },
-          true
-        );
-      });
-
-      render();
-    });
 
     // Scroll progress rail — a fill bar + one dot per major section, so
     // visitors always see where they are on the page. Hidden entirely
@@ -722,24 +536,6 @@ document.addEventListener('DOMContentLoaded', () => {
       afterSlideLoad: ({ slide }) => {
         slide.querySelectorAll('img').forEach(markImgLoaded);
       },
-    });
-  }
-
-  // Sticky-Kontakt-Leiste — appears after scrolling past the hero, dismissible.
-  const stickyCta = document.getElementById('stickyCta');
-  if (stickyCta) {
-    const stickyCtaClose = document.getElementById('stickyCtaClose');
-    const footerEl = document.querySelector('.site-footer');
-    let dismissed = false;
-    window.addEventListener('scroll', () => {
-      if (dismissed) return;
-      const pastHero = window.scrollY > window.innerHeight * 0.7;
-      const overFooter = footerEl && footerEl.getBoundingClientRect().top < window.innerHeight;
-      stickyCta.classList.toggle('visible', pastHero && !overFooter);
-    }, { passive: true });
-    stickyCtaClose.addEventListener('click', () => {
-      dismissed = true;
-      stickyCta.classList.remove('visible');
     });
   }
 
