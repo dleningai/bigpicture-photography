@@ -1007,7 +1007,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   background: rgba(255, 255, 255, 0.28);
 }
 @media (max-width: 900px) {
-  .editorial-strip { display: none; }
+  .editorial-strip { top: 66px; }
 }
 .editorial-strip-viewport {
   pointer-events: auto;
@@ -1039,7 +1039,12 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 }
 .editorial-strip-item figcaption { display: none; }
 @media (max-width: 900px) {
-  .editorial-strip-item { width: 120px; }
+  .editorial-strip-item { width: 100px; }
+}
+@media (max-width: 480px) {
+  .editorial-strip-item { width: 82px; }
+  .editorial-strip-fstops { gap: 10px; }
+  .editorial-strip-fstop { font-size: 0.56rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   .editorial-strip-track { animation: none; }
@@ -1919,10 +1924,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
    the lightbox can page through the full set, not meant to be seen. */
 .pf-case-hidden { position: absolute; width: 0; height: 0; overflow: hidden; }
 @media (max-width: 900px) {
-  /* The sticky stack is a desktop-only affordance -- mobile keeps the
-     plain stacked layout at its natural height, in normal flow. */
-  .pf-stack { height: auto; }
-  .pf-card { position: relative; top: auto; min-height: 0; display: block; }
+  .pf-stack { height: 280vh; }
   .pf-row-head { padding: 44px 20px 20px; gap: 16px; }
   #sport .pf-row-head { padding-top: 100px; }
   .pf-row-num { font-size: 1.6rem; }
@@ -2119,8 +2121,8 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   transform: translate(-50%, -50%);
 }
 @media (max-width: 560px) {
-  .footer-meta { flex-wrap: wrap; justify-content: center; row-gap: 6px; }
-  .footer-meta-ticks { display: none; }
+  .footer-meta { gap: 12px; }
+  .footer-meta-ticks { flex-basis: 60px; }
 }
 
 /* ==========================================================
