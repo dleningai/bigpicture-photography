@@ -912,10 +912,11 @@ img.img-loaded { opacity: 1; filter: blur(0); }
    morph into rounded ones and pop in scale on hover. */
 .cta-social {
   list-style: none;
+  margin: 44px auto 0;
+  padding: 0;
   display: flex; align-items: center; justify-content: center;
   flex-wrap: wrap;
   gap: 28px;
-  margin: 44px auto 0;
   width: 100%;
 }
 .cta-social-item { position: relative; z-index: 1; }
