@@ -1557,6 +1557,16 @@ img.img-loaded { opacity: 1; filter: blur(0); }
    (`lenis.on('scroll', ScrollTrigger.update)`), so the two stay in
    sync. */
 #sport, #portrait, #event { position: relative; background: var(--bg); }
+/* The two pinned chapters (everything but the last) need to fill the
+   full viewport -- the pin reserves a whole viewport's worth of scroll
+   room to hold them in place, and if the chapter's own content is
+   shorter than that, the leftover space below it renders as plain
+   empty background for the entire hold, reading as a dead gap instead
+   of a continuously-filled pinned card. */
+#sport, #portrait {
+  min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: center;
+}
 .pf-row-head {
   display: flex; align-items: flex-start; gap: 32px;
   max-width: 900px; margin: 0 auto; padding: 90px 5vw 28px;
@@ -1616,6 +1626,10 @@ section:first-of-type .pf-row-head { border-top: none; padding-top: 120px; }
    the lightbox can page through the full set, not meant to be seen. */
 .pf-case-hidden { position: absolute; width: 0; height: 0; overflow: hidden; }
 @media (max-width: 900px) {
+  /* The pin's full-viewport chapter height is a desktop-only affordance
+     (see script.js, which skips creating the pin below this width) --
+     mobile keeps the plain stacked layout at its natural height. */
+  #sport, #portrait { min-height: 0; display: block; }
   .pf-row-head { padding: 44px 20px 20px; gap: 16px; }
   section:first-of-type .pf-row-head { padding-top: 100px; }
   .pf-row-num { font-size: 1.6rem; }

@@ -12,6 +12,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const hasScrollFx = window.gsap && window.ScrollTrigger && !reduceMotion;
     if (hasScrollFx) gsap.registerPlugin(ScrollTrigger);
+    // Every trigger below is created on DOMContentLoaded, before
+    // below-the-fold images (most are loading="lazy") have finished
+    // loading and settled their layout height. That shifts section
+    // heights afterwards, silently invalidating start/end positions
+    // computed against the stale layout -- refresh once everything
+    // (including images) has actually loaded to pick up the real sizes.
+    if (hasScrollFx) window.addEventListener('load', () => ScrollTrigger.refresh());
 
     let lenis = null;
     if (window.Lenis && !reduceMotion) {
@@ -191,7 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // stay in sync. Only non-JS/reduced-motion visitors see the plain,
     // un-pinned CSS fallback (chapters just stacked in normal flow).
     const pfChapters = Array.from(document.querySelectorAll('#sport, #portrait, #event'));
-    if (pfChapters.length > 1 && hasScrollFx) {
+    if (pfChapters.length > 1 && hasScrollFx && window.innerWidth > 900) {
       pfChapters.forEach((chapter, i) => {
         if (i === pfChapters.length - 1) return; // last chapter has nothing after it to cover it
         ScrollTrigger.create({
