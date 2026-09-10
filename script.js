@@ -186,6 +186,71 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
+    // Stats section black-to-white crossfade — the page's one deliberate
+    // light section would otherwise just cut in hard against the dark
+    // page; fading its own background in as it scrolls into view (and
+    // back out as it leaves) makes the switch feel intentional rather
+    // than abrupt.
+    const statsHighlight = document.querySelector('.stats-highlight');
+    if (statsHighlight && hasScrollFx) {
+      const statsVals = gsap.utils.toArray(statsHighlight.querySelectorAll('.stat-val'));
+      const statsLabels = gsap.utils.toArray(statsHighlight.querySelectorAll('.stats-highlight-text'));
+      const statsRows = gsap.utils.toArray(statsHighlight.querySelectorAll('.stats-highlight-row'));
+      gsap.fromTo(
+        statsHighlight,
+        { backgroundColor: '#000000' },
+        {
+          backgroundColor: '#ffffff',
+          ease: 'none',
+          scrollTrigger: {
+            trigger: statsHighlight,
+            start: 'top bottom',
+            end: 'top 40%',
+            scrub: true,
+          },
+        }
+      );
+      gsap.fromTo(statsVals, { color: '#ffffff' }, {
+        color: '#111111', ease: 'none',
+        scrollTrigger: { trigger: statsHighlight, start: 'top bottom', end: 'top 40%', scrub: true },
+      });
+      gsap.fromTo(statsLabels, { color: 'rgba(255,255,255,0.7)' }, {
+        color: '#555555', ease: 'none',
+        scrollTrigger: { trigger: statsHighlight, start: 'top bottom', end: 'top 40%', scrub: true },
+      });
+      gsap.fromTo(statsRows, { borderTopColor: 'rgba(255,255,255,0.25)' }, {
+        borderTopColor: 'rgba(0,0,0,0.14)', ease: 'none',
+        scrollTrigger: { trigger: statsHighlight, start: 'top bottom', end: 'top 40%', scrub: true },
+      });
+
+      gsap.fromTo(
+        statsHighlight,
+        { backgroundColor: '#ffffff' },
+        {
+          backgroundColor: '#000000',
+          ease: 'none',
+          scrollTrigger: {
+            trigger: statsHighlight,
+            start: 'bottom 60%',
+            end: 'bottom top',
+            scrub: true,
+          },
+        }
+      );
+      gsap.fromTo(statsVals, { color: '#111111' }, {
+        color: '#ffffff', ease: 'none',
+        scrollTrigger: { trigger: statsHighlight, start: 'bottom 60%', end: 'bottom top', scrub: true },
+      });
+      gsap.fromTo(statsLabels, { color: '#555555' }, {
+        color: 'rgba(255,255,255,0.7)', ease: 'none',
+        scrollTrigger: { trigger: statsHighlight, start: 'bottom 60%', end: 'bottom top', scrub: true },
+      });
+      gsap.fromTo(statsRows, { borderTopColor: 'rgba(0,0,0,0.14)' }, {
+        borderTopColor: 'rgba(255,255,255,0.25)', ease: 'none',
+        scrollTrigger: { trigger: statsHighlight, start: 'bottom 60%', end: 'bottom top', scrub: true },
+      });
+    }
+
     // Scroll progress rail — a fill bar + one dot per major section, so
     // visitors always see where they are on the page. Hidden entirely
     // unless ScrollTrigger can drive it.
