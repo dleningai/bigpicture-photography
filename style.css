@@ -1595,6 +1595,11 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   scroll-margin-top: 64px;
   background: var(--bg);
   min-height: 100vh;
+  animation: DEBUG_stickyCheck 1.5s ease;
+}
+@keyframes DEBUG_stickyCheck {
+  0% { background: #ff0000; }
+  100% { background: var(--bg); }
 }
 /* overflow:hidden lives on this inner wrapper, not on .pf-collage itself
    -- Safari/WebKit has a long-standing bug where position:sticky is
