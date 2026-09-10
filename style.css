@@ -936,17 +936,13 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   width: 46px; height: 46px;
   border-radius: 50%;
   background: #262119;
-  transition: background-color 0.25s ease, transform 0.2s ease;
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
 }
-.cta-social-link:hover { transform: translateY(-2px); }
+.cta-social-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
 .cta-social-link svg { width: 20px; height: 20px; fill: #fff; }
-.cta-social-link[data-social="whatsapp"]:hover { background: #25d366; }
-.cta-social-link[data-social="instagram"]:hover {
-  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-}
-.cta-social-link[data-social="linkedin"]:hover { background: #0a66c2; }
-.cta-social-link[data-social="tiktok"]:hover { background: #000; }
-.cta-social-link[data-social="facebook"]:hover { background: #1877f2; }
 @media (hover: none) {
   .cta-social-tooltip { display: none; }
 }
