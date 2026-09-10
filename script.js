@@ -2,6 +2,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
+  const footerMonthEl = document.getElementById('footerMonth');
+  if (footerMonthEl) footerMonthEl.textContent = String(new Date().getMonth() + 1).padStart(2, '0') + '’';
+
   // Smooth scroll (Lenis) + scroll-driven hero parallax (GSAP). Both are
   // pure enhancements on top of content that is already visible via CSS,
   // so any failure here (blocked CDN, ad-blocker, version mismatch) must
