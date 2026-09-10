@@ -1013,7 +1013,12 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   background: rgba(255, 255, 255, 0.28);
 }
 @media (max-width: 900px) {
-  .editorial-strip { top: 66px; }
+  /* Nav is taller here (24px vertical padding) than at <=640px (18px) --
+     match its actual bottom edge so the marquee never sits under it. */
+  .editorial-strip { top: 84px; }
+}
+@media (max-width: 640px) {
+  .editorial-strip { top: 68px; }
 }
 .editorial-strip-viewport {
   pointer-events: auto;
