@@ -1018,7 +1018,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   .editorial-strip { top: 84px; }
 }
 @media (max-width: 640px) {
-  .editorial-strip { top: 68px; }
+  .editorial-strip { top: 92px; }
 }
 .editorial-strip-viewport {
   pointer-events: auto;
