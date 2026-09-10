@@ -496,7 +496,13 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 .hero-stats .stat-divider { background: rgba(255, 255, 255, 0.16); }
 @media (max-width: 760px) {
   .stats-strip.hero-stats { justify-content: center; gap: 22px; padding: 0 20px; }
-  .hero-intro-name { align-items: center; text-align: center; padding-left: 24px; padding-right: 24px; }
+  .hero-intro-name {
+    align-items: center; text-align: center; padding-left: 24px; padding-right: 24px;
+    /* Clears the editorial marquee band pinned near the top of the hero
+       on mobile -- centering (the desktop behavior) would otherwise sit
+       the name right under/inside it. */
+    justify-content: flex-start; padding-top: 240px;
+  }
 }
 .hero-fx {
   position: absolute; inset: 0; z-index: -3; overflow: hidden;
