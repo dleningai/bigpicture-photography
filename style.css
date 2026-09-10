@@ -481,7 +481,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 }
 .stats-strip.hero-stats {
   position: relative;
-  z-index: 1;
+  z-index: 7;
   margin: 0;
   justify-content: flex-start;
   gap: 36px;
@@ -543,6 +543,16 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   pointer-events: none;
 }
 .hero-intro-name.js-active { display: flex; }
+/* Solid curtain the main copy lands on -- dropped in only once the name
+   beat has fully cleared, hiding the photo (face included) completely
+   instead of the copy sitting over a still-visible portrait. Sits above
+   the photo/strip/name but below the main copy itself. */
+.hero-curtain {
+  position: absolute; inset: 0; z-index: 5;
+  background: var(--bg);
+  opacity: 0;
+  pointer-events: none;
+}
 .hero-intro-name-title {
   font-family: var(--font-heading); font-weight: 800;
   font-size: clamp(2rem, 5.5vw, 3.6rem);
@@ -596,6 +606,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   padding: 48px 28px 26px;
 }
 .hero-photo .hero-box {
+  position: relative; z-index: 7;
   text-align: left;
   max-width: 620px;
   margin: 0;
