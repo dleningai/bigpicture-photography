@@ -1840,15 +1840,10 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 }
 .pf-reel-tile {
   position: relative;
-  width: 150px; aspect-ratio: 9 / 16; border-radius: 6px; overflow: hidden;
+  width: 180px; aspect-ratio: 9 / 16; border-radius: 6px; overflow: hidden;
   box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
 }
-.pf-reel-tile--main { width: 240px; }
 .pf-reel-tile video { width: 100%; height: 100%; object-fit: cover; display: block; }
-.pf-reel-tile--main .pf-row-media-view {
-  opacity: 1; position: absolute; top: auto; bottom: 14px; left: 50%;
-  transform: translate(-50%, 0); width: 56px; height: 56px;
-}
 /* Extra gallery photos beyond the one shown per chapter — present so
    the lightbox can page through the full set, not meant to be seen. */
 .pf-case-hidden { position: absolute; width: 0; height: 0; overflow: hidden; }
@@ -1863,8 +1858,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   .pf-row-media { padding: 0 20px 44px; }
   .pf-row-media-fg { width: 78%; }
   .pf-reel-wall { gap: 10px; }
-  .pf-reel-tile { width: 84px; }
-  .pf-reel-tile--main { width: 130px; }
+  .pf-reel-tile { width: 100px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .pf-row-media-fg img, .pf-row-media-bg img { transition: none; }
