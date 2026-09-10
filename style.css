@@ -956,68 +956,89 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   max-width: var(--max-width); margin: 0 auto; padding: 0 20px;
 }
 .service-row {
-  display: flex; align-items: center; gap: 32px;
-  padding: 56px 0;
+  position: relative;
+  display: flex; align-items: baseline; gap: 32px;
+  padding: 44px 20px;
+  margin: 0 -20px;
   border-top: 1px solid var(--border);
-  transition: padding 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  overflow: hidden;
+  transition: padding 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .service-list .service-row:first-child { border-top: none; }
+/* Accent panel that wipes in from the left on hover -- replaces the
+   old image-reveal gimmick with a simpler, punchier state change. */
+.service-row::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--gold-soft);
+  transform: translateX(-100%);
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 0;
+}
+.service-row:hover::before,
+.service-row:focus-within::before {
+  transform: translateX(0);
+}
+.service-row:hover,
+.service-row:focus-within {
+  padding-left: 32px;
+}
 .service-row-num {
+  position: relative; z-index: 1;
   font-family: var(--font-heading); font-weight: 800;
-  font-size: clamp(2rem, 3.4vw, 2.8rem); line-height: 1;
-  color: var(--ink-dim); opacity: 0.5; flex-shrink: 0;
+  font-size: clamp(2.2rem, 3.8vw, 3.2rem); line-height: 1;
+  color: var(--ink-dim); opacity: 0.4; flex-shrink: 0;
   transition: opacity 0.4s ease, color 0.4s ease;
 }
-.service-row-body { flex: 1 1 auto; min-width: 0; }
+.service-row:hover .service-row-num,
+.service-row:focus-within .service-row-num {
+  opacity: 1;
+  color: var(--gold-bright);
+}
+.service-row-body {
+  position: relative; z-index: 1;
+  flex: 1 1 auto; min-width: 0;
+  display: flex; align-items: center; justify-content: space-between; gap: 24px;
+}
+.service-row-copy { flex: 1 1 auto; min-width: 0; }
 .service-row-title {
   font-family: var(--font-heading); font-weight: 800;
   font-size: clamp(1.6rem, 2.6vw, 2.2rem);
   color: #fff;
   letter-spacing: -0.01em;
   margin: 0 0 12px;
+  transition: color 0.3s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.service-row:hover .service-row-title,
+.service-row:focus-within .service-row-title {
+  color: var(--gold-bright);
+  transform: translateX(6px);
 }
 .service-row-text {
   color: var(--ink-dim); font-size: 1rem; line-height: 1.7;
   max-width: 620px;
   margin: 0;
 }
-.service-row-media {
-  flex: 0 0 auto;
-  width: 0;
-  aspect-ratio: 4 / 3;
-  border-radius: 6px;
-  overflow: hidden;
+.service-row-arrow {
+  flex-shrink: 0;
+  width: 48px; height: 48px; border-radius: 50%;
+  border: 1px solid var(--gold-border);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gold-bright);
   opacity: 0;
-  transform: scale(0.94);
-  transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 0.4s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateX(-10px) rotate(-45deg);
+  transition: opacity 0.35s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.service-row-media img {
-  width: 100%; height: 100%; object-fit: cover; display: block;
-}
-.service-row:hover,
-.service-row:focus-within {
-  padding-top: 40px;
-  padding-bottom: 40px;
-}
-.service-row:hover .service-row-num,
-.service-row:focus-within .service-row-num {
+.service-row:hover .service-row-arrow,
+.service-row:focus-within .service-row-arrow {
   opacity: 1;
-  color: var(--accent, #fff);
-}
-.service-row:hover .service-row-media,
-.service-row:focus-within .service-row-media {
-  width: min(260px, 30vw);
-  opacity: 1;
-  transform: scale(1);
-}
-@media (hover: none) {
-  .service-row-media { display: none; }
+  transform: translateX(0) rotate(0deg);
 }
 @media (max-width: 640px) {
-  .service-row { gap: 16px; padding: 40px 0; }
-  .service-row-num { font-size: 1.6rem; }
-  .service-row-media { display: none; }
+  .service-row { gap: 16px; padding: 36px 20px; }
+  .service-row-num { font-size: 1.8rem; }
+  .service-row-body { flex-wrap: wrap; }
+  .service-row-arrow { display: none; }
 }
 
 /* ==========================================================
@@ -1680,36 +1701,26 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.03em;
   color: var(--ink-dim);
 }
-/* Video chapter -- same hero card pattern as the photo chapters, but
-   the sharp foreground is a muted autoplay/loop reel instead of a
-   still image, plus two smaller reels peeking below as a mini strip. */
+/* Video chapter -- reels are vertical 9:16 clips, so the photo chapters'
+   blur-backdrop + centered sharp inset doesn't fit (that pattern assumes
+   a landscape hero). Instead: a simple wall of upright video tiles, main
+   reel larger, no cropping trickery. */
 .pf-row-media--reels { padding-bottom: 40px; }
-.pf-row-media-bg video,
-.pf-row-media-fg--video video {
-  width: 100%; height: 100%; object-fit: cover; display: block;
-}
-.pf-row-media-bg video {
-  filter: blur(14px) brightness(0.75); transform: scale(1.15);
-}
-.pf-row-media-fg--video {
-  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-  display: block; overflow: hidden; border-radius: 4px;
-  width: 40%; aspect-ratio: 9 / 16;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
-}
-.pf-row-media-fg--video .pf-row-media-view {
-  opacity: 1; transform: translate(-50%, -50%) scale(1);
-  width: 64px; height: 64px; top: auto; bottom: 14px; left: 50%;
-}
-.pf-reel-strip {
-  display: flex; gap: 14px; justify-content: center;
-  margin-top: 20px;
+.pf-reel-wall {
+  display: flex; align-items: flex-end; justify-content: center; gap: 18px;
+  flex-wrap: wrap;
 }
 .pf-reel-tile {
-  width: 120px; aspect-ratio: 9 / 16; border-radius: 4px; overflow: hidden;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+  position: relative;
+  width: 150px; aspect-ratio: 9 / 16; border-radius: 6px; overflow: hidden;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
 }
+.pf-reel-tile--main { width: 240px; }
 .pf-reel-tile video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pf-reel-tile--main .pf-row-media-view {
+  opacity: 1; position: absolute; top: auto; bottom: 14px; left: 50%;
+  transform: translate(-50%, 0); width: 56px; height: 56px;
+}
 /* Extra gallery photos beyond the one shown per chapter — present so
    the lightbox can page through the full set, not meant to be seen. */
 .pf-case-hidden { position: absolute; width: 0; height: 0; overflow: hidden; }
@@ -1723,8 +1734,9 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   .pf-row-num { font-size: 1.6rem; }
   .pf-row-media { padding: 0 20px 44px; }
   .pf-row-media-fg { width: 78%; }
-  .pf-row-media-fg--video { width: 55%; }
-  .pf-reel-tile { width: 92px; }
+  .pf-reel-wall { gap: 10px; }
+  .pf-reel-tile { width: 84px; }
+  .pf-reel-tile--main { width: 130px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .pf-row-media-fg img, .pf-row-media-bg img { transition: none; }
