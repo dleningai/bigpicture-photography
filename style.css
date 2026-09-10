@@ -1631,6 +1631,23 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   transition: filter 0.4s ease, transform 0.6s ease; will-change: transform;
 }
 .pf-row-media-fg:hover img { filter: brightness(0.85); transform: scale(1.03); }
+/* Click hint -- signals the sharp image opens the lightbox, appearing
+   only on hover so it doesn't clutter the card at rest. */
+.pf-row-media-view {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%) scale(0.7);
+  width: 96px; height: 96px; border-radius: 50%;
+  background: rgba(255, 255, 255, 0.94); color: #17140f;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-heading); font-weight: 700; font-size: 0.85rem;
+  opacity: 0;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  pointer-events: none;
+}
+.pf-row-media-fg:hover .pf-row-media-view { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+@media (hover: none) {
+  .pf-row-media-view { display: none; }
+}
 .pf-row-meta {
   display: flex; justify-content: space-between; gap: 16px;
   margin-top: 14px;
