@@ -988,6 +988,9 @@ img.img-loaded { opacity: 1; filter: blur(0); }
    rest of the hero image).
    ========================================================== */
 .editorial-strip {
+  /* top is a per-breakpoint fallback for no-JS; script.js measures the
+     actual nav height and overrides it with an inline style so the
+     marquee never overlaps the nav regardless of font metrics. */
   position: absolute; top: 90px; left: 0; right: 0; z-index: 2;
   pointer-events: none;
 }
