@@ -235,6 +235,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const nextBtn = root.querySelector('.pf-carousel-arrow-next');
       const count = items.length;
       if (!track || !count) return;
+      if (count <= 1) {
+        if (prevBtn) prevBtn.style.display = 'none';
+        if (nextBtn) nextBtn.style.display = 'none';
+      }
 
       const SPACING = window.innerWidth < 720 ? 150 : 190;
       let position = 0;
