@@ -473,6 +473,29 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 @media (prefers-reduced-motion: reduce) {
   .hero-bg img { animation: none; }
 }
+/* Camera-style autofocus box -- positioned by script.js (in pixels, via
+   left/top) over the portrait's eyes, using the image's actual rendered
+   object-fit: contain rect so it tracks correctly across breakpoints. */
+.hero-focus-box {
+  position: absolute; left: 0; top: 0; z-index: 5;
+  width: 200px; height: 200px;
+  transform: translate(-50%, -50%) scale(1.2);
+  opacity: 0;
+  pointer-events: none;
+}
+.hero-focus-box span {
+  position: absolute; width: 26px; height: 26px;
+  border: 2px solid var(--gold-bright);
+  filter: drop-shadow(0 0 6px rgba(222, 175, 103, 0.5));
+}
+.hero-focus-box span:nth-child(1) { top: 0; left: 0; border-right: none; border-bottom: none; }
+.hero-focus-box span:nth-child(2) { top: 0; right: 0; border-left: none; border-bottom: none; }
+.hero-focus-box span:nth-child(3) { bottom: 0; left: 0; border-right: none; border-top: none; }
+.hero-focus-box span:nth-child(4) { bottom: 0; right: 0; border-left: none; border-top: none; }
+@media (max-width: 760px) {
+  .hero-focus-box { width: 130px; height: 130px; }
+  .hero-focus-box span { width: 18px; height: 18px; }
+}
 .hero-scrim {
   position: absolute; inset: 0;
   background:

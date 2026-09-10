@@ -95,6 +95,47 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
+    // Focus box for the "DSLR autofocus" beat below -- placed over the
+    // portrait's eyes. object-fit: contain never crops the photo, it only
+    // letterboxes it, so the eyes' position as a fraction of the *photo*
+    // (measured once, by hand, against the source file) maps onto a fixed
+    // fraction of its rendered content rect regardless of viewport size or
+    // object-position -- compute that rect the same way the browser does
+    // instead of guessing screen coordinates per breakpoint.
+    const heroFocusBox = document.getElementById('heroFocusBox');
+    const heroBgImg = document.getElementById('heroBgImg');
+    if (heroFocusBox && heroBgImg && heroBg) {
+      const EYES_FRACTION_X = 0.676;
+      const EYES_FRACTION_Y = 0.399;
+      const positionFocusBox = () => {
+        const naturalW = heroBgImg.naturalWidth;
+        const naturalH = heroBgImg.naturalHeight;
+        if (!naturalW || !naturalH) return;
+        const box = heroBg.getBoundingClientRect();
+        const boxAspect = box.width / box.height;
+        const imgAspect = naturalW / naturalH;
+        let renderedW = box.width;
+        let renderedH = box.height;
+        if (imgAspect > boxAspect) {
+          renderedH = box.width / imgAspect;
+        } else {
+          renderedW = box.height * imgAspect;
+        }
+        const style = getComputedStyle(heroBgImg);
+        const [posXStr, posYStr] = style.objectPosition.split(' ');
+        const posX = parseFloat(posXStr) / 100;
+        const posY = parseFloat(posYStr) / 100;
+        const renderedLeft = box.left + (box.width - renderedW) * posX;
+        const renderedTop = box.top + (box.height - renderedH) * posY;
+        heroFocusBox.style.left = (renderedLeft + renderedW * EYES_FRACTION_X) + 'px';
+        heroFocusBox.style.top = (renderedTop + renderedH * EYES_FRACTION_Y) + 'px';
+      };
+      if (heroBgImg.complete) positionFocusBox();
+      heroBgImg.addEventListener('load', positionFocusBox);
+      window.addEventListener('load', positionFocusBox);
+      window.addEventListener('resize', positionFocusBox);
+    }
+
     let lenis = null;
     if (window.Lenis && !reduceMotion) {
       // Native CSS smooth-scroll fights Lenis's own smoothing (both try to
@@ -151,6 +192,13 @@ document.addEventListener('DOMContentLoaded', () => {
       gsap.set(heroTextEls, { opacity: 0, x: '-60vw' });
       const heroCta = document.querySelector('.hero-cta');
       if (heroCta) gsap.set(heroCta, { scale: 0.82 });
+      // Focus-pull beat: the portrait starts soft with an AF box locked
+      // onto the eyes (ties the name to the face, like a camera racking
+      // focus) and sharpens as the name fades, handing off to phase 3.
+      const heroFocusBoxEl = document.getElementById('heroFocusBox');
+      const heroBgImgEl = document.getElementById('heroBgImg');
+      if (heroBgImgEl) gsap.set(heroBgImgEl, { filter: 'blur(22px)' });
+      if (heroFocusBoxEl) gsap.set(heroFocusBoxEl, { opacity: 0, scale: 1.2 });
       const heroLogoTl = gsap.timeline({
         scrollTrigger: {
           trigger: '.hero-photo',
@@ -178,6 +226,17 @@ document.addEventListener('DOMContentLoaded', () => {
       // slide, so it reads as the thing to act on rather than just more
       // copy scrolling by.
       if (heroCta) heroLogoTl.to(heroCta, { scale: 1, ease: 'back.out(2.4)' }, 1.3);
+      // AF box locks onto the eyes right as the name lands (0.35), then
+      // racks to sharp focus as the name fades back out (0.85-1.2),
+      // freeing the face just as the main hero copy takes over (1.05).
+      if (heroFocusBoxEl) {
+        heroLogoTl
+          .to(heroFocusBoxEl, { opacity: 1, scale: 1, ease: 'back.out(2)', duration: 0.2 }, 0.3)
+          .to(heroFocusBoxEl, { opacity: 0, scale: 0.9, ease: 'power1.in', duration: 0.25 }, 0.82);
+      }
+      if (heroBgImgEl) {
+        heroLogoTl.to(heroBgImgEl, { filter: 'blur(0px)', ease: 'power2.out', duration: 0.4 }, 0.82);
+      }
     }
 
     // Editorial strip is a plain CSS marquee (see style.css) -- no JS
