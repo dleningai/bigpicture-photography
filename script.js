@@ -35,13 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         let total = 0;
         pfStack.querySelectorAll('.pf-card, #ctaStack').forEach((card) => { total += card.offsetHeight; });
-        // The last stacking item has nothing after it to define how long it
-        // stays pinned -- without extra room here it reaches the wrapper's
-        // bottom the instant it arrives and flies straight through instead
-        // of resting in place like every earlier card does. Give it one
-        // viewport's worth of hold time.
-        const ctaStack = pfStack.querySelector('#ctaStack');
-        if (ctaStack) total += window.innerHeight;
         pfStack.style.height = total + 'px';
       };
       setPfStackHeight();

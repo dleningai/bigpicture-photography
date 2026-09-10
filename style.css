@@ -1684,6 +1684,11 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 #reels { top: 84px; }
 @media (min-width: 901px) {
   #ctaStack { position: sticky; top: 260px; z-index: 5; }
+  /* Extra padding, not blank space after the wrapper -- the sticky hold
+     duration comes from this section's own natural height, so it needs
+     to be genuinely taller, not padded out with invisible filler that
+     leaves a gap once it releases. */
+  #ctaStack.cta-light { padding-top: 340px; padding-bottom: 440px; }
 }
 .pf-row-head {
   display: flex; align-items: flex-start; gap: 32px;
