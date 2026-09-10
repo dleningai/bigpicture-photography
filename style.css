@@ -1546,34 +1546,43 @@ img.img-loaded { opacity: 1; filter: blur(0); }
    editorial layout: big title + growing divider + label, then a large
    hero image (with scroll-linked parallax) plus a thumbnail grid,
    everything staggered in on scroll. */
-/* Portfolio chapters as a numbered heading + image card. In normal
-   flow by default (also the reduced-motion / no-JS fallback); script.js
-   layers a GSAP ScrollTrigger pin on top of this to make each chapter
-   stack under the next while scrolling. That's deliberately a JS pin
-   rather than CSS position:sticky -- sticky depends on the browser's
-   native scroll math, which Lenis's smoothed scrolling doesn't drive
-   precisely enough for it to ever actually engage; ScrollTrigger's pin
-   is scroll-position-driven the same way Lenis feeds it
-   (`lenis.on('scroll', ScrollTrigger.update)`), so the two stay in
-   sync. */
-#sport, #portrait, #event { position: relative; background: var(--bg); }
-/* The two pinned chapters (everything but the last) need to fill the
-   full viewport -- the pin reserves a whole viewport's worth of scroll
-   room to hold them in place, and if the chapter's own content is
-   shorter than that, the leftover space below it renders as plain
-   empty background for the entire hold, reading as a dead gap instead
-   of a continuously-filled pinned card. */
-#sport, #portrait {
+/* Portfolio chapters as a classic CSS sticky-note stack: each card
+   sticks at a slightly larger `top` offset than the one before it, so
+   as the next one slides up and covers it, a thin sliver of every
+   earlier card stays peeking above -- pure CSS position:sticky, no JS
+   pin. (A GSAP ScrollTrigger pin was tried instead, on the theory that
+   Lenis's smoothed scroll wouldn't drive native sticky precisely
+   enough -- that theory doesn't hold up: the pin engaged fine, but
+   pin's own mechanics (a fixed-position overlay + reserved spacer)
+   can't produce a card visibly sliding over the one before it the way
+   sticky does for free, so it's not the right tool here regardless.)
+   All three cards share ONE wrapper (.pf-stack), not one each -- a
+   sticky element stays stuck until its CONTAINING BLOCK'S bottom edge
+   is reached, so sharing one tall wrapper is what keeps earlier cards
+   peeking for the entire rest of the sequence instead of releasing
+   the moment their own short content scrolls by. */
+/* Must exceed the combined natural height of all 3 sticky children
+   (3 x 100vh = 300vh) or the last one overflows the wrapper's set
+   height, throwing off where the CTA section after it lands and
+   causing the two to visibly overlap. The extra room beyond 300vh also
+   paces out how long each transition takes. */
+.pf-stack { position: relative; height: 340vh; }
+.pf-card {
+  position: sticky;
+  background: var(--bg);
   min-height: 100vh;
   display: flex; flex-direction: column; justify-content: center;
 }
+#sport { top: 0; }
+#portrait { top: 28px; }
+#event { top: 56px; }
 .pf-row-head {
   display: flex; align-items: flex-start; gap: 32px;
   max-width: 900px; margin: 0 auto; padding: 90px 5vw 28px;
   width: 100%;
   border-top: 1px solid var(--border);
 }
-section:first-of-type .pf-row-head { border-top: none; padding-top: 120px; }
+#sport .pf-row-head { border-top: none; padding-top: 120px; }
 .pf-row-num {
   font-family: var(--font-heading); font-weight: 800;
   font-size: clamp(2rem, 3.4vw, 2.8rem); line-height: 1;
@@ -1626,12 +1635,12 @@ section:first-of-type .pf-row-head { border-top: none; padding-top: 120px; }
    the lightbox can page through the full set, not meant to be seen. */
 .pf-case-hidden { position: absolute; width: 0; height: 0; overflow: hidden; }
 @media (max-width: 900px) {
-  /* The pin's full-viewport chapter height is a desktop-only affordance
-     (see script.js, which skips creating the pin below this width) --
-     mobile keeps the plain stacked layout at its natural height. */
-  #sport, #portrait { min-height: 0; display: block; }
+  /* The sticky stack is a desktop-only affordance -- mobile keeps the
+     plain stacked layout at its natural height, in normal flow. */
+  .pf-stack { height: auto; }
+  .pf-card { position: relative; top: auto; min-height: 0; display: block; }
   .pf-row-head { padding: 44px 20px 20px; gap: 16px; }
-  section:first-of-type .pf-row-head { padding-top: 100px; }
+  #sport .pf-row-head { padding-top: 100px; }
   .pf-row-num { font-size: 1.6rem; }
   .pf-row-media { padding: 0 20px 44px; }
   .pf-row-media-fg { width: 78%; }

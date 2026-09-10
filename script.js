@@ -186,36 +186,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    // Portfolio chapter stack — each chapter (Sport, Portrait, Event)
-    // pins in place for one viewport's worth of scroll, so the next one
-    // rises up and covers it. A GSAP pin, deliberately not CSS
-    // position:sticky: sticky depends on the browser's own native
-    // scroll math, which Lenis's smoothed scrolling doesn't drive
-    // precisely enough for it to reliably engage (confirmed — it never
-    // actually stuck on the live site). ScrollTrigger's pin is driven
-    // by the same scroll-position updates Lenis already feeds it
-    // (`lenis.on('scroll', ScrollTrigger.update)` above), so the two
-    // stay in sync. Only non-JS/reduced-motion visitors see the plain,
-    // un-pinned CSS fallback (chapters just stacked in normal flow).
-    const pfChapters = Array.from(document.querySelectorAll('#sport, #portrait, #event'));
-    if (pfChapters.length > 1 && hasScrollFx && window.innerWidth > 900) {
-      pfChapters.forEach((chapter, i) => {
-        if (i === pfChapters.length - 1) return; // last chapter has nothing after it to cover it
-        ScrollTrigger.create({
-          trigger: chapter,
-          start: 'top top',
-          // A full viewport of motionless hold read as "nothing is
-          // happening" -- short enough to register as a beat, not a
-          // stall, while still giving the next chapter room to visibly
-          // rise up and cover this one before it releases.
-          end: () => `+=${window.innerHeight * 0.4}`,
-          pin: true,
-          pinSpacing: true,
-          anticipatePin: 1,
-        });
-      });
-    }
-
     // Scroll progress rail — a fill bar + one dot per major section, so
     // visitors always see where they are on the page. Hidden entirely
     // unless ScrollTrigger can drive it.
