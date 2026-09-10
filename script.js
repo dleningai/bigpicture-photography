@@ -220,6 +220,184 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
+    // Full-set carousel — a 3D coverflow deck for every remaining photo
+    // in a category. Self-contained widget (no ScrollTrigger, no page
+    // scroll hijacking): drag tracks the pointer 1:1, release hands the
+    // gesture's velocity to a critically-damped spring that carries the
+    // motion forward and snaps to the nearest card, per Apple's fluid
+    // interface model (respond immediately, animate from the live
+    // value, stay interruptible). Reduced motion gets a plain snap with
+    // no tilt/blur, no physics.
+    document.querySelectorAll('.pf-carousel').forEach((root) => {
+      const track = root.querySelector('.pf-carousel-track');
+      const items = Array.from(root.querySelectorAll('.pf-carousel-item'));
+      const prevBtn = root.querySelector('.pf-carousel-arrow-prev');
+      const nextBtn = root.querySelector('.pf-carousel-arrow-next');
+      const count = items.length;
+      if (!track || !count) return;
+      if (count <= 1) {
+        if (prevBtn) prevBtn.style.display = 'none';
+        if (nextBtn) nextBtn.style.display = 'none';
+      }
+
+      const SPACING = window.innerWidth < 720 ? 150 : 190;
+      let position = 0;
+      let velocity = 0;
+      let rafId = null;
+      let dragging = false;
+      let pending = false;
+      let didDrag = false;
+      let startX = 0;
+      let startY = 0;
+      let dragStartPosition = 0;
+      const history = [];
+
+      const clamp = (p) => Math.max(0, Math.min(count - 1, p));
+
+      function render() {
+        items.forEach((item, i) => {
+          const offset = i - position;
+          const abs = Math.abs(offset);
+          if (reduceMotion) {
+            item.style.transform = `translate(-50%, -50%) translateX(${offset * SPACING}px)`;
+            item.style.opacity = abs > 2.5 ? '0' : '1';
+            item.style.zIndex = String(100 - Math.round(abs * 10));
+            item.style.pointerEvents = abs > 2.5 ? 'none' : '';
+            return;
+          }
+          const clampedAbs = Math.min(abs, 5);
+          const scale = 1 - Math.min(abs * 0.12, 0.45);
+          const blur = Math.min(abs * 2.4, 9);
+          const rotate = Math.max(-58, Math.min(58, offset * -32));
+          const translateZ = -clampedAbs * 90;
+          const opacity = abs > 4.2 ? 0 : 1 - Math.min(abs * 0.14, 0.72);
+          item.style.transform = `translate(-50%, -50%) translateX(${offset * SPACING}px) translateZ(${translateZ}px) rotateY(${rotate}deg) scale(${scale})`;
+          item.style.filter = blur > 0.05 ? `blur(${blur}px)` : '';
+          item.style.opacity = String(Math.max(opacity, 0));
+          item.style.zIndex = String(100 - Math.round(abs * 10));
+          item.style.pointerEvents = abs > 4.2 ? 'none' : '';
+        });
+      }
+
+      function stopAnimation() {
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = null;
+      }
+
+      function springTo(target, initialVelocity) {
+        stopAnimation();
+        if (reduceMotion) {
+          position = clamp(target);
+          velocity = 0;
+          render();
+          return;
+        }
+        let vel = initialVelocity;
+        let last = performance.now();
+        const stiffness = 170;
+        const damping = Math.abs(initialVelocity) > 2 ? 20 : 26;
+        const step = (now) => {
+          const dt = Math.min((now - last) / 1000, 0.032);
+          last = now;
+          const acc = -stiffness * (position - target) - damping * vel;
+          vel += acc * dt;
+          position += vel * dt;
+          position = clamp(position);
+          render();
+          if (Math.abs(vel) < 0.01 && Math.abs(position - target) < 0.002) {
+            position = target;
+            velocity = 0;
+            render();
+            rafId = null;
+            return;
+          }
+          rafId = requestAnimationFrame(step);
+        };
+        rafId = requestAnimationFrame(step);
+      }
+
+      const goTo = (index) => springTo(clamp(Math.round(index)), velocity);
+
+      if (prevBtn) prevBtn.addEventListener('click', () => goTo(Math.round(position) - 1));
+      if (nextBtn) nextBtn.addEventListener('click', () => goTo(Math.round(position) + 1));
+      root.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(Math.round(position) - 1); }
+        else if (e.key === 'ArrowRight') { e.preventDefault(); goTo(Math.round(position) + 1); }
+      });
+
+      root.addEventListener('pointerdown', (e) => {
+        if (e.pointerType === 'mouse' && e.button !== 0) return;
+        pending = true;
+        didDrag = false;
+        startX = e.clientX;
+        startY = e.clientY;
+        dragStartPosition = position;
+        history.length = 0;
+        history.push({ x: e.clientX, t: performance.now() });
+      });
+      root.addEventListener('pointermove', (e) => {
+        if (!pending && !dragging) return;
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+        if (pending && !dragging) {
+          if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return;
+          if (Math.abs(dy) > Math.abs(dx)) { pending = false; return; }
+          dragging = true;
+          didDrag = true;
+          stopAnimation();
+          root.setPointerCapture(e.pointerId);
+          root.classList.add('is-dragging');
+        }
+        if (!dragging) return;
+        e.preventDefault();
+        position = clamp(dragStartPosition - dx / SPACING);
+        render();
+        history.push({ x: e.clientX, t: performance.now() });
+        if (history.length > 5) history.shift();
+      });
+      const endDrag = () => {
+        pending = false;
+        if (!dragging) return;
+        dragging = false;
+        root.classList.remove('is-dragging');
+        let v = 0;
+        if (history.length >= 2) {
+          const a = history[0];
+          const b = history[history.length - 1];
+          const dt = b.t - a.t;
+          if (dt > 0) v = (b.x - a.x) / dt;
+        }
+        velocity = -v / SPACING;
+        const projectedPx = v * 499;
+        const target = clamp(Math.round(position - projectedPx / SPACING));
+        springTo(target, velocity);
+      };
+      root.addEventListener('pointerup', endDrag);
+      root.addEventListener('pointercancel', endDrag);
+
+      items.forEach((item, i) => {
+        item.addEventListener(
+          'click',
+          (e) => {
+            if (didDrag) {
+              e.preventDefault();
+              e.stopImmediatePropagation();
+              didDrag = false;
+              return;
+            }
+            if (Math.abs(i - position) > 0.5) {
+              e.preventDefault();
+              e.stopImmediatePropagation();
+              goTo(i);
+            }
+          },
+          true
+        );
+      });
+
+      render();
+    });
+
     // Scroll progress rail — a fill bar + one dot per major section, so
     // visitors always see where they are on the page. Hidden entirely
     // unless ScrollTrigger can drive it.
