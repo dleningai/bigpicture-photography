@@ -1552,27 +1552,28 @@ img.img-loaded { opacity: 1; filter: blur(0); }
    the lenis.dev-style references. The main image holds still; the two
    side cards drift opposite directions as the chapter scrolls through
    view (JS, position-linked to scroll — not velocity-based). */
+/* Each category sits in its own sized wrapper -- this is what bounds the
+   sticky card's "stuck" range. Without it, .pf-collage's containing block
+   would be <body> itself, so it would never release and would keep
+   bleeding through later, semi-transparent sections (like the closing
+   CTA) for the rest of the page. The wrapper is taller than one viewport
+   so the next card has room to scroll up and visibly cover this one. */
+.pf-card { position: relative; height: 130vh; }
+/* The last category has nothing after it that should stack over it, so
+   it doesn't need the extra scroll room a following card would use to
+   cover it -- that would just leave dead space before the CTA. */
+.pf-card-last { height: 100vh; }
 .pf-collage {
   position: sticky; top: 0;
   scroll-margin-top: 64px;
   background: var(--bg);
-  min-height: 100vh;
+  height: 100vh;
 }
 /* overflow:hidden lives on this inner wrapper, not on .pf-collage itself
    -- Safari/WebKit has a long-standing bug where position:sticky is
    silently ignored on an element that also has overflow other than
    visible set on itself. */
-.pf-collage-clip { overflow: hidden; padding: 110px 0 0; height: 100%; }
-/* Text + carousel live outside the sticky/pinned card entirely -- the
-   hero collage above is sized to fit one screen so it's never partly
-   cropped by the next section arriving before you've seen it, and
-   this scrolls normally underneath, unaffected by the stacking. */
-.pf-collage-extra { position: relative; padding: 50px 0 100px; background: var(--bg); }
-/* The last category has nothing after it that should stack over it --
-   sticky is only needed so a *following* category can cover it while
-   scrolling past; without one, staying sticky would just make the
-   closing CTA slide over it uninvited. */
-#event.pf-collage { position: relative; }
+.pf-collage-clip { overflow: hidden; padding: 70px 0 20px; height: 100%; }
 .pf-collage-label {
   display: block; margin: 0 auto 28px; max-width: 1400px; padding: 0 5vw;
   font-family: var(--font-mono); font-size: 0.82rem; letter-spacing: 0.05em;
@@ -1580,7 +1581,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 }
 .pf-collage-stage {
   position: relative; max-width: 1400px; margin: 0 auto;
-  height: 76vh; min-height: 460px; max-height: 780px;
+  height: 40vh; min-height: 280px; max-height: 380px;
   padding: 0 5vw;
 }
 .pf-collage-main {
@@ -1624,8 +1625,9 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 .pf-collage-main:hover .pf-collage-view,
 .pf-collage-side:hover .pf-collage-view { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 .pf-collage-text {
-  max-width: 620px; margin: 44px auto 0; padding: 0 5vw;
+  max-width: 620px; margin: 24px auto 0; padding: 0 5vw;
   color: var(--ink-dim); line-height: 1.7;
+  font-size: 0.92rem;
 }
 /* Extra gallery photos beyond the visible collage — present so the
    lightbox can page through the full set, not meant to be seen. */
@@ -1639,8 +1641,8 @@ img.img-loaded { opacity: 1; filter: blur(0); }
    photos get added later, unlike a grid that grows forever. */
 .pf-carousel {
   position: relative;
-  max-width: 1400px; margin: 70px auto 0; padding: 0 5vw;
-  height: 420px;
+  max-width: 1400px; margin: 16px auto 0; padding: 0 5vw;
+  height: 220px;
   perspective: 1400px;
   outline: none;
   touch-action: pan-y;
@@ -1654,7 +1656,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 .pf-carousel:not(.is-dragging) { cursor: grab; }
 .pf-carousel-item {
   position: absolute; top: 50%; left: 50%;
-  width: 300px; aspect-ratio: 3 / 4;
+  width: 170px; aspect-ratio: 3 / 4;
   border-radius: 10px; overflow: hidden;
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.55);
   will-change: transform, filter, opacity;
@@ -1689,8 +1691,12 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   .pf-carousel-item { transition: none; }
 }
 @media (max-width: 900px) {
-  .pf-collage-clip { padding: 70px 0 0; }
-  .pf-collage-extra { padding: 40px 0 70px; }
+  /* The card-stack sticky effect needs a card that fits one screen --
+     mobile's stacked, full-width layout runs taller than that, so the
+     stack effect is dropped here in favor of plain, normal-flow scrolling. */
+  .pf-card, .pf-card-last { height: auto; }
+  .pf-collage { position: relative; height: auto; }
+  .pf-collage-clip { padding: 60px 0 30px; height: auto; }
   .pf-collage-stage { height: auto; min-height: 0; max-height: none; padding: 0 20px; }
   .pf-collage-main { position: relative; inset: auto; width: 100%; aspect-ratio: 4 / 3; }
   .pf-collage-side { display: none; }
