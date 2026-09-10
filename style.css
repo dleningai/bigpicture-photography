@@ -549,9 +549,28 @@ img.img-loaded { opacity: 1; filter: blur(0); }
    the photo/strip/name but below the main copy itself. */
 .hero-curtain {
   position: absolute; inset: 0; z-index: 5;
+  overflow: hidden;
   background: var(--bg);
   opacity: 0;
   pointer-events: none;
+}
+/* A little texture/light so the curtain isn't a flat black void -- same
+   grain used elsewhere in the hero, plus one soft glow, both scoped to
+   this element since it fully covers (and disables) the photo's own fx
+   layer underneath. */
+.hero-curtain::before {
+  content: '';
+  position: absolute; inset: 0;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.hero-curtain::after {
+  content: '';
+  position: absolute; width: 480px; height: 480px;
+  left: 12%; bottom: -12%;
+  border-radius: 50%;
+  filter: blur(90px);
+  background: radial-gradient(circle, rgba(222, 175, 103, 0.22), transparent 70%);
 }
 .hero-intro-name-title {
   font-family: var(--font-heading); font-weight: 800;
