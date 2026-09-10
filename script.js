@@ -58,6 +58,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // late font swaps.
     const editorialStrip = document.getElementById('editorialStrip');
     const siteNav = document.querySelector('.site-nav');
+    // On mobile, .hero-intro-name (the "Dimitri Lening" name beat) sits
+    // below the strip via its own hardcoded padding-top (760px breakpoint
+    // in style.css), guessed against the same assumed strip height/
+    // position as the old top:92px offset above. Once the strip's real
+    // position is measured instead, that guess can fall short and the
+    // name ends up overlapping the strip's last row of photos -- clear
+    // it dynamically too, from the strip's actual measured bottom edge.
+    const heroIntroName = document.getElementById('heroIntroName');
     // The hero portrait (.hero-bg) fills the whole section behind the
     // strip (inset: 0). On wide screens object-fit: contain happens to
     // letterbox it away from the very top, so it never reaches the strip
@@ -73,6 +81,11 @@ document.addEventListener('DOMContentLoaded', () => {
         editorialStrip.style.top = siteNav.getBoundingClientRect().height + 'px';
         const stripBottom = editorialStrip.getBoundingClientRect().bottom;
         if (heroBg) heroBg.style.top = stripBottom + 'px';
+        if (heroIntroName && window.innerWidth <= 760) {
+          heroIntroName.style.paddingTop = (stripBottom + 24) + 'px';
+        } else if (heroIntroName) {
+          heroIntroName.style.paddingTop = '';
+        }
       };
       positionEditorialStrip();
       window.addEventListener('load', positionEditorialStrip);
@@ -80,47 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
       if (document.fonts && document.fonts.ready) {
         document.fonts.ready.then(positionEditorialStrip);
       }
-    }
-
-    // Focus box for the "DSLR autofocus" beat below -- placed over the
-    // portrait's eyes. object-fit: contain never crops the photo, it only
-    // letterboxes it, so the eyes' position as a fraction of the *photo*
-    // (measured once, by hand, against the source file) maps onto a fixed
-    // fraction of its rendered content rect regardless of viewport size or
-    // object-position -- compute that rect the same way the browser does
-    // instead of guessing screen coordinates per breakpoint.
-    const heroFocusBox = document.getElementById('heroFocusBox');
-    const heroBgImg = document.getElementById('heroBgImg');
-    if (heroFocusBox && heroBgImg && heroBg) {
-      const EYES_FRACTION_X = 0.676;
-      const EYES_FRACTION_Y = 0.399;
-      const positionFocusBox = () => {
-        const naturalW = heroBgImg.naturalWidth;
-        const naturalH = heroBgImg.naturalHeight;
-        if (!naturalW || !naturalH) return;
-        const box = heroBg.getBoundingClientRect();
-        const boxAspect = box.width / box.height;
-        const imgAspect = naturalW / naturalH;
-        let renderedW = box.width;
-        let renderedH = box.height;
-        if (imgAspect > boxAspect) {
-          renderedH = box.width / imgAspect;
-        } else {
-          renderedW = box.height * imgAspect;
-        }
-        const style = getComputedStyle(heroBgImg);
-        const [posXStr, posYStr] = style.objectPosition.split(' ');
-        const posX = parseFloat(posXStr) / 100;
-        const posY = parseFloat(posYStr) / 100;
-        const renderedLeft = box.left + (box.width - renderedW) * posX;
-        const renderedTop = box.top + (box.height - renderedH) * posY;
-        heroFocusBox.style.left = (renderedLeft + renderedW * EYES_FRACTION_X) + 'px';
-        heroFocusBox.style.top = (renderedTop + renderedH * EYES_FRACTION_Y) + 'px';
-      };
-      if (heroBgImg.complete) positionFocusBox();
-      heroBgImg.addEventListener('load', positionFocusBox);
-      window.addEventListener('load', positionFocusBox);
-      window.addEventListener('resize', positionFocusBox);
     }
 
     let lenis = null;
@@ -171,18 +143,14 @@ document.addEventListener('DOMContentLoaded', () => {
       // hero text over to GSAP, switching off the CSS-only reveal so the
       // two don't fight over the same properties.
       document.querySelector('.hero-photo').classList.add('js-hero-sequence');
+      const heroIntroName = document.getElementById('heroIntroName');
+      if (heroIntroName) heroIntroName.classList.add('js-active');
+      const heroIntroNameEls = gsap.utils.toArray('.hero-intro-name > *');
+      gsap.set(heroIntroNameEls, { opacity: 0, x: '60vw' });
       const heroTextEls = gsap.utils.toArray('.hero-box > *, .hero-stats');
       gsap.set(heroTextEls, { opacity: 0, x: '-60vw' });
       const heroCta = document.querySelector('.hero-cta');
       if (heroCta) gsap.set(heroCta, { scale: 0.82 });
-      // Focus-pull beat: the portrait starts soft with an AF box (name
-      // locked inside it, like a subject tag) over the eyes, and both
-      // sharpen/dissolve together right as the name hands off to phase 3
-      // -- the name only disappears once the face is actually in focus.
-      const heroFocusBoxEl = document.getElementById('heroFocusBox');
-      const heroBgImgEl = document.getElementById('heroBgImg');
-      if (heroBgImgEl) gsap.set(heroBgImgEl, { filter: 'blur(22px)' });
-      if (heroFocusBoxEl) gsap.set(heroFocusBoxEl, { opacity: 0, scale: 1.15, filter: 'blur(0px)' });
       const heroLogoTl = gsap.timeline({
         scrollTrigger: {
           trigger: '.hero-photo',
@@ -196,6 +164,10 @@ document.addEventListener('DOMContentLoaded', () => {
       heroLogoTl
         .to(heroLogoImg, { scale: 5.5, filter: 'blur(24px)', ease: 'none' }, 0)
         .to(heroLogoIntro, { autoAlpha: 0, ease: 'none' }, 0.15)
+        // Phase 2: name + short description, a personal beat before the
+        // main copy takes over.
+        .to(heroIntroNameEls, { opacity: 1, x: 0, ease: 'power2.out', stagger: 0.08 }, 0.35)
+        .to(heroIntroNameEls, { opacity: 0, x: '60vw', ease: 'power1.in', stagger: 0.05 }, 0.85)
         // Phase 3: the main hero copy slides in from the left this time.
         .to(heroTextEls, { opacity: 1, x: 0, ease: 'power2.out', stagger: 0.06 }, 1.05)
         // Phase 4: once the text has landed, further scrolling slides it
@@ -206,20 +178,6 @@ document.addEventListener('DOMContentLoaded', () => {
       // slide, so it reads as the thing to act on rather than just more
       // copy scrolling by.
       if (heroCta) heroLogoTl.to(heroCta, { scale: 1, ease: 'back.out(2.4)' }, 1.3);
-      // AF box (with the name inside it) locks onto the eyes as the logo
-      // curtain clears (0.3), then dissolves -- fading out with a soft
-      // blur, not a slide -- in the same window the portrait itself racks
-      // from blurred to sharp (0.82-1.22), so the name only lets go of
-      // the face once it's actually visible, right before the main hero
-      // copy takes over (1.05).
-      if (heroFocusBoxEl) {
-        heroLogoTl
-          .to(heroFocusBoxEl, { opacity: 1, scale: 1, ease: 'back.out(2)', duration: 0.2 }, 0.3)
-          .to(heroFocusBoxEl, { opacity: 0, scale: 1.06, filter: 'blur(10px)', ease: 'power1.in', duration: 0.35 }, 0.82);
-      }
-      if (heroBgImgEl) {
-        heroLogoTl.to(heroBgImgEl, { filter: 'blur(0px)', ease: 'power2.out', duration: 0.4 }, 0.82);
-      }
     }
 
     // Editorial strip is a plain CSS marquee (see style.css) -- no JS
