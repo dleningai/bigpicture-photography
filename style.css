@@ -1601,7 +1601,7 @@ section:first-of-type .pf-row-head { border-top: none; padding-top: 120px; }
   aspect-ratio: 16 / 11;
   box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
 }
-.pf-row-media-bg img {
+.pf-row-media-bg > img {
   width: 100%; height: 100%; object-fit: cover; display: block;
   filter: blur(14px) brightness(0.75); transform: scale(1.15);
 }
