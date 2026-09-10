@@ -1592,10 +1592,15 @@ img.img-loaded { opacity: 1; filter: blur(0); }
    view (JS, position-linked to scroll — not velocity-based). */
 .pf-collage {
   position: sticky; top: 0;
-  padding: 120px 0 90px; scroll-margin-top: 64px; overflow: hidden;
+  scroll-margin-top: 64px;
   background: var(--bg);
   min-height: 100vh;
 }
+/* overflow:hidden lives on this inner wrapper, not on .pf-collage itself
+   -- Safari/WebKit has a long-standing bug where position:sticky is
+   silently ignored on an element that also has overflow other than
+   visible set on itself. */
+.pf-collage-clip { overflow: hidden; padding: 120px 0 90px; }
 .pf-collage-label {
   display: block; margin: 0 auto 28px; max-width: 1400px; padding: 0 5vw;
   font-family: var(--font-mono); font-size: 0.82rem; letter-spacing: 0.05em;
@@ -1712,7 +1717,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   .pf-carousel-item { transition: none; }
 }
 @media (max-width: 900px) {
-  .pf-collage { padding: 70px 0 60px; }
+  .pf-collage-clip { padding: 70px 0 60px; }
   .pf-collage-stage { height: auto; min-height: 0; max-height: none; padding: 0 20px; }
   .pf-collage-main { position: relative; inset: auto; width: 100%; aspect-ratio: 4 / 3; }
   .pf-collage-side { display: none; }
