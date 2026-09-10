@@ -20,6 +20,31 @@ document.addEventListener('DOMContentLoaded', () => {
     // (including images) has actually loaded to pick up the real sizes.
     if (hasScrollFx) window.addEventListener('load', () => ScrollTrigger.refresh());
 
+    // Portfolio sticky stack -- the wrapper height was a hand-tuned vh
+    // guess sized against one test viewport, so it drifted (dead scroll
+    // or overlap) on any other window height, since vh scales with the
+    // viewport while the cards' actual content height mostly doesn't.
+    // Measure the real combined card height instead and set it exactly,
+    // on load/resize so it also survives lazy-image layout shifts.
+    const pfStack = document.querySelector('.pf-stack');
+    if (pfStack) {
+      const setPfStackHeight = () => {
+        if (window.innerWidth <= 900) {
+          pfStack.style.height = '';
+          return;
+        }
+        let total = 0;
+        pfStack.querySelectorAll('.pf-card').forEach((card) => { total += card.offsetHeight; });
+        pfStack.style.height = total + 'px';
+      };
+      setPfStackHeight();
+      window.addEventListener('load', () => {
+        setPfStackHeight();
+        if (hasScrollFx) ScrollTrigger.refresh();
+      });
+      window.addEventListener('resize', setPfStackHeight);
+    }
+
     let lenis = null;
     if (window.Lenis && !reduceMotion) {
       // Native CSS smooth-scroll fights Lenis's own smoothing (both try to
