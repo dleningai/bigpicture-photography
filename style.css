@@ -1930,7 +1930,11 @@ img.img-loaded { opacity: 1; filter: blur(0); }
    the lightbox can page through the full set, not meant to be seen. */
 .pf-case-hidden { position: absolute; width: 0; height: 0; overflow: hidden; }
 @media (max-width: 900px) {
-  .pf-stack { height: 280vh; }
+  /* Must clear the combined natural height of the 4 sticky cards PLUS
+     ctaStack's own natural height (ctaStack is normal-flow on mobile,
+     not sticky) -- undershooting this makes ctaStack overflow past this
+     wrapper's box and visually collide with the footer right after it. */
+  .pf-stack { height: 370vh; }
   .pf-row-head { padding: 44px 20px 20px; gap: 16px; }
   #sport .pf-row-head { padding-top: 100px; }
   .pf-row-num { font-size: 1.6rem; }
