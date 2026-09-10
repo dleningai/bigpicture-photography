@@ -1668,7 +1668,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
    actual heading+image content, which is the part meant to visibly
    stack. Wrapper height only needs to comfortably clear 3 natural
    card heights plus some scroll pacing. */
-.pf-stack { position: relative; height: 375vh; }
+.pf-stack { position: relative; height: 366vh; }
 .pf-card {
   position: sticky;
   background: var(--bg);
