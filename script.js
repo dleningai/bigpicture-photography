@@ -204,9 +204,14 @@ document.addEventListener('DOMContentLoaded', () => {
         ScrollTrigger.create({
           trigger: chapter,
           start: 'top top',
-          end: () => `+=${window.innerHeight}`,
+          // A full viewport of motionless hold read as "nothing is
+          // happening" -- short enough to register as a beat, not a
+          // stall, while still giving the next chapter room to visibly
+          // rise up and cover this one before it releases.
+          end: () => `+=${window.innerHeight * 0.4}`,
           pin: true,
           pinSpacing: true,
+          anticipatePin: 1,
         });
       });
     }
