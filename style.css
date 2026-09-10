@@ -1546,19 +1546,32 @@ img.img-loaded { opacity: 1; filter: blur(0); }
    editorial layout: big title + growing divider + label, then a large
    hero image (with scroll-linked parallax) plus a thumbnail grid,
    everything staggered in on scroll. */
-/* Portfolio chapters as a numbered heading (normal flow) followed by a
-   sticky image card that stacks under the next chapter's card as you
-   scroll past it -- lenis.dev-style. Only the small, fixed-aspect image
-   block is sticky; title and text stay in ordinary flow above it, so
-   there's no dependency between text length and card height -- the
-   thing that broke the earlier full-section sticky-card version
-   (cropped content, a CTA overlap, sections bleeding through each
-   other). A card this self-contained can't reproduce those bugs. */
+/* Portfolio chapters as a numbered heading + image card, the whole
+   chapter sticking and stacking under the next one as you scroll past
+   it -- lenis.dev-style. Each chapter sits in its own sized wrapper
+   (.pf-chapter-wrap) -- that's what bounds the sticky "stuck" range;
+   without it the containing block would be <body> itself, so it would
+   never release and would keep bleeding through later sections. Kept
+   deliberately compact (one heading, one fixed-aspect image, no
+   variable-height carousel) so it reliably fits one viewport -- that
+   variable-height content was what broke the earlier full-section
+   sticky-card version (cropped content, a CTA overlap, sections
+   bleeding through each other). */
+.pf-chapter-wrap { position: relative; height: 145vh; }
+.pf-chapter-wrap-last { height: 100vh; }
+.pf-chapter {
+  position: sticky; top: 0;
+  height: 100vh;
+  display: flex; flex-direction: column; justify-content: center;
+  background: var(--bg);
+  overflow: hidden;
+}
+.pf-chapter-wrap-last .pf-chapter { position: relative; }
 .pf-row-head {
   display: flex; align-items: flex-start; gap: 32px;
-  max-width: 900px; margin: 0 auto; padding: 70px 5vw 28px;
+  max-width: 900px; margin: 0 auto; padding: 0 5vw 28px;
+  width: 100%;
 }
-section:first-of-type .pf-row-head { padding-top: 40px; }
 .pf-row-num {
   font-family: var(--font-heading); font-weight: 800;
   font-size: clamp(2rem, 3.4vw, 2.8rem); line-height: 1;
@@ -1570,25 +1583,19 @@ section:first-of-type .pf-row-head { padding-top: 40px; }
   color: var(--ink-dim);
 }
 .pf-row-title {
-  font-size: clamp(1.5rem, 2.4vw, 2.1rem); font-weight: 800; line-height: 1.15;
-  margin: 0 0 14px;
+  font-size: clamp(1.3rem, 2vw, 1.8rem); font-weight: 800; line-height: 1.15;
+  margin: 0 0 10px;
 }
-.pf-row-text p { color: var(--ink-dim); line-height: 1.7; margin: 0; max-width: 620px; }
+.pf-row-text p { color: var(--ink-dim); line-height: 1.6; margin: 0; max-width: 620px; font-size: 0.94rem; }
 
-/* The wrapper's height beyond one viewport is what gives the next
-   card room to scroll up and visibly cover this one; the sticky child
-   inside is bounded to this wrapper, so it reliably releases once
-   the wrapper's own bottom is reached instead of sticking forever. */
-.pf-stack-wrap { position: relative; height: 130vh; }
-.pf-stack-wrap-last { height: auto; }
 .pf-row-media {
-  position: sticky; top: 90px;
-  max-width: 900px; margin: 0 auto; padding: 0 5vw;
+  position: relative;
+  max-width: 780px; margin: 0 auto; padding: 0 5vw;
+  width: 100%;
 }
-.pf-stack-wrap-last .pf-row-media { position: relative; top: auto; }
 .pf-row-media-bg {
   position: relative; overflow: hidden; border-radius: 6px;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 16 / 11;
   box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
 }
 .pf-row-media-bg img {
@@ -1616,10 +1623,14 @@ section:first-of-type .pf-row-head { padding-top: 40px; }
    the lightbox can page through the full set, not meant to be seen. */
 .pf-case-hidden { position: absolute; width: 0; height: 0; overflow: hidden; }
 @media (max-width: 900px) {
-  .pf-row-head { padding: 44px 20px 20px; gap: 16px; }
+  /* The sticky stack effect needs a chapter that fits one screen --
+     mobile's stacked layout runs taller than that, so it's dropped
+     here in favor of plain, normal-flow scrolling. */
+  .pf-chapter-wrap, .pf-chapter-wrap-last { height: auto; }
+  .pf-chapter { position: relative; height: auto; display: block; padding: 44px 0; }
+  .pf-row-head { padding: 0 20px 20px; gap: 16px; }
   .pf-row-num { font-size: 1.6rem; }
-  .pf-stack-wrap, .pf-stack-wrap-last { height: auto; }
-  .pf-row-media { position: relative; top: auto; padding: 0 20px; }
+  .pf-row-media { padding: 0 20px; }
   .pf-row-media-fg { width: 78%; }
 }
 @media (prefers-reduced-motion: reduce) {
