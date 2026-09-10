@@ -1571,7 +1571,14 @@ img.img-loaded { opacity: 1; filter: blur(0); }
    stack. Wrapper height only needs to comfortably clear 3 natural
    card heights plus some scroll pacing. */
 .pf-stack { position: relative; height: 280vh; }
-.pf-card { position: sticky; background: var(--bg); }
+.pf-card {
+  position: sticky;
+  background: var(--bg);
+  /* Depth cue for the stack: each card casts a shadow onto whatever
+     is peeking behind it, reinforcing that it's a card lying on top,
+     not just flat content replacing the last. */
+  box-shadow: 0 -24px 60px rgba(0, 0, 0, 0.55);
+}
 #sport { top: 0; }
 #portrait { top: 28px; }
 #event { top: 56px; }
