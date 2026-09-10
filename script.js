@@ -2,6 +2,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
+  const footerMonthEl = document.getElementById('footerMonth');
+  if (footerMonthEl) footerMonthEl.textContent = String(new Date().getMonth() + 1).padStart(2, '0') + '’';
+
   // Smooth scroll (Lenis) + scroll-driven hero parallax (GSAP). Both are
   // pure enhancements on top of content that is already visible via CSS,
   // so any failure here (blocked CDN, ad-blocker, version mismatch) must
@@ -19,6 +22,31 @@ document.addEventListener('DOMContentLoaded', () => {
     // computed against the stale layout -- refresh once everything
     // (including images) has actually loaded to pick up the real sizes.
     if (hasScrollFx) window.addEventListener('load', () => ScrollTrigger.refresh());
+
+    // Portfolio sticky stack -- the wrapper height was a hand-tuned vh
+    // guess sized against one test viewport, so it drifted (dead scroll
+    // or overlap) on any other window height, since vh scales with the
+    // viewport while the cards' actual content height mostly doesn't.
+    // Measure the real combined card height instead and set it exactly,
+    // on load/resize so it also survives lazy-image layout shifts.
+    const pfStack = document.querySelector('.pf-stack');
+    if (pfStack) {
+      const setPfStackHeight = () => {
+        if (window.innerWidth <= 900) {
+          pfStack.style.height = '';
+          return;
+        }
+        let total = 0;
+        pfStack.querySelectorAll('.pf-card, #ctaStack').forEach((card) => { total += card.offsetHeight; });
+        pfStack.style.height = total + 'px';
+      };
+      setPfStackHeight();
+      window.addEventListener('load', () => {
+        setPfStackHeight();
+        if (hasScrollFx) ScrollTrigger.refresh();
+      });
+      window.addEventListener('resize', setPfStackHeight);
+    }
 
     let lenis = null;
     if (window.Lenis && !reduceMotion) {
@@ -104,6 +132,9 @@ document.addEventListener('DOMContentLoaded', () => {
       // copy scrolling by.
       if (heroCta) heroLogoTl.to(heroCta, { scale: 1, ease: 'back.out(2.4)' }, 1.3);
     }
+
+    // Editorial strip is a plain CSS marquee (see style.css) -- no JS
+    // needed, it just loops on its own.
 
     // Leistungen → Einsatzgebiet cross-fade — two opacity/position
     // tweens scrubbed to the same scroll range. Every scroll position
