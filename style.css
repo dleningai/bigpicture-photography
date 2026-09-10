@@ -473,6 +473,44 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 @media (prefers-reduced-motion: reduce) {
   .hero-bg img { animation: none; }
 }
+/* Editorial photo scatter -- small behind-the-scenes shots placed across
+   the hero's right two-thirds (left column stays clear for the name and
+   CTA text). Positioned via --x/--y/--w custom props per item so the
+   scatter layout lives in markup, not repeated CSS rules. GSAP drives
+   each item's own horizontal drift on scroll (see script.js), at a rate
+   set by data-speed, for the "images sliding right-to-left as you
+   scroll" effect. */
+.hero-editorial {
+  position: absolute; inset: 0; z-index: -2;
+  pointer-events: none;
+  overflow: hidden;
+}
+.hero-editorial-item {
+  position: absolute;
+  top: var(--y); left: var(--x);
+  width: var(--w);
+  margin: 0;
+  will-change: transform;
+}
+.hero-editorial-item img {
+  display: block; width: 100%; aspect-ratio: 4 / 5;
+  object-fit: cover; border-radius: 3px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
+  filter: saturate(0.95) contrast(1.05);
+}
+.hero-editorial-item figcaption {
+  margin-top: 8px;
+  font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  white-space: nowrap;
+}
+@media (max-width: 900px) {
+  .hero-editorial { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-editorial-item { transform: none !important; }
+}
 .hero-scrim {
   position: absolute; inset: 0;
   background:

@@ -131,6 +131,16 @@ document.addEventListener('DOMContentLoaded', () => {
       // slide, so it reads as the thing to act on rather than just more
       // copy scrolling by.
       if (heroCta) heroLogoTl.to(heroCta, { scale: 1, ease: 'back.out(2.4)' }, 1.3);
+
+      // Editorial photo scatter -- each thumbnail drifts leftward across
+      // the whole pin duration, at its own data-speed rate, so the group
+      // reads as a loose parallax reel sliding right-to-left as the
+      // visitor scrolls (instead of moving in lockstep like one image).
+      const heroEditorialItems = gsap.utils.toArray('.hero-editorial-item');
+      heroEditorialItems.forEach((item) => {
+        const speed = parseFloat(item.dataset.speed) || 1;
+        heroLogoTl.to(item, { xPercent: -140 * speed, ease: 'none' }, 0);
+      });
     }
 
     // Leistungen → Einsatzgebiet cross-fade — two opacity/position
