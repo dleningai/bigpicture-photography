@@ -147,37 +147,44 @@ document.addEventListener('DOMContentLoaded', () => {
       if (heroIntroName) heroIntroName.classList.add('js-active');
       const heroIntroNameEls = gsap.utils.toArray('.hero-intro-name > *');
       gsap.set(heroIntroNameEls, { opacity: 0, x: '60vw' });
+      const heroCurtain = document.getElementById('heroCurtain');
+      if (heroCurtain) gsap.set(heroCurtain, { opacity: 0 });
       const heroTextEls = gsap.utils.toArray('.hero-box > *, .hero-stats');
-      gsap.set(heroTextEls, { opacity: 0, x: '-60vw' });
+      gsap.set(heroTextEls, { opacity: 0, y: 24 });
       const heroCta = document.querySelector('.hero-cta');
       if (heroCta) gsap.set(heroCta, { scale: 0.82 });
       const heroLogoTl = gsap.timeline({
         scrollTrigger: {
           trigger: '.hero-photo',
           start: 'top top',
-          end: () => `+=${window.innerHeight * 3.2}`,
+          end: () => `+=${window.innerHeight * 3}`,
           scrub: true,
           pin: true,
           anticipatePin: 1,
         },
       });
       heroLogoTl
-        .to(heroLogoImg, { scale: 5.5, filter: 'blur(24px)', ease: 'none' }, 0)
-        .to(heroLogoIntro, { autoAlpha: 0, ease: 'none' }, 0.15)
+        .to(heroLogoImg, { scale: 5.5, filter: 'blur(24px)', ease: 'none', duration: 0.5 }, 0)
+        .to(heroLogoIntro, { autoAlpha: 0, ease: 'none', duration: 0.4 }, 0.15)
         // Phase 2: name + short description, a personal beat before the
-        // main copy takes over.
-        .to(heroIntroNameEls, { opacity: 1, x: 0, ease: 'power2.out', stagger: 0.08 }, 0.35)
-        .to(heroIntroNameEls, { opacity: 0, x: '60vw', ease: 'power1.in', stagger: 0.05 }, 0.85)
-        // Phase 3: the main hero copy slides in from the left this time.
-        .to(heroTextEls, { opacity: 1, x: 0, ease: 'power2.out', stagger: 0.06 }, 1.05)
-        // Phase 4: once the text has landed, further scrolling slides it
-        // out to the left (behind the portrait) instead of it just
-        // sitting there until the pin releases.
-        .to(heroTextEls, { opacity: 0, x: '-60vw', ease: 'power1.in', stagger: 0.04 }, 1.65);
+        // main copy takes over -- given explicit, non-overlapping
+        // durations so it's always fully gone (not still fading) before
+        // anything else starts.
+        .to(heroIntroNameEls, { opacity: 1, x: 0, ease: 'power2.out', duration: 0.3, stagger: 0.08 }, 0.6)
+        .to(heroIntroNameEls, { opacity: 0, x: '60vw', ease: 'power1.in', duration: 0.3, stagger: 0.05 }, 1.3)
+        // Phase 3: only once the name has fully left does a solid curtain
+        // drop over the photo -- the face is no longer visible at all --
+        // and the main copy fades/rises in on top of it.
+        .to(heroCurtain, { opacity: 1, ease: 'power2.out', duration: 0.3 }, 1.7)
+        .to(heroTextEls, { opacity: 1, y: 0, ease: 'power2.out', duration: 0.35, stagger: 0.06 }, 1.9);
       // The CTA row gets its own little punch-in on top of the shared
-      // slide, so it reads as the thing to act on rather than just more
+      // reveal, so it reads as the thing to act on rather than just more
       // copy scrolling by.
-      if (heroCta) heroLogoTl.to(heroCta, { scale: 1, ease: 'back.out(2.4)' }, 1.3);
+      if (heroCta) heroLogoTl.to(heroCta, { scale: 1, ease: 'back.out(2.4)', duration: 0.3 }, 2.1);
+      // No slide-out phase -- once the copy has landed the pin just holds
+      // it there; further scrolling releases the pin and the whole
+      // section scrolls away normally into Leistungen underneath, instead
+      // of animating the copy back out first.
     }
 
     // Editorial strip is a plain CSS marquee (see style.css) -- no JS
