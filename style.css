@@ -1547,165 +1547,84 @@ img.img-loaded { opacity: 1; filter: blur(0); }
    editorial layout: big title + growing divider + label, then a large
    hero image (with scroll-linked parallax) plus a thumbnail grid,
    everything staggered in on scroll. */
-/* Portfolio chapters as an asymmetric collage — a big main image, two
-   smaller overlapping cards, and bold type layered over the top, per
-   the lenis.dev-style references. The main image holds still; the two
-   side cards drift opposite directions as the chapter scrolls through
-   view (JS, position-linked to scroll — not velocity-based). */
-/* Each category sits in its own sized wrapper -- this is what bounds the
-   sticky card's "stuck" range. Without it, .pf-collage's containing block
-   would be <body> itself, so it would never release and would keep
-   bleeding through later, semi-transparent sections (like the closing
-   CTA) for the rest of the page. The wrapper is taller than one viewport
-   so the next card has room to scroll up and visibly cover this one. */
-.pf-card { position: relative; height: 130vh; }
-/* The last category has nothing after it that should stack over it, so
-   it doesn't need the extra scroll room a following card would use to
-   cover it -- that would just leave dead space before the CTA. */
-.pf-card-last { height: 100vh; }
-.pf-collage {
-  position: sticky; top: 0;
-  scroll-margin-top: 64px;
-  background: var(--bg);
-  height: 100vh;
+/* Portfolio chapters as a numbered heading (normal flow) followed by a
+   sticky image card that stacks under the next chapter's card as you
+   scroll past it -- lenis.dev-style. Only the small, fixed-aspect image
+   block is sticky; title and text stay in ordinary flow above it, so
+   there's no dependency between text length and card height -- the
+   thing that broke the earlier full-section sticky-card version
+   (cropped content, a CTA overlap, sections bleeding through each
+   other). A card this self-contained can't reproduce those bugs. */
+.pf-row-head {
+  display: flex; align-items: flex-start; gap: 32px;
+  max-width: 900px; margin: 0 auto; padding: 70px 5vw 28px;
 }
-/* overflow:hidden lives on this inner wrapper, not on .pf-collage itself
-   -- Safari/WebKit has a long-standing bug where position:sticky is
-   silently ignored on an element that also has overflow other than
-   visible set on itself. */
-.pf-collage-clip { overflow: hidden; padding: 70px 0 20px; height: 100%; }
-.pf-collage-label {
-  display: block; margin: 0 auto 28px; max-width: 1400px; padding: 0 5vw;
+section:first-of-type .pf-row-head { padding-top: 40px; }
+.pf-row-num {
+  font-family: var(--font-heading); font-weight: 800;
+  font-size: clamp(2rem, 3.4vw, 2.8rem); line-height: 1;
+  color: var(--ink-dim); opacity: 0.5; flex-shrink: 0;
+}
+.pf-row-label {
+  display: block; margin-bottom: 14px;
   font-family: var(--font-mono); font-size: 0.82rem; letter-spacing: 0.05em;
   color: var(--ink-dim);
 }
-.pf-collage-stage {
-  position: relative; max-width: 1400px; margin: 0 auto;
-  height: 40vh; min-height: 280px; max-height: 380px;
-  padding: 0 5vw;
+.pf-row-title {
+  font-size: clamp(1.5rem, 2.4vw, 2.1rem); font-weight: 800; line-height: 1.15;
+  margin: 0 0 14px;
 }
-.pf-collage-main {
-  position: absolute; inset: 5% 8% 5% 26%;
-  display: block; overflow: hidden; border-radius: 4px; z-index: 1;
-}
-.pf-collage-main img {
-  width: 100%; height: 130%; object-fit: cover; display: block;
-  transition: filter 0.5s ease; will-change: transform;
-}
-.pf-collage-main:hover img { filter: brightness(0.75); }
-.pf-collage-side {
-  position: absolute; display: block; overflow: hidden; border-radius: 4px;
-  z-index: 3; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.55);
-}
-.pf-collage-side img {
-  width: 100%; height: 130%; object-fit: cover; display: block;
-  transition: filter 0.4s ease; will-change: transform;
-}
-.pf-collage-side:hover img { filter: brightness(0.8); }
-.pf-collage-side-a { top: -6%; left: 4%; width: 27%; aspect-ratio: 3 / 4; }
-.pf-collage-side-b { bottom: -6%; right: 2%; width: 24%; aspect-ratio: 4 / 3; }
-.pf-collage-title {
-  position: absolute; top: 6%; left: 0; z-index: 4;
-  font-size: clamp(2rem, 4.6vw, 3.8rem);
-  font-weight: 800; line-height: 1.04;
-  color: #fff; margin: 0; max-width: 40%; text-wrap: balance;
-  text-shadow: 0 8px 34px rgba(0, 0, 0, 0.65);
-}
-.pf-collage-view {
-  position: absolute; top: 50%; left: 50%;
-  transform: translate(-50%, -50%) scale(0.7);
-  width: 108px; height: 108px; border-radius: 50%;
-  background: rgba(255, 255, 255, 0.94); color: #17140f;
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem;
-  opacity: 0;
-  transition: opacity 0.35s ease, transform 0.35s ease;
-  pointer-events: none;
-}
-.pf-collage-main:hover .pf-collage-view,
-.pf-collage-side:hover .pf-collage-view { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-.pf-collage-text {
-  max-width: 620px; margin: 24px auto 0; padding: 0 5vw;
-  color: var(--ink-dim); line-height: 1.7;
-  font-size: 0.92rem;
-}
-/* Extra gallery photos beyond the visible collage — present so the
-   lightbox can page through the full set, not meant to be seen. */
-.pf-case-hidden { position: absolute; width: 0; height: 0; overflow: hidden; }
+.pf-row-text p { color: var(--ink-dim); line-height: 1.7; margin: 0; max-width: 620px; }
 
-/* Full-set carousel beneath each collage — every remaining photo in
-   that category, in a 3D coverflow deck driven by script.js (drag with
-   1:1 pointer tracking, spring physics that carry the release velocity
-   forward, no scroll-hijacking — an isolated widget, not another
-   ScrollTrigger pin). Stays the same footprint regardless of how many
-   photos get added later, unlike a grid that grows forever. */
-.pf-carousel {
-  position: relative;
-  max-width: 1400px; margin: 16px auto 0; padding: 0 5vw;
-  height: 220px;
-  perspective: 1400px;
-  outline: none;
-  touch-action: pan-y;
-  overflow: hidden;
+/* The wrapper's height beyond one viewport is what gives the next
+   card room to scroll up and visibly cover this one; the sticky child
+   inside is bounded to this wrapper, so it reliably releases once
+   the wrapper's own bottom is reached instead of sticking forever. */
+.pf-stack-wrap { position: relative; height: 130vh; }
+.pf-stack-wrap-last { height: auto; }
+.pf-row-media {
+  position: sticky; top: 90px;
+  max-width: 900px; margin: 0 auto; padding: 0 5vw;
 }
-.pf-carousel-track {
-  position: relative; width: 100%; height: 100%;
-  transform-style: preserve-3d;
+.pf-stack-wrap-last .pf-row-media { position: relative; top: auto; }
+.pf-row-media-bg {
+  position: relative; overflow: hidden; border-radius: 6px;
+  aspect-ratio: 16 / 10;
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
 }
-.pf-carousel.is-dragging { cursor: grabbing; }
-.pf-carousel:not(.is-dragging) { cursor: grab; }
-.pf-carousel-item {
-  position: absolute; top: 50%; left: 50%;
-  width: 170px; aspect-ratio: 3 / 4;
-  border-radius: 10px; overflow: hidden;
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.55);
-  will-change: transform, filter, opacity;
-  -webkit-user-drag: none;
-}
-.pf-carousel-item img {
+.pf-row-media-bg img {
   width: 100%; height: 100%; object-fit: cover; display: block;
-  pointer-events: none; -webkit-user-drag: none;
+  filter: blur(14px) brightness(0.75); transform: scale(1.15);
 }
-.pf-carousel-arrow {
-  position: absolute; top: 50%; transform: translateY(-50%);
-  width: 52px; height: 52px; border-radius: 50%;
-  background: rgba(20, 18, 14, 0.7);
-  border: 1px solid var(--gold-border);
-  color: var(--gold);
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; z-index: 200;
-  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+.pf-row-media-fg {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  display: block; overflow: hidden; border-radius: 4px;
+  width: 62%; aspect-ratio: 4 / 3;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
 }
-.pf-carousel-arrow svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.4; }
-.pf-carousel-arrow:hover { background: var(--gold-soft); border-color: var(--gold); transform: translateY(-50%) scale(1.08); }
-.pf-carousel-arrow-prev { left: 6vw; }
-.pf-carousel-arrow-next { right: 6vw; }
-@media (max-width: 720px) {
-  .pf-carousel { height: 320px; }
-  .pf-carousel-item { width: 220px; }
-  .pf-carousel-arrow { width: 42px; height: 42px; }
-  .pf-carousel-arrow-prev { left: 3vw; }
-  .pf-carousel-arrow-next { right: 3vw; }
+.pf-row-media-fg img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: filter 0.4s ease, transform 0.6s ease; will-change: transform;
 }
-@media (prefers-reduced-motion: reduce) {
-  .pf-carousel-item { transition: none; }
+.pf-row-media-fg:hover img { filter: brightness(0.85); transform: scale(1.03); }
+.pf-row-meta {
+  display: flex; justify-content: space-between; gap: 16px;
+  margin-top: 14px;
+  font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.03em;
+  color: var(--ink-dim);
 }
+/* Extra gallery photos beyond the one shown per chapter — present so
+   the lightbox can page through the full set, not meant to be seen. */
+.pf-case-hidden { position: absolute; width: 0; height: 0; overflow: hidden; }
 @media (max-width: 900px) {
-  /* The card-stack sticky effect needs a card that fits one screen --
-     mobile's stacked, full-width layout runs taller than that, so the
-     stack effect is dropped here in favor of plain, normal-flow scrolling. */
-  .pf-card, .pf-card-last { height: auto; }
-  .pf-collage { position: relative; height: auto; }
-  .pf-collage-clip { padding: 60px 0 30px; height: auto; }
-  .pf-collage-stage { height: auto; min-height: 0; max-height: none; padding: 0 20px; }
-  .pf-collage-main { position: relative; inset: auto; width: 100%; aspect-ratio: 4 / 3; }
-  .pf-collage-side { display: none; }
-  .pf-collage-title { position: relative; top: auto; max-width: 100%; margin: 0 0 20px; }
-  .pf-collage-label { padding: 0 20px; }
-  .pf-collage-text { padding: 0 20px; }
+  .pf-row-head { padding: 44px 20px 20px; gap: 16px; }
+  .pf-row-num { font-size: 1.6rem; }
+  .pf-stack-wrap, .pf-stack-wrap-last { height: auto; }
+  .pf-row-media { position: relative; top: auto; padding: 0 20px; }
+  .pf-row-media-fg { width: 78%; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .pf-collage-title, .pf-collage-label { opacity: 1; transform: none; transition: none; }
+  .pf-row-media-fg img, .pf-row-media-bg img { transition: none; }
 }
 
 
