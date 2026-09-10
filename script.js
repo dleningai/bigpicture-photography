@@ -220,6 +220,27 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
+    // Card-stack blur — as the next sticky section rises to cover the
+    // current one, the current one blurs out in sync (scrub-linked to
+    // the next section's own natural entrance range, no pin involved).
+    const pfCollageStack = Array.from(document.querySelectorAll('.pf-collage'));
+    if (pfCollageStack.length > 1 && hasScrollFx) {
+      pfCollageStack.forEach((section, i) => {
+        const next = pfCollageStack[i + 1];
+        if (!next) return;
+        gsap.to(section, {
+          filter: 'blur(16px) brightness(0.45)',
+          ease: 'none',
+          scrollTrigger: {
+            trigger: next,
+            start: 'top bottom',
+            end: 'top top',
+            scrub: true,
+          },
+        });
+      });
+    }
+
     // Full-set carousel — a 3D coverflow deck for every remaining photo
     // in a category. Self-contained widget (no ScrollTrigger, no page
     // scroll hijacking): drag tracks the pointer 1:1, release hands the
