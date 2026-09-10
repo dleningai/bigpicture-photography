@@ -976,61 +976,62 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 }
 
 /* ==========================================================
-   Editorial strip -- behind-the-scenes photo scatter between hero and
-   Leistungen, scroll-linked horizontal drift (landonorris.com-style),
-   own section rather than a hero overlay so it gets real scroll room.
+   Editorial strip -- a continuously looping marquee of behind-the-scenes
+   shots between hero and Leistungen, sliding right-to-left on its own
+   timer (not tied to scroll position at all -- a plain infinite CSS
+   animation reads calmer here than a scroll-scrubbed sequence, and
+   costs nothing in extra page length).
    ========================================================== */
 .editorial-strip {
   position: relative;
-  height: 260vh;
+  padding: 70px 0 90px;
   background: var(--bg);
-  overflow: hidden;
 }
 .editorial-strip-eyebrow {
-  position: absolute; top: 56px; left: 0; right: 0;
   text-align: center;
   font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--ink-faint);
-  z-index: 1;
+  margin: 0 0 36px;
+}
+.editorial-strip-viewport {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
 }
 .editorial-strip-track {
-  position: sticky; top: 0;
-  height: 100vh;
-  overflow: hidden;
+  display: flex; width: max-content;
+  gap: 20px;
+  animation: editorialMarquee 34s linear infinite;
+}
+.editorial-strip-viewport:hover .editorial-strip-track { animation-play-state: paused; }
+@keyframes editorialMarquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }
 .editorial-strip-item {
-  position: absolute;
-  top: var(--y); left: var(--x);
-  width: var(--w);
+  flex: 0 0 auto;
+  width: 150px;
   margin: 0;
-  will-change: transform;
 }
 .editorial-strip-item img {
   display: block; width: 100%; aspect-ratio: 4 / 5;
   object-fit: cover; border-radius: 4px;
-  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.55);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.5);
   filter: saturate(0.95) contrast(1.05);
 }
 .editorial-strip-item figcaption {
   margin-top: 10px;
-  font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.06em;
+  font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--ink-faint);
   white-space: nowrap;
 }
 @media (max-width: 900px) {
-  .editorial-strip { height: auto; padding: 90px 0; }
-  .editorial-strip-track { position: relative; height: auto; }
-  .editorial-strip-eyebrow { position: static; margin-bottom: 40px; }
-  .editorial-strip-item {
-    position: relative; top: auto; left: auto;
-    width: 68%; max-width: 280px;
-    margin: 0 auto 32px;
-  }
+  .editorial-strip-item { width: 120px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .editorial-strip-item { transform: none !important; }
+  .editorial-strip-track { animation: none; }
 }
 
 /* ==========================================================

@@ -133,28 +133,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (heroCta) heroLogoTl.to(heroCta, { scale: 1, ease: 'back.out(2.4)' }, 1.3);
     }
 
-    // Editorial strip -- behind-the-scenes photo scatter, own section
-    // right after the hero. Pinned for its own scroll range (independent
-    // of the hero's pin) while each thumbnail drifts leftward at its own
-    // data-speed rate, so the group reads as a loose parallax reel
-    // sliding right-to-left as the visitor scrolls through the section.
-    const editorialStrip = document.getElementById('editorialStrip');
-    if (editorialStrip && hasScrollFx) {
-      const editorialItems = gsap.utils.toArray('.editorial-strip-item');
-      editorialItems.forEach((item) => {
-        const speed = parseFloat(item.dataset.speed) || 1;
-        gsap.to(item, {
-          xPercent: -120 * speed,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: editorialStrip,
-            start: 'top top',
-            end: 'bottom bottom',
-            scrub: true,
-          },
-        });
-      });
-    }
+    // Editorial strip is a plain CSS marquee (see style.css) -- no JS
+    // needed, it just loops on its own.
 
     // Leistungen → Einsatzgebiet cross-fade — two opacity/position
     // tweens scrubbed to the same scroll range. Every scroll position
