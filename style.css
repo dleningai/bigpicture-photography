@@ -1561,18 +1561,17 @@ img.img-loaded { opacity: 1; filter: blur(0); }
    is reached, so sharing one tall wrapper is what keeps earlier cards
    peeking for the entire rest of the sequence instead of releasing
    the moment their own short content scrolls by. */
-/* Must exceed the combined natural height of all 3 sticky children
-   (3 x 100vh = 300vh) or the last one overflows the wrapper's set
-   height, throwing off where the CTA section after it lands and
-   causing the two to visibly overlap. The extra room beyond 300vh also
-   paces out how long each transition takes. */
-.pf-stack { position: relative; height: 340vh; }
-.pf-card {
-  position: sticky;
-  background: var(--bg);
-  min-height: 100vh;
-  display: flex; flex-direction: column; justify-content: center;
-}
+/* Must exceed the combined natural height of all 3 sticky children or
+   the last one overflows the wrapper's set height, throwing off where
+   the CTA section after it lands and causing the two to visibly
+   overlap. Cards are their own natural (content) height, not forced to
+   100vh -- a full-viewport card would drag its whole blank background
+   along as "the thing covering the previous card" instead of just the
+   actual heading+image content, which is the part meant to visibly
+   stack. Wrapper height only needs to comfortably clear 3 natural
+   card heights plus some scroll pacing. */
+.pf-stack { position: relative; height: 280vh; }
+.pf-card { position: sticky; background: var(--bg); }
 #sport { top: 0; }
 #portrait { top: 28px; }
 #event { top: 56px; }
