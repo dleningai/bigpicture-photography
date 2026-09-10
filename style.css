@@ -1794,6 +1794,27 @@ img.img-loaded { opacity: 1; filter: blur(0); }
    editorial layout: big title + growing divider + label, then a large
    hero image (with scroll-linked parallax) plus a thumbnail grid,
    everything staggered in on scroll. */
+/* Shutter-speed scale — the portfolio's counterpart to the aperture
+   scale in the hero, same restrained tick-mark styling. */
+.pf-shutter-speeds {
+  display: flex; justify-content: center; align-items: flex-end;
+  gap: clamp(14px, 3vw, 28px);
+  padding: 100px 20px 0;
+}
+.pf-shutter-speed {
+  display: flex; flex-direction: column; align-items: center; gap: 5px;
+  font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.03em;
+  color: var(--ink-faint);
+}
+.pf-shutter-speed i {
+  display: block; width: 1px; height: 8px;
+  background: var(--ink-faint);
+}
+@media (max-width: 480px) {
+  .pf-shutter-speeds { gap: 10px; padding-top: 90px; }
+  .pf-shutter-speed { font-size: 0.56rem; }
+}
+
 /* Portfolio chapters as a classic CSS sticky-note stack: each card
    sticks at a slightly larger `top` offset than the one before it, so
    as the next one slides up and covers it, a thin sliver of every
@@ -1930,11 +1951,14 @@ img.img-loaded { opacity: 1; filter: blur(0); }
    the lightbox can page through the full set, not meant to be seen. */
 .pf-case-hidden { position: absolute; width: 0; height: 0; overflow: hidden; }
 @media (max-width: 900px) {
-  /* Must clear the combined natural height of the 4 sticky cards PLUS
-     ctaStack's own natural height (ctaStack is normal-flow on mobile,
-     not sticky) -- undershooting this makes ctaStack overflow past this
-     wrapper's box and visually collide with the footer right after it. */
-  .pf-stack { height: 370vh; }
+  /* min-height, not height: content (especially ctaStack, which is
+     normal-flow on mobile, not sticky) varies with viewport width and
+     text wrapping, so a fixed height can undershoot at some widths --
+     the wrapper then ends before its own content does, and the footer
+     right after it collides with the overflow. min-height keeps the
+     floor needed for the sticky cards' pin effect while still letting
+     the box grow to whatever the actual content needs. */
+  .pf-stack { height: auto; min-height: 370vh; }
   .pf-row-head { padding: 44px 20px 20px; gap: 16px; }
   #sport .pf-row-head { padding-top: 100px; }
   .pf-row-num { font-size: 1.6rem; }
