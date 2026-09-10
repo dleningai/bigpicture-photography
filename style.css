@@ -906,6 +906,55 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   display: block; margin-top: 18px;
   color: #777; font-size: 0.85rem;
 }
+/* Social pill -- Uiverse-style icon row (credit: firemonste_8052),
+   adapted to the site's real profiles and brand hover colors instead of
+   the placeholder set. */
+.cta-social {
+  list-style: none;
+  display: flex; align-items: center; justify-content: center;
+  gap: 10px;
+  margin: 40px auto 0;
+  padding: 14px 18px;
+  background: #17140f;
+  border-radius: 30px;
+  width: fit-content;
+}
+.cta-social-item { position: relative; }
+.cta-social-tooltip {
+  position: absolute; top: -34px; left: 50%;
+  transform: translateX(-50%);
+  background: #fff; color: #111;
+  padding: 5px 10px; border-radius: 5px;
+  font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700;
+  white-space: nowrap;
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.25s ease, top 0.25s ease;
+}
+.cta-social-item:hover .cta-social-tooltip { opacity: 1; visibility: visible; top: -40px; }
+.cta-social-link {
+  display: flex; align-items: center; justify-content: center;
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  background: #262119;
+  transition: background-color 0.25s ease, transform 0.2s ease;
+}
+.cta-social-link:hover { transform: translateY(-2px); }
+.cta-social-link svg { width: 20px; height: 20px; fill: #fff; }
+.cta-social-link[data-social="whatsapp"]:hover { background: #25d366; }
+.cta-social-link[data-social="instagram"]:hover {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+}
+.cta-social-link[data-social="linkedin"]:hover { background: #0a66c2; }
+.cta-social-link[data-social="tiktok"]:hover { background: #000; }
+.cta-social-link[data-social="facebook"]:hover { background: #1877f2; }
+@media (hover: none) {
+  .cta-social-tooltip { display: none; }
+}
+@media (max-width: 480px) {
+  .cta-social { gap: 6px; padding: 10px 14px; }
+  .cta-social-link { width: 40px; height: 40px; }
+  .cta-social-link svg { width: 18px; height: 18px; }
+}
 
 /* ==========================================================
    Section heads
