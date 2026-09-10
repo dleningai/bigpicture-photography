@@ -779,24 +779,35 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 
 /* Stats highlight — the same numbers as the hero strip, restated as big
    individual statement rows further down the page instead of repeating
-   the compact strip verbatim. */
-.stats-highlight { padding: 70px 0; }
+   the compact strip verbatim. Deliberate white-on-dark contrast break
+   (lenis.dev-style), the one light section on an otherwise dark page. */
+.stats-highlight { padding: 90px 0; background: #fff; }
 .stats-highlight .wrap {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 48px 64px;
 }
 .stats-highlight-row {
+  position: relative;
   display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start;
   gap: 12px;
   padding-top: 20px;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid rgba(0, 0, 0, 0.14);
   text-align: left;
+}
+/* Small corner-bracket mark, top-right of each stat -- purely
+   decorative, matching the reference. */
+.stats-highlight-row::after {
+  content: '';
+  position: absolute; top: 20px; right: 0;
+  width: 14px; height: 14px;
+  border-top: 1.5px solid rgba(0, 0, 0, 0.35);
+  border-right: 1.5px solid rgba(0, 0, 0, 0.35);
 }
 .stats-highlight-row .stat-val {
   font-family: var(--font-heading); font-weight: 600;
   font-size: clamp(2.6rem, 5vw, 4rem);
-  color: var(--ink);
+  color: #111;
   text-shadow: none;
   display: inline-flex;
   font-variant-numeric: tabular-nums;
@@ -825,7 +836,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   font-family: var(--font-heading); font-weight: 500;
   font-size: clamp(0.72rem, 1.1vw, 0.8rem);
   letter-spacing: 0.06em; text-transform: uppercase;
-  color: var(--ink-dim);
+  color: #555;
   line-height: 1.4;
 }
 @media (max-width: 560px) {
