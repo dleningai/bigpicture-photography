@@ -1357,7 +1357,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   transition: opacity 0.2s ease;
 }
 .scroll-progress-dot:hover::before { opacity: 1; }
-@media (max-width: 900px) {
+@media (max-width: 900px), (pointer: coarse) {
   .scroll-progress { display: none !important; }
 }
 
