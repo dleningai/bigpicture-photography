@@ -473,52 +473,6 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 @media (prefers-reduced-motion: reduce) {
   .hero-bg img { animation: none; }
 }
-/* Camera-style autofocus box -- positioned by script.js (in pixels, via
-   left/top) over the portrait's eyes, using the image's actual rendered
-   object-fit: contain rect so it tracks correctly across breakpoints.
-   Sized to the name label inside it (min-width + padding) rather than a
-   fixed box, so the corner brackets always frame the text. */
-.hero-focus-box {
-  position: absolute; left: 0; top: 0; z-index: 5;
-  display: flex; align-items: center; justify-content: center;
-  min-width: 240px;
-  padding: 26px 36px;
-  transform: translate(-50%, -50%) scale(1.15);
-  opacity: 0;
-  pointer-events: none;
-  text-align: center;
-}
-.hero-focus-box span {
-  position: absolute; width: 24px; height: 24px;
-  border: 2px solid var(--gold-bright);
-  filter: drop-shadow(0 0 6px rgba(222, 175, 103, 0.5));
-}
-.hero-focus-box span:nth-child(1) { top: 0; left: 0; border-right: none; border-bottom: none; }
-.hero-focus-box span:nth-child(2) { top: 0; right: 0; border-left: none; border-bottom: none; }
-.hero-focus-box span:nth-child(3) { bottom: 0; left: 0; border-right: none; border-top: none; }
-.hero-focus-box span:nth-child(4) { bottom: 0; right: 0; border-left: none; border-top: none; }
-.hero-focus-label { display: flex; flex-direction: column; gap: 6px; }
-.hero-focus-label-title {
-  font-family: var(--font-heading); font-weight: 800;
-  font-size: clamp(1.3rem, 2.6vw, 1.9rem);
-  color: #f7e3b4;
-  margin: 0;
-  white-space: nowrap;
-  text-shadow: 0 4px 28px rgba(0, 0, 0, 0.55);
-}
-.hero-focus-label-sub {
-  font-family: var(--font); font-size: 0.78rem; letter-spacing: 0.03em;
-  color: var(--ink-dim);
-  margin: 0;
-  white-space: nowrap;
-  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.5);
-}
-@media (max-width: 760px) {
-  .hero-focus-box { min-width: 0; padding: 18px 22px; }
-  .hero-focus-box span { width: 16px; height: 16px; }
-  .hero-focus-label-title { font-size: 1.15rem; white-space: normal; }
-  .hero-focus-label-sub { font-size: 0.7rem; white-space: normal; }
-}
 .hero-scrim {
   position: absolute; inset: 0;
   background:
@@ -542,6 +496,14 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 .hero-stats .stat-divider { background: rgba(255, 255, 255, 0.16); }
 @media (max-width: 760px) {
   .stats-strip.hero-stats { justify-content: center; gap: 22px; padding: 0 20px; }
+  .hero-intro-name {
+    align-items: center; text-align: center; padding-left: 24px; padding-right: 24px;
+    /* Clears the editorial marquee band pinned near the top of the hero
+       on mobile -- centering (the desktop behavior) would otherwise sit
+       the name right under/inside it. This is a no-JS fallback: script.js
+       measures the strip's actual bottom edge and overrides it inline. */
+    justify-content: flex-start; padding-top: 240px;
+  }
 }
 .hero-fx {
   position: absolute; inset: 0; z-index: -3; overflow: hidden;
@@ -567,6 +529,32 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 .hero-fx-vignette {
   position: absolute; inset: 0;
   background: radial-gradient(circle at 50% 40%, transparent 0%, transparent 50%, rgba(10, 10, 10, 0.22) 82%, transparent 100%);
+}
+/* A personal beat between the photo reveal and the main hero copy — name
+   + one-line role, shown only as part of the JS scroll sequence (default
+   hidden so nothing's lost when that can't run). */
+.hero-intro-name {
+  position: absolute; inset: 0; z-index: 6;
+  display: none; flex-direction: column; align-items: flex-start; justify-content: center;
+  gap: 10px;
+  text-align: left;
+  padding-left: clamp(24px, 8vw, 96px);
+  padding-right: 40%;
+  pointer-events: none;
+}
+.hero-intro-name.js-active { display: flex; }
+.hero-intro-name-title {
+  font-family: var(--font-heading); font-weight: 800;
+  font-size: clamp(2rem, 5.5vw, 3.6rem);
+  color: #f7e3b4;
+  margin: 0;
+  text-shadow: 0 4px 28px rgba(0, 0, 0, 0.55);
+}
+.hero-intro-name-sub {
+  font-family: var(--font); font-size: 0.85rem; letter-spacing: 0.04em;
+  color: var(--ink-dim);
+  margin: 0;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.5);
 }
 /* Bokeh lights — soft out-of-focus circles drifting through the hero
    background, like defocused background lights in a photo. */
