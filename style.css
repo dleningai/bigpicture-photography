@@ -2013,8 +2013,8 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 .site-footer a:hover { text-decoration: underline; }
 .footer-links { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-bottom: 14px; }
 .footer-brand {
-  font-family: var(--font-heading); font-weight: 800;
-  font-size: 1.1rem; color: var(--ink);
+  font-family: var(--font); font-weight: 500;
+  font-size: 0.95rem; letter-spacing: 0.02em; color: var(--ink);
   margin: 0 0 14px;
 }
 /* Copyright row -- a ticked ruler line filling the space between the
