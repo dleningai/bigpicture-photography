@@ -1571,14 +1571,33 @@ img.img-loaded { opacity: 1; filter: blur(0); }
    keeps it from visually running into the still-peeking sliver of the
    previous image, since the two scroll at different speeds (one
    pinned, one not) and can otherwise collide mid-transition. */
-.pf-stack { position: relative; height: 320vh; }
+.pf-stack { position: relative; height: 300vh; }
 #sportMedia { top: 0; }
 #portraitMedia { top: 32px; }
 #eventMedia { top: 64px; }
 .pf-row-head {
+  position: relative;
+  z-index: 10;
   display: flex; align-items: flex-start; gap: 32px;
-  max-width: 900px; margin: 0 auto; padding: 160px 5vw 28px;
+  max-width: 900px; margin: 0 auto; padding: 110px 5vw 28px;
   width: 100%;
+}
+/* Full-bleed opaque backer (not just the 900px content box) -- when
+   this heading's own scroll position happens to pass through the same
+   screen spot as the still-peeking meta line of the previous image,
+   this makes it cleanly cover that sliver edge-to-edge instead of the
+   two texts visibly blending into each other. A pseudo-element sized
+   to exactly this box (not a box-shadow spread, which bleeds outward
+   on every side including top/bottom and ends up blanketing the whole
+   page). z-index is needed on the parent because .pf-row-media is
+   position:sticky, which always opens its own stacking context that a
+   later sibling merely using position:relative + z-index:auto won't
+   reliably paint over. */
+.pf-row-head::before {
+  content: ''; position: absolute; z-index: -1;
+  top: 0; bottom: 0; left: 50%;
+  width: 100vw; transform: translateX(-50%);
+  background: var(--bg);
 }
 #sport.pf-row-head { padding-top: 140px; }
 .pf-row-num {
