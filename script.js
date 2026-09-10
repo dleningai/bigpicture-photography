@@ -131,15 +131,28 @@ document.addEventListener('DOMContentLoaded', () => {
       // slide, so it reads as the thing to act on rather than just more
       // copy scrolling by.
       if (heroCta) heroLogoTl.to(heroCta, { scale: 1, ease: 'back.out(2.4)' }, 1.3);
+    }
 
-      // Editorial photo scatter -- each thumbnail drifts leftward across
-      // the whole pin duration, at its own data-speed rate, so the group
-      // reads as a loose parallax reel sliding right-to-left as the
-      // visitor scrolls (instead of moving in lockstep like one image).
-      const heroEditorialItems = gsap.utils.toArray('.hero-editorial-item');
-      heroEditorialItems.forEach((item) => {
+    // Editorial strip -- behind-the-scenes photo scatter, own section
+    // right after the hero. Pinned for its own scroll range (independent
+    // of the hero's pin) while each thumbnail drifts leftward at its own
+    // data-speed rate, so the group reads as a loose parallax reel
+    // sliding right-to-left as the visitor scrolls through the section.
+    const editorialStrip = document.getElementById('editorialStrip');
+    if (editorialStrip && hasScrollFx) {
+      const editorialItems = gsap.utils.toArray('.editorial-strip-item');
+      editorialItems.forEach((item) => {
         const speed = parseFloat(item.dataset.speed) || 1;
-        heroLogoTl.to(item, { xPercent: -140 * speed, ease: 'none' }, 0);
+        gsap.to(item, {
+          xPercent: -120 * speed,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: editorialStrip,
+            start: 'top top',
+            end: 'bottom bottom',
+            scrub: true,
+          },
+        });
       });
     }
 
