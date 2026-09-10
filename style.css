@@ -2024,16 +2024,31 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   display: flex; align-items: center; gap: 18px;
   max-width: 640px; margin: 0 auto;
 }
-.footer-meta-copy, .footer-meta-loc { white-space: nowrap; flex-shrink: 0; }
+.footer-meta-copy { font-weight: 700; color: var(--ink); }
+.footer-meta-loc { white-space: nowrap; flex-shrink: 0; }
+.footer-meta-copy { white-space: nowrap; flex-shrink: 0; }
 .footer-meta-ticks {
-  flex: 1 1 auto; height: 14px;
+  position: relative;
+  flex: 1 1 auto; height: 22px;
   background-image: repeating-linear-gradient(
     to right,
-    rgba(255, 255, 255, 0.22) 0,
-    rgba(255, 255, 255, 0.22) 1px,
+    rgba(255, 255, 255, 0.28) 0,
+    rgba(255, 255, 255, 0.28) 1px,
     transparent 1px,
-    transparent 9px
+    transparent 11px
   );
+  background-position: center;
+  background-repeat: repeat-x;
+  background-size: 100% 12px;
+}
+/* One taller ruler mark standing out among the short ticks, like the
+   reference's single accent line. */
+.footer-meta-ticks::after {
+  content: '';
+  position: absolute; top: 50%; left: 62%;
+  width: 1px; height: 22px;
+  background: rgba(255, 255, 255, 0.55);
+  transform: translate(-50%, -50%);
 }
 @media (max-width: 560px) {
   .footer-meta { flex-wrap: wrap; justify-content: center; row-gap: 6px; }
