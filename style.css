@@ -1546,32 +1546,24 @@ img.img-loaded { opacity: 1; filter: blur(0); }
    editorial layout: big title + growing divider + label, then a large
    hero image (with scroll-linked parallax) plus a thumbnail grid,
    everything staggered in on scroll. */
-/* Portfolio chapters as a numbered heading + image card, the whole
-   chapter sticking and stacking under the next one as you scroll past
-   it -- lenis.dev-style. Each chapter sits in its own sized wrapper
-   (.pf-chapter-wrap) -- that's what bounds the sticky "stuck" range;
-   without it the containing block would be <body> itself, so it would
-   never release and would keep bleeding through later sections. Kept
-   deliberately compact (one heading, one fixed-aspect image, no
-   variable-height carousel) so it reliably fits one viewport -- that
-   variable-height content was what broke the earlier full-section
-   sticky-card version (cropped content, a CTA overlap, sections
-   bleeding through each other). */
-.pf-chapter-wrap { position: relative; height: 145vh; }
-.pf-chapter-wrap-last { height: 100vh; }
-.pf-chapter {
-  position: sticky; top: 0;
-  height: 100vh;
-  display: flex; flex-direction: column; justify-content: center;
-  background: var(--bg);
-  overflow: hidden;
-}
-.pf-chapter-wrap-last .pf-chapter { position: relative; }
+/* Portfolio chapters as a numbered heading + image card. In normal
+   flow by default (also the reduced-motion / no-JS fallback); script.js
+   layers a GSAP ScrollTrigger pin on top of this to make each chapter
+   stack under the next while scrolling. That's deliberately a JS pin
+   rather than CSS position:sticky -- sticky depends on the browser's
+   native scroll math, which Lenis's smoothed scrolling doesn't drive
+   precisely enough for it to ever actually engage; ScrollTrigger's pin
+   is scroll-position-driven the same way Lenis feeds it
+   (`lenis.on('scroll', ScrollTrigger.update)`), so the two stay in
+   sync. */
+#sport, #portrait, #event { position: relative; background: var(--bg); }
 .pf-row-head {
   display: flex; align-items: flex-start; gap: 32px;
-  max-width: 900px; margin: 0 auto; padding: 0 5vw 28px;
+  max-width: 900px; margin: 0 auto; padding: 90px 5vw 28px;
   width: 100%;
+  border-top: 1px solid var(--border);
 }
+section:first-of-type .pf-row-head { border-top: none; padding-top: 120px; }
 .pf-row-num {
   font-family: var(--font-heading); font-weight: 800;
   font-size: clamp(2rem, 3.4vw, 2.8rem); line-height: 1;
@@ -1590,9 +1582,10 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 
 .pf-row-media {
   position: relative;
-  max-width: 780px; margin: 0 auto; padding: 0 5vw;
+  max-width: 780px; margin: 0 auto; padding: 0 5vw 90px;
   width: 100%;
 }
+#event .pf-row-media { padding-bottom: 40px; }
 .pf-row-media-bg {
   position: relative; overflow: hidden; border-radius: 6px;
   aspect-ratio: 16 / 11;
@@ -1623,14 +1616,10 @@ img.img-loaded { opacity: 1; filter: blur(0); }
    the lightbox can page through the full set, not meant to be seen. */
 .pf-case-hidden { position: absolute; width: 0; height: 0; overflow: hidden; }
 @media (max-width: 900px) {
-  /* The sticky stack effect needs a chapter that fits one screen --
-     mobile's stacked layout runs taller than that, so it's dropped
-     here in favor of plain, normal-flow scrolling. */
-  .pf-chapter-wrap, .pf-chapter-wrap-last { height: auto; }
-  .pf-chapter { position: relative; height: auto; display: block; padding: 44px 0; }
-  .pf-row-head { padding: 0 20px 20px; gap: 16px; }
+  .pf-row-head { padding: 44px 20px 20px; gap: 16px; }
+  section:first-of-type .pf-row-head { padding-top: 100px; }
   .pf-row-num { font-size: 1.6rem; }
-  .pf-row-media { padding: 0 20px; }
+  .pf-row-media { padding: 0 20px 44px; }
   .pf-row-media-fg { width: 78%; }
 }
 @media (prefers-reduced-motion: reduce) {
