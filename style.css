@@ -1590,7 +1590,12 @@ img.img-loaded { opacity: 1; filter: blur(0); }
    the lenis.dev-style references. The main image holds still; the two
    side cards drift opposite directions as the chapter scrolls through
    view (JS, position-linked to scroll — not velocity-based). */
-.pf-collage { position: relative; padding: 120px 0 90px; scroll-margin-top: 64px; overflow: hidden; }
+.pf-collage {
+  position: sticky; top: 0;
+  padding: 120px 0 90px; scroll-margin-top: 64px; overflow: hidden;
+  background: var(--bg);
+  min-height: 100vh;
+}
 .pf-collage-label {
   display: block; margin: 0 auto 28px; max-width: 1400px; padding: 0 5vw;
   font-family: var(--font-mono); font-size: 0.82rem; letter-spacing: 0.05em;
