@@ -1546,60 +1546,42 @@ img.img-loaded { opacity: 1; filter: blur(0); }
    editorial layout: big title + growing divider + label, then a large
    hero image (with scroll-linked parallax) plus a thumbnail grid,
    everything staggered in on scroll. */
-/* Portfolio chapters, lenis.dev-style: only the image (blurred backdrop
-   + sharp crop + meta line) sticks and peeks -- the heading (number,
-   title, text) stays in normal flow above it and simply scrolls by.
-   .pf-row-media sticks at a slightly larger `top` offset than the one
-   before it, so as the next image slides up and covers it, a thin
-   sliver of every earlier one stays peeking above -- pure CSS
-   position:sticky, no JS pin. (A GSAP ScrollTrigger pin was tried
-   instead, on the theory that Lenis's smoothed scroll wouldn't drive
-   native sticky precisely enough -- that theory doesn't hold up: the
-   pin engaged fine, but pin's own mechanics (a fixed-position overlay +
-   reserved spacer) can't produce a card visibly sliding over the one
-   before it the way sticky does for free, so it's not the right tool
-   here regardless.)
-   All three images share ONE wrapper (.pf-stack) spanning the whole
-   sequence, not one each -- a sticky element stays stuck until its
-   CONTAINING BLOCK'S bottom edge is reached, so sharing one tall
-   wrapper is what keeps earlier images peeking for the entire rest of
-   the sequence instead of releasing the moment their own short content
-   scrolls by. Must exceed the combined natural height of all 3
-   headings + images or the last one overflows the wrapper's set
-   height, throwing off where the CTA section after it lands. Generous
-   spacing before each heading (not just enough to look nice) is what
-   keeps it from visually running into the still-peeking sliver of the
-   previous image, since the two scroll at different speeds (one
-   pinned, one not) and can otherwise collide mid-transition. */
-.pf-stack { position: relative; height: 300vh; }
-#sportMedia { top: 0; }
-#portraitMedia { top: 32px; }
-#eventMedia { top: 64px; }
+/* Portfolio chapters as a classic CSS sticky-note stack: each card
+   sticks at a slightly larger `top` offset than the one before it, so
+   as the next one slides up and covers it, a thin sliver of every
+   earlier card stays peeking above -- pure CSS position:sticky, no JS
+   pin. (A GSAP ScrollTrigger pin was tried instead, on the theory that
+   Lenis's smoothed scroll wouldn't drive native sticky precisely
+   enough -- that theory doesn't hold up: the pin engaged fine, but
+   pin's own mechanics (a fixed-position overlay + reserved spacer)
+   can't produce a card visibly sliding over the one before it the way
+   sticky does for free, so it's not the right tool here regardless.)
+   All three cards share ONE wrapper (.pf-stack), not one each -- a
+   sticky element stays stuck until its CONTAINING BLOCK'S bottom edge
+   is reached, so sharing one tall wrapper is what keeps earlier cards
+   peeking for the entire rest of the sequence instead of releasing
+   the moment their own short content scrolls by. */
+/* Must exceed the combined natural height of all 3 sticky children or
+   the last one overflows the wrapper's set height, throwing off where
+   the CTA section after it lands and causing the two to visibly
+   overlap. Cards are their own natural (content) height, not forced to
+   100vh -- a full-viewport card would drag its whole blank background
+   along as "the thing covering the previous card" instead of just the
+   actual heading+image content, which is the part meant to visibly
+   stack. Wrapper height only needs to comfortably clear 3 natural
+   card heights plus some scroll pacing. */
+.pf-stack { position: relative; height: 280vh; }
+.pf-card { position: sticky; background: var(--bg); }
+#sport { top: 0; }
+#portrait { top: 28px; }
+#event { top: 56px; }
 .pf-row-head {
-  position: relative;
-  z-index: 10;
   display: flex; align-items: flex-start; gap: 32px;
-  max-width: 900px; margin: 0 auto; padding: 110px 5vw 28px;
+  max-width: 900px; margin: 0 auto; padding: 90px 5vw 28px;
   width: 100%;
+  border-top: 1px solid var(--border);
 }
-/* Full-bleed opaque backer (not just the 900px content box) -- when
-   this heading's own scroll position happens to pass through the same
-   screen spot as the still-peeking meta line of the previous image,
-   this makes it cleanly cover that sliver edge-to-edge instead of the
-   two texts visibly blending into each other. A pseudo-element sized
-   to exactly this box (not a box-shadow spread, which bleeds outward
-   on every side including top/bottom and ends up blanketing the whole
-   page). z-index is needed on the parent because .pf-row-media is
-   position:sticky, which always opens its own stacking context that a
-   later sibling merely using position:relative + z-index:auto won't
-   reliably paint over. */
-.pf-row-head::before {
-  content: ''; position: absolute; z-index: -1;
-  top: 0; bottom: 0; left: 50%;
-  width: 100vw; transform: translateX(-50%);
-  background: var(--bg);
-}
-#sport.pf-row-head { padding-top: 140px; }
+#sport .pf-row-head { border-top: none; padding-top: 120px; }
 .pf-row-num {
   font-family: var(--font-heading); font-weight: 800;
   font-size: clamp(2rem, 3.4vw, 2.8rem); line-height: 1;
@@ -1617,12 +1599,11 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 .pf-row-text p { color: var(--ink-dim); line-height: 1.6; margin: 0; max-width: 620px; font-size: 0.94rem; }
 
 .pf-row-media {
-  position: sticky;
-  background: var(--bg);
+  position: relative;
   max-width: 780px; margin: 0 auto; padding: 0 5vw 90px;
   width: 100%;
 }
-#eventMedia { padding-bottom: 40px; }
+#event .pf-row-media { padding-bottom: 40px; }
 .pf-row-media-bg {
   position: relative; overflow: hidden; border-radius: 6px;
   aspect-ratio: 16 / 11;
@@ -1656,10 +1637,11 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   /* The sticky stack is a desktop-only affordance -- mobile keeps the
      plain stacked layout at its natural height, in normal flow. */
   .pf-stack { height: auto; }
-  .pf-row-media { position: relative; top: auto; padding: 0 20px 44px; }
+  .pf-card { position: relative; top: auto; min-height: 0; display: block; }
   .pf-row-head { padding: 44px 20px 20px; gap: 16px; }
-  #sport.pf-row-head { padding-top: 100px; }
+  #sport .pf-row-head { padding-top: 100px; }
   .pf-row-num { font-size: 1.6rem; }
+  .pf-row-media { padding: 0 20px 44px; }
   .pf-row-media-fg { width: 78%; }
 }
 @media (prefers-reduced-motion: reduce) {
