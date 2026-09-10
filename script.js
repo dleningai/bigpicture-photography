@@ -58,9 +58,23 @@ document.addEventListener('DOMContentLoaded', () => {
     // late font swaps.
     const editorialStrip = document.getElementById('editorialStrip');
     const siteNav = document.querySelector('.site-nav');
+    // On mobile, .hero-intro-name (the "Dimitri Lening" name beat) sits
+    // below the strip via its own hardcoded padding-top (760px breakpoint
+    // in style.css), guessed against the same assumed strip height/
+    // position as the old top:92px offset above. Once the strip's real
+    // position is measured instead, that guess can fall short and the
+    // name ends up overlapping the strip's last row of photos -- clear
+    // it dynamically too, from the strip's actual measured bottom edge.
+    const heroIntroName = document.getElementById('heroIntroName');
     if (editorialStrip && siteNav) {
       const positionEditorialStrip = () => {
         editorialStrip.style.top = siteNav.getBoundingClientRect().height + 'px';
+        if (heroIntroName && window.innerWidth <= 760) {
+          const stripBottom = editorialStrip.getBoundingClientRect().bottom;
+          heroIntroName.style.paddingTop = (stripBottom + 24) + 'px';
+        } else if (heroIntroName) {
+          heroIntroName.style.paddingTop = '';
+        }
       };
       positionEditorialStrip();
       window.addEventListener('load', positionEditorialStrip);

@@ -500,7 +500,8 @@ img.img-loaded { opacity: 1; filter: blur(0); }
     align-items: center; text-align: center; padding-left: 24px; padding-right: 24px;
     /* Clears the editorial marquee band pinned near the top of the hero
        on mobile -- centering (the desktop behavior) would otherwise sit
-       the name right under/inside it. */
+       the name right under/inside it. This is a no-JS fallback: script.js
+       measures the strip's actual bottom edge and overrides it inline. */
     justify-content: flex-start; padding-top: 240px;
   }
 }
