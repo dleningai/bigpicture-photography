@@ -1683,7 +1683,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 #event { top: 56px; }
 #reels { top: 84px; }
 @media (min-width: 901px) {
-  #ctaStack { position: sticky; top: 112px; z-index: 5; }
+  #ctaStack { position: sticky; top: 260px; z-index: 5; }
 }
 .pf-row-head {
   display: flex; align-items: flex-start; gap: 32px;
