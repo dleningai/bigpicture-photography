@@ -977,24 +977,26 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 
 /* ==========================================================
    Editorial strip -- a continuously looping marquee of behind-the-scenes
-   shots between hero and Leistungen, sliding right-to-left on its own
-   timer (not tied to scroll position at all -- a plain infinite CSS
-   animation reads calmer here than a scroll-scrubbed sequence, and
-   costs nothing in extra page length).
+   shots, laid directly over the hero photo just below the nav bar
+   (not a separate section -- an overlay band between the nav and the
+   rest of the hero image).
    ========================================================== */
 .editorial-strip {
-  position: relative;
-  padding: 16px 0 90px;
-  background: var(--bg);
+  position: absolute; top: 90px; left: 0; right: 0; z-index: 2;
+  pointer-events: none;
 }
 .editorial-strip-eyebrow {
   text-align: center;
-  font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.14em;
+  font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--ink-faint);
-  margin: 0 0 36px;
+  color: rgba(255, 255, 255, 0.45);
+  margin: 0 0 14px;
+}
+@media (max-width: 900px) {
+  .editorial-strip { display: none; }
 }
 .editorial-strip-viewport {
+  pointer-events: auto;
   overflow: hidden;
   -webkit-mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
   mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
