@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
           return;
         }
         let total = 0;
-        pfStack.querySelectorAll('.pf-card').forEach((card) => { total += card.offsetHeight; });
+        pfStack.querySelectorAll('.pf-card, #ctaStack').forEach((card) => { total += card.offsetHeight; });
         pfStack.style.height = total + 'px';
       };
       setPfStackHeight();

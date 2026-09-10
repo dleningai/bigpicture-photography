@@ -870,6 +870,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   padding: 140px 0;
   background: #fff;
   clip-path: polygon(0 60px, 100% 0, 100% 100%, 0 calc(100% - 60px));
+  box-shadow: 0 -24px 60px rgba(0, 0, 0, 0.4);
 }
 @media (max-width: 700px) {
   .cta-light { clip-path: polygon(0 28px, 100% 0, 100% 100%, 0 calc(100% - 28px)); padding: 100px 0; }
@@ -1681,6 +1682,9 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 #portrait { top: 28px; }
 #event { top: 56px; }
 #reels { top: 84px; }
+@media (min-width: 901px) {
+  #ctaStack { position: sticky; top: 112px; z-index: 5; }
+}
 .pf-row-head {
   display: flex; align-items: flex-start; gap: 32px;
   max-width: 900px; margin: 0 auto; padding: 90px 5vw 28px;
