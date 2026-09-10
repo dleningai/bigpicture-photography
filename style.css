@@ -360,6 +360,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   border: 1px solid var(--gold-border);
   background: var(--gold-soft);
   color: var(--gold);
+  overflow: hidden;
   transition: 0.22s ease, opacity 0.6s cubic-bezier(.16, .84, .44, 1), transform 0.6s cubic-bezier(.16, .84, .44, 1);
 }
 .social-link.reveal:nth-child(1) { transition-delay: 0s; }
@@ -382,12 +383,19 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   animation: socialBounce 0.4s linear;
 }
 .social-link:hover::after { opacity: 1; transform: scale(1); }
-.social-link:hover svg { fill: #fff; }
+.social-link:hover svg { fill: #fff; animation: socialSlideIn 0.3s both; }
 @keyframes socialBounce {
   40% { transform: scale(1.22); }
   60% { transform: scale(0.9); }
   80% { transform: scale(1.08); }
   100% { transform: scale(1); }
+}
+@keyframes socialSlideIn {
+  0% { transform: translateY(-16px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .social-link:hover svg { animation: none; }
 }
 /* Brand-colored fill per platform on hover, in place of the flat gold
    highlight — a quick flash of recognizable identity rather than a
@@ -852,6 +860,50 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 }
 @media (max-width: 560px) {
   .stats-highlight .wrap { grid-template-columns: 1fr; gap: 28px; }
+}
+
+/* Light-panel CTA -- same white-break language as the stats section
+   (diagonal wipe edge, corner bracket), used for the closing call to
+   action on Portfolio instead of the dark glow-card panel. */
+.cta-light {
+  position: relative;
+  padding: 140px 0;
+  background: #fff;
+  clip-path: polygon(0 60px, 100% 0, 100% 100%, 0 calc(100% - 60px));
+}
+@media (max-width: 700px) {
+  .cta-light { clip-path: polygon(0 28px, 100% 0, 100% 100%, 0 calc(100% - 28px)); padding: 100px 0; }
+}
+.cta-light-inner {
+  position: relative;
+  max-width: 720px; margin: 0 auto; padding: 0 20px;
+  text-align: center;
+}
+.cta-light-mark {
+  position: absolute; top: -20px; right: 20px;
+  width: 20px; height: 20px;
+  border-top: 1.5px solid rgba(0, 0, 0, 0.35);
+  border-right: 1.5px solid rgba(0, 0, 0, 0.35);
+}
+.cta-light-label {
+  font-family: var(--font-heading); font-weight: 600;
+  font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--gold, #b8863f);
+  margin: 0 0 18px;
+}
+.cta-light-title {
+  font-family: var(--font-heading); font-weight: 800;
+  font-size: clamp(2rem, 4.4vw, 3rem); line-height: 1.1;
+  color: #111;
+  margin: 0 0 20px;
+}
+.cta-light-text {
+  color: #555; font-size: 1.05rem; line-height: 1.6;
+  margin: 0 0 36px;
+}
+.cta-light-note {
+  display: block; margin-top: 18px;
+  color: #777; font-size: 0.85rem;
 }
 
 /* ==========================================================
