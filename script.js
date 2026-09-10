@@ -48,6 +48,28 @@ document.addEventListener('DOMContentLoaded', () => {
       window.addEventListener('resize', setPfStackHeight);
     }
 
+    // Editorial strip (home page marquee) is pinned just below the fixed
+    // nav via a hand-picked top offset per breakpoint (see style.css).
+    // Those guesses assume one exact nav height, so any drift (real
+    // fonts vs. this env's fallback, OS font metrics, a longer nav
+    // label) can shrink the gap to nothing and let the marquee overlap
+    // the nav. Measure the nav's actual rendered height instead and pin
+    // the strip right below it, on load/resize so it also survives
+    // late font swaps.
+    const editorialStrip = document.getElementById('editorialStrip');
+    const siteNav = document.querySelector('.site-nav');
+    if (editorialStrip && siteNav) {
+      const positionEditorialStrip = () => {
+        editorialStrip.style.top = siteNav.getBoundingClientRect().height + 'px';
+      };
+      positionEditorialStrip();
+      window.addEventListener('load', positionEditorialStrip);
+      window.addEventListener('resize', positionEditorialStrip);
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(positionEditorialStrip);
+      }
+    }
+
     let lenis = null;
     if (window.Lenis && !reduceMotion) {
       // Native CSS smooth-scroll fights Lenis's own smoothing (both try to
