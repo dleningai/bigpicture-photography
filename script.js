@@ -229,7 +229,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const next = pfCollageStack[i + 1];
         if (!next) return;
         gsap.to(section, {
-          filter: 'blur(16px) brightness(0.45)',
+          filter: 'blur(7px) brightness(0.65)',
           ease: 'none',
           scrollTrigger: {
             trigger: next,
@@ -743,24 +743,6 @@ document.addEventListener('DOMContentLoaded', () => {
       afterSlideLoad: ({ slide }) => {
         slide.querySelectorAll('img').forEach(markImgLoaded);
       },
-    });
-  }
-
-  // Sticky-Kontakt-Leiste — appears after scrolling past the hero, dismissible.
-  const stickyCta = document.getElementById('stickyCta');
-  if (stickyCta) {
-    const stickyCtaClose = document.getElementById('stickyCtaClose');
-    const footerEl = document.querySelector('.site-footer');
-    let dismissed = false;
-    window.addEventListener('scroll', () => {
-      if (dismissed) return;
-      const pastHero = window.scrollY > window.innerHeight * 0.7;
-      const overFooter = footerEl && footerEl.getBoundingClientRect().top < window.innerHeight;
-      stickyCta.classList.toggle('visible', pastHero && !overFooter);
-    }, { passive: true });
-    stickyCtaClose.addEventListener('click', () => {
-      dismissed = true;
-      stickyCta.classList.remove('visible');
     });
   }
 

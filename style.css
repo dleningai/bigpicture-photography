@@ -1120,45 +1120,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   .scroll-progress { display: none !important; }
 }
 
-/* ==========================================================
-   Sticky-Kontakt-Leiste
-   ========================================================== */
-.sticky-cta {
-  position: fixed; left: 50%; bottom: 22px; z-index: 150;
-  transform: translate(-50%, 140%);
-  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-  display: flex; align-items: center; gap: 14px;
-  padding: 10px 12px 10px 18px;
-  border-radius: 999px;
-  background: linear-gradient(180deg, rgba(28, 28, 28, 0.97), rgba(14, 14, 14, 0.98));
-  border: 1px solid var(--gold-border);
-  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(222, 175, 103, 0.06);
-  max-width: calc(100vw - 32px);
-}
-.sticky-cta.visible { transform: translate(-50%, 0); }
-.sticky-cta-status { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-dim); white-space: nowrap; }
-.sticky-cta-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 8px 2px rgba(222, 175, 103, 0.55); animation: dotPulse 1.8s ease-in-out infinite; flex-shrink: 0; }
-@keyframes dotPulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.75); } }
-.sticky-cta-btn {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 10px 20px; border-radius: 999px;
-  background: linear-gradient(135deg, var(--gold), var(--gold-bright)); color: #17140f;
-  font-family: var(--font); font-weight: 700; font-size: 0.84rem; text-decoration: none;
-  white-space: nowrap;
-}
-.sticky-cta-close {
-  width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
-  border: 1px solid var(--gold-border); background: transparent; color: var(--ink-faint);
-  display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px; line-height: 1;
-}
-.sticky-cta-close:hover { color: var(--ink); border-color: var(--gold); }
-
-@media (max-width: 640px) {
-  .sticky-cta-status span:last-child { display: none; }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .sticky-cta-dot { animation: none; }
   .calc-result.visible { animation: none; }
 }
 
@@ -1600,7 +1562,17 @@ img.img-loaded { opacity: 1; filter: blur(0); }
    -- Safari/WebKit has a long-standing bug where position:sticky is
    silently ignored on an element that also has overflow other than
    visible set on itself. */
-.pf-collage-clip { overflow: hidden; padding: 120px 0 90px; }
+.pf-collage-clip { overflow: hidden; padding: 110px 0 0; height: 100%; }
+/* Text + carousel live outside the sticky/pinned card entirely -- the
+   hero collage above is sized to fit one screen so it's never partly
+   cropped by the next section arriving before you've seen it, and
+   this scrolls normally underneath, unaffected by the stacking. */
+.pf-collage-extra { position: relative; padding: 50px 0 100px; background: var(--bg); }
+/* The last category has nothing after it that should stack over it --
+   sticky is only needed so a *following* category can cover it while
+   scrolling past; without one, staying sticky would just make the
+   closing CTA slide over it uninvited. */
+#event.pf-collage { position: relative; }
 .pf-collage-label {
   display: block; margin: 0 auto 28px; max-width: 1400px; padding: 0 5vw;
   font-family: var(--font-mono); font-size: 0.82rem; letter-spacing: 0.05em;
@@ -1717,7 +1689,8 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   .pf-carousel-item { transition: none; }
 }
 @media (max-width: 900px) {
-  .pf-collage-clip { padding: 70px 0 60px; }
+  .pf-collage-clip { padding: 70px 0 0; }
+  .pf-collage-extra { padding: 40px 0 70px; }
   .pf-collage-stage { height: auto; min-height: 0; max-height: none; padding: 0 20px; }
   .pf-collage-main { position: relative; inset: auto; width: 100%; aspect-ratio: 4 / 3; }
   .pf-collage-side { display: none; }
