@@ -1102,6 +1102,31 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 .reach-text.js-scrubbed .reach-word { color: var(--ink-faint); transition: color 0.1s linear; }
 .reach-text.js-scrubbed .reach-word.is-lit { color: var(--ink); }
 .reach-text.js-scrubbed .reach-word-accent.is-lit { color: var(--gold-bright); text-shadow: 0 0 42px rgba(222, 175, 103, 0.75), 0 0 14px rgba(222, 175, 103, 0.9); }
+/* Route ticker -- real driving distances to other cities, standing in
+   for "deutschlandweit unterwegs" as data instead of decoration.
+   Shifted horizontally by scroll position (script.js), not autoplay;
+   the mark list is duplicated once in the HTML so wrapping the
+   translateX at -50% loops it seamlessly. */
+.reach-route {
+  overflow: hidden;
+  margin-top: 56px; padding-top: 22px;
+  border-top: 1px solid var(--border);
+}
+.reach-route-track {
+  display: flex; gap: clamp(28px, 4vw, 56px);
+  width: max-content;
+  will-change: transform;
+}
+.reach-route-mark {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.04em;
+  color: var(--ink-faint);
+  white-space: nowrap;
+}
+.reach-route-mark i {
+  display: block; width: 1px; height: 12px;
+  background: var(--gold);
+}
 
 .sr-only {
   position: absolute; width: 1px; height: 1px;

@@ -42,6 +42,34 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', onScroll);
   }
 
+  // Route ticker -- shifts left as the reach section scrolls through
+  // the viewport, wrapping at -50% (the mark list is duplicated in the
+  // HTML) so it loops seamlessly instead of running out of track.
+  // Plain scroll listener, no GSAP.
+  const reachRouteTrack = document.getElementById('reachRouteTrack');
+  const reachSection = document.getElementById('reach');
+  if (reachRouteTrack && reachSection && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    let routeTicking = false;
+    const updateRoute = () => {
+      routeTicking = false;
+      const rect = reachSection.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const total = rect.height + vh;
+      const progress = Math.min(1, Math.max(0, (vh - rect.top) / total));
+      const halfWidth = reachRouteTrack.scrollWidth / 2;
+      const offset = -(progress * halfWidth) % halfWidth;
+      reachRouteTrack.style.transform = `translateX(${offset}px)`;
+    };
+    const onRouteScroll = () => {
+      if (routeTicking) return;
+      routeTicking = true;
+      requestAnimationFrame(updateRoute);
+    };
+    updateRoute();
+    window.addEventListener('scroll', onRouteScroll, { passive: true });
+    window.addEventListener('resize', onRouteScroll);
+  }
+
   // Smooth scroll (Lenis) + scroll-driven hero parallax (GSAP). Both are
   // pure enhancements on top of content that is already visible via CSS,
   // so any failure here (blocked CDN, ad-blocker, version mismatch) must
