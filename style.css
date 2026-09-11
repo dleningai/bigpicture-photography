@@ -1088,7 +1088,27 @@ img.img-loaded { opacity: 1; filter: blur(0); }
    default fully visible (each word at full opacity) so it reads fine
    without JS. When ScrollTrigger is available, script.js dims the words
    and scrubs them bright one by one as the section scrolls through view. */
-.reach-section { position: relative; padding: 50px 0 140px; }
+.reach-section { position: relative; padding: 50px 0 140px; overflow: hidden; }
+/* Looping globe animation behind the statement -- literal instead of
+   abstract for "deutschlandweit unterwegs", dimmed and edge-faded so
+   the text stays readable over it. */
+.reach-bg {
+  position: absolute; inset: 0;
+  z-index: 0;
+}
+.reach-bg::after {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(180deg, var(--bg) 0%, transparent 20%, transparent 80%, var(--bg) 100%),
+    rgba(0, 0, 0, 0.35);
+}
+.reach-bg video {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  opacity: 0.6;
+}
+.reach-section .wrap { position: relative; z-index: 1; }
 .reach-text {
   max-width: 920px; margin: 0 auto;
   font-family: var(--font-heading); font-weight: 800;
