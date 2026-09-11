@@ -1173,11 +1173,21 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   margin-bottom: 48px;
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
-  font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700;
-  letter-spacing: 0.08em; text-transform: uppercase;
-  color: var(--ink-faint);
 }
-.services-intro-tag-center { color: var(--ink-dim); }
+/* Same device as the marquee's f-stop scale (.editorial-strip-fstop) --
+   a small tick + low-opacity mono label -- so this bar reads as part of
+   the same visual system instead of a plain text row. */
+.services-intro-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+.services-intro-tag i {
+  display: block; width: 1px; height: 10px;
+  background: rgba(255, 255, 255, 0.28);
+}
+.services-intro-tag-center { color: rgba(255, 255, 255, 0.45); }
 .services-intro-row::after { content: ''; display: block; clear: both; }
 .services-intro-media {
   float: left;
