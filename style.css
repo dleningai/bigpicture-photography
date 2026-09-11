@@ -444,13 +444,24 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   background: var(--bg);
 }
 .hero-photo {
-  min-height: 100vh;
+  height: 100vh;
+  position: sticky; top: 0; z-index: 1;
   padding-top: 190px;
   padding-bottom: 90px;
   flex-direction: column;
   align-items: stretch;
   justify-content: flex-end;
   gap: 40px;
+}
+/* Leistungen rides up over the sticky hero like a card as you scroll --
+   plain document order + a solid background does the actual "over the
+   sticky section" trick; the radius/shadow just sell it. */
+#leistungen {
+  position: relative;
+  z-index: 2;
+  background: var(--bg);
+  border-radius: 40px 40px 0 0;
+  box-shadow: 0 -60px 100px rgba(0, 0, 0, 0.6);
 }
 .hero-bg {
   position: absolute; inset: 0; z-index: -4;
@@ -1211,7 +1222,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 @media (max-width: 640px) {
   .services-focus-scale { gap: 10px; }
   .services-focus-mark { font-size: 0.56rem; }
-  .services-intro-media { float: none; width: 110px; margin: 0 0 20px; }
+  .services-intro-media { width: 100px; margin: 4px 16px 12px 0; }
 }
 
 /* Leistungen as an editorial numbered list — number, title, short text,
