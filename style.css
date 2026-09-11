@@ -1159,19 +1159,18 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   .services-marquee-track { animation: none; }
 }
 
-/* Leistungen intro -- a thin meta bar (tag / section label / year) plus
-   a big two-tone statement with a small square image floated into its
-   first lines, matching the reference layout's header block. The image
-   is a placeholder for a future loop video, same as the row thumbnails
-   below. */
+/* Leistungen intro -- a focus-distance scale (same camera-spec-scale
+   family as the aperture/shutter-speed rows elsewhere) plus a big
+   two-tone statement with a small square image floated into its first
+   lines. The image is a placeholder for a future loop video, same as
+   the row thumbnails below. */
 .services-intro {
   max-width: var(--max-width); margin: 0 auto 56px; padding: 0 20px;
 }
-/* Same component as the aperture scale in the home hero
-   (.editorial-strip-fstop) and the shutter-speed scale on the portfolio
-   page (.pf-shutter-speed): tick above, mono label below, centered --
-   reused as-is here instead of a bespoke tag row. */
-.services-intro-meta {
+/* Same component as .editorial-strip-fstop (home hero) and
+   .pf-shutter-speed (portfolio page): tick above, mono label below,
+   centered -- just a different camera spec (focus distance). */
+.services-focus-scale {
   display: flex; justify-content: center; align-items: flex-end;
   gap: clamp(14px, 3vw, 28px);
   padding: 16px 0;
@@ -1179,12 +1178,12 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
 }
-.services-intro-tag {
+.services-focus-mark {
   display: flex; flex-direction: column; align-items: center; gap: 5px;
   font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.03em;
   color: var(--ink-faint);
 }
-.services-intro-tag i {
+.services-focus-mark i {
   display: block; width: 1px; height: 8px;
   background: var(--ink-faint);
 }
@@ -1209,8 +1208,8 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 }
 .services-intro-text-dim { color: var(--ink-faint); }
 @media (max-width: 640px) {
-  .services-intro-meta { gap: 10px; }
-  .services-intro-tag { font-size: 0.56rem; }
+  .services-focus-scale { gap: 10px; }
+  .services-focus-mark { font-size: 0.56rem; }
   .services-intro-media { float: none; width: 110px; margin: 0 0 20px; }
 }
 
@@ -1228,45 +1227,17 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   padding: 64px 20px;
   margin: 0 -20px;
   border-top: 1px solid var(--border);
-  overflow: hidden;
-  transition: padding 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .service-list .service-row:first-child { border-top: none; }
-/* Accent panel that wipes in from the left on hover -- replaces the
-   old image-reveal gimmick with a simpler, punchier state change. */
-.service-row::before {
-  content: '';
-  position: absolute; inset: 0;
-  background: var(--gold-soft);
-  transform: translateX(-100%);
-  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-  z-index: 0;
-}
-.service-row:hover::before,
-.service-row:focus-within::before {
-  transform: translateX(0);
-}
-.service-row:hover,
-.service-row:focus-within {
-  padding-left: 32px;
-}
 .service-row-num {
-  position: relative; z-index: 1;
   font-family: var(--font-heading); font-weight: 800;
   font-size: clamp(3.6rem, 7vw, 6.4rem); line-height: 1;
   color: var(--ink-dim); opacity: 0.4; flex-shrink: 0;
-  transition: opacity 0.4s ease, color 0.4s ease;
-}
-.service-row:hover .service-row-num,
-.service-row:focus-within .service-row-num {
-  opacity: 1;
-  color: var(--gold-bright);
 }
 /* Media thumbnail -- a still for now; script.js/HTML can swap the img
    for a muted autoplay <video loop> per row later without touching this
    layout (same box, same object-fit). */
 .service-row-media {
-  position: relative; z-index: 1;
   width: clamp(240px, 26vw, 380px); aspect-ratio: 4 / 3; flex-shrink: 0;
   border-radius: 10px;
   overflow: hidden;
@@ -1275,14 +1246,8 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 .service-row-media video {
   width: 100%; height: 100%;
   object-fit: cover;
-  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.service-row:hover .service-row-media img,
-.service-row:focus-within .service-row-media img {
-  transform: scale(1.08);
 }
 .service-row-body {
-  position: relative; z-index: 1;
   flex: 1 1 auto; min-width: 0;
   display: flex; flex-direction: column;
   align-self: stretch;
@@ -1294,12 +1259,6 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   letter-spacing: -0.01em;
   margin: 0;
   overflow-wrap: anywhere;
-  transition: color 0.3s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.service-row:hover .service-row-title,
-.service-row:focus-within .service-row-title {
-  color: var(--gold-bright);
-  transform: translateX(6px);
 }
 /* Pushes the label+text block to the bottom of the row, level with the
    thumbnail's bottom edge -- title sits up top instead, matching the
