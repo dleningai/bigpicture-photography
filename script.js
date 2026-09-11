@@ -1,6 +1,36 @@
 document.addEventListener('DOMContentLoaded', () => {
   document.body.classList.add('is-loaded');
 
+  // Page transitions -- a plain multi-page site normally hard-cuts
+  // (flash of blank page) on every internal link, which is the single
+  // biggest thing separating it from an "agency" feel. Fade the page
+  // out before actually navigating, on any same-origin link that isn't
+  // opening in a new tab/context, isn't a same-page anchor, and isn't
+  // a modified click (ctrl/cmd/shift/middle-click all need the default
+  // new-tab behaviour untouched).
+  const PAGE_FADE_MS = 320;
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.addEventListener('click', (e) => {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const link = e.target.closest('a[href]');
+      if (!link || link.target === '_blank' || link.hasAttribute('download')) return;
+      let url;
+      try {
+        url = new URL(link.href, window.location.href);
+      } catch (err) {
+        return;
+      }
+      if (url.origin !== window.location.origin) return;
+      if (url.protocol === 'mailto:' || url.protocol === 'tel:') return;
+      const isSamePageAnchor = url.pathname === window.location.pathname && url.hash;
+      if (isSamePageAnchor) return;
+      e.preventDefault();
+      document.body.classList.remove('is-loaded');
+      document.body.classList.add('is-leaving');
+      setTimeout(() => { window.location.href = link.href; }, PAGE_FADE_MS);
+    });
+  }
+
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
   const servicesYearEl = document.getElementById('servicesYear');
