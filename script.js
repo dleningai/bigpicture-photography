@@ -167,8 +167,6 @@ document.addEventListener('DOMContentLoaded', () => {
       // blur ever was.
       const heroAccentWords = heroWordEls.filter((w) => w.classList.contains('hero-word-accent'));
       gsap.set(heroAccentWords, { clipPath: 'circle(0% at 50% 50%)', scale: 0.85 });
-      const heroCta = document.querySelector('.hero-cta');
-      if (heroCta) gsap.set(heroCta, { scale: 0.82 });
       const heroLogoTl = gsap.timeline({
         scrollTrigger: {
           trigger: '.hero-photo',
@@ -212,12 +210,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
       const wordsEnd = WORDS_START + (heroWordEls.length - 1) * WORD_STEP + 0.45;
-      // Phase 5: detail line + CTA land once the whole headline is in.
+      // Phase 5: detail line + CTA land once the whole headline is in --
+      // just the shared fade+rise, no extra scale punch (that used to
+      // visibly "inflate" the button as you scrolled through it).
       heroLogoTl.to(heroAfterWordsEls, { opacity: 1, y: 0, ease: 'power2.out', duration: 0.3, stagger: 0.08 }, wordsEnd + 0.1);
-      // The CTA row gets its own little punch-in on top of the shared
-      // reveal, so it reads as the thing to act on rather than just more
-      // copy scrolling by.
-      if (heroCta) heroLogoTl.to(heroCta, { scale: 1, ease: 'back.out(2.4)', duration: 0.3 }, wordsEnd + 0.5);
       // No slide-out phase -- once the copy has landed the pin just holds
       // it there; further scrolling releases the pin and the whole
       // section scrolls away normally into Leistungen underneath, instead
