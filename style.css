@@ -1160,6 +1160,11 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 .reach-text.js-scrubbed .reach-word { color: var(--ink-faint); transition: color 0.1s linear; }
 .reach-text.js-scrubbed .reach-word.is-lit { color: var(--ink); }
 .reach-text.js-scrubbed .reach-word-accent.is-lit { color: var(--gold-bright); text-shadow: 0 0 42px rgba(222, 175, 103, 0.75), 0 0 14px rgba(222, 175, 103, 0.9); }
+.reach-coords {
+  margin: 28px 0 0; text-align: center;
+  font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.12em;
+  color: var(--ink-faint);
+}
 
 .sr-only {
   position: absolute; width: 1px; height: 1px;
