@@ -30,7 +30,9 @@
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; overflow-x: clip; }
+html { scroll-behavior: smooth; overflow-x: clip; color-scheme: dark; }
+
+::selection { background: var(--gold); color: #17140f; }
 
 body {
   position: relative;
@@ -43,8 +45,11 @@ body {
   margin: 0;
   padding: 0;
   line-height: 1.7;
+  opacity: 0;
+  transition: opacity 0.4s ease;
   -webkit-font-smoothing: antialiased;
 }
+body.is-loaded { opacity: 1; }
 
 h1, h2, h3 { font-family: var(--font-heading); }
 
@@ -1067,7 +1072,24 @@ img.img-loaded { opacity: 1; filter: blur(0); }
    default fully visible (each word at full opacity) so it reads fine
    without JS. When ScrollTrigger is available, script.js dims the words
    and scrubs them bright one by one as the section scrolls through view. */
-.reach-section { padding: 50px 0 140px; }
+.reach-section { position: relative; padding: 50px 0 140px; }
+/* Faint location-pin + range rings behind the text -- fills the large
+   empty stretch above/below this one-line statement with something
+   thematically tied to "Standort ... deutschlandweit", in the same
+   thin-line language as the aperture/shutter-speed scales. */
+.reach-pin {
+  position: absolute; top: 50%; left: 50%; z-index: -1;
+  transform: translate(-50%, -50%);
+  width: clamp(320px, 42vw, 620px); height: auto;
+  fill: none; stroke: var(--gold); stroke-width: 0.5;
+  opacity: 0.16;
+  pointer-events: none;
+}
+.reach-pin circle:first-child { stroke-dasharray: 2 6; }
+.reach-pin circle:nth-child(2) { stroke-dasharray: 2 5; }
+@media (max-width: 700px) {
+  .reach-pin { width: 78vw; opacity: 0.12; }
+}
 .reach-text {
   max-width: 920px; margin: 0 auto;
   font-family: var(--font-heading); font-weight: 800;
@@ -1215,9 +1237,18 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   display: flex; align-items: flex-start; gap: 44px;
   padding: 64px 20px;
   margin: 0 -20px;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
 }
 .service-list .service-row:first-child { border-top: none; }
+/* Small corner-bracket mark, same motif as the stats section, so the
+   two "numbered list" patterns on the page read as one system. */
+.service-row::after {
+  content: '';
+  position: absolute; top: 64px; right: 20px;
+  width: 14px; height: 14px;
+  border-top: 1.5px solid rgba(255, 255, 255, 0.3);
+  border-right: 1.5px solid rgba(255, 255, 255, 0.3);
+}
 .service-row-num {
   font-family: var(--font-heading); font-weight: 800;
   font-size: clamp(3.6rem, 7vw, 6.4rem); line-height: 1;
@@ -1951,14 +1982,14 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 /* Click hint -- signals the sharp image opens the lightbox, appearing
    only on hover so it doesn't clutter the card at rest. */
 .pf-row-media-view {
-  position: absolute; top: 50%; left: 50%;
+  position: absolute; top: var(--vy, 50%); left: var(--vx, 50%);
   transform: translate(-50%, -50%) scale(0.7);
   width: 96px; height: 96px; border-radius: 50%;
   background: rgba(255, 255, 255, 0.94); color: #17140f;
   display: flex; align-items: center; justify-content: center;
   font-family: var(--font-heading); font-weight: 700; font-size: 0.85rem;
   opacity: 0;
-  transition: opacity 0.35s ease, transform 0.35s ease;
+  transition: opacity 0.35s ease, transform 0.35s ease, top 0.12s linear, left 0.12s linear;
   pointer-events: none;
 }
 .pf-row-media-fg:hover .pf-row-media-view { opacity: 1; transform: translate(-50%, -50%) scale(1); }

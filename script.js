@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
+  document.body.classList.add('is-loaded');
+
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
   const servicesYearEl = document.getElementById('servicesYear');
@@ -581,6 +583,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     photos.forEach((el) => el.addEventListener('click', advance));
     if (nextBtn) nextBtn.addEventListener('click', advance);
+  }
+
+  // "Ansehen" label follows the cursor over the large portfolio images
+  // instead of sitting fixed in the center -- only on pointers that can
+  // actually hover (touch devices keep the centered fallback via CSS).
+  if (window.matchMedia('(hover: hover)').matches) {
+    document.querySelectorAll('.pf-row-media-fg').forEach((fg) => {
+      const view = fg.querySelector('.pf-row-media-view');
+      if (!view) return;
+      fg.addEventListener('mousemove', (e) => {
+        const rect = fg.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        view.style.setProperty('--vx', `${x}%`);
+        view.style.setProperty('--vy', `${y}%`);
+      });
+    });
   }
 
   // GLightbox for portfolio galleries — slide images are created fresh by
