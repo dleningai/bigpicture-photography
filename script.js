@@ -151,13 +151,19 @@ document.addEventListener('DOMContentLoaded', () => {
       if (heroCurtain) gsap.set(heroCurtain, { opacity: 0 });
       const heroTextEls = gsap.utils.toArray('.hero-box > *, .hero-stats');
       gsap.set(heroTextEls, { opacity: 0, y: 24 });
+      // The three service categories inside the headline (Events,
+      // Unternehmen, Sport) get their own reveal on top of the shared one
+      // above -- each starts blurred/oversized and snaps into focus, one
+      // after another, once the rest of the sentence is already in.
+      const heroAccentWords = gsap.utils.toArray('.hero-sub .hero-word-accent');
+      gsap.set(heroAccentWords, { opacity: 0, scale: 1.5, filter: 'blur(10px)' });
       const heroCta = document.querySelector('.hero-cta');
       if (heroCta) gsap.set(heroCta, { scale: 0.82 });
       const heroLogoTl = gsap.timeline({
         scrollTrigger: {
           trigger: '.hero-photo',
           start: 'top top',
-          end: () => `+=${window.innerHeight * 3}`,
+          end: () => `+=${window.innerHeight * 3.4}`,
           scrub: true,
           pin: true,
           anticipatePin: 1,
@@ -176,11 +182,14 @@ document.addEventListener('DOMContentLoaded', () => {
         // drop over the photo -- the face is no longer visible at all --
         // and the main copy fades/rises in on top of it.
         .to(heroCurtain, { opacity: 1, ease: 'power2.out', duration: 0.3 }, 1.7)
-        .to(heroTextEls, { opacity: 1, y: 0, ease: 'power2.out', duration: 0.35, stagger: 0.06 }, 1.9);
+        .to(heroTextEls, { opacity: 1, y: 0, ease: 'power2.out', duration: 0.35, stagger: 0.06 }, 1.9)
+        // Category snap-into-focus, one by one, starting just before the
+        // base reveal above finishes.
+        .to(heroAccentWords, { opacity: 1, scale: 1, filter: 'blur(0px)', ease: 'back.out(1.8)', duration: 0.4, stagger: 0.18 }, 2.05);
       // The CTA row gets its own little punch-in on top of the shared
       // reveal, so it reads as the thing to act on rather than just more
       // copy scrolling by.
-      if (heroCta) heroLogoTl.to(heroCta, { scale: 1, ease: 'back.out(2.4)', duration: 0.3 }, 2.1);
+      if (heroCta) heroLogoTl.to(heroCta, { scale: 1, ease: 'back.out(2.4)', duration: 0.3 }, 2.8);
       // No slide-out phase -- once the copy has landed the pin just holds
       // it there; further scrolling releases the pin and the whole
       // section scrolls away normally into Leistungen underneath, instead
