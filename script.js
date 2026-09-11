@@ -102,23 +102,14 @@ document.addEventListener('DOMContentLoaded', () => {
       // stutter — disable it wherever Lenis is driving the page.
       document.documentElement.style.scrollBehavior = 'auto';
       lenis = new Lenis({ duration: 1.1, smoothWheel: true });
-      if (hasScrollFx) {
-        // Drive Lenis from GSAP's own ticker instead of a separate rAF
-        // loop, so its scroll position and ScrollTrigger's scrub updates
-        // always land on the exact same frame. Two independent rAF loops
-        // can drift a frame apart under fast/flick scrolling, which is
-        // what let the pinned hero sequence briefly render several of
-        // its phases (name, curtain, headline) at once instead of one
-        // consistent state.
-        gsap.ticker.add((time) => { lenis.raf(time * 1000); });
-        gsap.ticker.lagSmoothing(0);
-        lenis.on('scroll', ScrollTrigger.update);
-      } else {
-        function raf(time) {
-          lenis.raf(time);
-          requestAnimationFrame(raf);
-        }
+      function raf(time) {
+        lenis.raf(time);
         requestAnimationFrame(raf);
+      }
+      requestAnimationFrame(raf);
+      if (hasScrollFx) {
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.lagSmoothing(0);
       }
       // With native scroll-behavior disabled above, in-page anchor links
       // (nav's Kontakt link, the scroll-progress dots, AGB's TOC) would
