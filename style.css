@@ -1837,6 +1837,22 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   .pf-shutter-speeds { gap: 10px; padding-top: 90px; }
   .pf-shutter-speed { font-size: 0.56rem; }
 }
+/* Authenticity note -- a quiet reassurance that the portfolio shows
+   real shoots, not AI-generated images, placed right where visitors
+   are about to look at the photos themselves. */
+.pf-authenticity-note {
+  display: flex; align-items: center; justify-content: center;
+  gap: 8px;
+  max-width: 520px; margin: 18px auto 0; padding: 0 20px;
+  font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.02em;
+  color: var(--ink-faint);
+  text-align: center;
+}
+.pf-authenticity-note svg {
+  flex-shrink: 0;
+  width: 14px; height: 14px;
+  fill: var(--gold);
+}
 
 /* Portfolio chapters as a classic CSS sticky-note stack: each card
    sticks at a slightly larger `top` offset than the one before it, so
