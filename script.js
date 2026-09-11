@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
+  const servicesYearEl = document.getElementById('servicesYear');
+  if (servicesYearEl) servicesYearEl.textContent = new Date().getFullYear();
 
   const footerMonthEl = document.getElementById('footerMonth');
   if (footerMonthEl) footerMonthEl.textContent = String(new Date().getMonth() + 1).padStart(2, '0') + '’';
