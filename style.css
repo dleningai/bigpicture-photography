@@ -212,20 +212,12 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 }
 .btn:hover::after { left: 130%; }
 .btn-primary {
-  background: linear-gradient(135deg, var(--gold), var(--gold-bright));
-  color: #17140f;
-  box-shadow: 0 10px 28px rgba(222, 175, 103, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  background: transparent;
+  border-color: var(--gold);
+  color: var(--gold-bright);
 }
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 18px 40px rgba(222, 175, 103, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.4); animation-play-state: paused; }
-.btn-primary:active { transform: translateY(0); box-shadow: 0 8px 20px rgba(222, 175, 103, 0.26), inset 0 1px 0 rgba(255, 255, 255, 0.3); }
-.hero-cta .btn-primary { animation: ctaGlowPulse 2.8s ease-in-out infinite; }
-@keyframes ctaGlowPulse {
-  0%, 100% { box-shadow: 0 10px 28px rgba(222, 175, 103, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.35); }
-  50% { box-shadow: 0 10px 40px rgba(222, 175, 103, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.4); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .hero-cta .btn-primary { animation: none; }
-}
+.btn-primary:hover { transform: translateY(-2px); background: var(--gold-soft); border-color: var(--gold-bright); box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25); }
+.btn-primary:active { transform: translateY(0); }
 .btn-ghost {
   background: transparent;
   border-color: var(--gold-border);
@@ -910,6 +902,10 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   display: block; margin-top: 18px;
   color: #777; font-size: 0.85rem;
 }
+/* Darker gold on the light CTA card -- the bright gold used on dark
+   backgrounds elsewhere is too low-contrast against white. */
+.cta-light .btn-primary { border-color: #b8863f; color: #8a6427; }
+.cta-light .btn-primary:hover { background: rgba(184, 134, 63, 0.08); border-color: #8a6427; }
 /* Social row -- Uiverse-style icons (credit: ubaidi10), adapted to the
    site's real profiles and brand hover colors. Each icon is its own
    square box standing alone, NOT grouped in a shared pill -- squares
