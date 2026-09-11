@@ -155,7 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // CTA row (after).
       const heroEyebrowEl = document.querySelector('.hero-eyebrow');
       gsap.set(heroEyebrowEl, { opacity: 0, y: 24 });
-      const heroAfterWordsEls = gsap.utils.toArray('.hero-sub-detail, .hero-cta, .hero-cta-secondary, .hero-stats');
+      const heroAfterWordsEls = gsap.utils.toArray('.hero-cta, .hero-cta-secondary, .hero-stats');
       gsap.set(heroAfterWordsEls, { opacity: 0, y: 24 });
       const heroWordEls = gsap.utils.toArray('.hero-sub .hero-word');
       // Plain words stay in place and just light up from dim to full
