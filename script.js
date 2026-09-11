@@ -149,20 +149,21 @@ document.addEventListener('DOMContentLoaded', () => {
       if (heroIntroName) heroIntroName.classList.add('js-active');
       const heroIntroNameEls = gsap.utils.toArray('.hero-intro-name > *');
       gsap.set(heroIntroNameEls, { opacity: 0, x: '60vw' });
-      // Hero is pinned via GSAP for exactly one screen height -- CSS
-      // position: sticky was tried instead (avoiding pin's DOM
-      // rewrites), but its containing-block/overflow interactions
-      // behave inconsistently across browsers (worked in testing here,
-      // didn't hold at all live). GSAP's pin is the version already
-      // proven reliable in this project. Leistungen, right after the
-      // pin-spacer in the flow, only starts entering once the pin
-      // releases at the end of this same scroll distance, so it stays
-      // off-screen until the name has fully exited.
+      // Hero is pinned via GSAP for two screens of scroll: the first
+      // screen plays the logo+name beat (below), the second is where
+      // Leistungen -- pulled up one screen by its own negative margin,
+      // see #leistungen.js-slide-cover in style.css -- climbs from the
+      // bottom edge to fully cover the hero, right as the pin releases.
+      // That climb needs no tweening of its own: it's pure scroll-vs-
+      // document-position math, so it can't drift out of sync with the
+      // pin the way an independently-scrubbed transform could.
+      const leistungenEl = document.getElementById('leistungen');
+      if (leistungenEl) leistungenEl.classList.add('js-slide-cover');
       const heroLogoTl = gsap.timeline({
         scrollTrigger: {
           trigger: '.hero-photo',
           start: 'top top',
-          end: () => `+=${window.innerHeight}`,
+          end: () => `+=${window.innerHeight * 2}`,
           scrub: true,
           pin: true,
           anticipatePin: 1,
@@ -171,11 +172,15 @@ document.addEventListener('DOMContentLoaded', () => {
       heroLogoTl
         .to(heroLogoImg, { scale: 5.5, filter: 'blur(24px)', ease: 'none' }, 0)
         .to(heroLogoIntro, { autoAlpha: 0, ease: 'none' }, 0.15)
-        // Name beat -- in, hold, out. Nothing follows it anymore (the
-        // main headline moved out of the hero entirely), so the pin
-        // just holds its final state until Leistungen covers it.
+        // Name beat -- in, hold, out. Finishes at 1.25, well inside the
+        // first of the two scroll-screens above.
         .to(heroIntroNameEls, { opacity: 1, x: 0, ease: 'power2.out', stagger: 0.08 }, 0.35)
-        .to(heroIntroNameEls, { opacity: 0, x: '60vw', ease: 'power1.in', stagger: 0.05 }, 0.7);
+        .to(heroIntroNameEls, { opacity: 0, x: '60vw', ease: 'power1.in', stagger: 0.05 }, 0.7)
+        // No-op hold stretching the timeline to 2.5 total, so its first
+        // half (the name beat above) maps to exactly the first of the
+        // two scroll-screens the scrub now spans, instead of the name
+        // animation rushing through both.
+        .to({}, { duration: 1.25 }, 1.25);
     }
 
     // Editorial strip is a plain CSS marquee (see style.css) -- no JS

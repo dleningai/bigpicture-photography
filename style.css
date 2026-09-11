@@ -452,15 +452,28 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   justify-content: flex-end;
   gap: 40px;
 }
-/* Leistungen rides up over the sticky hero like a card as you scroll --
-   plain document order + a solid background does the actual "over the
-   sticky section" trick; the radius/shadow just sell it. */
+/* Leistungen rides up over the pinned hero like a card. The pull-up
+   itself is just document math: script.js's GSAP pin holds the hero
+   fixed for two screens of scroll instead of one, and the negative
+   margin here (added only once GSAP/pin is confirmed active, via
+   .js-slide-cover -- never in plain CSS, or Leistungen would sit
+   permanently shifted up over the hero for anyone without it) means
+   Leistungen's effective document position lands one screen higher
+   than normal. Net effect: for the pin's first screen of scroll,
+   Leistungen is still below the viewport (nothing visible yet, name
+   beat plays undisturbed); for the second screen, it's already risen
+   to the bottom edge and keeps climbing to fully cover the hero right
+   as the pin releases -- no JS tweening of its position needed, scroll
+   position alone drives it. */
 #leistungen {
   position: relative;
   z-index: 2;
   background: var(--bg);
   border-radius: 40px 40px 0 0;
   box-shadow: 0 -60px 100px rgba(0, 0, 0, 0.6);
+}
+#leistungen.js-slide-cover {
+  margin-top: -100vh;
 }
 .hero-bg {
   position: absolute; inset: 0; z-index: -4;
