@@ -528,8 +528,21 @@ document.addEventListener('DOMContentLoaded', () => {
       counter.appendChild(reel);
 
       setTimeout(() => {
-        strip.style.transition = 'transform 1.4s cubic-bezier(0.16, 1, 0.3, 1)';
-        strip.style.transform = 'translateY(0)';
+        // Double rAF so the browser has actually painted the reel's
+        // starting offset before the transition kicks in -- a single
+        // setTimeout can otherwise fire before that paint, causing the
+        // transition to jump/skip when several reels start at once.
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            strip.style.transition = 'transform 1.4s cubic-bezier(0.16, 1, 0.3, 1)';
+            strip.style.transform = 'translateY(0)';
+            strip.addEventListener(
+              'transitionend',
+              () => { strip.style.willChange = 'auto'; },
+              { once: true }
+            );
+          });
+        });
       }, ci * 180);
     }
 
