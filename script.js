@@ -124,104 +124,13 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Hero logo curtain — fades/scales out as the visitor scrolls past the
-    // hero, scrubbed directly to scroll position so scrolling back up to
-    // the top brings it right back (not a one-time, timer-based intro).
-    const heroLogoIntro = document.getElementById('heroLogoIntro');
-    if (heroLogoIntro && hasScrollFx) {
-      heroLogoIntro.classList.add('js-active');
-      const heroLogoImg = heroLogoIntro.querySelector('img');
-      // Fix the starting point explicitly — otherwise GSAP captures
-      // whatever filter/scale the element happens to have at setup time
-      // (e.g. still the sitewide blur-up loader's blur) as the tween's
-      // "from" value, leaving the logo permanently soft-focused at rest.
-      gsap.set(heroLogoImg, { scale: 1, filter: 'blur(0px)' });
-      // Two phases in one pin: (1) logo zooms/blurs out revealing the
-      // photo, (2) only once that's done does the hero text slide down
-      // into view — instead of the text sitting there the whole time.
-      // The .js-hero-sequence class hands opacity/transform control on the
-      // hero text over to GSAP, switching off the CSS-only reveal so the
-      // two don't fight over the same properties.
-      document.querySelector('.hero-photo').classList.add('js-hero-sequence');
-      const heroIntroName = document.getElementById('heroIntroName');
-      if (heroIntroName) heroIntroName.classList.add('js-active');
-      const heroIntroNameEls = gsap.utils.toArray('.hero-intro-name > *');
-      gsap.set(heroIntroNameEls, { opacity: 0, x: '60vw' });
-      const heroCurtain = document.getElementById('heroCurtain');
-      if (heroCurtain) gsap.set(heroCurtain, { opacity: 0 });
-      // The headline is revealed word by word (not as one block) -- see
-      // the per-word loop below, which schedules each .hero-word
-      // individually between the eyebrow (before) and the detail line +
-      // CTA row (after).
-      const heroEyebrowEl = document.querySelector('.hero-eyebrow');
-      gsap.set(heroEyebrowEl, { opacity: 0, y: 24 });
-      const heroAfterWordsEls = gsap.utils.toArray('.hero-cta, .hero-cta-secondary, .hero-stats');
-      gsap.set(heroAfterWordsEls, { opacity: 0, y: 24 });
-      const heroWordEls = gsap.utils.toArray('.hero-sub .hero-word');
-      // Plain words stay in place and just light up from dim to full
-      // color -- the same "lit" mechanic as the reach section's
-      // "...deutschlandweit unterwegs." line -- instead of fading/rising
-      // in, so the reveal reads as text lighting up rather than moving.
-      gsap.set(heroWordEls.filter((w) => !w.classList.contains('hero-word-accent')), { color: 'rgba(247, 227, 180, 0.35)' });
-      // The three service categories (Events, Unternehmen, Sport) get a
-      // camera-iris wipe instead of the plain fade+rise every other word
-      // uses -- a nod to the f-stop/aperture motif used elsewhere in the
-      // hero, and a clearer "this one's different" cue than a snap-focus
-      // blur ever was.
-      const heroAccentWords = heroWordEls.filter((w) => w.classList.contains('hero-word-accent'));
-      gsap.set(heroAccentWords, { opacity: 0, clipPath: 'circle(0% at 50% 50%)', scale: 0.85 });
-      const heroLogoTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: '.hero-photo',
-          start: 'top top',
-          end: () => `+=${window.innerHeight * 5.2}`,
-          scrub: true,
-          pin: true,
-          anticipatePin: 1,
-        },
-      });
-      heroLogoTl
-        .to(heroLogoImg, { scale: 5.5, filter: 'blur(24px)', ease: 'none', duration: 0.5 }, 0)
-        .to(heroLogoIntro, { autoAlpha: 0, ease: 'none', duration: 0.4 }, 0.15)
-        // Phase 2: name + short description, a personal beat before the
-        // main copy takes over -- given explicit, non-overlapping
-        // durations so it's always fully gone (not still fading) before
-        // anything else starts.
-        .to(heroIntroNameEls, { opacity: 1, x: 0, ease: 'power2.out', duration: 0.3, stagger: 0.08 }, 0.6)
-        .to(heroIntroNameEls, { opacity: 0, x: '60vw', ease: 'power1.in', duration: 0.3, stagger: 0.05 }, 1.3)
-        // Phase 3: only once the name has fully left does a solid curtain
-        // drop over the photo -- the face is no longer visible at all --
-        // and the eyebrow leads the headline in.
-        .to(heroCurtain, { opacity: 1, ease: 'power2.out', duration: 0.3 }, 1.7)
-        .to(heroEyebrowEl, { opacity: 1, y: 0, ease: 'power2.out', duration: 0.3 }, 1.9);
-      // Phase 4: the headline cascades in one word at a time, scrubbed to
-      // scroll like everything else -- each word gets an explicit start
-      // time (rather than a stagger on one shared tween) so the plain
-      // words and the iris-wipe category words stay in their correct
-      // reading order even though they animate differently.
-      const WORDS_START = 2.2;
-      const WORD_STEP = 0.14;
-      heroWordEls.forEach((word, i) => {
-        const start = WORDS_START + i * WORD_STEP;
-        if (word.classList.contains('hero-word-accent')) {
-          heroLogoTl.to(word, {
-            opacity: 1, scale: 1, clipPath: 'circle(75% at 50% 50%)',
-            ease: 'power2.out', duration: 0.45,
-          }, start);
-        } else {
-          heroLogoTl.to(word, { color: '#f7e3b4', ease: 'none', duration: 0.22 }, start);
-        }
-      });
-      const wordsEnd = WORDS_START + (heroWordEls.length - 1) * WORD_STEP + 0.45;
-      // Phase 5: detail line + CTA land once the whole headline is in --
-      // just the shared fade+rise, no extra scale punch (that used to
-      // visibly "inflate" the button as you scrolled through it).
-      heroLogoTl.to(heroAfterWordsEls, { opacity: 1, y: 0, ease: 'power2.out', duration: 0.3, stagger: 0.08 }, wordsEnd + 0.1);
-      // No slide-out phase -- once the copy has landed the pin just holds
-      // it there; further scrolling releases the pin and the whole
-      // section scrolls away normally into Leistungen underneath, instead
-      // of animating the copy back out first.
-    }
+    // The pinned/scrubbed hero intro sequence (logo curtain -> name beat
+    // -> black curtain -> word-by-word headline) was pulled out entirely
+    // -- it kept producing scroll glitches (several phases visibly
+    // rendering at once) that couldn't be reliably fixed or reproduced.
+    // The hero now just uses the plain CSS-only reveal already defined
+    // in style.css (.hero-photo:not(.js-hero-sequence) .hero-box > *),
+    // with no scroll-jacking/pin involved.
 
     // Editorial strip is a plain CSS marquee (see style.css) -- no JS
     // needed, it just loops on its own.
