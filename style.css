@@ -1089,18 +1089,39 @@ img.img-loaded { opacity: 1; filter: blur(0); }
    empty stretch above/below this one-line statement with something
    thematically tied to "Standort ... deutschlandweit", in the same
    thin-line language as the aperture/shutter-speed scales. */
-.reach-pin {
+.reach-map {
   position: absolute; top: 50%; left: 50%;
   transform: translate(-50%, -50%);
-  width: clamp(320px, 42vw, 620px); height: auto;
-  fill: none; stroke: var(--gold); stroke-width: 1;
-  opacity: 0.4;
+  width: clamp(280px, 30vw, 460px); height: auto;
+  overflow: visible;
+  opacity: 0.5;
   pointer-events: none;
 }
-.reach-pin circle:first-child { stroke-dasharray: 3 7; }
-.reach-pin circle:nth-child(2) { stroke-dasharray: 3 6; }
+.reach-map-outline {
+  fill: none; stroke: var(--gold); stroke-width: 1.1;
+  stroke-linejoin: round;
+}
+.reach-map-routes line {
+  stroke: var(--gold); stroke-width: 0.6; stroke-dasharray: 2 4;
+  opacity: 0.7;
+}
+.reach-map-city { fill: var(--ink-faint); }
+.reach-map-home { fill: var(--gold-bright); }
+.reach-map-ping {
+  fill: none; stroke: var(--gold-bright); stroke-width: 1.5;
+  transform-origin: 118px 126px;
+  animation: reachPing 2.6s ease-out infinite;
+}
+.reach-map-ping-delay { animation-delay: 1.3s; }
+@keyframes reachPing {
+  0% { r: 4; opacity: 0.9; }
+  100% { r: 26; opacity: 0; }
+}
 @media (max-width: 700px) {
-  .reach-pin { width: 78vw; opacity: 0.32; }
+  .reach-map { width: 62vw; opacity: 0.4; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reach-map-ping { animation: none; opacity: 0; }
 }
 .reach-text {
   max-width: 920px; margin: 0 auto;
