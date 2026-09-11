@@ -124,13 +124,61 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // The hero intro (logo -> name -> curtain -> headline) used to be a
-    // scroll-scrubbed/pinned GSAP timeline, which kept producing glitches
-    // (several phases visibly rendering at once) that couldn't be
-    // reliably fixed or reproduced. It's now a plain, fixed-timer CSS
-    // animation sequence instead (see .hero-logo-intro, .hero-intro-name,
-    // .hero-curtain and .hero-box > * in style.css) -- no scroll/JS
-    // involved at all, so there's no scroll position to desync from.
+    // Hero logo curtain — fades/scales out as the visitor scrolls past the
+    // hero, scrubbed directly to scroll position so scrolling back up to
+    // the top brings it right back (not a one-time, timer-based intro).
+    const heroLogoIntro = document.getElementById('heroLogoIntro');
+    if (heroLogoIntro && hasScrollFx) {
+      heroLogoIntro.classList.add('js-active');
+      const heroLogoImg = heroLogoIntro.querySelector('img');
+      // Fix the starting point explicitly — otherwise GSAP captures
+      // whatever filter/scale the element happens to have at setup time
+      // (e.g. still the sitewide blur-up loader's blur) as the tween's
+      // "from" value, leaving the logo permanently soft-focused at rest.
+      gsap.set(heroLogoImg, { scale: 1, filter: 'blur(0px)' });
+      // Two phases in one pin: (1) logo zooms/blurs out revealing the
+      // photo, (2) only once that's done does the hero text slide down
+      // into view — instead of the text sitting there the whole time.
+      // The .js-hero-sequence class hands opacity/transform control on the
+      // hero text over to GSAP, switching off the CSS-only reveal so the
+      // two don't fight over the same properties.
+      document.querySelector('.hero-photo').classList.add('js-hero-sequence');
+      const heroIntroName = document.getElementById('heroIntroName');
+      if (heroIntroName) heroIntroName.classList.add('js-active');
+      const heroIntroNameEls = gsap.utils.toArray('.hero-intro-name > *');
+      gsap.set(heroIntroNameEls, { opacity: 0, x: '60vw' });
+      const heroTextEls = gsap.utils.toArray('.hero-box > *, .hero-stats');
+      gsap.set(heroTextEls, { opacity: 0, x: '-60vw' });
+      const heroCta = document.querySelector('.hero-cta');
+      if (heroCta) gsap.set(heroCta, { scale: 0.82 });
+      const heroLogoTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: '.hero-photo',
+          start: 'top top',
+          end: () => `+=${window.innerHeight * 3.2}`,
+          scrub: true,
+          pin: true,
+          anticipatePin: 1,
+        },
+      });
+      heroLogoTl
+        .to(heroLogoImg, { scale: 5.5, filter: 'blur(24px)', ease: 'none' }, 0)
+        .to(heroLogoIntro, { autoAlpha: 0, ease: 'none' }, 0.15)
+        // Phase 2: name + short description, a personal beat before the
+        // main copy takes over.
+        .to(heroIntroNameEls, { opacity: 1, x: 0, ease: 'power2.out', stagger: 0.08 }, 0.35)
+        .to(heroIntroNameEls, { opacity: 0, x: '60vw', ease: 'power1.in', stagger: 0.05 }, 0.85)
+        // Phase 3: the main hero copy slides in from the left this time.
+        .to(heroTextEls, { opacity: 1, x: 0, ease: 'power2.out', stagger: 0.06 }, 1.05)
+        // Phase 4: once the text has landed, further scrolling slides it
+        // out to the left (behind the portrait) instead of it just
+        // sitting there until the pin releases.
+        .to(heroTextEls, { opacity: 0, x: '-60vw', ease: 'power1.in', stagger: 0.04 }, 1.65);
+      // The CTA row gets its own little punch-in on top of the shared
+      // slide, so it reads as the thing to act on rather than just more
+      // copy scrolling by.
+      if (heroCta) heroLogoTl.to(heroCta, { scale: 1, ease: 'back.out(2.4)' }, 1.3);
+    }
 
     // Editorial strip is a plain CSS marquee (see style.css) -- no JS
     // needed, it just loops on its own.
