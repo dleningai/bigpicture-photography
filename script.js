@@ -42,34 +42,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', onScroll);
   }
 
-  // Globe video scrubbed by scroll position instead of autoplaying on
-  // its own timer -- its rotation now tracks how far the reach section
-  // has scrolled through the viewport. Plain scroll listener, no GSAP.
-  const reachGlobeVideo = document.getElementById('reachGlobeVideo');
-  const reachGlobeSection = document.getElementById('reach');
-  if (reachGlobeVideo && reachGlobeSection && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    reachGlobeVideo.pause();
-    let globeReady = false;
-    let globeTicking = false;
-    reachGlobeVideo.addEventListener('loadedmetadata', () => { globeReady = true; });
-    const updateGlobe = () => {
-      globeTicking = false;
-      if (!globeReady || !reachGlobeVideo.duration) return;
-      const rect = reachGlobeSection.getBoundingClientRect();
-      const vh = window.innerHeight;
-      const total = rect.height + vh;
-      const progress = Math.min(1, Math.max(0, (vh - rect.top) / total));
-      reachGlobeVideo.currentTime = progress * reachGlobeVideo.duration;
-    };
-    const onGlobeScroll = () => {
-      if (globeTicking) return;
-      globeTicking = true;
-      requestAnimationFrame(updateGlobe);
-    };
-    window.addEventListener('scroll', onGlobeScroll, { passive: true });
-    window.addEventListener('resize', onGlobeScroll);
-  }
-
   // Smooth scroll (Lenis) + scroll-driven hero parallax (GSAP). Both are
   // pure enhancements on top of content that is already visible via CSS,
   // so any failure here (blocked CDN, ad-blocker, version mismatch) must
