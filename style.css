@@ -63,40 +63,32 @@ body::before {
   mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 0%, transparent 75%);
 }
 
-/* Hero logo intro — a curtain over the hero that fades/scales out as the
-   visitor scrolls, tied directly to scroll position (GSAP scrub) rather
-   than a timer, so scrolling back up brings it right back. Hidden by
-   default: only script.js activates it, and only when ScrollTrigger is
-   actually available, so the hero is never blocked without JS. */
+/* Hero logo intro — a curtain over the hero that plays once on load and
+   fades away on a timer (no scroll/JS involved -- the previous
+   scroll-scrubbed version kept producing glitches where several phases
+   rendered at once and was pulled out entirely). */
 .hero-logo-intro {
   position: absolute; inset: 0; z-index: 6;
-  display: none; flex-direction: column; align-items: center; justify-content: center;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
   gap: 32px;
   background: #000;
+  pointer-events: none;
+  animation: heroLogoIntroFade 0.6s ease-out 1.2s forwards;
 }
-.hero-logo-intro.js-active { display: flex; }
+@keyframes heroLogoIntroFade {
+  to { opacity: 0; visibility: hidden; }
+}
 .hero-logo-intro img {
   width: min(420px, 70vw); height: auto;
   filter: drop-shadow(0 0 50px rgba(222, 175, 103, 0.45));
-  will-change: transform, opacity, filter;
+  animation: heroLogoImgZoom 1.8s ease-in forwards;
 }
-.hero-logo-scroll-hint {
-  display: flex;
-  flex-direction: column; align-items: center; gap: 6px;
-  font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase;
-  color: var(--ink-faint);
-  animation: heroScrollHintBounce 1.6s ease-in-out infinite;
-}
-.hero-logo-scroll-hint svg {
-  width: 18px; height: 18px;
-  fill: none; stroke: var(--gold); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
-}
-@keyframes heroScrollHintBounce {
-  0%, 100% { transform: translateY(0); opacity: 0.6; }
-  50% { transform: translateY(8px); opacity: 1; }
+@keyframes heroLogoImgZoom {
+  0%, 60% { transform: scale(1); filter: drop-shadow(0 0 50px rgba(222, 175, 103, 0.45)) blur(0px); }
+  100% { transform: scale(1.7); filter: drop-shadow(0 0 50px rgba(222, 175, 103, 0.45)) blur(14px); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .hero-logo-scroll-hint { animation: none; }
+  .hero-logo-intro { animation: none; opacity: 0; visibility: hidden; }
 }
 
 /* Thin glowing scrollbar */
@@ -530,34 +522,47 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   position: absolute; inset: 0;
   background: radial-gradient(circle at 50% 40%, transparent 0%, transparent 50%, rgba(10, 10, 10, 0.22) 82%, transparent 100%);
 }
-/* A personal beat between the photo reveal and the main hero copy — name
-   + one-line role, shown only as part of the JS scroll sequence (default
-   hidden so nothing's lost when that can't run). */
+/* A personal beat between the logo intro and the main hero copy — name
+   + one-line role, playing on the same fixed timer as the logo intro
+   (see script.js removal note above: no scroll/JS driving this anymore,
+   plain CSS keyframes only). */
 .hero-intro-name {
   position: absolute; inset: 0; z-index: 6;
-  display: none; flex-direction: column; align-items: flex-start; justify-content: center;
+  display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
   gap: 10px;
   text-align: left;
   padding-left: clamp(24px, 8vw, 96px);
   padding-right: 40%;
   pointer-events: none;
+  opacity: 0;
+  animation: heroIntroNamePlay 1.8s ease-in-out 1.7s forwards;
 }
-.hero-intro-name.js-active { display: flex; }
-/* Solid curtain the main copy lands on -- dropped in only once the name
-   beat has fully cleared, hiding the photo (face included) completely
-   instead of the copy sitting over a still-visible portrait. Sits above
-   the photo/strip/name but below the main copy itself. */
+@keyframes heroIntroNamePlay {
+  0% { opacity: 0; transform: translateX(30px); }
+  17% { opacity: 1; transform: translateX(0); }
+  83% { opacity: 1; transform: translateX(0); }
+  100% { opacity: 0; transform: translateX(-20px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-intro-name { animation: none; opacity: 0; }
+}
+/* Solid curtain the main copy lands on -- fades in once the name beat
+   above has fully cleared (3.5s), hiding the photo (face included)
+   completely instead of the headline sitting over a still-visible
+   portrait. Sits above the photo/strip/name but below the main copy. */
 .hero-curtain {
   position: absolute; inset: 0; z-index: 5;
   overflow: hidden;
   background: var(--bg);
   opacity: 0;
   pointer-events: none;
+  animation: heroCurtainIn 0.4s ease-out 3.5s forwards;
+}
+@keyframes heroCurtainIn {
+  to { opacity: 1; }
 }
 /* A little texture/light so the curtain isn't a flat black void -- same
-   grain used elsewhere in the hero, plus one soft glow, both scoped to
-   this element since it fully covers (and disables) the photo's own fx
-   layer underneath. */
+   grain used elsewhere in the hero, plus one soft glow. */
 .hero-curtain::before {
   content: '';
   position: absolute; inset: 0;
@@ -571,6 +576,9 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   border-radius: 50%;
   filter: blur(90px);
   background: radial-gradient(circle, rgba(222, 175, 103, 0.22), transparent 70%);
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-curtain { display: none; }
 }
 .hero-intro-name-title {
   font-family: var(--font-heading); font-weight: 800;
@@ -631,13 +639,13 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   margin: 0 auto;
   padding: 0 24px;
 }
-/* Only when JS can't take over (see .js-hero-sequence in script.js) does
-   this pure-CSS reveal run; otherwise GSAP owns opacity/transform on these
-   same elements and the two would fight over the same properties. */
-.hero-photo:not(.js-hero-sequence) .hero-box > * { animation: heroTextIn 0.8s ease-out both; }
-.hero-photo:not(.js-hero-sequence) .hero-box > *:nth-child(2) { animation-delay: 0.08s; }
-.hero-photo:not(.js-hero-sequence) .hero-box > *:nth-child(3) { animation-delay: 0.16s; }
-.hero-photo:not(.js-hero-sequence) .hero-box > *:nth-child(4) { animation-delay: 0.24s; }
+/* Headline copy waits until the curtain above has fully covered the
+   photo (3.5s name-clear + 0.4s curtain fade = 3.9s) so it lands on a
+   clean background instead of over the still-visible face. */
+.hero-photo .hero-box > * { animation: heroTextIn 0.8s ease-out both; animation-delay: 3.9s; }
+.hero-photo .hero-box > *:nth-child(2) { animation-delay: 3.98s; }
+.hero-photo .hero-box > *:nth-child(3) { animation-delay: 4.06s; }
+.hero-photo .hero-box > *:nth-child(4) { animation-delay: 4.14s; }
 @keyframes heroTextIn {
   from { opacity: 0; transform: translateY(18px); }
   to { opacity: 1; transform: translateY(0); }

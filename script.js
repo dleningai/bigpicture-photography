@@ -124,13 +124,13 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // The pinned/scrubbed hero intro sequence (logo curtain -> name beat
-    // -> black curtain -> word-by-word headline) was pulled out entirely
-    // -- it kept producing scroll glitches (several phases visibly
-    // rendering at once) that couldn't be reliably fixed or reproduced.
-    // The hero now just uses the plain CSS-only reveal already defined
-    // in style.css (.hero-photo:not(.js-hero-sequence) .hero-box > *),
-    // with no scroll-jacking/pin involved.
+    // The hero intro (logo -> name -> curtain -> headline) used to be a
+    // scroll-scrubbed/pinned GSAP timeline, which kept producing glitches
+    // (several phases visibly rendering at once) that couldn't be
+    // reliably fixed or reproduced. It's now a plain, fixed-timer CSS
+    // animation sequence instead (see .hero-logo-intro, .hero-intro-name,
+    // .hero-curtain and .hero-box > * in style.css) -- no scroll/JS
+    // involved at all, so there's no scroll position to desync from.
 
     // Editorial strip is a plain CSS marquee (see style.css) -- no JS
     // needed, it just loops on its own.
