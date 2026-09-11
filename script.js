@@ -149,37 +149,29 @@ document.addEventListener('DOMContentLoaded', () => {
       if (heroIntroName) heroIntroName.classList.add('js-active');
       const heroIntroNameEls = gsap.utils.toArray('.hero-intro-name > *');
       gsap.set(heroIntroNameEls, { opacity: 0, x: '60vw' });
-      const heroTextEls = gsap.utils.toArray('.hero-box > *, .hero-stats');
-      gsap.set(heroTextEls, { opacity: 0, x: '-60vw' });
-      const heroCta = document.querySelector('.hero-cta');
-      if (heroCta) gsap.set(heroCta, { scale: 0.82 });
+      // Hero itself is pinned via CSS position: sticky (see .hero-photo)
+      // instead of GSAP's pin -- Leistungen, right after it in the flow,
+      // naturally slides up and over it like a card as the sticky hold
+      // runs out. That box only holds for exactly its own height (100vh),
+      // so this scrub must fit entirely within that same one-screen
+      // scroll distance, or the tail end of the animation would be
+      // playing out already hidden behind Leistungen.
       const heroLogoTl = gsap.timeline({
         scrollTrigger: {
           trigger: '.hero-photo',
           start: 'top top',
-          end: () => `+=${window.innerHeight * 3.2}`,
+          end: () => `+=${window.innerHeight}`,
           scrub: true,
-          pin: true,
-          anticipatePin: 1,
         },
       });
       heroLogoTl
         .to(heroLogoImg, { scale: 5.5, filter: 'blur(24px)', ease: 'none' }, 0)
         .to(heroLogoIntro, { autoAlpha: 0, ease: 'none' }, 0.15)
-        // Phase 2: name + short description, a personal beat before the
-        // main copy takes over.
+        // Name beat -- in, hold, out. Nothing follows it anymore (the
+        // main headline moved out of the hero entirely), so the pin
+        // just holds its final state until Leistungen covers it.
         .to(heroIntroNameEls, { opacity: 1, x: 0, ease: 'power2.out', stagger: 0.08 }, 0.35)
-        .to(heroIntroNameEls, { opacity: 0, x: '60vw', ease: 'power1.in', stagger: 0.05 }, 0.85)
-        // Phase 3: the main hero copy slides in from the left this time.
-        .to(heroTextEls, { opacity: 1, x: 0, ease: 'power2.out', stagger: 0.06 }, 1.05)
-        // Phase 4: once the text has landed, further scrolling slides it
-        // out to the left (behind the portrait) instead of it just
-        // sitting there until the pin releases.
-        .to(heroTextEls, { opacity: 0, x: '-60vw', ease: 'power1.in', stagger: 0.04 }, 1.65);
-      // The CTA row gets its own little punch-in on top of the shared
-      // slide, so it reads as the thing to act on rather than just more
-      // copy scrolling by.
-      if (heroCta) heroLogoTl.to(heroCta, { scale: 1, ease: 'back.out(2.4)' }, 1.3);
+        .to(heroIntroNameEls, { opacity: 0, x: '60vw', ease: 'power1.in', stagger: 0.05 }, 0.7);
     }
 
     // Editorial strip is a plain CSS marquee (see style.css) -- no JS
