@@ -158,15 +158,18 @@ document.addEventListener('DOMContentLoaded', () => {
       const heroAfterWordsEls = gsap.utils.toArray('.hero-sub-detail, .hero-cta, .hero-cta-secondary, .hero-stats');
       gsap.set(heroAfterWordsEls, { opacity: 0, y: 24 });
       const heroWordEls = gsap.utils.toArray('.hero-sub .hero-word');
-      gsap.set(heroWordEls, { opacity: 0 });
-      gsap.set(heroWordEls.filter((w) => !w.classList.contains('hero-word-accent')), { y: 16 });
+      // Plain words stay in place and just light up from dim to full
+      // color -- the same "lit" mechanic as the reach section's
+      // "...deutschlandweit unterwegs." line -- instead of fading/rising
+      // in, so the reveal reads as text lighting up rather than moving.
+      gsap.set(heroWordEls.filter((w) => !w.classList.contains('hero-word-accent')), { color: 'rgba(247, 227, 180, 0.35)' });
       // The three service categories (Events, Unternehmen, Sport) get a
       // camera-iris wipe instead of the plain fade+rise every other word
       // uses -- a nod to the f-stop/aperture motif used elsewhere in the
       // hero, and a clearer "this one's different" cue than a snap-focus
       // blur ever was.
       const heroAccentWords = heroWordEls.filter((w) => w.classList.contains('hero-word-accent'));
-      gsap.set(heroAccentWords, { clipPath: 'circle(0% at 50% 50%)', scale: 0.85 });
+      gsap.set(heroAccentWords, { opacity: 0, clipPath: 'circle(0% at 50% 50%)', scale: 0.85 });
       const heroLogoTl = gsap.timeline({
         scrollTrigger: {
           trigger: '.hero-photo',
@@ -206,7 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ease: 'power2.out', duration: 0.45,
           }, start);
         } else {
-          heroLogoTl.to(word, { opacity: 1, y: 0, ease: 'power2.out', duration: 0.28 }, start);
+          heroLogoTl.to(word, { color: '#f7e3b4', ease: 'none', duration: 0.22 }, start);
         }
       });
       const wordsEnd = WORDS_START + (heroWordEls.length - 1) * WORD_STEP + 0.45;
