@@ -236,39 +236,38 @@
   </section>
 
   <section class="section reach-section" id="reach">
-    <svg class="reach-map" viewBox="0 0 300 400" aria-hidden="true">
-      <!-- City-map street hub, traced by eye from a real Detmold
-           street-map export (Cartida) -- roads fanning out from a
-           central junction, a lake cluster to the upper right, a
-           corner lake, a mid-right lake, and a straight rail line
-           crossing the upper-left corner. Not a pixel-accurate
-           import (this environment can't fetch the source file or
-           live map data), just the same "map poster" read. -->
-      <path class="reach-map-rail" d="M0,58 L201,0" />
-      <g class="reach-map-roads">
-        <path d="M153,179 C105,122 60,90 0,56" />
-        <path d="M153,179 C123,150 123,92 123,0" />
-        <path d="M153,179 C165,130 200,100 288,80" />
-        <path d="M153,179 C219,240 260,270 300,338" />
-        <path d="M153,179 C127,240 127,320 127,400" />
-        <path d="M153,179 C78,230 40,270 0,310" />
-        <path d="M153,179 C90,240 56,280 30,330" />
-        <path d="M153,179 C90,179 40,175 0,174" />
+    <svg class="reach-burst" viewBox="0 0 300 300" aria-hidden="true">
+      <!-- Lens-flare starburst behind the statement -- a rotating ray
+           burst + aperture ring, tying "reach" to the camera-scale
+           motifs used elsewhere (aperture/shutter/focus) instead of a
+           generic decoration, with real motion so the section has
+           some punch instead of sitting static. -->
+      <circle class="reach-burst-glow" cx="150" cy="150" r="55" />
+      <circle class="reach-burst-ring" cx="150" cy="150" r="118" />
+      <circle class="reach-burst-ring reach-burst-ring-inner" cx="150" cy="150" r="90" />
+      <g class="reach-burst-rays">
+        <path class="ray ray-long" d="M150,150 L146,18 L150,4 L154,18 Z" />
+        <path class="ray ray-short" d="M150,150 L147,55 L150,42 L153,55 Z" />
+        <path class="ray ray-long" d="M150,150 L146,18 L150,4 L154,18 Z" transform="rotate(45 150 150)" />
+        <path class="ray ray-short" d="M150,150 L147,55 L150,42 L153,55 Z" transform="rotate(45 150 150)" />
+        <path class="ray ray-long" d="M150,150 L146,18 L150,4 L154,18 Z" transform="rotate(90 150 150)" />
+        <path class="ray ray-short" d="M150,150 L147,55 L150,42 L153,55 Z" transform="rotate(90 150 150)" />
+        <path class="ray ray-long" d="M150,150 L146,18 L150,4 L154,18 Z" transform="rotate(135 150 150)" />
+        <path class="ray ray-short" d="M150,150 L147,55 L150,42 L153,55 Z" transform="rotate(135 150 150)" />
+        <path class="ray ray-long" d="M150,150 L146,18 L150,4 L154,18 Z" transform="rotate(180 150 150)" />
+        <path class="ray ray-short" d="M150,150 L147,55 L150,42 L153,55 Z" transform="rotate(180 150 150)" />
+        <path class="ray ray-long" d="M150,150 L146,18 L150,4 L154,18 Z" transform="rotate(225 150 150)" />
+        <path class="ray ray-short" d="M150,150 L147,55 L150,42 L153,55 Z" transform="rotate(225 150 150)" />
+        <path class="ray ray-long" d="M150,150 L146,18 L150,4 L154,18 Z" transform="rotate(270 150 150)" />
+        <path class="ray ray-short" d="M150,150 L147,55 L150,42 L153,55 Z" transform="rotate(270 150 150)" />
+        <path class="ray ray-long" d="M150,150 L146,18 L150,4 L154,18 Z" transform="rotate(315 150 150)" />
+        <path class="ray ray-short" d="M150,150 L147,55 L150,42 L153,55 Z" transform="rotate(315 150 150)" />
       </g>
-      <g class="reach-map-roads-minor">
-        <path d="M153,179 C170,155 178,135 181,110" />
-        <path d="M153,179 C185,195 210,210 221,216" />
-        <path d="M153,179 C130,210 120,230 110,255" />
+      <g class="reach-burst-ping-wrap">
+        <circle class="reach-burst-ping" cx="150" cy="150" r="6" />
+        <circle class="reach-burst-ping reach-burst-ping-delay" cx="150" cy="150" r="6" />
       </g>
-      <path class="reach-map-water" d="M181,96 C195,88 212,92 216,104 C226,100 236,110 232,122 C240,130 235,142 222,140 C218,150 202,150 198,140 C186,142 180,128 188,120 C178,116 174,102 181,96 Z" />
-      <path class="reach-map-water" d="M278,18 C288,12 300,18 300,30 C300,42 288,46 280,40 C272,44 264,34 270,26 C266,20 272,14 278,18 Z" />
-      <path class="reach-map-water" d="M262,130 C272,124 284,130 284,142 C292,148 288,158 276,156 C270,162 258,156 260,146 C252,142 254,132 262,130 Z" />
-      <g class="reach-map-ping-wrap">
-        <circle class="reach-map-ping" cx="153" cy="179" r="4" />
-        <circle class="reach-map-ping reach-map-ping-delay" cx="153" cy="179" r="4" />
-      </g>
-      <path class="reach-map-pin" d="M153,162c-9.4,0-17,7.6-17,17c0,12.7,17,32,17,32s17-19.3,17-32C170,169.6,162.4,162,153,162z" />
-      <circle class="reach-map-pin-hole" cx="153" cy="179" r="6.5" />
+      <circle class="reach-burst-core" cx="150" cy="150" r="6" />
     </svg>
     <div class="wrap">
       <p class="reach-text" id="reachText">
