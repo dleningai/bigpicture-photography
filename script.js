@@ -149,21 +149,31 @@ document.addEventListener('DOMContentLoaded', () => {
       gsap.set(heroIntroNameEls, { opacity: 0, x: '60vw' });
       const heroCurtain = document.getElementById('heroCurtain');
       if (heroCurtain) gsap.set(heroCurtain, { opacity: 0 });
-      const heroTextEls = gsap.utils.toArray('.hero-box > *, .hero-stats');
-      gsap.set(heroTextEls, { opacity: 0, y: 24 });
-      // The three service categories inside the headline (Events,
-      // Unternehmen, Sport) get their own reveal on top of the shared one
-      // above -- each starts blurred/oversized and snaps into focus, one
-      // after another, once the rest of the sentence is already in.
-      const heroAccentWords = gsap.utils.toArray('.hero-sub .hero-word-accent');
-      gsap.set(heroAccentWords, { opacity: 0, scale: 1.5, filter: 'blur(10px)' });
+      // The headline is revealed word by word (not as one block) -- see
+      // the per-word loop below, which schedules each .hero-word
+      // individually between the eyebrow (before) and the detail line +
+      // CTA row (after).
+      const heroEyebrowEl = document.querySelector('.hero-eyebrow');
+      gsap.set(heroEyebrowEl, { opacity: 0, y: 24 });
+      const heroAfterWordsEls = gsap.utils.toArray('.hero-sub-detail, .hero-cta, .hero-cta-secondary, .hero-stats');
+      gsap.set(heroAfterWordsEls, { opacity: 0, y: 24 });
+      const heroWordEls = gsap.utils.toArray('.hero-sub .hero-word');
+      gsap.set(heroWordEls, { opacity: 0 });
+      gsap.set(heroWordEls.filter((w) => !w.classList.contains('hero-word-accent')), { y: 16 });
+      // The three service categories (Events, Unternehmen, Sport) get a
+      // camera-iris wipe instead of the plain fade+rise every other word
+      // uses -- a nod to the f-stop/aperture motif used elsewhere in the
+      // hero, and a clearer "this one's different" cue than a snap-focus
+      // blur ever was.
+      const heroAccentWords = heroWordEls.filter((w) => w.classList.contains('hero-word-accent'));
+      gsap.set(heroAccentWords, { clipPath: 'circle(0% at 50% 50%)', scale: 0.85 });
       const heroCta = document.querySelector('.hero-cta');
       if (heroCta) gsap.set(heroCta, { scale: 0.82 });
       const heroLogoTl = gsap.timeline({
         scrollTrigger: {
           trigger: '.hero-photo',
           start: 'top top',
-          end: () => `+=${window.innerHeight * 3.4}`,
+          end: () => `+=${window.innerHeight * 5.2}`,
           scrub: true,
           pin: true,
           anticipatePin: 1,
@@ -180,16 +190,34 @@ document.addEventListener('DOMContentLoaded', () => {
         .to(heroIntroNameEls, { opacity: 0, x: '60vw', ease: 'power1.in', duration: 0.3, stagger: 0.05 }, 1.3)
         // Phase 3: only once the name has fully left does a solid curtain
         // drop over the photo -- the face is no longer visible at all --
-        // and the main copy fades/rises in on top of it.
+        // and the eyebrow leads the headline in.
         .to(heroCurtain, { opacity: 1, ease: 'power2.out', duration: 0.3 }, 1.7)
-        .to(heroTextEls, { opacity: 1, y: 0, ease: 'power2.out', duration: 0.35, stagger: 0.06 }, 1.9)
-        // Category snap-into-focus, one by one, starting just before the
-        // base reveal above finishes.
-        .to(heroAccentWords, { opacity: 1, scale: 1, filter: 'blur(0px)', ease: 'back.out(1.8)', duration: 0.4, stagger: 0.18 }, 2.05);
+        .to(heroEyebrowEl, { opacity: 1, y: 0, ease: 'power2.out', duration: 0.3 }, 1.9);
+      // Phase 4: the headline cascades in one word at a time, scrubbed to
+      // scroll like everything else -- each word gets an explicit start
+      // time (rather than a stagger on one shared tween) so the plain
+      // words and the iris-wipe category words stay in their correct
+      // reading order even though they animate differently.
+      const WORDS_START = 2.2;
+      const WORD_STEP = 0.14;
+      heroWordEls.forEach((word, i) => {
+        const start = WORDS_START + i * WORD_STEP;
+        if (word.classList.contains('hero-word-accent')) {
+          heroLogoTl.to(word, {
+            opacity: 1, scale: 1, clipPath: 'circle(75% at 50% 50%)',
+            ease: 'power2.out', duration: 0.45,
+          }, start);
+        } else {
+          heroLogoTl.to(word, { opacity: 1, y: 0, ease: 'power2.out', duration: 0.28 }, start);
+        }
+      });
+      const wordsEnd = WORDS_START + (heroWordEls.length - 1) * WORD_STEP + 0.45;
+      // Phase 5: detail line + CTA land once the whole headline is in.
+      heroLogoTl.to(heroAfterWordsEls, { opacity: 1, y: 0, ease: 'power2.out', duration: 0.3, stagger: 0.08 }, wordsEnd + 0.1);
       // The CTA row gets its own little punch-in on top of the shared
       // reveal, so it reads as the thing to act on rather than just more
       // copy scrolling by.
-      if (heroCta) heroLogoTl.to(heroCta, { scale: 1, ease: 'back.out(2.4)', duration: 0.3 }, 2.8);
+      if (heroCta) heroLogoTl.to(heroCta, { scale: 1, ease: 'back.out(2.4)', duration: 0.3 }, wordsEnd + 0.5);
       // No slide-out phase -- once the copy has landed the pin just holds
       // it there; further scrolling releases the pin and the whole
       // section scrolls away normally into Leistungen underneath, instead
