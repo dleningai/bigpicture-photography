@@ -1167,27 +1167,27 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 .services-intro {
   max-width: var(--max-width); margin: 0 auto 56px; padding: 0 20px;
 }
+/* Same component as the aperture scale in the home hero
+   (.editorial-strip-fstop) and the shutter-speed scale on the portfolio
+   page (.pf-shutter-speed): tick above, mono label below, centered --
+   reused as-is here instead of a bespoke tag row. */
 .services-intro-meta {
-  display: flex; align-items: center; justify-content: space-between;
+  display: flex; justify-content: center; align-items: flex-end;
+  gap: clamp(14px, 3vw, 28px);
   padding: 16px 0;
   margin-bottom: 48px;
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
 }
-/* Same device as the marquee's f-stop scale (.editorial-strip-fstop) --
-   a small tick + low-opacity mono label -- so this bar reads as part of
-   the same visual system instead of a plain text row. */
 .services-intro-tag {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.45);
+  display: flex; flex-direction: column; align-items: center; gap: 5px;
+  font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.03em;
+  color: var(--ink-faint);
 }
 .services-intro-tag i {
-  display: block; width: 1px; height: 10px;
-  background: rgba(255, 255, 255, 0.28);
+  display: block; width: 1px; height: 8px;
+  background: var(--ink-faint);
 }
-.services-intro-tag-center { color: rgba(255, 255, 255, 0.45); }
 .services-intro-row::after { content: ''; display: block; clear: both; }
 .services-intro-media {
   float: left;
@@ -1209,7 +1209,8 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 }
 .services-intro-text-dim { color: var(--ink-faint); }
 @media (max-width: 640px) {
-  .services-intro-meta { font-size: 0.6rem; gap: 8px; }
+  .services-intro-meta { gap: 10px; }
+  .services-intro-tag { font-size: 0.56rem; }
   .services-intro-media { float: none; width: 110px; margin: 0 0 20px; }
 }
 
