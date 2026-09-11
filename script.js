@@ -491,59 +491,25 @@ document.addEventListener('DOMContentLoaded', () => {
     sections.forEach((sec) => spyObserver.observe(sec));
   });
 
-  // Animated stat counters — a slot-machine reel reveal: each character
-  // gets its own vertical strip of random digits above the real value,
-  // sliding top-to-bottom into place, cascading left to right so the
-  // leading digit lands first and the rest follow.
+  // Animated stat counters — a simple count-up from 0 to the target
+  // value, staggered left to right. Plain textContent updates driven by
+  // requestAnimationFrame, no per-digit DOM rebuilding, so it stays
+  // smooth even while the section's scroll-tied color crossfade runs
+  // at the same time.
   const statStrips = document.querySelectorAll('.stats-strip, .stats-highlight');
   if (statStrips.length) {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const COUNT_DURATION = 1200;
 
-    function buildReel(counter, finalChar, ci) {
-      const isDigit = /[0-9]/.test(finalChar);
-      const reel = document.createElement('span');
-      reel.className = 'reel-digit';
-
-      if (!isDigit) {
-        reel.textContent = finalChar;
-        reel.classList.add('reel-static');
-        counter.appendChild(reel);
-        setTimeout(() => reel.classList.add('is-in'), ci * 180);
-        return;
+    function animateCount(counter, target, prefix, suffix, decimals) {
+      const start = performance.now();
+      function tick(now) {
+        const p = Math.min((now - start) / COUNT_DURATION, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        counter.textContent = `${prefix}${(target * eased).toFixed(decimals)}${suffix}`;
+        if (p < 1) requestAnimationFrame(tick);
       }
-
-      const randomCount = 9 + Math.floor(Math.random() * 3);
-      const strip = document.createElement('span');
-      strip.className = 'reel-strip';
-      const finalSpan = document.createElement('span');
-      finalSpan.textContent = finalChar;
-      strip.appendChild(finalSpan);
-      for (let i = 0; i < randomCount; i += 1) {
-        const s = document.createElement('span');
-        s.textContent = String(Math.floor(Math.random() * 10));
-        strip.appendChild(s);
-      }
-      strip.style.transform = `translateY(-${randomCount}em)`;
-      reel.appendChild(strip);
-      counter.appendChild(reel);
-
-      setTimeout(() => {
-        // Double rAF so the browser has actually painted the reel's
-        // starting offset before the transition kicks in -- a single
-        // setTimeout can otherwise fire before that paint, causing the
-        // transition to jump/skip when several reels start at once.
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            strip.style.transition = 'transform 1.4s cubic-bezier(0.16, 1, 0.3, 1)';
-            strip.style.transform = 'translateY(0)';
-            strip.addEventListener(
-              'transitionend',
-              () => { strip.style.willChange = 'auto'; },
-              { once: true }
-            );
-          });
-        });
-      }, ci * 180);
+      requestAnimationFrame(tick);
     }
 
     const statObserver = new IntersectionObserver(
@@ -552,22 +518,21 @@ document.addEventListener('DOMContentLoaded', () => {
           if (!entry.isIntersecting) return;
           const counters = Array.from(entry.target.querySelectorAll('.stat-val'));
 
-          counters.forEach((counter) => {
-            const target = Math.round(parseFloat(counter.dataset.target));
+          counters.forEach((counter, ci) => {
+            const target = parseFloat(counter.dataset.target);
             const prefix = counter.dataset.prefix || '';
             const suffix = counter.dataset.suffix || '';
-            const finalText = `${prefix}${target}${suffix}`;
+            const decimals = parseInt(counter.dataset.decimals || '0', 10);
             const statEl = counter.closest('.stat');
 
             if (reduceMotion) {
-              counter.textContent = finalText;
+              counter.textContent = `${prefix}${target.toFixed(decimals)}${suffix}`;
               statEl.classList.add('is-visible');
               return;
             }
 
             statEl.classList.add('is-visible');
-            counter.textContent = '';
-            finalText.split('').forEach((ch, ci) => buildReel(counter, ch, ci));
+            setTimeout(() => animateCount(counter, target, prefix, suffix, decimals), ci * 120);
           });
 
           statObserver.unobserve(entry.target);
