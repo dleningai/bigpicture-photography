@@ -823,16 +823,19 @@ img.img-loaded { opacity: 1; filter: blur(0); }
    the compact strip verbatim. Deliberate white-on-dark contrast break
    (lenis.dev-style), the one light section on an otherwise dark page. */
 .stats-highlight {
+  --skew: 60px;
   padding: 130px 0;
   background: #fff;
   /* Diagonal top/bottom edge instead of a straight cut, so the
      black/white boundary reads as a deliberate wipe rather than a
      flat line -- on top of the scrub color crossfade already in
-     place, not instead of it. */
-  clip-path: polygon(0 60px, 100% 0, 100% calc(100% - 60px), 0 100%);
+     place, not instead of it. The angle itself is scroll-driven (see
+     script.js) between --skew-min/--skew-max, so it's steepest as the
+     section enters/leaves and levels out while centered. */
+  clip-path: polygon(0 var(--skew), 100% 0, 100% calc(100% - var(--skew)), 0 100%);
 }
 @media (max-width: 700px) {
-  .stats-highlight { clip-path: polygon(0 28px, 100% 0, 100% calc(100% - 28px), 0 100%); }
+  .stats-highlight { --skew: 28px; }
 }
 .stats-highlight .wrap {
   display: grid;
@@ -879,14 +882,15 @@ img.img-loaded { opacity: 1; filter: blur(0); }
    (diagonal wipe edge, corner bracket), used for the closing call to
    action on Portfolio instead of the dark glow-card panel. */
 .cta-light {
+  --skew: 60px;
   position: relative;
   padding: 140px 0;
   background: #fff;
-  clip-path: polygon(0 60px, 100% 0, 100% 100%, 0 calc(100% - 60px));
+  clip-path: polygon(0 var(--skew), 100% 0, 100% 100%, 0 calc(100% - var(--skew)));
   box-shadow: 0 -24px 60px rgba(0, 0, 0, 0.4);
 }
 @media (max-width: 700px) {
-  .cta-light { clip-path: polygon(0 28px, 100% 0, 100% 100%, 0 calc(100% - 28px)); padding: 100px 0; }
+  .cta-light { --skew: 28px; padding: 100px 0; }
 }
 .cta-light-inner {
   position: relative;

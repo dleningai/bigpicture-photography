@@ -9,6 +9,39 @@ document.addEventListener('DOMContentLoaded', () => {
   const footerMonthEl = document.getElementById('footerMonth');
   if (footerMonthEl) footerMonthEl.textContent = String(new Date().getMonth() + 1).padStart(2, '0') + '’';
 
+  // Scroll-driven diagonal-edge angle -- plain scroll listener, no GSAP,
+  // so it still runs even when the CDN is blocked. The skew is steepest
+  // while a panel is entering/leaving the viewport and flattens out
+  // while it's centered, so the diagonal cut feels alive instead of
+  // being a fixed line.
+  const skewPanels = Array.from(document.querySelectorAll('.stats-highlight, .cta-light'));
+  if (skewPanels.length && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    let skewTicking = false;
+    const updateSkew = () => {
+      skewTicking = false;
+      const vh = window.innerHeight;
+      const isMobile = window.matchMedia('(max-width: 700px)').matches;
+      const skewMin = isMobile ? 10 : 20;
+      const skewMax = isMobile ? 64 : 140;
+      skewPanels.forEach((panel) => {
+        const rect = panel.getBoundingClientRect();
+        const centerOffset = (rect.top + rect.height / 2) - vh / 2;
+        const range = vh / 2 + rect.height / 2;
+        const progress = range > 0 ? Math.min(1, Math.abs(centerOffset) / range) : 0;
+        const skew = skewMin + (skewMax - skewMin) * progress;
+        panel.style.setProperty('--skew', `${skew.toFixed(1)}px`);
+      });
+    };
+    const onScroll = () => {
+      if (skewTicking) return;
+      skewTicking = true;
+      requestAnimationFrame(updateSkew);
+    };
+    updateSkew();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+  }
+
   // Smooth scroll (Lenis) + scroll-driven hero parallax (GSAP). Both are
   // pure enhancements on top of content that is already visible via CSS,
   // so any failure here (blocked CDN, ad-blocker, version mismatch) must
