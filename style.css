@@ -25,7 +25,6 @@
   --font: 'Montserrat', Arial, sans-serif;
   --font-heading: 'Bounded', 'Montserrat', Arial, sans-serif;
   --font-mono: 'Montserrat', Arial, sans-serif;
-  --font-accent: 'Instrument Serif', Georgia, serif;
   --max-width: 1100px;
   --radius: 22px;
 }
@@ -738,17 +737,14 @@ img.img-loaded { opacity: 1; filter: blur(0); }
    the sentence word by word as the visitor scrolls, instead of the line
    fading in as one block. */
 .hero-word { display: inline-block; }
-/* The three service categories get their own font (an italic serif
-   against the heading's bold sans) so they read as the headline's
-   pull-quote, not just bold text -- the rest of the sentence stays in
-   the normal heading font entirely unchanged. They're also real links
-   into the matching portfolio chapter, with an underline that draws in
-   on hover like the nav links. */
+/* The three service categories stand out through color alone -- same
+   weight and family as the rest of the headline, no second typeface --
+   the same device the "01" numerals use in the Leistungen list below
+   (.service-row-num: identical heading font/weight, just a different
+   color). They're also real links into the matching portfolio chapter,
+   with an underline that draws in on hover like the nav links. */
 .hero-word-accent {
-  font-family: var(--font-accent);
-  font-style: italic;
-  font-weight: 500;
-  color: var(--gold-bright);
+  color: var(--gold);
   text-decoration: none;
   position: relative;
   pointer-events: auto;
