@@ -45,12 +45,21 @@ body {
   margin: 0;
   padding: 0;
   line-height: 1.7;
-  opacity: 0;
-  transition: opacity 0.32s ease;
   -webkit-font-smoothing: antialiased;
 }
-body.is-loaded { opacity: 1; }
-body.is-leaving { opacity: 0; pointer-events: none; }
+/* Page-transition overlay -- starts opaque (covers the page while
+   fonts/scripts settle) and is removed by script.js once ready, or
+   re-activated just before navigating to another internal page. A
+   dedicated element rather than toggling body opacity so it can never
+   be masked by a section's own background. */
+.page-transition-overlay {
+  position: fixed; inset: 0; z-index: 9999;
+  background: var(--bg);
+  opacity: 0;
+  transition: opacity 0.38s ease;
+  pointer-events: none;
+}
+.page-transition-overlay.is-active { opacity: 1; pointer-events: all; }
 
 h1, h2, h3 { font-family: var(--font-heading); }
 
