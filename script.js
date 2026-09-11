@@ -45,6 +45,53 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Custom cursor + magnetic buttons -- mouse-only (fine pointer),
+  // never on touch devices. A small dot tracks the cursor exactly; a
+  // ring trails it with easing and grows over clickable elements.
+  // Buttons additionally pull slightly toward the cursor while
+  // hovered ("magnetic"), snapping back on leave.
+  if (window.matchMedia('(pointer: fine)').matches && !reduceMotion) {
+    document.body.classList.add('has-custom-cursor');
+
+    const cursorDot = document.createElement('div');
+    cursorDot.className = 'cursor-dot';
+    const cursorRing = document.createElement('div');
+    cursorRing.className = 'cursor-ring';
+    document.body.append(cursorDot, cursorRing);
+
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let ringX = mouseX;
+    let ringY = mouseY;
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      cursorDot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
+    });
+    const animateRing = () => {
+      ringX += (mouseX - ringX) * 0.18;
+      ringY += (mouseY - ringY) * 0.18;
+      cursorRing.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%, -50%)`;
+      requestAnimationFrame(animateRing);
+    };
+    animateRing();
+
+    document.querySelectorAll('a, button, .btn').forEach((el) => {
+      el.addEventListener('mouseenter', () => cursorRing.classList.add('is-active'));
+      el.addEventListener('mouseleave', () => cursorRing.classList.remove('is-active'));
+    });
+
+    document.querySelectorAll('.btn').forEach((btn) => {
+      btn.addEventListener('mousemove', (e) => {
+        const rect = btn.getBoundingClientRect();
+        const relX = e.clientX - (rect.left + rect.width / 2);
+        const relY = e.clientY - (rect.top + rect.height / 2);
+        btn.style.transform = `translate(${relX * 0.25}px, ${relY * 0.35}px)`;
+      });
+      btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
+    });
+  }
+
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
   const servicesYearEl = document.getElementById('servicesYear');
