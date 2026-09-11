@@ -236,23 +236,34 @@
   </section>
 
   <section class="section reach-section" id="reach">
-    <svg class="reach-map" viewBox="0 0 300 380" aria-hidden="true">
-      <path class="reach-map-outline" d="M148,8 170,15 185,35 175,55 195,50 210,70 230,65 235,90 220,100 245,120 240,160 255,175 235,205 215,230 200,250 195,300 175,330 155,355 120,345 100,330 75,310 55,290 60,260 45,230 50,200 65,190 55,160 45,140 55,110 75,95 70,70 90,55 105,40 120,20 Z" />
-      <g class="reach-map-routes">
-        <line x1="118" y1="126" x2="150" y2="62" />
-        <line x1="118" y1="126" x2="212" y2="108" />
-        <line x1="118" y1="126" x2="70" y2="178" />
-        <line x1="118" y1="126" x2="132" y2="212" />
-        <line x1="118" y1="126" x2="158" y2="308" />
+    <svg class="reach-map" viewBox="0 0 300 400" aria-hidden="true">
+      <!-- Stylized city-map street hub, traced by eye from a real
+           Detmold street-map export (Cartida) -- roads fanning out
+           from a central junction, with two water bodies nearby. Not
+           a pixel-accurate import, just the same "map poster" read. -->
+      <g class="reach-map-roads">
+        <path d="M150,195 C110,150 60,120 15,25" />
+        <path d="M150,195 C185,140 195,80 205,10" />
+        <path d="M150,195 C210,165 250,150 292,120" />
+        <path d="M150,195 C215,205 255,235 288,275" />
+        <path d="M150,195 C165,250 168,280 158,398" />
+        <path d="M150,195 C105,235 85,265 55,335" />
+        <path d="M150,195 C90,205 40,195 4,178" />
       </g>
-      <circle class="reach-map-city" cx="150" cy="62" r="3" />
-      <circle class="reach-map-city" cx="212" cy="108" r="3" />
-      <circle class="reach-map-city" cx="70" cy="178" r="3" />
-      <circle class="reach-map-city" cx="132" cy="212" r="3" />
-      <circle class="reach-map-city" cx="158" cy="308" r="3" />
-      <circle class="reach-map-ping" cx="118" cy="126" r="4" />
-      <circle class="reach-map-ping reach-map-ping-delay" cx="118" cy="126" r="4" />
-      <circle class="reach-map-home" cx="118" cy="126" r="4" />
+      <g class="reach-map-roads-minor">
+        <path d="M95,150 C115,168 130,182 150,195" />
+        <path d="M205,140 C190,160 172,178 150,195" />
+        <path d="M180,230 C168,220 158,208 150,195" />
+        <path d="M110,255 C122,235 135,215 150,195" />
+      </g>
+      <path class="reach-map-water" d="M195,95 C215,88 232,100 230,120 C245,128 240,148 222,148 C215,162 190,158 188,140 C172,136 176,112 195,95 Z" />
+      <path class="reach-map-water" d="M258,255 C270,250 280,262 274,278 C280,292 266,302 254,294 C244,298 238,282 246,272 C240,260 250,252 258,255 Z" />
+      <g class="reach-map-ping-wrap">
+        <circle class="reach-map-ping" cx="150" cy="195" r="4" />
+        <circle class="reach-map-ping reach-map-ping-delay" cx="150" cy="195" r="4" />
+      </g>
+      <path class="reach-map-pin" d="M150,178c-9.4,0-17,7.6-17,17c0,12.7,17,32,17,32s17-19.3,17-32C167,185.6,159.4,178,150,178z" />
+      <circle class="reach-map-pin-hole" cx="150" cy="195" r="6.5" />
     </svg>
     <div class="wrap">
       <p class="reach-text" id="reachText">

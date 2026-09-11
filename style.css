@@ -1101,19 +1101,23 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   opacity: 0.5;
   pointer-events: none;
 }
-.reach-map-outline {
-  fill: none; stroke: var(--gold); stroke-width: 1.1;
-  stroke-linejoin: round;
+.reach-map-roads path {
+  fill: none; stroke: var(--gold); stroke-width: 1.3;
+  stroke-linecap: round;
 }
-.reach-map-routes line {
-  stroke: var(--gold); stroke-width: 0.6; stroke-dasharray: 2 4;
-  opacity: 0.7;
+.reach-map-roads-minor path {
+  fill: none; stroke: var(--gold); stroke-width: 0.6;
+  stroke-linecap: round; opacity: 0.55;
 }
-.reach-map-city { fill: var(--ink-faint); }
-.reach-map-home { fill: var(--gold-bright); }
+.reach-map-water {
+  fill: var(--gold); fill-opacity: 0.05;
+  stroke: var(--gold); stroke-width: 0.5; opacity: 0.6;
+}
+.reach-map-pin { fill: none; stroke: var(--gold-bright); stroke-width: 1.3; }
+.reach-map-pin-hole { fill: none; stroke: var(--gold-bright); stroke-width: 1.3; }
 .reach-map-ping {
   fill: none; stroke: var(--gold-bright); stroke-width: 1.5;
-  transform-origin: 118px 126px;
+  transform-origin: 150px 195px;
   animation: reachPing 2.6s ease-out infinite;
 }
 .reach-map-ping-delay { animation-delay: 1.3s; }
