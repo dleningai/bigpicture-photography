@@ -149,19 +149,23 @@ document.addEventListener('DOMContentLoaded', () => {
       if (heroIntroName) heroIntroName.classList.add('js-active');
       const heroIntroNameEls = gsap.utils.toArray('.hero-intro-name > *');
       gsap.set(heroIntroNameEls, { opacity: 0, x: '60vw' });
-      // Hero itself is pinned via CSS position: sticky (see .hero-photo)
-      // instead of GSAP's pin -- Leistungen, right after it in the flow,
-      // naturally slides up and over it like a card as the sticky hold
-      // runs out. That box only holds for exactly its own height (100vh),
-      // so this scrub must fit entirely within that same one-screen
-      // scroll distance, or the tail end of the animation would be
-      // playing out already hidden behind Leistungen.
+      // Hero is pinned via GSAP for exactly one screen height -- CSS
+      // position: sticky was tried instead (avoiding pin's DOM
+      // rewrites), but its containing-block/overflow interactions
+      // behave inconsistently across browsers (worked in testing here,
+      // didn't hold at all live). GSAP's pin is the version already
+      // proven reliable in this project. Leistungen, right after the
+      // pin-spacer in the flow, only starts entering once the pin
+      // releases at the end of this same scroll distance, so it stays
+      // off-screen until the name has fully exited.
       const heroLogoTl = gsap.timeline({
         scrollTrigger: {
           trigger: '.hero-photo',
           start: 'top top',
           end: () => `+=${window.innerHeight}`,
           scrub: true,
+          pin: true,
+          anticipatePin: 1,
         },
       });
       heroLogoTl

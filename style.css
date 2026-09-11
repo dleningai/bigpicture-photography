@@ -443,21 +443,8 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   padding: 105px 20px 80px;
   background: var(--bg);
 }
-/* position: sticky clamps to the nearest block-level ancestor's box --
-   .hero-photo is only 100vh tall, but being a direct child of <body>
-   (which is exactly document-height tall) meant it stayed glued to the
-   top for nearly the whole page instead of releasing after one screen.
-   This wrapper gives it a properly-sized box to stick within: 100vh of
-   pure pin (the logo+name beat plays out and finishes here) followed by
-   another 100vh where the sticky hold releases and Leistungen -- right
-   after it in the flow -- rides up to cover it, card-style. */
-.hero-pin-wrap {
-  position: relative;
-  height: 200vh;
-}
 .hero-photo {
-  height: 100vh;
-  position: sticky; top: 0; z-index: 1;
+  min-height: 100vh;
   padding-top: 190px;
   padding-bottom: 90px;
   flex-direction: column;
