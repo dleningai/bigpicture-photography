@@ -61,10 +61,12 @@ body {
 }
 .page-transition-overlay.is-active { opacity: 1; pointer-events: all; }
 
-/* Custom cursor -- a small gold dot plus a trailing ring that eases
-   behind it, growing over anything clickable. Mouse-only (script.js
-   gates this on `(pointer: fine)` and adds .has-custom-cursor to
-   body), so touch devices keep their native behavior untouched. */
+/* Custom cursor -- a small gold dot plus a trailing viewfinder frame
+   (corner brackets, same motif as the stats/service-row marks) that
+   eases behind it, growing over anything clickable. Mouse-only
+   (script.js gates this on `(pointer: fine)` and adds
+   .has-custom-cursor to body), so touch devices keep their native
+   behavior untouched. */
 body.has-custom-cursor, body.has-custom-cursor a, body.has-custom-cursor button {
   cursor: none;
 }
@@ -72,23 +74,24 @@ body.has-custom-cursor, body.has-custom-cursor a, body.has-custom-cursor button 
   position: fixed; top: 0; left: 0; z-index: 10000;
   pointer-events: none;
   transform: translate(-50%, -50%);
-  border-radius: 50%;
 }
 .cursor-dot {
   width: 6px; height: 6px;
+  border-radius: 50%;
   background: var(--gold-bright);
 }
 .cursor-ring {
   width: 34px; height: 34px;
-  border: 1px solid var(--gold);
-  opacity: 0.6;
-  transition: width 0.25s ease, height 0.25s ease, opacity 0.25s ease, border-color 0.25s ease;
+  opacity: 0.65;
+  transition: width 0.25s ease, height 0.25s ease, opacity 0.25s ease;
 }
+.cursor-ring svg { width: 100%; height: 100%; display: block; }
+.cursor-ring path { stroke: var(--gold); stroke-width: 1.5; fill: none; transition: stroke 0.25s ease; }
 .cursor-ring.is-active {
-  width: 54px; height: 54px;
-  border-color: var(--gold-bright);
-  opacity: 0.9;
+  width: 52px; height: 52px;
+  opacity: 0.95;
 }
+.cursor-ring.is-active path { stroke: var(--gold-bright); }
 @media (prefers-reduced-motion: reduce) {
   .cursor-dot, .cursor-ring { display: none; }
   body.has-custom-cursor, body.has-custom-cursor a, body.has-custom-cursor button { cursor: auto; }
