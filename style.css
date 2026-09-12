@@ -71,7 +71,9 @@ body.has-custom-cursor, body.has-custom-cursor a, body.has-custom-cursor button 
   cursor: none;
 }
 .cursor-dot, .cursor-ring {
-  position: fixed; top: 0; left: 0; z-index: 10000;
+  /* GLightbox's own overlay sits at z-index 999999 -- stay above it
+     so the cursor doesn't disappear behind an open lightbox. */
+  position: fixed; top: 0; left: 0; z-index: 1000000;
   pointer-events: none;
   transform: translate(-50%, -50%);
 }
