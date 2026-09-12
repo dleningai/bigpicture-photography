@@ -2272,7 +2272,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   display: flex; align-items: center; gap: 18px;
   max-width: 640px; margin: 0 auto;
 }
-.footer-meta-copy, .footer-meta-loc { white-space: nowrap; flex-shrink: 0; }
+.footer-meta-copy, .footer-meta-loc, .footer-meta-geo { white-space: nowrap; flex-shrink: 0; }
 .footer-meta-ticks {
   position: relative;
   flex: 1 1 auto; height: 22px;
@@ -2299,6 +2299,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 @media (max-width: 560px) {
   .footer-meta { gap: 12px; }
   .footer-meta-ticks { flex-basis: 60px; }
+  .footer-meta-geo, .footer-meta-geo + .footer-meta-ticks { display: none; }
 }
 
 /* ==========================================================
