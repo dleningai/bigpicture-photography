@@ -57,6 +57,12 @@ document.addEventListener('DOMContentLoaded', () => {
     cursorDot.className = 'cursor-dot';
     const cursorRing = document.createElement('div');
     cursorRing.className = 'cursor-ring';
+    cursorRing.innerHTML = `<svg viewBox="0 0 40 40" aria-hidden="true">
+      <path d="M2,10 L2,2 L10,2" />
+      <path d="M30,2 L38,2 L38,10" />
+      <path d="M38,30 L38,38 L30,38" />
+      <path d="M10,38 L2,38 L2,30" />
+    </svg>`;
     document.body.append(cursorDot, cursorRing);
 
     let mouseX = window.innerWidth / 2;
