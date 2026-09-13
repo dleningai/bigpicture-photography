@@ -106,65 +106,46 @@ document.addEventListener('DOMContentLoaded', () => {
   const footerMonthEl = document.getElementById('footerMonth');
   if (footerMonthEl) footerMonthEl.textContent = String(new Date().getMonth() + 1).padStart(2, '0') + '’';
 
-  // Scroll-driven diagonal-edge angle -- plain scroll listener, no GSAP,
-  // so it still runs even when the CDN is blocked. The skew is steepest
-  // while a panel is entering/leaving the viewport and flattens out
-  // while it's centered, so the diagonal cut feels alive instead of
-  // being a fixed line.
+  // Scroll-driven diagonal-edge angle + route ticker -- both used to be
+  // driven by the native 'scroll' event, which mobile browsers (iOS
+  // Safari in particular) fire in sparse bursts during momentum
+  // scrolling rather than every frame, so the CSS ended up visibly
+  // stepping instead of tracking the finger smoothly. Driving both off
+  // a single persistent requestAnimationFrame loop instead reads the
+  // scroll position fresh every rendered frame regardless of whether a
+  // 'scroll' event fired, which is what makes them feel buttery.
   const skewPanels = Array.from(document.querySelectorAll('.stats-highlight, .cta-light'));
-  if (skewPanels.length && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    let skewTicking = false;
-    const updateSkew = () => {
-      skewTicking = false;
-      const vh = window.innerHeight;
-      const isMobile = window.matchMedia('(max-width: 700px)').matches;
-      const skewMin = isMobile ? 10 : 20;
-      const skewMax = isMobile ? 64 : 140;
-      skewPanels.forEach((panel) => {
-        const rect = panel.getBoundingClientRect();
-        const centerOffset = (rect.top + rect.height / 2) - vh / 2;
-        const range = vh / 2 + rect.height / 2;
-        const progress = range > 0 ? Math.min(1, Math.abs(centerOffset) / range) : 0;
-        const skew = skewMin + (skewMax - skewMin) * progress;
-        panel.style.setProperty('--skew', `${skew.toFixed(1)}px`);
-      });
-    };
-    const onScroll = () => {
-      if (skewTicking) return;
-      skewTicking = true;
-      requestAnimationFrame(updateSkew);
-    };
-    updateSkew();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
-  }
-
-  // Route ticker -- shifts left as the reach section scrolls through
-  // the viewport, wrapping at -50% (the mark list is duplicated in the
-  // HTML) so it loops seamlessly instead of running out of track.
-  // Plain scroll listener, no GSAP.
   const reachRouteTrack = document.getElementById('reachRouteTrack');
   const reachSection = document.getElementById('reach');
-  if (reachRouteTrack && reachSection && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    let routeTicking = false;
-    const updateRoute = () => {
-      routeTicking = false;
-      const rect = reachSection.getBoundingClientRect();
+  const hasSkew = skewPanels.length > 0;
+  const hasRoute = reachRouteTrack && reachSection;
+  if ((hasSkew || hasRoute) && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const routeHalfWidth = hasRoute ? reachRouteTrack.scrollWidth / 2 : 0;
+    const tick = () => {
       const vh = window.innerHeight;
-      const total = rect.height + vh;
-      const progress = Math.min(1, Math.max(0, (vh - rect.top) / total));
-      const halfWidth = reachRouteTrack.scrollWidth / 2;
-      const offset = -(progress * halfWidth) % halfWidth;
-      reachRouteTrack.style.transform = `translateX(${offset}px)`;
+      if (hasSkew) {
+        const isMobile = window.matchMedia('(max-width: 700px)').matches;
+        const skewMin = isMobile ? 10 : 20;
+        const skewMax = isMobile ? 64 : 140;
+        skewPanels.forEach((panel) => {
+          const rect = panel.getBoundingClientRect();
+          const centerOffset = (rect.top + rect.height / 2) - vh / 2;
+          const range = vh / 2 + rect.height / 2;
+          const progress = range > 0 ? Math.min(1, Math.abs(centerOffset) / range) : 0;
+          const skew = skewMin + (skewMax - skewMin) * progress;
+          panel.style.setProperty('--skew', `${skew.toFixed(1)}px`);
+        });
+      }
+      if (hasRoute) {
+        const rect = reachSection.getBoundingClientRect();
+        const total = rect.height + vh;
+        const progress = Math.min(1, Math.max(0, (vh - rect.top) / total));
+        const offset = routeHalfWidth ? -(progress * routeHalfWidth) % routeHalfWidth : 0;
+        reachRouteTrack.style.transform = `translateX(${offset}px)`;
+      }
+      requestAnimationFrame(tick);
     };
-    const onRouteScroll = () => {
-      if (routeTicking) return;
-      routeTicking = true;
-      requestAnimationFrame(updateRoute);
-    };
-    updateRoute();
-    window.addEventListener('scroll', onRouteScroll, { passive: true });
-    window.addEventListener('resize', onRouteScroll);
+    requestAnimationFrame(tick);
   }
 
   // Smooth scroll (Lenis) + scroll-driven hero parallax (GSAP). Both are
@@ -298,6 +279,12 @@ document.addEventListener('DOMContentLoaded', () => {
       // (e.g. still the sitewide blur-up loader's blur) as the tween's
       // "from" value, leaving the logo permanently soft-focused at rest.
       gsap.set(heroLogoImg, { scale: 1, filter: 'blur(0px)' });
+      // Animating filter: blur() every scroll frame forces a repaint of
+      // the (increasingly large, since it's scaling up at the same
+      // time) element instead of a cheap compositor-only transform --
+      // one of the more common causes of scroll jank on mobile GPUs.
+      // Keep the effect but shrink the max blur on small screens.
+      const heroBlurMax = window.innerWidth <= 700 ? 10 : 24;
       // Two phases in one pin: (1) logo zooms/blurs out revealing the
       // photo, (2) only once that's done does the hero text slide down
       // into view — instead of the text sitting there the whole time.
@@ -330,7 +317,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
       });
       heroLogoTl
-        .to(heroLogoImg, { scale: 5.5, filter: 'blur(24px)', ease: 'none' }, 0)
+        .to(heroLogoImg, { scale: 5.5, filter: `blur(${heroBlurMax}px)`, ease: 'none' }, 0)
         .to(heroLogoIntro, { autoAlpha: 0, ease: 'none' }, 0.15)
         // Name beat -- in, hold, out. Finishes at 1.25, well inside the
         // first of the two scroll-screens above.
