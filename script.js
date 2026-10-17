@@ -399,8 +399,8 @@ document.addEventListener('DOMContentLoaded', () => {
         },
       });
       svcTrack.querySelectorAll('.svc-panel-img').forEach((img) => {
-        gsap.fromTo(img, { xPercent: -8 }, {
-          xPercent: 8,
+        gsap.fromTo(img, { xPercent: -4 }, {
+          xPercent: 4,
           ease: 'none',
           scrollTrigger: { trigger: img.parentElement, containerAnimation: svcTween, start: 'left right', end: 'right left', scrub: true },
         });
