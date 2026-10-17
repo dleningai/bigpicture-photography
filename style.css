@@ -2240,7 +2240,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   background: var(--gold-soft);
   box-shadow: 0 0 0 1px rgba(222, 175, 103, 0.25), 0 10px 26px rgba(0, 0, 0, 0.25), 0 0 20px rgba(222, 175, 103, 0.12);
 }
-.legal-section h3 { margin: 0 0 8px; font-size: 1rem; font-weight: 700; color: var(--gold); }
+.legal-section h2, .legal-section h3 { margin: 0 0 8px; font-size: 1rem; font-weight: 700; color: var(--gold); }
 .legal-section p { margin: 0; line-height: 1.75; color: var(--ink-dim); font-size: 0.94rem; }
 .legal-section a { color: var(--gold); text-decoration: none; }
 .legal-section a:hover { text-decoration: underline; }
@@ -2524,7 +2524,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
    Reach section)
    ========================================================== */
 .trust .trust-head { display: block; margin-bottom: 40px; }
-.trust-eyebrow { margin: 0 0 16px; font-family: var(--font-mono); font-size: .78rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: #b8863f; }
+.trust-eyebrow { margin: 0 0 16px; font-family: var(--font-mono); font-size: .78rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: #7a5820; }
 .trust-title { margin: 0; font-family: var(--font-heading); font-weight: 900; font-size: clamp(2rem, 5vw, 4.2rem); line-height: 1; letter-spacing: -.03em; color: #111; }
 .trust-title span { color: #b8863f; }
 .trust .trust-route { margin: 0 0 64px; padding: 18px 0; border-top: 1px solid rgba(0,0,0,.12); border-bottom: 1px solid rgba(0,0,0,.12); }
@@ -2671,5 +2671,5 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 .legal-panel .wrap, .lg-404-wrap { width: min(900px, calc(100% - 40px)); max-width: none; margin: 0 auto; padding-left: 0; padding-right: 0; }
 .legal-panel .legal-section { margin: 0; padding: 26px 0; border: 0; border-top: 1px solid var(--border); border-radius: 0; background: none; box-shadow: none; }
 .legal-panel .legal-section.active { background: none; box-shadow: none; border-color: var(--gold); }
-.legal-panel .legal-section h3 { font-family: var(--font-heading); font-weight: 900; font-size: 1.05rem; letter-spacing: -.01em; color: #fff; margin-bottom: 10px; }
+.legal-panel .legal-section h2, .legal-panel .legal-section h3 { font-family: var(--font-heading); font-weight: 900; font-size: 1.05rem; letter-spacing: -.01em; color: #fff; margin-bottom: 10px; }
 .lg-404-list { margin-top: 10px; }
