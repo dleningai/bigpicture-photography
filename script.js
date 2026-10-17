@@ -375,6 +375,38 @@ document.addEventListener('DOMContentLoaded', () => {
     // Editorial strip is a plain CSS marquee (see style.css) -- no JS
     // needed, it just loops on its own.
 
+    // Leistungen panels: pin the scroller and move the track sideways as
+    // the page scrolls down; each panel's photo drifts slightly against it.
+    const svcScroller = document.getElementById('svcScroller');
+    const svcTrack = document.getElementById('svcTrack');
+    if (svcScroller && svcTrack && hasScrollFx) {
+      svcScroller.classList.add('is-pinned');
+      const svcDistance = () => svcTrack.scrollWidth - window.innerWidth;
+      const svcProgress = document.getElementById('svcProgress');
+      const svcTween = gsap.to(svcTrack, {
+        x: () => -svcDistance(),
+        ease: 'none',
+        scrollTrigger: {
+          trigger: svcScroller,
+          start: 'top top',
+          end: () => `+=${svcDistance()}`,
+          pin: true,
+          scrub: 0.6,
+          invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            if (svcProgress) svcProgress.style.transform = `scaleX(${0.25 + self.progress * 0.75})`;
+          },
+        },
+      });
+      svcTrack.querySelectorAll('.svc-panel-img').forEach((img) => {
+        gsap.fromTo(img, { xPercent: -8 }, {
+          xPercent: 8,
+          ease: 'none',
+          scrollTrigger: { trigger: img.parentElement, containerAnimation: svcTween, start: 'left right', end: 'right left', scrub: true },
+        });
+      });
+    }
+
     // Leistungen → Einsatzgebiet cross-fade — two opacity/position
     // tweens scrubbed to the same scroll range. Every scroll position
     // maps to one well-defined visual state, so there's no pin-release
@@ -392,7 +424,9 @@ document.addEventListener('DOMContentLoaded', () => {
           scrub: true,
         },
       })
-        .to(leistungenSection, { opacity: 0.3, ease: 'none' }, 0)
+        // Fade the content, not the section: its solid background is what
+        // covers the pinned hero above, which would show through otherwise.
+        .to(leistungenSection.children, { opacity: 0.3, ease: 'none' }, 0)
         .to(reachSection, { autoAlpha: 1, y: 0, ease: 'none' }, 0);
     }
 
