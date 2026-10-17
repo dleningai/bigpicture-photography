@@ -315,8 +315,11 @@ document.addEventListener('DOMContentLoaded', () => {
       // the (increasingly large, since it's scaling up at the same
       // time) element instead of a cheap compositor-only transform --
       // one of the more common causes of scroll jank on mobile GPUs.
-      // Keep the effect but shrink the max blur on small screens.
-      const heroBlurMax = window.innerWidth <= 700 ? 10 : 24;
+      // Shrinking the radius wasn't enough to fix the reported jank, so
+      // mobile drops the blur tween entirely (0 = no blur() filter at
+      // all, scale-only, pure compositor work); desktop keeps it.
+      const isMobileHero = window.innerWidth <= 700;
+      const heroBlurMax = isMobileHero ? 0 : 24;
       // Two phases in one pin: (1) logo zooms/blurs out revealing the
       // photo, (2) only once that's done does the hero text slide down
       // into view — instead of the text sitting there the whole time.
@@ -349,7 +352,13 @@ document.addEventListener('DOMContentLoaded', () => {
         },
       });
       heroLogoTl
-        .to(heroLogoImg, { scale: 5.5, filter: `blur(${heroBlurMax}px)`, ease: 'none' }, 0)
+        .to(
+          heroLogoImg,
+          isMobileHero
+            ? { scale: 5.5, ease: 'none' }
+            : { scale: 5.5, filter: `blur(${heroBlurMax}px)`, ease: 'none' },
+          0
+        )
         .to(heroLogoIntro, { autoAlpha: 0, ease: 'none' }, 0.15)
         // Name beat -- in, hold, out. Finishes at 1.25, well inside the
         // first of the two scroll-screens above.
