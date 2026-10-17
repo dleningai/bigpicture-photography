@@ -2623,3 +2623,38 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 @media (prefers-reduced-motion: reduce) {
   .about-photo, .about-photo img { transition: none; clip-path: none; transform: none; }
 }
+
+/* ==========================================================
+   Kontakt v2 -- big headline, contact ways as large linked rows,
+   process steps in the white diagonal panel
+   ========================================================== */
+.kontakt-page { padding: 0; min-height: 0; }
+.kx { max-width: 1100px; margin: 0 auto; padding: clamp(140px, 20vh, 200px) clamp(20px, 5vw, 64px) clamp(70px, 10vh, 110px); }
+.kx-eyebrow { margin: 0 0 18px; font-family: var(--font-mono); font-size: .78rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); }
+.kx-title { margin: 0; font-family: var(--font-heading); font-weight: 900; font-size: clamp(3rem, 10vw, 8.5rem); line-height: .88; letter-spacing: -.035em; color: #fff; }
+.kx-title span { color: transparent; -webkit-text-stroke: 1.5px rgba(255,255,255,.85); }
+.kx-lead { margin: 28px 0 0; max-width: 540px; color: var(--ink-dim); font-size: clamp(1rem, 1.3vw, 1.15rem); line-height: 1.6; }
+.kx-list { margin-top: clamp(48px, 8vh, 80px); border-top: 1px solid var(--border); }
+.kx-row {
+  display: grid; grid-template-columns: 140px 1fr 40px; grid-template-areas: "label value arrow" "label note arrow";
+  align-items: center; gap: 4px 24px; padding: clamp(22px, 3.5vh, 34px) 0; border-bottom: 1px solid var(--border);
+  color: var(--ink); text-decoration: none;
+}
+.kx-row-label { grid-area: label; font-family: var(--font-mono); font-size: .8rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-faint); transition: color .3s; }
+.kx-row-value { grid-area: value; font-family: var(--font-heading); font-weight: 900; font-size: clamp(1.3rem, 3.2vw, 2.6rem); line-height: 1.05; letter-spacing: -.02em; word-break: break-word; transition: transform .5s cubic-bezier(.2,.8,.2,1), color .3s; }
+.kx-row-note { grid-area: note; color: var(--ink-dim); font-size: .9rem; }
+.kx-row-arrow { grid-area: arrow; justify-self: end; font-size: 1.4rem; color: var(--gold); transition: transform .4s cubic-bezier(.2,.8,.2,1); }
+.kx-row--main .kx-row-label { color: var(--gold); }
+@media (hover: hover) {
+  .kx-row:hover .kx-row-value { transform: translateX(12px); color: var(--gold); }
+  .kx-row:hover .kx-row-arrow { transform: translateX(8px); }
+}
+.kx-meta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px; margin-top: 32px; font-family: var(--font-mono); font-size: .76rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint); }
+.kx-meta .ft-socials { margin-top: 0; }
+.kx-steps-panel { padding: 180px 0 170px; }
+@media (max-width: 700px) { .kx-steps-panel { padding: 110px 0 100px; } }
+.kx-steps-panel .wrap { display: block; }
+.kx-steps { margin: 18px 0 0; padding: 0; max-width: none; }
+@media (max-width: 700px) {
+  .kx-row { grid-template-columns: 1fr 30px; grid-template-areas: "label arrow" "value arrow" "note arrow"; }
+}
