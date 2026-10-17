@@ -2517,3 +2517,18 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 @media (max-width: 700px) {
   .svc-panel { flex-basis: 82vw; height: 62vh; }
 }
+
+/* ==========================================================
+   Home "Vertrauen" block -- Standort statement, route ticker and stats
+   together in the white diagonal panel (replaces the separate full-screen
+   Reach section)
+   ========================================================== */
+.trust .trust-head { display: block; margin-bottom: 40px; }
+.trust-eyebrow { margin: 0 0 16px; font-family: var(--font-mono); font-size: .78rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: #b8863f; }
+.trust-title { margin: 0; font-family: var(--font-heading); font-weight: 900; font-size: clamp(2rem, 5vw, 4.2rem); line-height: 1; letter-spacing: -.03em; color: #111; }
+.trust-title span { color: #b8863f; }
+.trust .trust-route { margin: 0 0 64px; padding: 18px 0; border-top: 1px solid rgba(0,0,0,.12); border-bottom: 1px solid rgba(0,0,0,.12); }
+.trust .reach-route-mark { color: #555; }
+.trust .trust-stats { grid-template-columns: repeat(4, 1fr); gap: 32px 40px; }
+@media (max-width: 900px) { .trust .trust-stats { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .trust .trust-stats { gap: 28px 24px; } }
