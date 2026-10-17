@@ -181,59 +181,35 @@
     </div>
   </section>
 
-  <section class="section" id="testimonials">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <h2>Was Kunden sagen</h2>
+  <section class="section tq" id="testimonials">
+    <div class="tq-wrap">
+      <div class="tq-top">
+        <p class="tq-eyebrow">Was Kunden sagen · <span class="tq-score">5,0 ★ auf Google</span></p>
+        <div class="tq-bars" aria-hidden="true"></div>
       </div>
-      <div class="testi-stack-wrap reveal">
-        <div class="testi-stack" id="testiStack">
-          <div class="testi-photo">
-            <div class="testi-stars">★★★★★</div>
-            <p class="testi-text">„Es hat alles gut geklappt – von Anfang an. Ich durfte meine Wünsche und Anregungen vorstellen, die auch alle erfüllt wurden.“</p>
-            <div class="testi-divider"></div>
-            <div class="testi-author"><div class="testi-avatar">EK</div><div><p class="testi-name">Ella Kremer</p><p class="testi-role">Google Bewertung</p></div></div>
-          </div>
-          <div class="testi-photo">
-            <div class="testi-stars">★★★★★</div>
-            <p class="testi-text">„Super nett und sympathisch. Bei den ersten Bildern kam kurz Verzweiflung auf, aber das Endergebnis war der Wahnsinn.“</p>
-            <div class="testi-divider"></div>
-            <div class="testi-author"><div class="testi-avatar">JR</div><div><p class="testi-name">Jaqueline Riesenbeck</p><p class="testi-role">Google Bewertung</p></div></div>
-          </div>
-          <div class="testi-photo">
-            <div class="testi-stars">★★★★★</div>
-            <p class="testi-text">„Mega Zusammenarbeit mit Big Picture Photography. Super Qualität, sehr zuvorkommend und absolut empfehlenswert.“</p>
-            <div class="testi-divider"></div>
-            <div class="testi-author"><div class="testi-avatar">IP</div><div><p class="testi-name">Inspiring Production by Pohaku Malu</p><p class="testi-role">Google Bewertung</p></div></div>
-          </div>
-          <div class="testi-photo">
-            <div class="testi-stars">★★★★★</div>
-            <p class="testi-text">„Sehr professionell und geht auf alle Wünsche ein. Ich würde sogar mehr Sterne geben, wenn es möglich wäre.“</p>
-            <div class="testi-divider"></div>
-            <div class="testi-author"><div class="testi-avatar">EP</div><div><p class="testi-name">E Privat</p><p class="testi-role">Google Bewertung</p></div></div>
-          </div>
-          <div class="testi-photo">
-            <div class="testi-stars">★★★★★</div>
-            <p class="testi-text">„Sehr angenehme und lockere Zusammenarbeit. Meine Wünsche wurden gehört und perfekt umgesetzt. Mit der Qualität der Bilder war ich mehr als zufrieden.“</p>
-            <div class="testi-divider"></div>
-            <div class="testi-author"><div class="testi-avatar">LH</div><div><p class="testi-name">Lena Hermann</p><p class="testi-role">Google Bewertung</p></div></div>
-          </div>
-          <div class="testi-photo">
-            <div class="testi-stars">★★★★★</div>
-            <p class="testi-text">„Für unser Team-Shooting hat er super tolle Ideen mitgebracht und in entspannter Atmosphäre die perfekten Szenen und Emotionen eingefangen. Eine absolute Empfehlung von Herzen!“</p>
-            <div class="testi-divider"></div>
-            <div class="testi-author"><div class="testi-avatar">LB</div><div><p class="testi-name">Lena Brockmann</p><p class="testi-role">Google Bewertung</p></div></div>
-          </div>
+      <!-- Kundenstimmen: eine Zeile pro Bewertung (data-name = Name) -->
+      <ul class="tq-stories" id="tqStories" aria-live="polite">
+        <li class="tq-story" data-name="Ella Kremer"><blockquote>„Es hat alles gut geklappt – von Anfang an. Ich durfte meine Wünsche und Anregungen vorstellen, die auch alle erfüllt wurden.“</blockquote></li>
+        <li class="tq-story" data-name="Jaqueline Riesenbeck"><blockquote>„Super nett und sympathisch. Bei den ersten Bildern kam kurz Verzweiflung auf, aber das Endergebnis war der Wahnsinn.“</blockquote></li>
+        <li class="tq-story" data-name="Inspiring Production by Pohaku Malu"><blockquote>„Mega Zusammenarbeit mit Big Picture Photography. Super Qualität, sehr zuvorkommend und absolut empfehlenswert.“</blockquote></li>
+        <li class="tq-story" data-name="E Privat"><blockquote>„Sehr professionell und geht auf alle Wünsche ein. Ich würde sogar mehr Sterne geben, wenn es möglich wäre.“</blockquote></li>
+        <li class="tq-story" data-name="Lena Hermann"><blockquote>„Sehr angenehme und lockere Zusammenarbeit. Meine Wünsche wurden gehört und perfekt umgesetzt. Mit der Qualität der Bilder war ich mehr als zufrieden.“</blockquote></li>
+        <li class="tq-story" data-name="Lena Brockmann"><blockquote>„Für unser Team-Shooting hat er super tolle Ideen mitgebracht und in entspannter Atmosphäre die perfekten Szenen und Emotionen eingefangen. Eine absolute Empfehlung von Herzen!“</blockquote></li>
+      </ul>
+      <div class="tq-foot">
+        <p class="tq-name" id="tqName"></p>
+        <div class="tq-nav">
+          <button type="button" class="tq-btn" id="tqPrev" aria-label="Vorherige Bewertung">←</button>
+          <button type="button" class="tq-btn" id="tqNext" aria-label="Nächste Bewertung">→</button>
         </div>
-        <button class="testi-stack-next" id="testiStackNext" aria-label="Nächste Kundenstimme">→</button>
-        <div class="testi-stack-counter" id="testiStackCounter">01 / 06</div>
       </div>
-
-      <div class="testi-feedback-row reveal">
-        <p>Warst du zufrieden mit deinem Shooting? Eine kurze Google Bewertung hilft anderen Kunden bei ihrer Entscheidung.</p>
-        <a href="https://g.page/r/CQzD8QWz5UW7EAE/review" target="_blank" rel="noopener" class="btn btn-ghost">Jetzt bewerten</a>
-      </div>
+      <p class="tq-review"><a href="https://g.page/r/CQzD8QWz5UW7EAE/review" target="_blank" rel="noopener">Selbst schon ein Shooting gehabt? Bewertung schreiben →</a></p>
     </div>
+  </section>
+
+  <section class="section tq-cta">
+    <p class="tq-eyebrow">Projekt im Kopf?</p>
+    <a href="kontakt.html" class="tq-cta-link">Lass uns sprechen <span aria-hidden="true">→</span></a>
   </section>
 
   <div id="kontakt"></div>
