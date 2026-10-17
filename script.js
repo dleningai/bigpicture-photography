@@ -1,6 +1,59 @@
 document.addEventListener('DOMContentLoaded', () => {
   document.body.classList.add('is-loaded');
 
+  // Home Kundenstimmen: story-style rotation with progress bars
+  const tqList = document.getElementById('tqStories');
+  if (tqList) {
+    const stories = Array.from(tqList.querySelectorAll('.tq-story'));
+    const barsEl = document.querySelector('.tq-bars');
+    const nameEl = document.getElementById('tqName');
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const DURATION = 7000;
+    stories.forEach((li) => {
+      const q = li.querySelector('blockquote');
+      q.innerHTML = q.textContent.trim().split(/\s+/).map((w, i) => `<span class="tq-word" style="--w:${i}">${w}</span>`).join(' ');
+    });
+    const bars = stories.map((_, i) => {
+      const bar = document.createElement('span');
+      bar.className = 'tq-bar';
+      bar.innerHTML = '<i></i>';
+      bar.addEventListener('click', () => show(i));
+      barsEl.appendChild(bar);
+      return bar;
+    });
+    let idx = 0;
+    let anim = null;
+    let paused = false;
+    const show = (i) => {
+      idx = (i + stories.length) % stories.length;
+      stories.forEach((li, k) => li.classList.toggle('is-on', k === idx));
+      bars.forEach((b, k) => {
+        b.classList.toggle('is-done', k < idx);
+        b.querySelector('i').getAnimations().forEach((a) => a.cancel());
+      });
+      if (nameEl) nameEl.textContent = stories[idx].dataset.name;
+      if (reduce) return;
+      anim = bars[idx].querySelector('i').animate([{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }], { duration: DURATION, fill: 'forwards' });
+      if (paused) anim.pause();
+      anim.onfinish = () => show(idx + 1);
+    };
+    document.getElementById('tqNext').addEventListener('click', () => show(idx + 1));
+    document.getElementById('tqPrev').addEventListener('click', () => show(idx - 1));
+    tqList.addEventListener('click', () => show(idx + 1));
+    const wrap = tqList.closest('.tq-wrap');
+    wrap.addEventListener('mouseenter', () => { paused = true; if (anim) anim.pause(); });
+    wrap.addEventListener('mouseleave', () => { paused = false; if (anim) anim.play(); });
+    let touchX = null;
+    tqList.addEventListener('touchstart', (e) => { touchX = e.touches[0].clientX; }, { passive: true });
+    tqList.addEventListener('touchend', (e) => {
+      if (touchX === null) return;
+      const dx = e.changedTouches[0].clientX - touchX;
+      if (Math.abs(dx) > 40) show(idx + (dx < 0 ? 1 : -1));
+      touchX = null;
+    });
+    show(0);
+  }
+
   // Home hero v2: crossfade through the work slides
   const heroSlides = document.querySelectorAll('.hero-v2-slide');
   const heroCount = document.querySelector('.hero-v2-count');

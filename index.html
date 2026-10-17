@@ -182,139 +182,29 @@
   </section>
 
   <section class="section tq" id="testimonials">
-    <div class="tq-head">
-      <p class="tq-eyebrow">Was Kunden sagen</p>
-      <h2 class="tq-title">5,0 ★ <span>auf Google.</span></h2>
+    <div class="tq-wrap">
+      <div class="tq-top">
+        <p class="tq-eyebrow">Was Kunden sagen · <span class="tq-score">5,0 ★ auf Google</span></p>
+        <div class="tq-bars" aria-hidden="true"></div>
+      </div>
+      <!-- Kundenstimmen: eine Zeile pro Bewertung (data-name = Name) -->
+      <ul class="tq-stories" id="tqStories" aria-live="polite">
+        <li class="tq-story" data-name="Ella Kremer"><blockquote>„Es hat alles gut geklappt – von Anfang an. Ich durfte meine Wünsche und Anregungen vorstellen, die auch alle erfüllt wurden.“</blockquote></li>
+        <li class="tq-story" data-name="Jaqueline Riesenbeck"><blockquote>„Super nett und sympathisch. Bei den ersten Bildern kam kurz Verzweiflung auf, aber das Endergebnis war der Wahnsinn.“</blockquote></li>
+        <li class="tq-story" data-name="Inspiring Production by Pohaku Malu"><blockquote>„Mega Zusammenarbeit mit Big Picture Photography. Super Qualität, sehr zuvorkommend und absolut empfehlenswert.“</blockquote></li>
+        <li class="tq-story" data-name="E Privat"><blockquote>„Sehr professionell und geht auf alle Wünsche ein. Ich würde sogar mehr Sterne geben, wenn es möglich wäre.“</blockquote></li>
+        <li class="tq-story" data-name="Lena Hermann"><blockquote>„Sehr angenehme und lockere Zusammenarbeit. Meine Wünsche wurden gehört und perfekt umgesetzt. Mit der Qualität der Bilder war ich mehr als zufrieden.“</blockquote></li>
+        <li class="tq-story" data-name="Lena Brockmann"><blockquote>„Für unser Team-Shooting hat er super tolle Ideen mitgebracht und in entspannter Atmosphäre die perfekten Szenen und Emotionen eingefangen. Eine absolute Empfehlung von Herzen!“</blockquote></li>
+      </ul>
+      <div class="tq-foot">
+        <p class="tq-name" id="tqName"></p>
+        <div class="tq-nav">
+          <button type="button" class="tq-btn" id="tqPrev" aria-label="Vorherige Bewertung">←</button>
+          <button type="button" class="tq-btn" id="tqNext" aria-label="Nächste Bewertung">→</button>
+        </div>
+      </div>
+      <p class="tq-review"><a href="https://g.page/r/CQzD8QWz5UW7EAE/review" target="_blank" rel="noopener">Selbst schon ein Shooting gehabt? Bewertung schreiben →</a></p>
     </div>
-      <div class="tq-row tq-row--a">
-        <div class="tq-track">
-        <figure class="tq-card">
-          <span class="tq-stars" aria-label="5 von 5 Sternen">★★★★★</span>
-          <blockquote>„Es hat alles gut geklappt – von Anfang an. Ich durfte meine Wünsche und Anregungen vorstellen, die auch alle erfüllt wurden.“</blockquote>
-          <figcaption>Ella Kremer</figcaption>
-        </figure>
-        <figure class="tq-card">
-          <span class="tq-stars" aria-label="5 von 5 Sternen">★★★★★</span>
-          <blockquote>„Super nett und sympathisch. Bei den ersten Bildern kam kurz Verzweiflung auf, aber das Endergebnis war der Wahnsinn.“</blockquote>
-          <figcaption>Jaqueline Riesenbeck</figcaption>
-        </figure>
-        <figure class="tq-card">
-          <span class="tq-stars" aria-label="5 von 5 Sternen">★★★★★</span>
-          <blockquote>„Mega Zusammenarbeit mit Big Picture Photography. Super Qualität, sehr zuvorkommend und absolut empfehlenswert.“</blockquote>
-          <figcaption>Inspiring Production by Pohaku Malu</figcaption>
-        </figure>
-        <figure class="tq-card" aria-hidden="true">
-          <span class="tq-stars" aria-label="5 von 5 Sternen">★★★★★</span>
-          <blockquote>„Es hat alles gut geklappt – von Anfang an. Ich durfte meine Wünsche und Anregungen vorstellen, die auch alle erfüllt wurden.“</blockquote>
-          <figcaption>Ella Kremer</figcaption>
-        </figure>
-        <figure class="tq-card" aria-hidden="true">
-          <span class="tq-stars" aria-label="5 von 5 Sternen">★★★★★</span>
-          <blockquote>„Super nett und sympathisch. Bei den ersten Bildern kam kurz Verzweiflung auf, aber das Endergebnis war der Wahnsinn.“</blockquote>
-          <figcaption>Jaqueline Riesenbeck</figcaption>
-        </figure>
-        <figure class="tq-card" aria-hidden="true">
-          <span class="tq-stars" aria-label="5 von 5 Sternen">★★★★★</span>
-          <blockquote>„Mega Zusammenarbeit mit Big Picture Photography. Super Qualität, sehr zuvorkommend und absolut empfehlenswert.“</blockquote>
-          <figcaption>Inspiring Production by Pohaku Malu</figcaption>
-        </figure>
-        <figure class="tq-card" aria-hidden="true">
-          <span class="tq-stars" aria-label="5 von 5 Sternen">★★★★★</span>
-          <blockquote>„Es hat alles gut geklappt – von Anfang an. Ich durfte meine Wünsche und Anregungen vorstellen, die auch alle erfüllt wurden.“</blockquote>
-          <figcaption>Ella Kremer</figcaption>
-        </figure>
-        <figure class="tq-card" aria-hidden="true">
-          <span class="tq-stars" aria-label="5 von 5 Sternen">★★★★★</span>
-          <blockquote>„Super nett und sympathisch. Bei den ersten Bildern kam kurz Verzweiflung auf, aber das Endergebnis war der Wahnsinn.“</blockquote>
-          <figcaption>Jaqueline Riesenbeck</figcaption>
-        </figure>
-        <figure class="tq-card" aria-hidden="true">
-          <span class="tq-stars" aria-label="5 von 5 Sternen">★★★★★</span>
-          <blockquote>„Mega Zusammenarbeit mit Big Picture Photography. Super Qualität, sehr zuvorkommend und absolut empfehlenswert.“</blockquote>
-          <figcaption>Inspiring Production by Pohaku Malu</figcaption>
-        </figure>
-        <figure class="tq-card" aria-hidden="true">
-          <span class="tq-stars" aria-label="5 von 5 Sternen">★★★★★</span>
-          <blockquote>„Es hat alles gut geklappt – von Anfang an. Ich durfte meine Wünsche und Anregungen vorstellen, die auch alle erfüllt wurden.“</blockquote>
-          <figcaption>Ella Kremer</figcaption>
-        </figure>
-        <figure class="tq-card" aria-hidden="true">
-          <span class="tq-stars" aria-label="5 von 5 Sternen">★★★★★</span>
-          <blockquote>„Super nett und sympathisch. Bei den ersten Bildern kam kurz Verzweiflung auf, aber das Endergebnis war der Wahnsinn.“</blockquote>
-          <figcaption>Jaqueline Riesenbeck</figcaption>
-        </figure>
-        <figure class="tq-card" aria-hidden="true">
-          <span class="tq-stars" aria-label="5 von 5 Sternen">★★★★★</span>
-          <blockquote>„Mega Zusammenarbeit mit Big Picture Photography. Super Qualität, sehr zuvorkommend und absolut empfehlenswert.“</blockquote>
-          <figcaption>Inspiring Production by Pohaku Malu</figcaption>
-        </figure>
-        </div>
-      </div>
-      <div class="tq-row tq-row--b">
-        <div class="tq-track">
-        <figure class="tq-card">
-          <span class="tq-stars" aria-label="5 von 5 Sternen">★★★★★</span>
-          <blockquote>„Sehr professionell und geht auf alle Wünsche ein. Ich würde sogar mehr Sterne geben, wenn es möglich wäre.“</blockquote>
-          <figcaption>E Privat</figcaption>
-        </figure>
-        <figure class="tq-card">
-          <span class="tq-stars" aria-label="5 von 5 Sternen">★★★★★</span>
-          <blockquote>„Sehr angenehme und lockere Zusammenarbeit. Meine Wünsche wurden gehört und perfekt umgesetzt. Mit der Qualität der Bilder war ich mehr als zufrieden.“</blockquote>
-          <figcaption>Lena Hermann</figcaption>
-        </figure>
-        <figure class="tq-card">
-          <span class="tq-stars" aria-label="5 von 5 Sternen">★★★★★</span>
-          <blockquote>„Für unser Team-Shooting hat er super tolle Ideen mitgebracht und in entspannter Atmosphäre die perfekten Szenen und Emotionen eingefangen. Eine absolute Empfehlung von Herzen!“</blockquote>
-          <figcaption>Lena Brockmann</figcaption>
-        </figure>
-        <figure class="tq-card" aria-hidden="true">
-          <span class="tq-stars" aria-label="5 von 5 Sternen">★★★★★</span>
-          <blockquote>„Sehr professionell und geht auf alle Wünsche ein. Ich würde sogar mehr Sterne geben, wenn es möglich wäre.“</blockquote>
-          <figcaption>E Privat</figcaption>
-        </figure>
-        <figure class="tq-card" aria-hidden="true">
-          <span class="tq-stars" aria-label="5 von 5 Sternen">★★★★★</span>
-          <blockquote>„Sehr angenehme und lockere Zusammenarbeit. Meine Wünsche wurden gehört und perfekt umgesetzt. Mit der Qualität der Bilder war ich mehr als zufrieden.“</blockquote>
-          <figcaption>Lena Hermann</figcaption>
-        </figure>
-        <figure class="tq-card" aria-hidden="true">
-          <span class="tq-stars" aria-label="5 von 5 Sternen">★★★★★</span>
-          <blockquote>„Für unser Team-Shooting hat er super tolle Ideen mitgebracht und in entspannter Atmosphäre die perfekten Szenen und Emotionen eingefangen. Eine absolute Empfehlung von Herzen!“</blockquote>
-          <figcaption>Lena Brockmann</figcaption>
-        </figure>
-        <figure class="tq-card" aria-hidden="true">
-          <span class="tq-stars" aria-label="5 von 5 Sternen">★★★★★</span>
-          <blockquote>„Sehr professionell und geht auf alle Wünsche ein. Ich würde sogar mehr Sterne geben, wenn es möglich wäre.“</blockquote>
-          <figcaption>E Privat</figcaption>
-        </figure>
-        <figure class="tq-card" aria-hidden="true">
-          <span class="tq-stars" aria-label="5 von 5 Sternen">★★★★★</span>
-          <blockquote>„Sehr angenehme und lockere Zusammenarbeit. Meine Wünsche wurden gehört und perfekt umgesetzt. Mit der Qualität der Bilder war ich mehr als zufrieden.“</blockquote>
-          <figcaption>Lena Hermann</figcaption>
-        </figure>
-        <figure class="tq-card" aria-hidden="true">
-          <span class="tq-stars" aria-label="5 von 5 Sternen">★★★★★</span>
-          <blockquote>„Für unser Team-Shooting hat er super tolle Ideen mitgebracht und in entspannter Atmosphäre die perfekten Szenen und Emotionen eingefangen. Eine absolute Empfehlung von Herzen!“</blockquote>
-          <figcaption>Lena Brockmann</figcaption>
-        </figure>
-        <figure class="tq-card" aria-hidden="true">
-          <span class="tq-stars" aria-label="5 von 5 Sternen">★★★★★</span>
-          <blockquote>„Sehr professionell und geht auf alle Wünsche ein. Ich würde sogar mehr Sterne geben, wenn es möglich wäre.“</blockquote>
-          <figcaption>E Privat</figcaption>
-        </figure>
-        <figure class="tq-card" aria-hidden="true">
-          <span class="tq-stars" aria-label="5 von 5 Sternen">★★★★★</span>
-          <blockquote>„Sehr angenehme und lockere Zusammenarbeit. Meine Wünsche wurden gehört und perfekt umgesetzt. Mit der Qualität der Bilder war ich mehr als zufrieden.“</blockquote>
-          <figcaption>Lena Hermann</figcaption>
-        </figure>
-        <figure class="tq-card" aria-hidden="true">
-          <span class="tq-stars" aria-label="5 von 5 Sternen">★★★★★</span>
-          <blockquote>„Für unser Team-Shooting hat er super tolle Ideen mitgebracht und in entspannter Atmosphäre die perfekten Szenen und Emotionen eingefangen. Eine absolute Empfehlung von Herzen!“</blockquote>
-          <figcaption>Lena Brockmann</figcaption>
-        </figure>
-        </div>
-      </div>
-    <p class="tq-review"><a href="https://g.page/r/CQzD8QWz5UW7EAE/review" target="_blank" rel="noopener">Selbst schon ein Shooting gehabt? Bewertung schreiben →</a></p>
   </section>
 
   <section class="section tq-cta">
