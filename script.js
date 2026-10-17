@@ -111,9 +111,16 @@ document.addEventListener('DOMContentLoaded', () => {
   // Safari in particular) fire in sparse bursts during momentum
   // scrolling rather than every frame, so the CSS ended up visibly
   // stepping instead of tracking the finger smoothly. Driving both off
-  // a single persistent requestAnimationFrame loop instead reads the
-  // scroll position fresh every rendered frame regardless of whether a
-  // 'scroll' event fired, which is what makes them feel buttery.
+  // requestAnimationFrame instead reads the scroll position fresh every
+  // rendered frame, which is what makes them feel buttery -- but that
+  // loop must NOT run for the entire page lifetime: forcing a layout
+  // read every single frame of the whole session (stacked on top of
+  // Lenis/GSAP's own ticker) is a real source of mobile scroll
+  // stutter. Gate it with an IntersectionObserver (tracking current
+  // membership in a Set, not a running +1/-1 counter -- that drifts
+  // negative on the very first, legitimately-not-intersecting
+  // callback and then never recovers) so the loop only runs while a
+  // relevant section is actually near the viewport.
   const skewPanels = Array.from(document.querySelectorAll('.stats-highlight, .cta-light'));
   const reachRouteTrack = document.getElementById('reachRouteTrack');
   const reachSection = document.getElementById('reach');
@@ -121,6 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const hasRoute = reachRouteTrack && reachSection;
   if ((hasSkew || hasRoute) && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     const routeHalfWidth = hasRoute ? reachRouteTrack.scrollWidth / 2 : 0;
+    let rafId = null;
     const tick = () => {
       const vh = window.innerHeight;
       if (hasSkew) {
@@ -143,9 +151,24 @@ document.addEventListener('DOMContentLoaded', () => {
         const offset = routeHalfWidth ? -(progress * routeHalfWidth) % routeHalfWidth : 0;
         reachRouteTrack.style.transform = `translateX(${offset}px)`;
       }
-      requestAnimationFrame(tick);
+      rafId = requestAnimationFrame(tick);
     };
-    requestAnimationFrame(tick);
+    const startTick = () => { if (rafId === null) rafId = requestAnimationFrame(tick); };
+    const stopTick = () => { if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; } };
+    const nearSet = new Set();
+    const nearObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) nearSet.add(entry.target);
+          else nearSet.delete(entry.target);
+        });
+        if (nearSet.size > 0) startTick();
+        else stopTick();
+      },
+      { rootMargin: '50% 0px' }
+    );
+    skewPanels.forEach((panel) => nearObserver.observe(panel));
+    if (reachSection) nearObserver.observe(reachSection);
   }
 
   // Smooth scroll (Lenis) + scroll-driven hero parallax (GSAP). Both are
