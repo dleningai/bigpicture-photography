@@ -80,7 +80,6 @@
   --head: 'Bounded', sans-serif; --mono: 'JetBrains Mono', ui-monospace, monospace; --pad: clamp(16px, 4vw, 56px); }
 .ch h2, .ch p, .strip figure, .note { margin: 0; }
 body { background: var(--bg); color: var(--ink); font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
-.ch > img, .strip img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .mono { font: 400 11px/1.4 var(--mono); letter-spacing: .14em; text-transform: uppercase; }
 
 /* film grain */
@@ -90,55 +89,34 @@ body::after { content: ""; position: fixed; inset: -50%; pointer-events: none; z
 @keyframes grain { 50% { transform: translate(3%, -2%); } }
 
 
-/* Chapter: full-bleed image, giant type knocked out over it */
-.ch { position: relative; height: 78vh; min-height: 520px; overflow: hidden; display: grid; }
-.ch > img { position: absolute; inset: 0; transform: scale(1.08); filter: contrast(1.05) saturate(.95); }
-.ch::before { content: ""; position: absolute; inset: 0; z-index: 1;
-  background: radial-gradient(ellipse at 70% 40%, transparent 30%, rgba(3,3,3,.75) 100%), linear-gradient(transparent 55%, var(--bg)); }
-.ch-word { position: absolute; z-index: 2; left: calc(var(--pad) - .06em); bottom: 9vh;
-  font: 900 calc(var(--fit, 11) * 1vw)/.85 var(--head); letter-spacing: -.04em;
-  color: #fff; mix-blend-mode: difference; }
-.ch-meta { position: absolute; z-index: 3; top: 96px; left: var(--pad); right: var(--pad); display: flex; justify-content: space-between; color: var(--dim); }
-.ch-meta span:first-child { color: var(--gold); }
-.ch-side { position: absolute; z-index: 3; right: var(--pad); top: 150px; max-width: 300px; color: var(--dim); font-size: 14px; line-height: 1.6; text-align: right; }
-.ch-side a { display: inline-block; margin-top: 14px; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--gold); padding-bottom: 4px; }
+/* Chapter: big headline on black, then the chapter's photos large and
+   uncropped in a horizontally scrollable row (click opens the lightbox) */
+.ch { position: relative; padding: 150px var(--pad) 28px; }
+.ch-meta { color: var(--gold); }
+.ch-word { margin-top: 18px; font: 900 11vw/.85 var(--head); letter-spacing: -.04em; color: #fff; }
+.ch-side { margin-top: 22px; max-width: 420px; color: var(--dim); font-size: 14px; line-height: 1.6; }
+.ch-side a { display: inline-block; margin-top: 14px; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--gold); padding-bottom: 4px; cursor: pointer; }
 
+.strip { display: flex; gap: 10px; padding: 0 var(--pad) 110px; overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: none; }
+.strip::-webkit-scrollbar { display: none; }
+.strip figure { flex: 0 0 auto; height: 62vh; position: relative; scroll-snap-align: start; cursor: zoom-in; overflow: hidden; background: #111; }
+.strip figure img, .strip figure video { display: block; width: auto; height: 100%; object-fit: contain; transition: transform 1.2s cubic-bezier(.2,.8,.2,1); }
+.strip figure:hover img { transform: scale(1.03); }
+.strip figcaption { position: absolute; left: 10px; bottom: 10px; color: rgba(255,255,255,.75); text-shadow: 0 1px 6px rgba(0,0,0,.6); }
+.strip--video figure { cursor: pointer; }
 
-/* contact sheet strip */
-.strip { display: flex; gap: 6px; padding: 0 var(--pad) 90px; overflow: hidden; }
-.strip figure { flex: 0 0 clamp(110px, 12vw, 190px); aspect-ratio: 4/5; position: relative; filter: grayscale(1) brightness(.6); transition: .5s; }
-.strip figure:first-child { filter: none; outline: 1px solid var(--gold); outline-offset: 4px; }
-.strip figcaption { position: absolute; left: 0; bottom: -22px; color: var(--dim); }
-
-
-
-.ch > video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scale(1.08); }
-.ch > img, .ch > video { will-change: transform; }
-.ch-word { will-change: transform; }
-.strip figure { cursor: pointer; overflow: hidden; }
-.strip figure img, .strip figure video { width: 100%; height: 100%; object-fit: cover; display: block; }
-.strip figure.on { filter: none; outline: 1px solid var(--gold); outline-offset: 4px; }
-.strip figure:first-child:not(.on) { filter: grayscale(1) brightness(.6); outline: 0; }
-.strip figure:hover { filter: grayscale(0) brightness(.9); }
-.strip--video figure { aspect-ratio: 9/16; }
-.ch > img.swap { animation: swap .6s ease; }
-@keyframes swap { from { opacity: .2; } }
 .pf-reveal { opacity: 0; transform: translateY(40px); transition: opacity 1s, transform 1s cubic-bezier(.2,.8,.2,1); }
 .pf-reveal.in { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) {
   body::after { animation: none; }
   .pf-reveal { opacity: 1; transform: none; transition: none; }
-  .ch > img, .ch > video, .ch-word { transform: none !important; }
 }
-
 @media (max-width: 760px) {
-  .ch { height: 70vh; }
-  .ch-side { left: var(--pad); right: auto; text-align: left; top: 130px; }
-  .ch-meta span:last-child { display: none; }
+  .ch { padding-top: 110px; }
+  .ch-word { font-size: 13vw; }
+  .strip figure { height: 52vh; }
 }
 
-.ch > img { cursor: zoom-in; }
-.ch-side a { cursor: pointer; }
 .note { display: flex; gap: 10px; align-items: center; justify-content: center; padding: 0 var(--pad) 60px; color: var(--dim); font-size: 13px; text-align: center; }
 .note svg { width: 16px; fill: var(--gold); flex-shrink: 0; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
@@ -161,7 +139,6 @@ body::after { content: ""; position: fixed; inset: -50%; pointer-events: none; z
   </nav>
 
 <section class="ch">
-  <img src="assets/images/portfolio/sport/sport-boxer-scream.jpg" alt="">
   <div class="ch-meta mono"><span>01 / 04 — Sport</span></div>
   <h2 class="ch-word">SPORT</h2>
   <p class="ch-side">Kraft, Fokus und Emotion – der Moment, der in 1/1000 Sekunde entscheidet.<br><a role="button" tabindex="0" class="open-gal">12 Bilder ansehen →</a></p>
@@ -176,7 +153,6 @@ body::after { content: ""; position: fixed; inset: -50%; pointer-events: none; z
 </div>
 
 <section class="ch">
-  <img src="assets/images/portfolio/portrait/portrait-bw-smoke.jpg" alt="" style="object-position: 50% 30%">
   <div class="ch-meta mono"><span>02 / 04 — Portrait</span></div>
   <h2 class="ch-word">PORTRAIT</h2>
   <p class="ch-side">Charakter statt Pose. Im Studio, auf Dächern, im ersten Licht.<br><a role="button" tabindex="0" class="open-gal">7 Bilder ansehen →</a></p>
@@ -191,7 +167,6 @@ body::after { content: ""; position: fixed; inset: -50%; pointer-events: none; z
 </div>
 
 <section class="ch">
-  <img src="assets/images/portfolio/event/event-crowd-sparklers.jpg" alt="">
   <div class="ch-meta mono"><span>03 / 04 — Event</span></div>
   <h2 class="ch-word">EVENT</h2>
   <p class="ch-side">Stimmung, Dynamik und die ungestellten Augenblicke, die ein Event unvergesslich machen.<br><a role="button" tabindex="0" class="open-gal">5 Bilder ansehen →</a></p>
@@ -205,7 +180,6 @@ body::after { content: ""; position: fixed; inset: -50%; pointer-events: none; z
 </div>
 
 <section class="ch">
-  <video src="assets/videos/portfolio/reels/reel-8.mp4" poster="assets/videos/portfolio/reels/reel-8-poster.jpg" autoplay muted loop playsinline></video>
   <div class="ch-meta mono"><span>04 / 04 — Video</span></div>
   <h2 class="ch-word">VIDEO</h2>
   <p class="ch-side">Reels und Kurzvideos – schneller Schnitt, echte Energie, Bilder, die im Feed nicht ignoriert werden.</p>
@@ -269,29 +243,12 @@ body::after { content: ""; position: fixed; inset: -50%; pointer-events: none; z
 <script>
 (() => {
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const chapters = [...document.querySelectorAll('.ch')];
-
-  // Strips: first frame active; hover/click swaps chapter's main image
-  document.querySelectorAll('.strip').forEach((strip) => {
-    const ch = strip.previousElementSibling;
-    const main = ch.querySelector(':scope > img, :scope > video');
-    const frames = [...strip.querySelectorAll('figure')];
-    frames[0].classList.add('on');
-    frames.forEach((f) => {
-      const media = f.querySelector('img, video');
-      const pick = () => {
-        frames.forEach((x) => x.classList.toggle('on', x === f));
-        if (main.tagName === 'IMG' && media.tagName === 'IMG' && main.src !== media.src) {
-          main.src = media.src; main.classList.remove('swap'); void main.offsetWidth; main.classList.add('swap');
-        } else if (main.tagName === 'VIDEO' && media.tagName === 'VIDEO' && main.src !== media.src) {
-          main.poster = media.poster; main.src = media.src; main.play().catch(() => {});
-        }
-      };
-      f.addEventListener('mouseenter', () => { pick(); if (media.tagName === 'VIDEO') media.play().catch(() => {}); });
-      f.addEventListener('mouseleave', () => { if (media.tagName === 'VIDEO') media.pause(); });
-      f.addEventListener('click', pick);
-    });
-  });
+  // Video strip: play while on screen, pause when scrolled away
+  const vids = document.querySelectorAll('.strip--video video');
+  const vio = new IntersectionObserver((es) => es.forEach((e) => {
+    if (e.isIntersecting && !reduce) e.target.play().catch(() => {}); else e.target.pause();
+  }), { threshold: 0.4 });
+  vids.forEach((v) => { v.preload = 'metadata'; vio.observe(v); });
 
   // Reveal strips and CTA on enter
   const els = document.querySelectorAll('.strip, .ch-side');
@@ -302,8 +259,8 @@ body::after { content: ""; position: fixed; inset: -50%; pointer-events: none; z
 
   // Lightbox: each strip gets hidden .glightbox anchors (one gallery per
   // chapter) that script.js's shared GLightbox picks up, so slides get the
-  // same loaded-state handling as everywhere else. "Bilder ansehen" and the
-  // chapter image open that gallery at the currently active frame.
+  // same loaded-state handling as everywhere else. Clicking a photo opens
+  // the gallery at that photo; "Bilder ansehen" opens it at the first.
   document.querySelectorAll('.strip').forEach((strip, i) => {
     const ch = strip.previousElementSibling;
     const frames = [...strip.querySelectorAll('figure')];
@@ -319,33 +276,17 @@ body::after { content: ""; position: fixed; inset: -50%; pointer-events: none; z
       strip.appendChild(a);
       return a;
     });
-    const open = (e) => {
+    const open = (e, i = 0) => {
       if (e) e.preventDefault();
-      const start = Math.max(0, frames.findIndex((f) => f.classList.contains('on')));
-      anchors[start].click();
+      anchors[i].click();
     };
-    ch.querySelectorAll('.open-gal, :scope > img').forEach((el) => {
+    frames.forEach((f, i) => f.addEventListener('click', (e) => open(e, i)));
+    ch.querySelectorAll('.open-gal').forEach((el) => {
       el.addEventListener('click', open);
       el.addEventListener('keydown', (e) => { if (e.key === 'Enter') open(e); });
     });
   });
 
-  if (reduce) return;
-  // Scroll: image zooms out, headline drifts slower than the page
-  let ticking = false;
-  const update = () => {
-    ticking = false;
-    const vh = innerHeight;
-    chapters.forEach((ch) => {
-      const r = ch.getBoundingClientRect();
-      if (r.bottom < 0 || r.top > vh) return;
-      const p = Math.min(1, Math.max(0, 1 - (r.top + r.height) / (vh + r.height))); // 0 entering, 1 leaving
-      ch.querySelector(':scope > img, :scope > video').style.transform = `scale(${1.18 - p * 0.18}) translateY(${p * 6}%)`;
-      ch.querySelector('.ch-word').style.transform = `translateY(${(p - 0.5) * -10}vh)`;
-    });
-  };
-  addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
-  update();
 })();
 </script>
 </body>
