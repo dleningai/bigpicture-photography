@@ -308,22 +308,33 @@ body::after { content: ""; position: fixed; inset: -50%; pointer-events: none; z
   els.forEach((e) => io.observe(e));
 
 
-  // Lightbox: chapter image or "Bilder ansehen" opens that chapter's strip as gallery
-  document.querySelectorAll('.strip').forEach((strip) => {
+  // Lightbox: each strip gets hidden .glightbox anchors (one gallery per
+  // chapter) that script.js's shared GLightbox picks up, so slides get the
+  // same loaded-state handling as everywhere else. "Bilder ansehen" and the
+  // chapter image open that gallery at the currently active frame.
+  document.querySelectorAll('.strip').forEach((strip, i) => {
     const ch = strip.previousElementSibling;
     const frames = [...strip.querySelectorAll('figure')];
-    const items = frames.map((f) => {
+    const anchors = frames.map((f) => {
       const m = f.querySelector('img, video');
-      return m.tagName === 'VIDEO' ? { href: m.getAttribute('src'), type: 'video' } : { href: m.getAttribute('src'), type: 'image' };
+      const a = document.createElement('a');
+      a.href = m.getAttribute('src');
+      a.className = 'glightbox pf-case-hidden';
+      a.dataset.gallery = `pf-chapter-${i}`;
+      if (m.tagName === 'VIDEO') a.dataset.type = 'video';
+      a.setAttribute('aria-hidden', 'true');
+      a.tabIndex = -1;
+      strip.appendChild(a);
+      return a;
     });
-    const open = () => {
-      if (!window.GLightbox) return;
+    const open = (e) => {
+      if (e) e.preventDefault();
       const start = Math.max(0, frames.findIndex((f) => f.classList.contains('on')));
-      GLightbox({ elements: items, startAt: start, loop: true }).open();
+      anchors[start].click();
     };
     ch.querySelectorAll('.open-gal, :scope > img').forEach((el) => {
       el.addEventListener('click', open);
-      el.addEventListener('keydown', (e) => { if (e.key === 'Enter') open(); });
+      el.addEventListener('keydown', (e) => { if (e.key === 'Enter') open(e); });
     });
   });
 
