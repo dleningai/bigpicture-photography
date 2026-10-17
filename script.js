@@ -148,7 +148,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // negative on the very first, legitimately-not-intersecting
   // callback and then never recovers) so the loop only runs while a
   // relevant section is actually near the viewport.
-  const skewPanels = Array.from(document.querySelectorAll('.stats-highlight, .cta-light'));
+  // .cta-light no longer reads --skew (replaced by a soft gradient
+  // fade, see style.css), so it's not watched here anymore either.
+  const skewPanels = Array.from(document.querySelectorAll('.stats-highlight'));
   const reachRouteTrack = document.getElementById('reachRouteTrack');
   const reachSection = document.getElementById('reach');
   const hasSkew = skewPanels.length > 0;
