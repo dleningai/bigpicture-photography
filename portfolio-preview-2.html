@@ -57,6 +57,26 @@ body::after { content: ""; position: fixed; inset: -50%; pointer-events: none; z
 .cta h2 em { font-style: normal; color: transparent; -webkit-text-stroke: 1.5px var(--gold); }
 .cta a { justify-self: center; color: #120e08; background: var(--gold); padding: 18px 30px; border-radius: 999px; text-decoration: none; font-weight: 600; font-size: 14px; }
 
+
+.ch > video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scale(1.08); }
+.ch > img, .ch > video { will-change: transform; }
+.ch-word { will-change: transform; }
+.strip figure { cursor: pointer; overflow: hidden; }
+.strip figure img, .strip figure video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.strip figure.on { filter: none; outline: 1px solid var(--gold); outline-offset: 4px; }
+.strip figure:first-child:not(.on) { filter: grayscale(1) brightness(.6); outline: 0; }
+.strip figure:hover { filter: grayscale(0) brightness(.9); }
+.strip--video figure { aspect-ratio: 9/16; }
+.ch > img.swap { animation: swap .6s ease; }
+@keyframes swap { from { opacity: .2; } }
+.reveal { opacity: 0; transform: translateY(40px); transition: opacity 1s, transform 1s cubic-bezier(.2,.8,.2,1); }
+.reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  body::after { animation: none; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .ch > img, .ch > video, .ch-word { transform: none !important; }
+}
+
 @media (max-width: 760px) {
   .ch { height: 88vh; } .vf { left: 30%; top: 30%; width: 50vw; }
   .ch-side { left: var(--pad); right: auto; text-align: left; top: 130px; }
@@ -76,7 +96,7 @@ body::after { content: ""; position: fixed; inset: -50%; pointer-events: none; z
   <p class="ch-side">Kraft, Fokus und Emotion – der Moment, der in 1/1000 Sekunde entscheidet.<br><a href="#">12 Bilder ansehen →</a></p>
 </section>
 <div class="strip">
-  <figure><img src="assets/images/portfolio/sport/sport-boxer-scream-480w.jpg" onerror="this.src='assets/images/portfolio/sport/sport-boxer-scream.jpg'" alt=""><figcaption class="mono">001</figcaption></figure>
+  <figure><img src="assets/images/portfolio/sport/sport-boxer-scream.jpg" alt=""><figcaption class="mono">001</figcaption></figure>
   <figure><img src="assets/images/portfolio/sport/sport-muaythai-kick.jpg" alt=""><figcaption class="mono">002</figcaption></figure>
   <figure><img src="assets/images/portfolio/sport/sport-football-rain.jpg" alt=""><figcaption class="mono">003</figcaption></figure>
   <figure><img src="assets/images/portfolio/sport/sport-corner-rest.jpg" alt=""><figcaption class="mono">004</figcaption></figure>
@@ -90,11 +110,96 @@ body::after { content: ""; position: fixed; inset: -50%; pointer-events: none; z
   <h2 class="ch-word" style="--fit: 12.5">PORTRAIT</h2>
   <p class="ch-side">Charakter statt Pose. Im Studio, auf Dächern, im ersten Licht.<br><a href="#">7 Bilder ansehen →</a></p>
 </section>
+<div class="strip">
+  <figure><img src="assets/images/portfolio/portrait/portrait-bw-smoke.jpg" alt="" loading="lazy"><figcaption class="mono">001</figcaption></figure>
+  <figure><img src="assets/images/portfolio/portrait/portrait-studio-glasses.jpg" alt="" loading="lazy"><figcaption class="mono">002</figcaption></figure>
+  <figure><img src="assets/images/portfolio/portrait/portrait-editorial-rooftop.jpg" alt="" loading="lazy"><figcaption class="mono">003</figcaption></figure>
+  <figure><img src="assets/images/portfolio/portrait/portrait-outdoor-jacket-sunrise.jpg" alt="" loading="lazy"><figcaption class="mono">004</figcaption></figure>
+  <figure><img src="assets/images/portfolio/portrait/portrait-denim-jacket-shadow.jpg" alt="" loading="lazy"><figcaption class="mono">005</figcaption></figure>
+  <figure><img src="assets/images/portfolio/portrait/portrait-rooftop-laugh.jpg" alt="" loading="lazy"><figcaption class="mono">006</figcaption></figure>
+</div>
+
+<section class="ch">
+  <img src="assets/images/portfolio/event/event-crowd-sparklers.jpg" alt="">
+  <div class="ch-meta mono"><span>03 / 04 — Event</span></div>
+  <h2 class="ch-word">EVENT</h2>
+  <p class="ch-side">Stimmung, Dynamik und die ungestellten Augenblicke, die ein Event unvergesslich machen.<br><a href="#">5 Bilder ansehen →</a></p>
+</section>
+<div class="strip">
+  <figure><img src="assets/images/portfolio/event/event-crowd-sparklers.jpg" alt="" loading="lazy"><figcaption class="mono">001</figcaption></figure>
+  <figure><img src="assets/images/portfolio/event/event-dancefloor-party.jpg" alt="" loading="lazy"><figcaption class="mono">002</figcaption></figure>
+  <figure><img src="assets/images/portfolio/event/event-dj-set.jpg" alt="" loading="lazy"><figcaption class="mono">003</figcaption></figure>
+  <figure><img src="assets/images/portfolio/event/event-dj-rooftop.jpg" alt="" loading="lazy"><figcaption class="mono">004</figcaption></figure>
+  <figure><img src="assets/images/portfolio/event/event-crowd-peace-sign.jpg" alt="" loading="lazy"><figcaption class="mono">005</figcaption></figure>
+</div>
+
+<section class="ch">
+  <video src="assets/videos/portfolio/reels/reel-8.mp4" poster="assets/videos/portfolio/reels/reel-8-poster.jpg" autoplay muted loop playsinline></video>
+  <div class="ch-meta mono"><span>04 / 04 — Video</span></div>
+  <h2 class="ch-word">VIDEO</h2>
+  <p class="ch-side">Reels und Kurzvideos – schneller Schnitt, echte Energie, Bilder, die im Feed nicht ignoriert werden.</p>
+</section>
+<div class="strip strip--video">
+  <figure><video src="assets/videos/portfolio/reels/reel-8.mp4" poster="assets/videos/portfolio/reels/reel-8-poster.jpg" muted loop playsinline preload="none"></video><figcaption class="mono">001</figcaption></figure>
+  <figure><video src="assets/videos/portfolio/reels/reel-3-aleks.mp4" poster="assets/videos/portfolio/reels/reel-3-aleks-poster.jpg" muted loop playsinline preload="none"></video><figcaption class="mono">002</figcaption></figure>
+  <figure><video src="assets/videos/portfolio/reels/reel-7.mp4" poster="assets/videos/portfolio/reels/reel-7-poster.jpg" muted loop playsinline preload="none"></video><figcaption class="mono">003</figcaption></figure>
+</div>
 
 <section class="cta">
   <p class="mono" style="color:var(--gold)">Frame 000 — dein Projekt</p>
   <h2>Dein Bild<br><em>fehlt noch.</em></h2>
   <a href="#">Auf WhatsApp anfragen →</a>
 </section>
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const chapters = [...document.querySelectorAll('.ch')];
+
+  // Strips: first frame active; hover/click swaps chapter's main image
+  document.querySelectorAll('.strip').forEach((strip) => {
+    const ch = strip.previousElementSibling;
+    const main = ch.querySelector(':scope > img, :scope > video');
+    const frames = [...strip.querySelectorAll('figure')];
+    frames[0].classList.add('on');
+    frames.forEach((f) => {
+      const media = f.querySelector('img, video');
+      const pick = () => {
+        frames.forEach((x) => x.classList.toggle('on', x === f));
+        if (main.tagName === 'IMG' && media.tagName === 'IMG' && main.src !== media.src) {
+          main.src = media.src; main.classList.remove('swap'); void main.offsetWidth; main.classList.add('swap');
+        } else if (main.tagName === 'VIDEO' && media.tagName === 'VIDEO' && main.src !== media.src) {
+          main.poster = media.poster; main.src = media.src; main.play().catch(() => {});
+        }
+      };
+      f.addEventListener('mouseenter', () => { pick(); if (media.tagName === 'VIDEO') media.play().catch(() => {}); });
+      f.addEventListener('mouseleave', () => { if (media.tagName === 'VIDEO') media.pause(); });
+      f.addEventListener('click', pick);
+    });
+  });
+
+  // Reveal strips and CTA on enter
+  const els = document.querySelectorAll('.strip, .cta > *, .ch-side');
+  els.forEach((e) => e.classList.add('reveal'));
+  const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: 0.2 });
+  els.forEach((e) => io.observe(e));
+
+  if (reduce) return;
+  // Scroll: image zooms out, headline drifts slower than the page
+  let ticking = false;
+  const update = () => {
+    ticking = false;
+    const vh = innerHeight;
+    chapters.forEach((ch) => {
+      const r = ch.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > vh) return;
+      const p = Math.min(1, Math.max(0, 1 - (r.top + r.height) / (vh + r.height))); // 0 entering, 1 leaving
+      ch.querySelector(':scope > img, :scope > video').style.transform = `scale(${1.18 - p * 0.18}) translateY(${p * 6}%)`;
+      ch.querySelector('.ch-word').style.transform = `translateY(${(p - 0.5) * -10}vh)`;
+    });
+  };
+  addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+  update();
+})();
+</script>
 </body>
 </html>
