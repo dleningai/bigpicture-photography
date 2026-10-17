@@ -103,13 +103,6 @@ body::after { content: ""; position: fixed; inset: -50%; pointer-events: none; z
 .ch-side { position: absolute; z-index: 3; right: var(--pad); top: 150px; max-width: 300px; color: var(--dim); font-size: 14px; line-height: 1.6; text-align: right; }
 .ch-side a { display: inline-block; margin-top: 14px; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--gold); padding-bottom: 4px; }
 
-/* viewfinder overlay */
-.vf { position: absolute; z-index: 2; left: 60%; top: 26%; width: 16vw; aspect-ratio: 3/2; }
-.vf i { position: absolute; width: 26px; height: 26px; border: 0 solid var(--gold); }
-.vf i:nth-child(1) { top: 0; left: 0; border-width: 1.5px 0 0 1.5px; } .vf i:nth-child(2) { top: 0; right: 0; border-width: 1.5px 1.5px 0 0; }
-.vf i:nth-child(3) { bottom: 0; left: 0; border-width: 0 0 1.5px 1.5px; } .vf i:nth-child(4) { bottom: 0; right: 0; border-width: 0 1.5px 1.5px 0; }
-.vf span { position: absolute; top: calc(100% + 10px); left: 0; color: var(--gold); white-space: nowrap; }
-.vf::after { content: ""; position: absolute; left: 50%; top: 50%; width: 10px; height: 10px; margin: -5px; border: 1px solid rgba(255,255,255,.7); border-radius: 50%; }
 
 /* contact sheet strip */
 .strip { display: flex; gap: 6px; padding: 0 var(--pad) 90px; overflow: hidden; }
@@ -139,7 +132,7 @@ body::after { content: ""; position: fixed; inset: -50%; pointer-events: none; z
 }
 
 @media (max-width: 760px) {
-  .ch { height: 70vh; } .vf { left: 30%; top: 30%; width: 50vw; }
+  .ch { height: 70vh; }
   .ch-side { left: var(--pad); right: auto; text-align: left; top: 130px; }
   .ch-meta span:last-child { display: none; }
 }
@@ -170,7 +163,6 @@ body::after { content: ""; position: fixed; inset: -50%; pointer-events: none; z
 <section class="ch">
   <img src="assets/images/portfolio/sport/sport-boxer-scream.jpg" alt="">
   <div class="ch-meta mono"><span>01 / 04 — Sport</span></div>
-  <div class="vf"><i></i><i></i><i></i><i></i></div>
   <h2 class="ch-word">SPORT</h2>
   <p class="ch-side">Kraft, Fokus und Emotion – der Moment, der in 1/1000 Sekunde entscheidet.<br><a role="button" tabindex="0" class="open-gal">12 Bilder ansehen →</a></p>
 </section>
