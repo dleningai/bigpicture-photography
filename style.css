@@ -933,9 +933,19 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   --skew: 60px;
   position: relative;
   padding: 140px 0;
+  /* Dark base + white clipped ::before (not a clip-path on the section
+     itself): a clipped section is transparent outside the diagonal, so
+     on Portfolio, where it stacks over the chapter cards, the earlier
+     Event card's image showed through the cut-away corners. */
+  background: var(--bg);
+  isolation: isolate;
+}
+.cta-light::before {
+  content: "";
+  position: absolute; inset: 0;
+  z-index: -1;
   background: #fff;
   clip-path: polygon(0 var(--skew), 100% 0, 100% 100%, 0 calc(100% - var(--skew)));
-  box-shadow: 0 -24px 60px rgba(0, 0, 0, 0.4);
 }
 @media (max-width: 700px) {
   .cta-light { --skew: 28px; padding: 100px 0; }
