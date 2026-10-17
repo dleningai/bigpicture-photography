@@ -116,41 +116,6 @@ body::before {
   mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 0%, transparent 75%);
 }
 
-/* Hero logo intro — a curtain over the hero that fades/scales out as the
-   visitor scrolls, tied directly to scroll position (GSAP scrub) rather
-   than a timer, so scrolling back up brings it right back. Hidden by
-   default: only script.js activates it, and only when ScrollTrigger is
-   actually available, so the hero is never blocked without JS. */
-.hero-logo-intro {
-  position: absolute; inset: 0; z-index: 6;
-  display: none; flex-direction: column; align-items: center; justify-content: center;
-  gap: 32px;
-  background: #000;
-}
-.hero-logo-intro.js-active { display: flex; }
-.hero-logo-intro img {
-  width: min(420px, 70vw); height: auto;
-  filter: drop-shadow(0 0 50px rgba(222, 175, 103, 0.45));
-  will-change: transform, opacity, filter;
-}
-.hero-logo-scroll-hint {
-  display: flex;
-  flex-direction: column; align-items: center; gap: 6px;
-  font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase;
-  color: var(--ink-faint);
-  animation: heroScrollHintBounce 1.6s ease-in-out infinite;
-}
-.hero-logo-scroll-hint svg {
-  width: 18px; height: 18px;
-  fill: none; stroke: var(--gold); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
-}
-@keyframes heroScrollHintBounce {
-  0%, 100% { transform: translateY(0); opacity: 0.6; }
-  50% { transform: translateY(8px); opacity: 1; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .hero-logo-scroll-hint { animation: none; }
-}
 
 /* Thin glowing scrollbar */
 ::-webkit-scrollbar { width: 10px; height: 10px; }
@@ -211,7 +176,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 /* These images already run their own reveal/compare animations with a
    dedicated filter — leave them out of the generic blur-up so the two
    don't fight over the filter property. */
-.about-photo-bleed img:not(.img-loaded), .ba-frame img:not(.img-loaded), .hero-bg img:not(.img-loaded), .hero-logo-intro img:not(.img-loaded) { opacity: 1; filter: none; }
+.about-photo-bleed img:not(.img-loaded), .ba-frame img:not(.img-loaded), .hero-bg img:not(.img-loaded) { opacity: 1; filter: none; }
 @media (prefers-reduced-motion: reduce) {
   img:not(.img-loaded) { opacity: 1; filter: none; }
 }
