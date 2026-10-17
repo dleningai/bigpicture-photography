@@ -298,7 +298,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 1001;
-  display: flex; align-items: center;
+  display: flex; align-items: center; justify-content: center;
   gap: 32px;
   padding: 24px clamp(20px, 5vw, 64px);
   background: linear-gradient(180deg, rgba(10, 9, 8, 0.7), transparent);
@@ -332,7 +332,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 .site-nav-divider { display: none; }
 
 @media (max-width: 640px) {
-  .site-nav { gap: 18px; padding: 18px 20px; justify-content: center; }
+  .site-nav { gap: 18px; padding: 18px 20px; }
   .site-nav a { font-size: 0.68rem; }
 }
 
