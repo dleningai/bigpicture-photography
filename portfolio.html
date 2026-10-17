@@ -87,7 +87,7 @@ body::after { content: ""; position: fixed; inset: -50%; pointer-events: none; z
 @keyframes grain { 50% { transform: translate(3%, -2%); } }
 
 .bar { position: fixed; inset: 0 0 auto; z-index: 40; display: flex; justify-content: space-between; padding: 22px var(--pad); mix-blend-mode: difference; color: #fff; }
-.bar b { font: 900 14px var(--head); }
+.bar b { display: block; font: 900 14px/1.1 var(--head); }
 .bar nav { display: flex; gap: 28px; }
 .bar a { color: inherit; text-decoration: none; }
 
@@ -163,7 +163,7 @@ body::after { content: ""; position: fixed; inset: -50%; pointer-events: none; z
 <body>
 <h1 class="sr-only">Portfolio — Big Picture Photography</h1>
 
-<header class="bar"><a href="index.html" style="color:inherit;text-decoration:none"><b>BIG PICTURE</b></a><nav class="mono"><a href="index.html">Home</a><a href="portfolio.html" style="color:var(--gold)">Portfolio</a><a href="#kontakt">Kontakt</a></nav></header>
+<header class="bar"><a href="index.html" style="color:inherit;text-decoration:none"><b>BIG PICTURE<br>PHOTOGRAPHY</b></a><nav class="mono"><a href="index.html">Home</a><a href="portfolio.html" style="color:var(--gold)">Portfolio</a><a href="#kontakt">Kontakt</a></nav></header>
 
 <section class="ch">
   <img src="assets/images/portfolio/sport/sport-boxer-scream.jpg" alt="">
