@@ -67,12 +67,22 @@ document.addEventListener('DOMContentLoaded', () => {
   const heroCount = document.querySelector('.hero-v2-count');
   if (heroSlides.length > 1 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     let heroIdx = 0;
-    setInterval(() => {
-      heroSlides[heroIdx].classList.remove('is-on');
-      heroIdx = (heroIdx + 1) % heroSlides.length;
-      heroSlides[heroIdx].classList.add('is-on');
-      if (heroCount) heroCount.textContent = String(heroIdx + 1).padStart(2, '0');
-    }, 5000);
+    // Start rotating on the first interaction, not on load: a slide that
+    // fades in while the page is still idle counts as a new largest paint
+    // and pushes the mobile LCP measurement out by several seconds.
+    const startHeroRotation = () => {
+      ['scroll', 'pointermove', 'touchstart', 'keydown'].forEach((ev) => window.removeEventListener(ev, startHeroRotation));
+      // The other slides only get their src now, so they don't compete
+      // with the first paint on slow connections.
+      heroSlides.forEach((img) => { if (img.dataset.src) { img.src = img.dataset.src; img.removeAttribute('data-src'); } });
+      setInterval(() => {
+        heroSlides[heroIdx].classList.remove('is-on');
+        heroIdx = (heroIdx + 1) % heroSlides.length;
+        heroSlides[heroIdx].classList.add('is-on');
+        if (heroCount) heroCount.textContent = String(heroIdx + 1).padStart(2, '0');
+      }, 5000);
+    };
+    ['scroll', 'pointermove', 'touchstart', 'keydown'].forEach((ev) => window.addEventListener(ev, startHeroRotation, { once: true, passive: true }));
   }
 
   // Nav gets a solid backing once the page has scrolled (style.css .is-scrolled)
