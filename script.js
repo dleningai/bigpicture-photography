@@ -347,47 +347,23 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Hero scroll sequence -- the hero is pinned while the name beat
-    // plays, then Leistungen climbs over it.
+    // Hero scroll sequence -- Leistungen slides up over the pinned hero.
     if (hasScrollFx) {
-      // The .js-hero-sequence class hands opacity/transform control on the
-      // hero text over to GSAP, switching off the CSS-only reveal so the
-      // two don't fight over the same properties.
-      document.querySelector('.hero-photo').classList.add('js-hero-sequence');
-      const heroIntroName = document.getElementById('heroIntroName');
-      if (heroIntroName) heroIntroName.classList.add('js-active');
-      const heroIntroNameEls = gsap.utils.toArray('.hero-intro-name > *');
-      gsap.set(heroIntroNameEls, { opacity: 0, x: '60vw' });
-      // Hero is pinned via GSAP for two screens of scroll: the first
-      // screen plays the name beat (below), the second is where
-      // Leistungen -- pulled up one screen by its own negative margin,
-      // see #leistungen.js-slide-cover in style.css -- climbs from the
-      // bottom edge to fully cover the hero, right as the pin releases.
-      // That climb needs no tweening of its own: it's pure scroll-vs-
-      // document-position math, so it can't drift out of sync with the
-      // pin the way an independently-scrubbed transform could.
+      // Hero is pinned via GSAP for one screen of scroll while Leistungen
+      // -- pulled up one screen by its own negative margin, see
+      // #leistungen.js-slide-cover in style.css -- climbs from the bottom
+      // edge to fully cover it, right as the pin releases. That climb needs
+      // no tweening of its own: it's pure scroll-vs-document-position math,
+      // so it can't drift out of sync with the pin.
       const leistungenEl = document.getElementById('leistungen');
       if (leistungenEl) leistungenEl.classList.add('js-slide-cover');
-      const heroTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: '.hero-photo',
-          start: 'top top',
-          end: () => `+=${window.innerHeight * 2}`,
-          scrub: true,
-          pin: true,
-          anticipatePin: 1,
-        },
+      ScrollTrigger.create({
+        trigger: '.hero-photo',
+        start: 'top top',
+        end: () => `+=${window.innerHeight}`,
+        pin: true,
+        anticipatePin: 1,
       });
-      heroTl
-        // Name beat -- in, hold, out. Finishes at 1.25, well inside the
-        // first of the two scroll-screens above.
-        .to(heroIntroNameEls, { opacity: 1, x: 0, ease: 'power2.out', stagger: 0.08 }, 0.35)
-        .to(heroIntroNameEls, { opacity: 0, x: '60vw', ease: 'power1.in', stagger: 0.05 }, 0.7)
-        // No-op hold stretching the timeline to 2.5 total, so its first
-        // half (the name beat above) maps to exactly the first of the
-        // two scroll-screens the scrub now spans, instead of the name
-        // animation rushing through both.
-        .to({}, { duration: 1.25 }, 1.25);
     }
 
     // Editorial strip is a plain CSS marquee (see style.css) -- no JS
