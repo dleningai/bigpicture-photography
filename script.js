@@ -315,11 +315,8 @@ document.addEventListener('DOMContentLoaded', () => {
       // the (increasingly large, since it's scaling up at the same
       // time) element instead of a cheap compositor-only transform --
       // one of the more common causes of scroll jank on mobile GPUs.
-      // Shrinking the radius wasn't enough to fix the reported jank, so
-      // mobile drops the blur tween entirely (0 = no blur() filter at
-      // all, scale-only, pure compositor work); desktop keeps it.
-      const isMobileHero = window.innerWidth <= 700;
-      const heroBlurMax = isMobileHero ? 0 : 24;
+      // Keep the effect but shrink the max blur on small screens.
+      const heroBlurMax = window.innerWidth <= 700 ? 10 : 24;
       // Two phases in one pin: (1) logo zooms/blurs out revealing the
       // photo, (2) only once that's done does the hero text slide down
       // into view — instead of the text sitting there the whole time.
@@ -341,17 +338,6 @@ document.addEventListener('DOMContentLoaded', () => {
       // pin the way an independently-scrubbed transform could.
       const leistungenEl = document.getElementById('leistungen');
       if (leistungenEl) leistungenEl.classList.add('js-slide-cover');
-      // Mobile Safari's pin+scrub jank usually isn't the pin itself --
-      // GSAP already pins via a compositor transform there, not
-      // position: fixed -- it's the sheer size of the scaled bitmap.
-      // Scaling the logo up to 5.5x means the GPU is compositing an
-      // image several times the viewport's area on every frame; cut
-      // that scale target down on mobile so there's much less pixel
-      // data to push per frame, and promote the element to its own
-      // layer up front so the first scroll frame doesn't have to pay
-      // for layer creation mid-scrub.
-      gsap.set(heroLogoImg, { force3D: true, willChange: 'transform' });
-      const heroScaleMax = isMobileHero ? 2.6 : 5.5;
       const heroLogoTl = gsap.timeline({
         scrollTrigger: {
           trigger: '.hero-photo',
@@ -359,18 +345,11 @@ document.addEventListener('DOMContentLoaded', () => {
           end: () => `+=${window.innerHeight * 2}`,
           scrub: true,
           pin: true,
-          pinType: 'transform',
           anticipatePin: 1,
         },
       });
       heroLogoTl
-        .to(
-          heroLogoImg,
-          isMobileHero
-            ? { scale: heroScaleMax, ease: 'none' }
-            : { scale: heroScaleMax, filter: `blur(${heroBlurMax}px)`, ease: 'none' },
-          0
-        )
+        .to(heroLogoImg, { scale: 5.5, filter: `blur(${heroBlurMax}px)`, ease: 'none' }, 0)
         .to(heroLogoIntro, { autoAlpha: 0, ease: 'none' }, 0.15)
         // Name beat -- in, hold, out. Finishes at 1.25, well inside the
         // first of the two scroll-screens above.
