@@ -2658,3 +2658,18 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 @media (max-width: 700px) {
   .kx-row { grid-template-columns: 1fr 30px; grid-template-areas: "label arrow" "value arrow" "note arrow"; }
 }
+
+/* ==========================================================
+   Legal pages + 404 -- left-aligned headline in the Kontakt style,
+   sections as plain ruled blocks instead of boxed cards
+   ========================================================== */
+.lg-hero { width: min(900px, calc(100% - 40px)); margin: 0 auto; padding: clamp(140px, 20vh, 190px) 0 20px; }
+.lg-title { margin: 0; font-family: var(--font-heading); font-weight: 900; font-size: clamp(2.6rem, 7vw, 5.6rem); line-height: .92; letter-spacing: -.035em; color: #fff; text-wrap: balance; hyphens: auto; -webkit-hyphens: auto; overflow-wrap: break-word; }
+.lg-sub { margin: 22px 0 0; max-width: 560px; color: var(--ink-dim); font-size: clamp(1rem, 1.3vw, 1.12rem); line-height: 1.6; }
+.lg-meta { margin: 14px 0 0; font-family: var(--font-mono); font-size: .74rem; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-faint); }
+.section.legal-panel { max-width: none; padding-left: 0; padding-right: 0; }
+.legal-panel .wrap, .lg-404-wrap { width: min(900px, calc(100% - 40px)); max-width: none; margin: 0 auto; padding-left: 0; padding-right: 0; }
+.legal-panel .legal-section { margin: 0; padding: 26px 0; border: 0; border-top: 1px solid var(--border); border-radius: 0; background: none; box-shadow: none; }
+.legal-panel .legal-section.active { background: none; box-shadow: none; border-color: var(--gold); }
+.legal-panel .legal-section h3 { font-family: var(--font-heading); font-weight: 900; font-size: 1.05rem; letter-spacing: -.01em; color: #fff; margin-bottom: 10px; }
+.lg-404-list { margin-top: 10px; }
