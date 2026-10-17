@@ -22,7 +22,7 @@
   <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/vendor/glightbox/glightbox.min.css">
   
   <script type="application/ld+json">
@@ -86,10 +86,24 @@ body::after { content: ""; position: fixed; inset: -50%; pointer-events: none; z
   animation: grain .5s steps(3) infinite; }
 @keyframes grain { 50% { transform: translate(3%, -2%); } }
 
-.bar { position: fixed; inset: 0 0 auto; z-index: 40; display: flex; justify-content: space-between; padding: 22px var(--pad); mix-blend-mode: difference; color: #fff; }
-.bar b { display: block; font: 900 14px/1.1 var(--head); }
-.bar nav { display: flex; gap: 28px; }
-.bar a { color: inherit; text-decoration: none; }
+
+/* Header: same as style.css .site-nav--brand on the other pages */
+.site-nav { position: fixed; inset: 0 0 auto; z-index: 40; display: flex; align-items: center; justify-content: flex-end; gap: 32px;
+  padding: 24px clamp(20px, 5vw, 64px); background: linear-gradient(180deg, rgba(10,9,8,.7), transparent); }
+.site-nav a { position: relative; display: inline-block; padding: 2px 1px 8px; font: 700 .82rem 'Montserrat', sans-serif;
+  letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.74); text-decoration: none;
+  text-shadow: 0 2px 10px rgba(0,0,0,.6); transition: color .2s; white-space: nowrap; }
+.site-nav a:hover { color: #f1c57a; }
+.site-nav a.active { color: var(--gold); }
+.site-nav a.active::after { content: ''; position: absolute; left: 0; bottom: 0; width: 100%; height: 2px;
+  background: linear-gradient(90deg, var(--gold), #f1c57a); box-shadow: 0 0 8px rgba(222,175,103,.6); }
+.site-nav .site-nav-brand { margin-right: auto; padding: 0; font: 900 14px/1.1 var(--head); letter-spacing: 0; color: var(--ink); white-space: normal; }
+.site-nav .site-nav-brand:hover { color: var(--ink); }
+@media (max-width: 640px) {
+  .site-nav { gap: 14px; padding: 18px 20px; }
+  .site-nav a { font-size: .68rem; }
+  .site-nav .site-nav-brand { font-size: 11px; }
+}
 
 /* Chapter: full-bleed image, giant type knocked out over it */
 .ch { position: relative; height: 78vh; min-height: 520px; overflow: hidden; display: grid; }
@@ -146,7 +160,6 @@ body::after { content: ""; position: fixed; inset: -50%; pointer-events: none; z
 @media (max-width: 760px) {
   .ch { height: 70vh; } .vf { left: 30%; top: 30%; width: 50vw; }
   .ch-side { left: var(--pad); right: auto; text-align: left; top: 130px; }
-  .bar nav { gap: 16px; font-size: 12px; }
   .ch-meta span:last-child { display: none; }
 }
 
@@ -163,7 +176,12 @@ body::after { content: ""; position: fixed; inset: -50%; pointer-events: none; z
 <body>
 <h1 class="sr-only">Portfolio — Big Picture Photography</h1>
 
-<header class="bar"><a href="index.html" style="color:inherit;text-decoration:none"><b>BIG PICTURE<br>PHOTOGRAPHY</b></a><nav class="mono"><a href="index.html">Home</a><a href="portfolio.html" style="color:var(--gold)">Portfolio</a><a href="#kontakt">Kontakt</a></nav></header>
+  <nav class="site-nav site-nav--brand" aria-label="Hauptnavigation">
+    <a href="index.html" class="site-nav-brand" aria-label="Big Picture Photography – Startseite">Big Picture<br>Photography</a>
+    <a href="index.html"><span class="site-nav-a-inner">Home</span></a>
+    <a href="portfolio.html" class="active"><span class="site-nav-a-inner">Portfolio</span></a>
+    <a href="#kontakt"><span class="site-nav-a-inner">Kontakt</span></a>
+  </nav>
 
 <section class="ch">
   <img src="assets/images/portfolio/sport/sport-boxer-scream.jpg" alt="">
