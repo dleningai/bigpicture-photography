@@ -1,6 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
   document.body.classList.add('is-loaded');
 
+  // Home Leistungen: hover photo follows the cursor along the row
+  document.querySelectorAll('.svc-row').forEach((row) => {
+    row.addEventListener('mousemove', (e) => {
+      const r = row.getBoundingClientRect();
+      row.style.setProperty('--svc-x', `${e.clientX - r.left}px`);
+    });
+  });
+
   // Home hero v2: crossfade through the work slides
   const heroSlides = document.querySelectorAll('.hero-v2-slide');
   const heroCount = document.querySelector('.hero-v2-count');
@@ -392,7 +400,9 @@ document.addEventListener('DOMContentLoaded', () => {
           scrub: true,
         },
       })
-        .to(leistungenSection, { opacity: 0.3, ease: 'none' }, 0)
+        // Fade the content, not the section: its solid background is what
+        // covers the pinned hero above, which would show through otherwise.
+        .to(leistungenSection.children, { opacity: 0.3, ease: 'none' }, 0)
         .to(reachSection, { autoAlpha: 1, y: 0, ease: 'none' }, 0);
     }
 
