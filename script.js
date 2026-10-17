@@ -45,6 +45,12 @@ document.addEventListener('DOMContentLoaded', () => {
           transitionOverlay.classList.remove('is-active');
         });
       });
+      // Back/forward restores the page from the browser's cache exactly as
+      // it was left -- with the overlay still covering it from the click
+      // that navigated away. Clear it again whenever the page is shown.
+      window.addEventListener('pageshow', (e) => {
+        if (e.persisted) transitionOverlay.classList.remove('is-active');
+      });
       document.addEventListener('click', (e) => {
         if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
         const link = e.target.closest('a[href]');
