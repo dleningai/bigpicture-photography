@@ -509,10 +509,14 @@ body::after { content: ""; position: fixed; inset: -50%; pointer-events: none; z
       navKontakt.classList.toggle('active', e.isIntersecting);
       navPf.classList.toggle('active', !e.isIntersecting);
     }, { rootMargin: '0px 0px -30% 0px' }).observe(kontakt);
-    navKontakt.addEventListener('click', () => {
+    const markKontakt = () => {
       navKontakt.classList.add('active');
       navPf.classList.remove('active');
-    });
+    };
+    navKontakt.addEventListener('click', markKontakt);
+    // Arriving via portfolio.html#kontakt from another page
+    if (location.hash === '#kontakt') markKontakt();
+    addEventListener('hashchange', () => { if (location.hash === '#kontakt') markKontakt(); });
   }
 
   if (reduce) return;
