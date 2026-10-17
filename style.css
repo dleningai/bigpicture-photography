@@ -126,21 +126,8 @@ body::before {
   display: none; flex-direction: column; align-items: center; justify-content: center;
   gap: 32px;
   background: #000;
-  /* Camera-aperture open on arrival: a closed iris reveals the hero
-     photo behind it instead of the logo just sitting on flat black.
-     One-time, not scroll-linked -- runs once on load, costs nothing
-     while scrolling. */
-  clip-path: circle(0% at 50% 50%);
-  animation: heroApertureOpen 1.3s cubic-bezier(.22, .9, .3, 1) 0.15s forwards;
 }
 .hero-logo-intro.js-active { display: flex; }
-@keyframes heroApertureOpen {
-  from { clip-path: circle(0% at 50% 50%); }
-  to { clip-path: circle(75% at 50% 50%); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .hero-logo-intro { clip-path: none; animation: none; }
-}
 .hero-logo-intro img {
   width: min(420px, 70vw); height: auto;
   filter: drop-shadow(0 0 50px rgba(222, 175, 103, 0.45));
