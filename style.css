@@ -1147,9 +1147,21 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 }
 .reach-word { display: inline-block; }
 .reach-word-accent { color: var(--gold); font-weight: 800; }
-.reach-text.js-scrubbed .reach-word { color: var(--ink-faint); transition: color 0.1s linear; }
-.reach-text.js-scrubbed .reach-word.is-lit { color: var(--ink); }
+/* Kinetic type: each word doesn't just change color as it lights up,
+   it settles into place from a slight downward/faded offset -- real
+   per-word motion instead of a flat color swap. Transform/opacity are
+   compositor-only, so this stays cheap even scrubbed per-frame. */
+.reach-text.js-scrubbed .reach-word {
+  color: var(--ink-faint);
+  opacity: 0.45;
+  transform: translateY(0.18em);
+  transition: color 0.25s ease-out, opacity 0.25s ease-out, transform 0.3s ease-out;
+}
+.reach-text.js-scrubbed .reach-word.is-lit { color: var(--ink); opacity: 1; transform: translateY(0); }
 .reach-text.js-scrubbed .reach-word-accent.is-lit { color: var(--gold-bright); text-shadow: 0 0 42px rgba(222, 175, 103, 0.75), 0 0 14px rgba(222, 175, 103, 0.9); }
+@media (prefers-reduced-motion: reduce) {
+  .reach-text.js-scrubbed .reach-word { transform: none; transition: color 0.1s linear, opacity 0.1s linear; }
+}
 /* Route ticker -- real driving distances to other cities, standing in
    for "deutschlandweit unterwegs" as data instead of decoration.
    Shifted horizontally by scroll position (script.js), not autoplay;
@@ -2032,6 +2044,20 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   font-size: clamp(1.6rem, 3vw, 2.6rem); font-weight: 800; line-height: 1.1;
   letter-spacing: -0.01em;
   margin: 0 0 10px;
+}
+/* Kinetic word reveal -- script.js splits the title into per-word spans
+   and reveals them staggered the first time the title scrolls into
+   view (one-time IntersectionObserver trigger, not a continuous
+   scroll-linked animation, so it's cheap on mobile). */
+.pf-row-title .kinetic-word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.35em);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+.pf-row-title.is-revealed .kinetic-word { opacity: 1; transform: translateY(0); }
+@media (prefers-reduced-motion: reduce) {
+  .pf-row-title .kinetic-word { opacity: 1; transform: none; transition: none; }
 }
 .pf-row-text p { color: var(--ink-dim); line-height: 1.6; margin: 0; max-width: 620px; font-size: 0.94rem; }
 

@@ -45,6 +45,33 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Kinetic word reveal for portfolio chapter titles -- splits each
+  // title into per-word spans and reveals them staggered the first
+  // time the title scrolls into view. One-time IntersectionObserver
+  // trigger per title (unobserve after firing), not a continuous
+  // scroll-linked animation, so it costs nothing while scrolling.
+  const kineticTitles = document.querySelectorAll('.pf-row-title');
+  if (kineticTitles.length && !reduceMotion) {
+    kineticTitles.forEach((title) => {
+      const words = title.textContent.trim().split(/\s+/);
+      title.innerHTML = words
+        .map((word, i) => `<span class="kinetic-word" style="transition-delay:${i * 40}ms">${word}</span>`)
+        .join(' ');
+    });
+    const kineticObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-revealed');
+            kineticObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.4 }
+    );
+    kineticTitles.forEach((title) => kineticObserver.observe(title));
+  }
+
   // Custom cursor + magnetic buttons -- mouse-only (fine pointer),
   // never on touch devices. A small dot tracks the cursor exactly; a
   // ring trails it with easing and grows over clickable elements.
