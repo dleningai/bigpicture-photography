@@ -334,27 +334,9 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Hero logo curtain — fades/scales out as the visitor scrolls past the
-    // hero, scrubbed directly to scroll position so scrolling back up to
-    // the top brings it right back (not a one-time, timer-based intro).
-    const heroLogoIntro = document.getElementById('heroLogoIntro');
-    if (heroLogoIntro && hasScrollFx) {
-      heroLogoIntro.classList.add('js-active');
-      const heroLogoImg = heroLogoIntro.querySelector('img');
-      // Fix the starting point explicitly — otherwise GSAP captures
-      // whatever filter/scale the element happens to have at setup time
-      // (e.g. still the sitewide blur-up loader's blur) as the tween's
-      // "from" value, leaving the logo permanently soft-focused at rest.
-      gsap.set(heroLogoImg, { scale: 1, filter: 'blur(0px)' });
-      // Animating filter: blur() every scroll frame forces a repaint of
-      // the (increasingly large, since it's scaling up at the same
-      // time) element instead of a cheap compositor-only transform --
-      // one of the more common causes of scroll jank on mobile GPUs.
-      // Keep the effect but shrink the max blur on small screens.
-      const heroBlurMax = window.innerWidth <= 700 ? 10 : 24;
-      // Two phases in one pin: (1) logo zooms/blurs out revealing the
-      // photo, (2) only once that's done does the hero text slide down
-      // into view — instead of the text sitting there the whole time.
+    // Hero scroll sequence -- the hero is pinned while the name beat
+    // plays, then Leistungen climbs over it.
+    if (hasScrollFx) {
       // The .js-hero-sequence class hands opacity/transform control on the
       // hero text over to GSAP, switching off the CSS-only reveal so the
       // two don't fight over the same properties.
@@ -364,7 +346,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const heroIntroNameEls = gsap.utils.toArray('.hero-intro-name > *');
       gsap.set(heroIntroNameEls, { opacity: 0, x: '60vw' });
       // Hero is pinned via GSAP for two screens of scroll: the first
-      // screen plays the logo+name beat (below), the second is where
+      // screen plays the name beat (below), the second is where
       // Leistungen -- pulled up one screen by its own negative margin,
       // see #leistungen.js-slide-cover in style.css -- climbs from the
       // bottom edge to fully cover the hero, right as the pin releases.
@@ -373,7 +355,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // pin the way an independently-scrubbed transform could.
       const leistungenEl = document.getElementById('leistungen');
       if (leistungenEl) leistungenEl.classList.add('js-slide-cover');
-      const heroLogoTl = gsap.timeline({
+      const heroTl = gsap.timeline({
         scrollTrigger: {
           trigger: '.hero-photo',
           start: 'top top',
@@ -383,9 +365,7 @@ document.addEventListener('DOMContentLoaded', () => {
           anticipatePin: 1,
         },
       });
-      heroLogoTl
-        .to(heroLogoImg, { scale: 5.5, filter: `blur(${heroBlurMax}px)`, ease: 'none' }, 0)
-        .to(heroLogoIntro, { autoAlpha: 0, ease: 'none' }, 0.15)
+      heroTl
         // Name beat -- in, hold, out. Finishes at 1.25, well inside the
         // first of the two scroll-screens above.
         .to(heroIntroNameEls, { opacity: 1, x: 0, ease: 'power2.out', stagger: 0.08 }, 0.35)
