@@ -2616,9 +2616,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 .about-name { margin: 0 0 26px; font-family: var(--font-heading); font-weight: 900; font-size: clamp(2.6rem, 6vw, 5.4rem); line-height: .9; letter-spacing: -.03em; color: #fff; }
 .about-name span { color: transparent; -webkit-text-stroke: 1.5px rgba(255,255,255,.85); }
 .about-text { margin: 0 0 16px; max-width: 480px; color: var(--ink-dim); font-size: clamp(1rem, 1.2vw, 1.1rem); line-height: 1.65; }
-.about-thumbs { display: flex; gap: 10px; margin: 28px 0 30px; }
-.about-thumbs img { width: 84px; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 4px; filter: grayscale(1); opacity: .8; }
-.about-link { color: var(--ink); font-weight: 600; text-decoration: none; border-bottom: 1px solid var(--gold); padding-bottom: 4px; }
+.about-link { display: inline-block; margin-top: 18px; color: var(--ink); font-weight: 600; text-decoration: none; border-bottom: 1px solid var(--gold); padding-bottom: 4px; }
 .about-link span { display: inline-block; color: var(--gold); transition: transform .3s; }
 .about-link:hover span { transform: translateX(6px); }
 @media (max-width: 860px) {
