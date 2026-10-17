@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#000000" />
+  <noscript><style>body{opacity:1 !important;}</style></noscript>
   <title>Portfolio — Big Picture Photography</title>
   <meta name="description" content="Portfolio von Big Picture Photography: Sportfotografie, Portrait & Business sowie Eventfotografie aus Detmold und NRW." />
   <link rel="canonical" href="https://bigpicture.photography/portfolio.html" />
@@ -71,13 +72,15 @@
     ]
   }
   </script>
+<link rel="stylesheet" href="style.css" />
 <style>
+/* Portfolio-only layout on top of style.css */
 @font-face { font-family: 'Bounded'; src: url('assets/fonts/BoundedBlack.woff2') format('woff2'); font-weight: 900; }
 :root { --bg: #030303; --ink: #f4f1ec; --dim: rgba(244,241,236,.55); --gold: #deaf67;
   --head: 'Bounded', sans-serif; --mono: 'JetBrains Mono', ui-monospace, monospace; --pad: clamp(16px, 4vw, 56px); }
-* { box-sizing: border-box; margin: 0; padding: 0; }
+.ch h2, .ch p, .strip figure, .note { margin: 0; }
 body { background: var(--bg); color: var(--ink); font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
-img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.ch > img, .strip img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .mono { font: 400 11px/1.4 var(--mono); letter-spacing: .14em; text-transform: uppercase; }
 
 /* film grain */
@@ -86,24 +89,6 @@ body::after { content: ""; position: fixed; inset: -50%; pointer-events: none; z
   animation: grain .5s steps(3) infinite; }
 @keyframes grain { 50% { transform: translate(3%, -2%); } }
 
-
-/* Header: same as style.css .site-nav--brand on the other pages */
-.site-nav { position: fixed; inset: 0 0 auto; z-index: 40; display: flex; align-items: center; justify-content: flex-end; gap: 32px;
-  padding: 24px clamp(20px, 5vw, 64px); background: linear-gradient(180deg, rgba(10,9,8,.7), transparent); }
-.site-nav a { position: relative; display: inline-block; padding: 2px 1px 8px; font: 700 .82rem 'Montserrat', sans-serif;
-  letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.74); text-decoration: none;
-  text-shadow: 0 2px 10px rgba(0,0,0,.6); transition: color .2s; white-space: nowrap; }
-.site-nav a:hover { color: #f1c57a; }
-.site-nav a.active { color: var(--gold); }
-.site-nav a.active::after { content: ''; position: absolute; left: 0; bottom: 0; width: 100%; height: 2px;
-  background: linear-gradient(90deg, var(--gold), #f1c57a); box-shadow: 0 0 8px rgba(222,175,103,.6); }
-.site-nav .site-nav-brand { margin-right: auto; padding: 0; font: 900 14px/1.1 var(--head); letter-spacing: 0; color: var(--ink); white-space: normal; }
-.site-nav .site-nav-brand:hover { color: var(--ink); }
-@media (max-width: 640px) {
-  .site-nav { gap: 14px; padding: 18px 20px; }
-  .site-nav a { font-size: .68rem; }
-  .site-nav .site-nav-brand { font-size: 11px; }
-}
 
 /* Chapter: full-bleed image, giant type knocked out over it */
 .ch { position: relative; height: 78vh; min-height: 520px; overflow: hidden; display: grid; }
@@ -132,10 +117,6 @@ body::after { content: ""; position: fixed; inset: -50%; pointer-events: none; z
 .strip figure:first-child { filter: none; outline: 1px solid var(--gold); outline-offset: 4px; }
 .strip figcaption { position: absolute; left: 0; bottom: -22px; color: var(--dim); }
 
-.cta { min-height: 60vh; display: grid; place-content: center; text-align: center; gap: 30px; padding: 80px var(--pad); }
-.cta h2 { font: 900 clamp(32px, 5vw, 80px)/.95 var(--head); letter-spacing: -.03em; }
-.cta h2 em { font-style: normal; color: transparent; -webkit-text-stroke: 1.5px var(--gold); }
-.cta a { justify-self: center; color: #120e08; background: var(--gold); padding: 18px 30px; border-radius: 999px; text-decoration: none; font-weight: 600; font-size: 14px; }
 
 
 .ch > video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scale(1.08); }
@@ -149,11 +130,11 @@ body::after { content: ""; position: fixed; inset: -50%; pointer-events: none; z
 .strip--video figure { aspect-ratio: 9/16; }
 .ch > img.swap { animation: swap .6s ease; }
 @keyframes swap { from { opacity: .2; } }
-.reveal { opacity: 0; transform: translateY(40px); transition: opacity 1s, transform 1s cubic-bezier(.2,.8,.2,1); }
-.reveal.in { opacity: 1; transform: none; }
+.pf-reveal { opacity: 0; transform: translateY(40px); transition: opacity 1s, transform 1s cubic-bezier(.2,.8,.2,1); }
+.pf-reveal.in { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) {
   body::after { animation: none; }
-  .reveal { opacity: 1; transform: none; transition: none; }
+  .pf-reveal { opacity: 1; transform: none; transition: none; }
   .ch > img, .ch > video, .ch-word { transform: none !important; }
 }
 
@@ -167,23 +148,11 @@ body::after { content: ""; position: fixed; inset: -50%; pointer-events: none; z
 .ch-side a { cursor: pointer; }
 .note { display: flex; gap: 10px; align-items: center; justify-content: center; padding: 0 var(--pad) 60px; color: var(--dim); font-size: 13px; text-align: center; }
 .note svg { width: 16px; fill: var(--gold); flex-shrink: 0; }
-.foot { border-top: 1px solid rgba(244,241,236,.1); padding: 40px var(--pad); display: flex; flex-wrap: wrap; gap: 16px 28px; justify-content: space-between; align-items: center; }
-.foot nav { display: flex; flex-wrap: wrap; gap: 12px 24px; }
-.foot a { color: var(--dim); text-decoration: none; } .foot a:hover { color: var(--gold); }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
-/* Custom cursor: same gold dot + viewfinder ring as style.css / script.js */
-body.has-custom-cursor, body.has-custom-cursor a, body.has-custom-cursor button,
-body.has-custom-cursor .ch > img, body.has-custom-cursor .strip figure { cursor: none; }
-.cursor-dot, .cursor-ring { position: fixed; top: 0; left: 0; z-index: 1000000; pointer-events: none; transform: translate(-50%, -50%); }
-.cursor-dot { width: 6px; height: 6px; border-radius: 50%; background: #f1c57a; }
-.cursor-ring { width: 34px; height: 34px; opacity: .65; transition: width .25s ease, height .25s ease, opacity .25s ease; }
-.cursor-ring svg { width: 100%; height: 100%; display: block; }
-.cursor-ring path { stroke: var(--gold); stroke-width: 1.5; fill: none; transition: stroke .25s ease; }
-.cursor-ring.is-active { width: 52px; height: 52px; opacity: .95; }
-.cursor-ring.is-active path { stroke: #f1c57a; }
 </style>
 </head>
 <body>
+  <div id="pageTransitionOverlay" class="page-transition-overlay is-active" aria-hidden="true"></div>
 <h1 class="sr-only">Portfolio — Big Picture Photography</h1>
 
   <nav class="site-nav site-nav--brand" aria-label="Hauptnavigation">
@@ -252,11 +221,50 @@ body.has-custom-cursor .ch > img, body.has-custom-cursor .strip figure { cursor:
 
 <p class="note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.2l-3.5-3.5L4 14.2l5 5 11-11-1.5-1.5z"/></svg>Alle Bilder zeigen reale Menschen aus echten Shootings — ausschließlich digital nachbearbeitet, keine KI.</p>
 
-<footer class="foot mono">
-  <nav><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a><a href="agb.html">AGB</a><a href="widerruf.html">Widerrufsbelehrung</a></nav>
-  <span>© <span id="year"></span> Big Picture Photography</span>
-</footer>
+<footer class="site-footer">
+    <p class="social-label">Folge mir</p>
+    <div class="social-row">
+      <a href="https://wa.me/4916096290806" class="social-link social-link-whatsapp reveal" target="_blank" rel="noopener" aria-label="WhatsApp" data-tooltip="WhatsApp">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.05 2c-5.52 0-10 4.48-10 10 0 1.77.46 3.45 1.32 4.94L2 22l5.2-1.36A9.94 9.94 0 0012.05 22c5.52 0 10-4.48 10-10s-4.48-10-10-10zm0 18.18a8.2 8.2 0 01-4.18-1.15l-.3-.18-3.1.81.83-3.02-.2-.31a8.2 8.2 0 1114.9-6.42 8.15 8.15 0 01-8 10.27z"/><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.44-.52.15-.17.2-.3.3-.5.1-.19.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.06 2.87 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.62.71.23 1.36.19 1.87.12.57-.08 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35z"/></svg>
+        <span class="social-tooltip">WhatsApp</span>
+      </a>
+      <a href="https://www.instagram.com/bigpicture.photography/" class="social-link social-link-instagram reveal" target="_blank" rel="noopener" aria-label="Instagram" data-tooltip="Instagram">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4c0 3.2-2.6 5.8-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8C2 4.6 4.6 2 7.8 2zm4.2 5.2A4.8 4.8 0 1016.8 12 4.8 4.8 0 0012 7.2zm0 7.8A3 3 0 1115 12a3 3 0 01-3 3zm5.2-8.8a1.2 1.2 0 11-1.2-1.2 1.2 1.2 0 011.2 1.2z"/></svg>
+        <span class="social-tooltip">Instagram</span>
+      </a>
+      <a href="https://www.linkedin.com/company/bigpicture-photography" class="social-link social-link-linkedin reveal" target="_blank" rel="noopener" aria-label="LinkedIn" data-tooltip="LinkedIn">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.4 20.4h-3.5v-5.6c0-1.3 0-3-1.9-3s-2.1 1.4-2.1 2.9v5.7H9.4V9h3.4v1.6h.05c.5-.9 1.6-1.9 3.3-1.9 3.6 0 4.2 2.4 4.2 5.4v6.3zM5.3 7.4a2 2 0 110-4 2 2 0 010 4zM7 20.4H3.6V9H7v11.4z"/></svg>
+        <span class="social-tooltip">LinkedIn</span>
+      </a>
+      <a href="https://www.tiktok.com/@big_picture_photography_?is_from_webapp=1&amp;sender_device=pc" class="social-link social-link-tiktok reveal" target="_blank" rel="noopener" aria-label="TikTok" data-tooltip="TikTok">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.6 0h-3.3v15.3a2.9 2.9 0 11-2.5-2.87V9.1a6.2 6.2 0 105.4 6.14V7.3a8 8 0 004.4 1.3V5.3a4.7 4.7 0 01-3.99-5.3z"/></svg>
+        <span class="social-tooltip">TikTok</span>
+      </a>
+      <a href="https://www.facebook.com/profile.php?id=61565333665923" class="social-link social-link-facebook reveal" target="_blank" rel="noopener" aria-label="Facebook" data-tooltip="Facebook">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12a10 10 0 10-11.5 9.9v-7H7.9V12h2.6V9.8c0-2.6 1.5-4 3.9-4 1.1 0 2.3.2 2.3.2v2.5h-1.3c-1.3 0-1.7.8-1.7 1.6V12h2.9l-.5 2.9h-2.4v7A10 10 0 0022 12z"/></svg>
+        <span class="social-tooltip">Facebook</span>
+      </a>
+    </div>
+    <div class="footer-links">
+      <a href="impressum.html">Impressum</a>
+      <a href="datenschutz.html">Datenschutz</a>
+      <a href="agb.html">AGB</a>
+      <a href="widerruf.html">Widerrufsbelehrung</a>
+    </div>
+    <p class="footer-brand">Big Picture Photography</p>
+    <div class="footer-meta">
+      <span class="footer-meta-copy">&copy; <span id="year"></span></span>
+      <span class="footer-meta-ticks" aria-hidden="true"></span>
+      <span class="footer-meta-geo">51&deg;56'41" N 08&deg;46'44" O</span>
+      <span class="footer-meta-ticks" aria-hidden="true"></span>
+      <span class="footer-meta-loc" id="footerMonth">26&rsquo;</span>
+    </div>
+  </footer>
 <script src="assets/vendor/glightbox/glightbox.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="script.js"></script>
 <script>
 (() => {
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -286,28 +294,10 @@ body.has-custom-cursor .ch > img, body.has-custom-cursor .strip figure { cursor:
 
   // Reveal strips and CTA on enter
   const els = document.querySelectorAll('.strip, .ch-side');
-  els.forEach((e) => e.classList.add('reveal'));
+  els.forEach((e) => e.classList.add('pf-reveal'));
   const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: 0.2 });
   els.forEach((e) => io.observe(e));
 
-  // Custom cursor (mouse only), same as script.js on the other pages
-  if (matchMedia('(pointer: fine)').matches && !reduce) {
-    document.body.classList.add('has-custom-cursor');
-    const dot = document.createElement('div'); dot.className = 'cursor-dot';
-    const ring = document.createElement('div'); ring.className = 'cursor-ring';
-    ring.innerHTML = '<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M2,10 L2,2 L10,2"/><path d="M30,2 L38,2 L38,10"/><path d="M38,30 L38,38 L30,38"/><path d="M10,38 L2,38 L2,30"/></svg>';
-    document.body.append(dot, ring);
-    let mx = innerWidth / 2, my = innerHeight / 2, rx = mx, ry = my;
-    addEventListener('mousemove', (e) => { mx = e.clientX; my = e.clientY; dot.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`; });
-    const loop = () => { rx += (mx - rx) * 0.18; ry += (my - ry) * 0.18; ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%)`; requestAnimationFrame(loop); };
-    loop();
-    document.querySelectorAll('a, button, .ch > img, .strip figure').forEach((el) => {
-      el.addEventListener('mouseenter', () => ring.classList.add('is-active'));
-      el.addEventListener('mouseleave', () => ring.classList.remove('is-active'));
-    });
-  }
-
-  document.getElementById('year').textContent = new Date().getFullYear();
 
   // Lightbox: chapter image or "Bilder ansehen" opens that chapter's strip as gallery
   document.querySelectorAll('.strip').forEach((strip) => {
