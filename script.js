@@ -1,6 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
   document.body.classList.add('is-loaded');
 
+  // Nav gets a solid backing once the page has scrolled (style.css .is-scrolled)
+  const navForScroll = document.querySelector('.site-nav');
+  if (navForScroll) {
+    const syncNavBg = () => navForScroll.classList.toggle('is-scrolled', window.scrollY > 40);
+    window.addEventListener('scroll', syncNavBg, { passive: true });
+    syncNavBg();
+  }
+
   // Page transitions -- a plain multi-page site normally hard-cuts
   // (flash of blank page) on every internal link, which is the single
   // biggest thing separating it from an "agency" feel. A dedicated
