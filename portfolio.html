@@ -498,6 +498,17 @@ body::after { content: ""; position: fixed; inset: -50%; pointer-events: none; z
     });
   });
 
+  // Nav: underline moves from Portfolio to Kontakt while the contact section is on screen
+  const navPf = document.querySelector('.site-nav a[href="portfolio.html"]');
+  const navKontakt = document.querySelector('.site-nav a[href="#kontakt"]');
+  const kontakt = document.getElementById('kontakt');
+  if (navPf && navKontakt && kontakt) {
+    new IntersectionObserver(([e]) => {
+      navKontakt.classList.toggle('active', e.isIntersecting);
+      navPf.classList.toggle('active', !e.isIntersecting);
+    }, { rootMargin: '-40% 0px -40% 0px' }).observe(kontakt);
+  }
+
   if (reduce) return;
   // Scroll: image zooms out, headline drifts slower than the page
   let ticking = false;
