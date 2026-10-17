@@ -92,12 +92,12 @@ body::after { content: ""; position: fixed; inset: -50%; pointer-events: none; z
 .bar a { color: inherit; text-decoration: none; }
 
 /* Chapter: full-bleed image, giant type knocked out over it */
-.ch { position: relative; height: 100vh; min-height: 620px; overflow: hidden; display: grid; }
+.ch { position: relative; height: 78vh; min-height: 520px; overflow: hidden; display: grid; }
 .ch > img { position: absolute; inset: 0; transform: scale(1.08); filter: contrast(1.05) saturate(.95); }
 .ch::before { content: ""; position: absolute; inset: 0; z-index: 1;
   background: radial-gradient(ellipse at 70% 40%, transparent 30%, rgba(3,3,3,.75) 100%), linear-gradient(transparent 55%, var(--bg)); }
 .ch-word { position: absolute; z-index: 2; left: calc(var(--pad) - .06em); bottom: 9vh;
-  font: 900 calc(var(--fit, 19) * 1vw)/.8 var(--head); letter-spacing: -.04em;
+  font: 900 calc(var(--fit, 11) * 1vw)/.85 var(--head); letter-spacing: -.04em;
   color: #fff; mix-blend-mode: difference; }
 .ch-meta { position: absolute; z-index: 3; top: 96px; left: var(--pad); right: var(--pad); display: flex; justify-content: space-between; color: var(--dim); }
 .ch-meta span:first-child { color: var(--gold); }
@@ -105,7 +105,7 @@ body::after { content: ""; position: fixed; inset: -50%; pointer-events: none; z
 .ch-side a { display: inline-block; margin-top: 14px; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--gold); padding-bottom: 4px; }
 
 /* viewfinder overlay */
-.vf { position: absolute; z-index: 2; left: 58%; top: 26%; width: 22vw; aspect-ratio: 3/2; }
+.vf { position: absolute; z-index: 2; left: 60%; top: 26%; width: 16vw; aspect-ratio: 3/2; }
 .vf i { position: absolute; width: 26px; height: 26px; border: 0 solid var(--gold); }
 .vf i:nth-child(1) { top: 0; left: 0; border-width: 1.5px 0 0 1.5px; } .vf i:nth-child(2) { top: 0; right: 0; border-width: 1.5px 1.5px 0 0; }
 .vf i:nth-child(3) { bottom: 0; left: 0; border-width: 0 0 1.5px 1.5px; } .vf i:nth-child(4) { bottom: 0; right: 0; border-width: 0 1.5px 1.5px 0; }
@@ -113,13 +113,13 @@ body::after { content: ""; position: fixed; inset: -50%; pointer-events: none; z
 .vf::after { content: ""; position: absolute; left: 50%; top: 50%; width: 10px; height: 10px; margin: -5px; border: 1px solid rgba(255,255,255,.7); border-radius: 50%; }
 
 /* contact sheet strip */
-.strip { display: flex; gap: 6px; padding: 0 var(--pad) 120px; overflow: hidden; }
-.strip figure { flex: 0 0 clamp(150px, 17vw, 260px); aspect-ratio: 4/5; position: relative; filter: grayscale(1) brightness(.6); transition: .5s; }
+.strip { display: flex; gap: 6px; padding: 0 var(--pad) 90px; overflow: hidden; }
+.strip figure { flex: 0 0 clamp(110px, 12vw, 190px); aspect-ratio: 4/5; position: relative; filter: grayscale(1) brightness(.6); transition: .5s; }
 .strip figure:first-child { filter: none; outline: 1px solid var(--gold); outline-offset: 4px; }
 .strip figcaption { position: absolute; left: 0; bottom: -22px; color: var(--dim); }
 
-.cta { min-height: 80vh; display: grid; place-content: center; text-align: center; gap: 30px; padding: 80px var(--pad); }
-.cta h2 { font: 900 clamp(40px, 8vw, 132px)/.9 var(--head); letter-spacing: -.03em; }
+.cta { min-height: 60vh; display: grid; place-content: center; text-align: center; gap: 30px; padding: 80px var(--pad); }
+.cta h2 { font: 900 clamp(32px, 5vw, 80px)/.95 var(--head); letter-spacing: -.03em; }
 .cta h2 em { font-style: normal; color: transparent; -webkit-text-stroke: 1.5px var(--gold); }
 .cta a { justify-self: center; color: #120e08; background: var(--gold); padding: 18px 30px; border-radius: 999px; text-decoration: none; font-weight: 600; font-size: 14px; }
 
@@ -144,7 +144,7 @@ body::after { content: ""; position: fixed; inset: -50%; pointer-events: none; z
 }
 
 @media (max-width: 760px) {
-  .ch { height: 88vh; } .vf { left: 30%; top: 30%; width: 50vw; }
+  .ch { height: 70vh; } .vf { left: 30%; top: 30%; width: 50vw; }
   .ch-side { left: var(--pad); right: auto; text-align: left; top: 130px; }
   .bar nav { gap: 16px; font-size: 12px; }
   .ch-meta span:last-child { display: none; }
@@ -184,7 +184,7 @@ body::after { content: ""; position: fixed; inset: -50%; pointer-events: none; z
 <section class="ch">
   <img src="assets/images/portfolio/portrait/portrait-bw-smoke.jpg" alt="" style="object-position: 50% 30%">
   <div class="ch-meta mono"><span>02 / 04 — Portrait</span></div>
-  <h2 class="ch-word" style="--fit: 12.5">PORTRAIT</h2>
+  <h2 class="ch-word" style="--fit: 7.5">PORTRAIT</h2>
   <p class="ch-side">Charakter statt Pose. Im Studio, auf Dächern, im ersten Licht.<br><a role="button" tabindex="0" class="open-gal">7 Bilder ansehen →</a></p>
 </section>
 <div class="strip">
