@@ -1198,6 +1198,8 @@ img.img-loaded { opacity: 1; filter: blur(0); }
    translateX at -50% loops it seamlessly. */
 .reach-route {
   overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
   margin-top: 56px; padding-top: 22px;
   border-top: 1px solid var(--border);
 }
@@ -1336,6 +1338,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   font-family: var(--font-heading); font-weight: 800;
   font-size: clamp(1.6rem, 3.3vw, 2.5rem);
   line-height: 1.3;
+  text-wrap: pretty;
   color: #fff;
   margin: 0;
 }
@@ -1610,7 +1613,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 
 .testi-stars { color: var(--gold); font-size: 15px; margin-bottom: 18px; letter-spacing: 2px; }
 .testi-text {
-  position: relative; flex: 1;
+  position: relative; flex: 0 1 auto;
   font-family: var(--font); font-weight: 700;
   font-size: clamp(1.15rem, 2.6vw, 1.6rem); line-height: 1.45;
   color: var(--ink);
@@ -2467,4 +2470,8 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 @media (max-width: 700px) {
   .kontakt-details, .kontakt-steps { grid-template-columns: 1fr; }
   .kontakt-steps { gap: 20px; }
+}
+
+@media (max-width: 560px) {
+  .services-intro-text { font-size: 1.2rem; line-height: 1.35; }
 }
