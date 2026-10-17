@@ -934,7 +934,14 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   position: relative;
   padding: 140px 0;
   background: #fff;
-  clip-path: polygon(0 var(--skew), 100% 0, 100% 100%, 0 calc(100% - var(--skew)));
+  /* Capped independently of --skew's raw value (min(), not var()
+     directly): on the portfolio page this section sticks (top: 260px)
+     while the reel card above it is still settling into place, and
+     the shared scroll-driven --skew (up to 140px on desktop) made the
+     diagonal notch tall enough to visibly cut into the still-stacked
+     card labels above it. Capping it keeps the diagonal-wipe look
+     without the notch reaching that far up. */
+  clip-path: polygon(0 min(var(--skew), 36px), 100% 0, 100% 100%, 0 calc(100% - min(var(--skew), 36px)));
   box-shadow: 0 -24px 60px rgba(0, 0, 0, 0.4);
 }
 @media (max-width: 700px) {
