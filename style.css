@@ -331,9 +331,20 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 }
 .site-nav-divider { display: none; }
 
+/* Home: brand name left, links right (matches the Portfolio header) */
+.site-nav--brand { justify-content: flex-end; }
+.site-nav--brand .site-nav-brand {
+  margin-right: auto; padding: 0;
+  font-family: var(--font-heading); font-weight: 900; font-size: 14px; line-height: 1.1;
+  letter-spacing: 0; color: var(--ink); white-space: normal;
+}
+.site-nav--brand .site-nav-brand:hover { color: var(--ink); }
+
 @media (max-width: 640px) {
   .site-nav { gap: 18px; padding: 18px 20px; justify-content: center; }
   .site-nav a { font-size: 0.68rem; }
+  .site-nav--brand { justify-content: flex-end; gap: 14px; }
+  .site-nav--brand .site-nav-brand { font-size: 11px; }
 }
 
 
