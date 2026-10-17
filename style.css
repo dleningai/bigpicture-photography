@@ -47,9 +47,9 @@ body {
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
 }
-/* Page-transition overlay -- starts opaque (covers the page while
-   fonts/scripts settle) and is removed by script.js once ready, or
-   re-activated just before navigating to another internal page. A
+/* Page-transition overlay -- fades in just before navigating to another
+   internal page. It no longer starts opaque on load: covering the page
+   until script.js ran held back the first paint (mobile LCP ~6s). A
    dedicated element rather than toggling body opacity so it can never
    be masked by a section's own background. */
 .page-transition-overlay {
