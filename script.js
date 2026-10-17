@@ -1,6 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
   document.body.classList.add('is-loaded');
 
+  // Home hero v2: crossfade through the work slides
+  const heroSlides = document.querySelectorAll('.hero-v2-slide');
+  const heroCount = document.querySelector('.hero-v2-count');
+  if (heroSlides.length > 1 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    let heroIdx = 0;
+    setInterval(() => {
+      heroSlides[heroIdx].classList.remove('is-on');
+      heroIdx = (heroIdx + 1) % heroSlides.length;
+      heroSlides[heroIdx].classList.add('is-on');
+      if (heroCount) heroCount.textContent = String(heroIdx + 1).padStart(2, '0');
+    }, 5000);
+  }
+
   // Nav gets a solid backing once the page has scrolled (style.css .is-scrolled)
   const navForScroll = document.querySelector('.site-nav');
   if (navForScroll) {

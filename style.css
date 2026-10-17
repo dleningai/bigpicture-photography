@@ -2440,3 +2440,53 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 @media (max-width: 560px) {
   .services-intro-text { font-size: 1.2rem; line-height: 1.35; }
 }
+
+/* ==========================================================
+   Home hero v2 -- full-bleed crossfading work, big brand type, two CTAs
+   ========================================================== */
+.hero-v2 { position: relative; min-height: 100vh; min-height: 100svh; display: flex; align-items: flex-end; overflow: hidden; padding: 0; background: #000; }
+.hero-v2-media { position: absolute; inset: 0; }
+.hero-v2 .hero-v2-slide {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  opacity: 0; transform: scale(1.08);
+  transition: opacity 1.4s ease, transform 7s linear;
+}
+.hero-v2 .hero-v2-slide.is-on { opacity: 1; transform: scale(1); }
+/* Slides run their own crossfade -- keep them out of the generic blur-up */
+.hero-v2 .hero-v2-slide, .hero-v2 .hero-v2-slide.img-loaded { filter: none; }
+.hero-v2 .hero-v2-slide:not(.is-on) { opacity: 0; }
+.hero-v2-shade {
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(180deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,0) 22%),
+    linear-gradient(0deg, rgba(0,0,0,.88) 0%, rgba(0,0,0,.35) 45%, rgba(0,0,0,0) 70%);
+}
+.hero-v2-content { position: relative; z-index: 2; width: 100%; padding: 0 clamp(20px, 5vw, 64px) clamp(48px, 9vh, 96px); }
+.hero-v2-eyebrow {
+  margin: 0 0 18px; font-family: var(--font-mono); font-size: .78rem; font-weight: 600;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--gold);
+}
+.hero-v2-title { margin: 0; font-family: var(--font-heading); font-weight: 900; font-size: clamp(2rem, 9vw, 9rem); line-height: .88; letter-spacing: -.035em; color: #fff; }
+.hero-v2-title span { display: block; }
+.hero-v2-title-outline { color: transparent; -webkit-text-stroke: 1.5px rgba(255,255,255,.85); }
+.hero-v2-sub { margin: 24px 0 0; max-width: 520px; color: var(--ink-dim); font-size: clamp(1rem, 1.3vw, 1.15rem); line-height: 1.55; }
+.hero-v2-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 18px 28px; margin-top: 32px; }
+.hero-v2-link { color: var(--ink); text-decoration: none; font-weight: 600; border-bottom: 1px solid var(--gold); padding-bottom: 4px; }
+.hero-v2-link span { display: inline-block; color: var(--gold); transition: transform .3s; }
+.hero-v2-link:hover span { transform: translateX(6px); }
+.hero-v2-index { position: absolute; z-index: 2; right: clamp(20px, 5vw, 64px); bottom: clamp(48px, 9vh, 96px); font-family: var(--font-mono); font-size: .78rem; letter-spacing: .14em; color: var(--ink-faint); }
+.hero-v2-count { color: var(--ink); }
+.hero-v2-content > * { opacity: 0; transform: translateY(24px); animation: heroV2In .9s cubic-bezier(.2,.8,.2,1) forwards; }
+.hero-v2-content > :nth-child(2) { animation-delay: .1s; }
+.hero-v2-content > :nth-child(3) { animation-delay: .22s; }
+.hero-v2-content > :nth-child(4) { animation-delay: .32s; }
+@keyframes heroV2In { to { opacity: 1; transform: none; } }
+@media (max-width: 700px) {
+  .hero-v2-title { font-size: 10.5vw; }
+  .hero-v2-title-outline { -webkit-text-stroke-width: 1px; }
+  .hero-v2-index { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-v2-slide { transition: opacity .01s; transform: none; }
+  .hero-v2-content > * { opacity: 1; transform: none; animation: none; }
+}
