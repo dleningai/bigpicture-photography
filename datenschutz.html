@@ -24,7 +24,8 @@
   <link rel="preload" href="assets/fonts/BoundedBlack.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"></noscript>
   <link rel="stylesheet" href="style.css" />
   <script type="application/ld+json">
   {
@@ -84,23 +85,23 @@
   <div class="section legal-panel" style="padding-top:40px;">
     <div class="wrap">
     <div class="legal-section">
-      <h3>1. Allgemeiner Hinweis</h3>
+      <h2>1. Allgemeiner Hinweis</h2>
       <p>Diese Website erhebt selbst keine personenbezogenen Daten, verwendet keine eigenen Cookies und verzichtet auf eigene Tracking-Technologien, soweit auf dieser Seite nicht ausdrücklich anders angegeben.</p>
     </div>
 
     <div class="legal-section">
-      <h3>2. Externe Inhalte</h3>
+      <h2>2. Externe Inhalte</h2>
       <p>Diese Website kann Inhalte von Drittanbietern einbinden, zum Beispiel Videos oder externe Plattformen. Beim Abspielen oder Laden solcher Inhalte kann eine Verbindung zu den Servern des jeweiligen Anbieters hergestellt werden. Dabei können personenbezogene Daten, insbesondere IP-Adresse, technische Nutzungsdaten oder Nutzungsverhalten, verarbeitet werden.</p>
       <p>Wenn Sie das nicht möchten, laden oder nutzen Sie eingebettete externe Inhalte bitte nicht.</p>
     </div>
 
     <div class="legal-section">
-      <h3>3. Kontaktaufnahme</h3>
+      <h2>3. Kontaktaufnahme</h2>
       <p>Wenn Sie uns per E-Mail, Telefon, WhatsApp oder über soziale Netzwerke kontaktieren, werden die von Ihnen übermittelten Angaben ausschließlich zur Bearbeitung Ihrer Anfrage und zur möglichen Vertragsabwicklung verwendet. Eine Weitergabe an Dritte erfolgt nicht, sofern keine gesetzliche Verpflichtung besteht.</p>
     </div>
 
     <div class="legal-section">
-      <h3>4. Verantwortlicher</h3>
+      <h2>4. Verantwortlicher</h2>
       <p>Dimitri Lening<br>Am Bach 31<br>32758 Detmold</p>
       <div class="legal-contact-links">
         <a href="mailto:dimitri_lening@gmx.de">dimitri_lening@gmx.de</a>
@@ -148,9 +149,9 @@
     </div>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-  <script src="script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+  <script src="script.js" defer></script>
 </body>
 </html>
