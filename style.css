@@ -330,6 +330,14 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   box-shadow: 0 0 8px rgba(222, 175, 103, 0.6);
 }
 .site-nav-divider { display: none; }
+/* Once the page scrolls, the nav gets a solid dark backing so the brand
+   and links no longer sit directly on photos/content underneath. */
+.site-nav { transition: background-color 0.3s ease, backdrop-filter 0.3s ease; }
+.site-nav.is-scrolled {
+  background-color: rgba(5, 5, 5, 0.88);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
 
 /* Home: brand name left, links right (matches the Portfolio header) */
 .site-nav--brand { justify-content: flex-end; }
@@ -1190,6 +1198,8 @@ img.img-loaded { opacity: 1; filter: blur(0); }
    translateX at -50% loops it seamlessly. */
 .reach-route {
   overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
   margin-top: 56px; padding-top: 22px;
   border-top: 1px solid var(--border);
 }
@@ -1328,6 +1338,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   font-family: var(--font-heading); font-weight: 800;
   font-size: clamp(1.6rem, 3.3vw, 2.5rem);
   line-height: 1.3;
+  text-wrap: pretty;
   color: #fff;
   margin: 0;
 }
@@ -1602,7 +1613,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 
 .testi-stars { color: var(--gold); font-size: 15px; margin-bottom: 18px; letter-spacing: 2px; }
 .testi-text {
-  position: relative; flex: 1;
+  position: relative; flex: 0 1 auto;
   font-family: var(--font); font-weight: 700;
   font-size: clamp(1.15rem, 2.6vw, 1.6rem); line-height: 1.45;
   color: var(--ink);
@@ -2432,3 +2443,35 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 /* Kontakt page: the white CTA panel is the whole page, clear of the fixed nav */
 .kontakt-page { padding: 120px 0 60px; min-height: 80vh; }
 @media (max-width: 640px) { .kontakt-page { padding-top: 96px; } }
+
+/* Kontakt page: direct contact details + short process under the CTA */
+.kontakt-details {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+  max-width: 900px; margin: 56px auto 0; padding: 0 20px;
+}
+.kontakt-details > div { padding: 22px 18px; border-top: 1px solid rgba(0, 0, 0, 0.12); text-align: left; }
+.kontakt-details dt {
+  font-family: var(--font-heading); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase;
+  color: #b8863f; margin-bottom: 8px;
+}
+.kontakt-details dd { margin: 0; color: #2a2620; font-size: 0.95rem; line-height: 1.5; }
+.kontakt-details a { color: #2a2620; text-decoration: none; border-bottom: 1px solid rgba(184, 134, 63, 0.5); }
+.kontakt-details a:hover { color: #8a6427; }
+.kontakt-steps {
+  list-style: none; counter-reset: step; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+  max-width: 900px; margin: 48px auto 0; padding: 0 20px; text-align: left;
+}
+.kontakt-steps li { counter-increment: step; color: #4a443b; font-size: 0.92rem; line-height: 1.55; }
+.kontakt-steps li::before {
+  content: "0" counter(step); display: block; margin-bottom: 8px;
+  font-family: var(--font-heading); font-size: 1.4rem; color: #1b1814;
+}
+.kontakt-steps strong { display: block; color: #1b1814; margin-bottom: 4px; }
+@media (max-width: 700px) {
+  .kontakt-details, .kontakt-steps { grid-template-columns: 1fr; }
+  .kontakt-steps { gap: 20px; }
+}
+
+@media (max-width: 560px) {
+  .services-intro-text { font-size: 1.2rem; line-height: 1.35; }
+}
