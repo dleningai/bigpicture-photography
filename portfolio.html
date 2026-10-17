@@ -147,6 +147,19 @@ body::after { content: ""; position: fixed; inset: -50%; pointer-events: none; z
 .pf-next-link { font: 900 clamp(26px, 4vw, 56px)/1 var(--head); color: var(--ink); text-decoration: none; letter-spacing: -.02em; }
 .pf-next-link span { display: inline-block; color: var(--gold); transition: transform .3s; }
 .pf-next-link:hover span { transform: translateX(8px); }
+/* Wow layer: chapter image opens from a framed window to full bleed as it
+   scrolls in; headline letters rise out of a mask when the chapter enters */
+.ch > img, .ch > video { clip-path: inset(var(--ci, 0%) round var(--cr, 0px)); }
+.ch-word .ltr { display: inline-block; transform: translateY(105%); transition: transform .9s cubic-bezier(.2,.9,.2,1); transition-delay: calc(var(--i) * 45ms); }
+.ch-word-mask { display: inline-block; overflow: hidden; vertical-align: bottom; padding-bottom: .04em; }
+.ch.is-in .ch-word .ltr { transform: none; }
+.strip figure { opacity: 0; transform: translateY(30px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.8,.2,1), filter .5s; transition-delay: calc(var(--i, 0) * 70ms); }
+.strip.in figure { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .ch-word .ltr { transform: none; transition: none; }
+  .strip figure { opacity: 1; transform: none; }
+  .ch > img, .ch > video { clip-path: none; }
+}
 </style>
 </head>
 <body>
@@ -330,6 +343,17 @@ body::after { content: ""; position: fixed; inset: -50%; pointer-events: none; z
     });
   });
 
+  // Headline letters: wrap each in a mask so they can rise in
+  chapters.forEach((ch) => {
+    const word = ch.querySelector('.ch-word');
+    const text = word.textContent;
+    word.setAttribute('aria-label', text);
+    word.innerHTML = `<span class="ch-word-mask" aria-hidden="true">${[...text].map((c, i) => `<span class="ltr" style="--i:${i}">${c}</span>`).join('')}</span>`;
+  });
+  document.querySelectorAll('.strip').forEach((strip) => strip.querySelectorAll('figure').forEach((f, i) => f.style.setProperty('--i', i)));
+  const chIO = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); chIO.unobserve(e.target); } }), { threshold: 0.35 });
+  chapters.forEach((ch) => chIO.observe(ch));
+
   if (reduce) return;
   // Scroll: image zooms out, headline drifts slower than the page
   let ticking = false;
@@ -340,7 +364,12 @@ body::after { content: ""; position: fixed; inset: -50%; pointer-events: none; z
       const r = ch.getBoundingClientRect();
       if (r.bottom < 0 || r.top > vh) return;
       const p = Math.min(1, Math.max(0, 1 - (r.top + r.height) / (vh + r.height))); // 0 entering, 1 leaving
-      ch.querySelector(':scope > img, :scope > video').style.transform = `scale(${1.18 - p * 0.18}) translateY(${p * 6}%)`;
+      const media = ch.querySelector(':scope > img, :scope > video');
+      media.style.transform = `scale(${1.18 - p * 0.18}) translateY(${p * 6}%)`;
+      // Opening frame: inset 16% -> 0 while the chapter's top moves up the viewport
+      const open = Math.min(1, Math.max(0, (vh - r.top) / (vh * 0.75)));
+      media.style.setProperty('--ci', `${(1 - open) * 16}%`);
+      media.style.setProperty('--cr', `${(1 - open) * 14}px`);
       ch.querySelector('.ch-word').style.transform = `translateY(${(p - 0.5) * -10}vh)`;
     });
   };
