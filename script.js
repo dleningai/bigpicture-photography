@@ -1,14 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   document.body.classList.add('is-loaded');
 
-  // Home Leistungen: hover photo follows the cursor along the row
-  document.querySelectorAll('.svc-row').forEach((row) => {
-    row.addEventListener('mousemove', (e) => {
-      const r = row.getBoundingClientRect();
-      row.style.setProperty('--svc-x', `${e.clientX - r.left}px`);
-    });
-  });
-
   // Home hero v2: crossfade through the work slides
   const heroSlides = document.querySelectorAll('.hero-v2-slide');
   const heroCount = document.querySelector('.hero-v2-count');
@@ -382,6 +374,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Editorial strip is a plain CSS marquee (see style.css) -- no JS
     // needed, it just loops on its own.
+
+    // Leistungen panels: pin the scroller and move the track sideways as
+    // the page scrolls down; each panel's photo drifts slightly against it.
+    const svcScroller = document.getElementById('svcScroller');
+    const svcTrack = document.getElementById('svcTrack');
+    if (svcScroller && svcTrack && hasScrollFx) {
+      svcScroller.classList.add('is-pinned');
+      const svcDistance = () => svcTrack.scrollWidth - window.innerWidth;
+      const svcProgress = document.getElementById('svcProgress');
+      const svcTween = gsap.to(svcTrack, {
+        x: () => -svcDistance(),
+        ease: 'none',
+        scrollTrigger: {
+          trigger: svcScroller,
+          start: 'top top',
+          end: () => `+=${svcDistance()}`,
+          pin: true,
+          scrub: 0.6,
+          invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            if (svcProgress) svcProgress.style.transform = `scaleX(${0.25 + self.progress * 0.75})`;
+          },
+        },
+      });
+      svcTrack.querySelectorAll('.svc-panel-img').forEach((img) => {
+        gsap.fromTo(img, { xPercent: -8 }, {
+          xPercent: 8,
+          ease: 'none',
+          scrollTrigger: { trigger: img.parentElement, containerAnimation: svcTween, start: 'left right', end: 'right left', scrub: true },
+        });
+      });
+    }
 
     // Leistungen → Einsatzgebiet cross-fade — two opacity/position
     // tweens scrubbed to the same scroll range. Every scroll position
