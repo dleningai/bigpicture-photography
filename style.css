@@ -176,7 +176,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 /* These images already run their own reveal/compare animations with a
    dedicated filter — leave them out of the generic blur-up so the two
    don't fight over the filter property. */
-.about-photo-bleed img:not(.img-loaded), .ba-frame img:not(.img-loaded), .hero-bg img:not(.img-loaded) { opacity: 1; filter: none; }
+.about-photo-bleed img:not(.img-loaded), .ba-frame img:not(.img-loaded), .hero-bg img:not(.img-loaded), .ch > img:not(.img-loaded) { opacity: 1; filter: none; }
 @media (prefers-reduced-motion: reduce) {
   img:not(.img-loaded) { opacity: 1; filter: none; }
 }
@@ -2469,7 +2469,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 .hero-v2-link:hover span { transform: translateX(6px); }
 .hero-v2-index { position: absolute; z-index: 2; right: clamp(20px, 5vw, 64px); bottom: clamp(48px, 9vh, 96px); font-family: var(--font-mono); font-size: .78rem; letter-spacing: .14em; color: var(--ink-faint); }
 .hero-v2-count { color: var(--ink); }
-.hero-v2-content > * { opacity: 0; transform: translateY(24px); animation: heroV2In .9s cubic-bezier(.2,.8,.2,1) forwards; }
+.hero-v2-content > :not(.hero-v2-title) { opacity: 0; transform: translateY(24px); animation: heroV2In .9s cubic-bezier(.2,.8,.2,1) forwards; }
 .hero-v2-content > :nth-child(2) { animation-delay: .1s; }
 .hero-v2-content > :nth-child(3) { animation-delay: .22s; }
 .hero-v2-content > :nth-child(4) { animation-delay: .32s; }
