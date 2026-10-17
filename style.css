@@ -2428,3 +2428,7 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 @media (prefers-reduced-motion: reduce) {
   .pf-swipe-hint, .pf-swipe-hint-arrow.left, .pf-swipe-hint-arrow.right { animation: none; }
 }
+
+/* Kontakt page: the white CTA panel is the whole page, clear of the fixed nav */
+.kontakt-page { padding: 120px 0 60px; min-height: 80vh; }
+@media (max-width: 640px) { .kontakt-page { padding-top: 96px; } }
