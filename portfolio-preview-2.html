@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portfolio Vorschau 2</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+@font-face { font-family: 'Bounded'; src: url('assets/fonts/BoundedBlack.woff2') format('woff2'); font-weight: 900; }
+:root { --bg: #030303; --ink: #f4f1ec; --dim: rgba(244,241,236,.55); --gold: #deaf67;
+  --head: 'Bounded', sans-serif; --mono: 'JetBrains Mono', ui-monospace, monospace; --pad: clamp(16px, 4vw, 56px); }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--ink); font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
+img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.mono { font: 400 11px/1.4 var(--mono); letter-spacing: .14em; text-transform: uppercase; }
+
+/* film grain */
+body::after { content: ""; position: fixed; inset: -50%; pointer-events: none; z-index: 50; opacity: .07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain .5s steps(3) infinite; }
+@keyframes grain { 50% { transform: translate(3%, -2%); } }
+
+.bar { position: fixed; inset: 0 0 auto; z-index: 40; display: flex; justify-content: space-between; padding: 22px var(--pad); mix-blend-mode: difference; color: #fff; }
+.bar b { font: 900 14px var(--head); }
+.bar nav { display: flex; gap: 28px; }
+.bar a { color: inherit; text-decoration: none; }
+
+/* Chapter: full-bleed image, giant type knocked out over it */
+.ch { position: relative; height: 100vh; min-height: 620px; overflow: hidden; display: grid; }
+.ch > img { position: absolute; inset: 0; transform: scale(1.08); filter: contrast(1.05) saturate(.95); }
+.ch::before { content: ""; position: absolute; inset: 0; z-index: 1;
+  background: radial-gradient(ellipse at 70% 40%, transparent 30%, rgba(3,3,3,.75) 100%), linear-gradient(transparent 55%, var(--bg)); }
+.ch-word { position: absolute; z-index: 2; left: calc(var(--pad) - .06em); bottom: 9vh;
+  font: 900 calc(var(--fit, 19) * 1vw)/.8 var(--head); letter-spacing: -.04em;
+  color: #fff; mix-blend-mode: difference; }
+.ch-meta { position: absolute; z-index: 3; top: 96px; left: var(--pad); right: var(--pad); display: flex; justify-content: space-between; color: var(--dim); }
+.ch-meta span:first-child { color: var(--gold); }
+.ch-side { position: absolute; z-index: 3; right: var(--pad); top: 150px; max-width: 300px; color: var(--dim); font-size: 14px; line-height: 1.6; text-align: right; }
+.ch-side a { display: inline-block; margin-top: 14px; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--gold); padding-bottom: 4px; }
+
+/* viewfinder overlay */
+.vf { position: absolute; z-index: 2; left: 58%; top: 26%; width: 22vw; aspect-ratio: 3/2; }
+.vf i { position: absolute; width: 26px; height: 26px; border: 0 solid var(--gold); }
+.vf i:nth-child(1) { top: 0; left: 0; border-width: 1.5px 0 0 1.5px; } .vf i:nth-child(2) { top: 0; right: 0; border-width: 1.5px 1.5px 0 0; }
+.vf i:nth-child(3) { bottom: 0; left: 0; border-width: 0 0 1.5px 1.5px; } .vf i:nth-child(4) { bottom: 0; right: 0; border-width: 0 1.5px 1.5px 0; }
+.vf span { position: absolute; top: calc(100% + 10px); left: 0; color: var(--gold); white-space: nowrap; }
+.vf::after { content: ""; position: absolute; left: 50%; top: 50%; width: 10px; height: 10px; margin: -5px; border: 1px solid rgba(255,255,255,.7); border-radius: 50%; }
+
+/* contact sheet strip */
+.strip { display: flex; gap: 6px; padding: 0 var(--pad) 120px; overflow: hidden; }
+.strip figure { flex: 0 0 clamp(150px, 17vw, 260px); aspect-ratio: 4/5; position: relative; filter: grayscale(1) brightness(.6); transition: .5s; }
+.strip figure:first-child { filter: none; outline: 1px solid var(--gold); outline-offset: 4px; }
+.strip figcaption { position: absolute; left: 0; bottom: -22px; color: var(--dim); }
+
+.cta { min-height: 80vh; display: grid; place-content: center; text-align: center; gap: 30px; padding: 80px var(--pad); }
+.cta h2 { font: 900 clamp(40px, 8vw, 132px)/.9 var(--head); letter-spacing: -.03em; }
+.cta h2 em { font-style: normal; color: transparent; -webkit-text-stroke: 1.5px var(--gold); }
+.cta a { justify-self: center; color: #120e08; background: var(--gold); padding: 18px 30px; border-radius: 999px; text-decoration: none; font-weight: 600; font-size: 14px; }
+
+
+.ch > video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scale(1.08); }
+.ch > img, .ch > video { will-change: transform; }
+.ch-word { will-change: transform; }
+.strip figure { cursor: pointer; overflow: hidden; }
+.strip figure img, .strip figure video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.strip figure.on { filter: none; outline: 1px solid var(--gold); outline-offset: 4px; }
+.strip figure:first-child:not(.on) { filter: grayscale(1) brightness(.6); outline: 0; }
+.strip figure:hover { filter: grayscale(0) brightness(.9); }
+.strip--video figure { aspect-ratio: 9/16; }
+.ch > img.swap { animation: swap .6s ease; }
+@keyframes swap { from { opacity: .2; } }
+.reveal { opacity: 0; transform: translateY(40px); transition: opacity 1s, transform 1s cubic-bezier(.2,.8,.2,1); }
+.reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  body::after { animation: none; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .ch > img, .ch > video, .ch-word { transform: none !important; }
+}
+
+@media (max-width: 760px) {
+  .ch { height: 88vh; } .vf { left: 30%; top: 30%; width: 50vw; }
+  .ch-side { left: var(--pad); right: auto; text-align: left; top: 130px; }
+  .bar nav { gap: 16px; font-size: 12px; }
+  .ch-meta span:last-child { display: none; }
+}
+</style>
+</head>
+<body>
+<header class="bar"><b>BIG PICTURE</b><nav class="mono"><a href="#">Home</a><a href="#">Portfolio</a><a href="#">Kontakt</a></nav></header>
+
+<section class="ch">
+  <img src="assets/images/portfolio/sport/sport-boxer-scream.jpg" alt="">
+  <div class="ch-meta mono"><span>01 / 04 — Sport</span></div>
+  <div class="vf"><i></i><i></i><i></i><i></i></div>
+  <h2 class="ch-word">SPORT</h2>
+  <p class="ch-side">Kraft, Fokus und Emotion – der Moment, der in 1/1000 Sekunde entscheidet.<br><a href="#">12 Bilder ansehen →</a></p>
+</section>
+<div class="strip">
+  <figure><img src="assets/images/portfolio/sport/sport-boxer-scream.jpg" alt=""><figcaption class="mono">001</figcaption></figure>
+  <figure><img src="assets/images/portfolio/sport/sport-muaythai-kick.jpg" alt=""><figcaption class="mono">002</figcaption></figure>
+  <figure><img src="assets/images/portfolio/sport/sport-football-rain.jpg" alt=""><figcaption class="mono">003</figcaption></figure>
+  <figure><img src="assets/images/portfolio/sport/sport-corner-rest.jpg" alt=""><figcaption class="mono">004</figcaption></figure>
+  <figure><img src="assets/images/portfolio/sport/sport-street-boxing-night.jpg" alt=""><figcaption class="mono">005</figcaption></figure>
+  <figure><img src="assets/images/portfolio/sport/sport-deadlift-gym.jpg" alt=""><figcaption class="mono">006</figcaption></figure>
+</div>
+
+<section class="ch">
+  <img src="assets/images/portfolio/portrait/portrait-bw-smoke.jpg" alt="" style="object-position: 50% 30%">
+  <div class="ch-meta mono"><span>02 / 04 — Portrait</span></div>
+  <h2 class="ch-word" style="--fit: 12.5">PORTRAIT</h2>
+  <p class="ch-side">Charakter statt Pose. Im Studio, auf Dächern, im ersten Licht.<br><a href="#">7 Bilder ansehen →</a></p>
+</section>
+<div class="strip">
+  <figure><img src="assets/images/portfolio/portrait/portrait-bw-smoke.jpg" alt="" loading="lazy"><figcaption class="mono">001</figcaption></figure>
+  <figure><img src="assets/images/portfolio/portrait/portrait-studio-glasses.jpg" alt="" loading="lazy"><figcaption class="mono">002</figcaption></figure>
+  <figure><img src="assets/images/portfolio/portrait/portrait-editorial-rooftop.jpg" alt="" loading="lazy"><figcaption class="mono">003</figcaption></figure>
+  <figure><img src="assets/images/portfolio/portrait/portrait-outdoor-jacket-sunrise.jpg" alt="" loading="lazy"><figcaption class="mono">004</figcaption></figure>
+  <figure><img src="assets/images/portfolio/portrait/portrait-denim-jacket-shadow.jpg" alt="" loading="lazy"><figcaption class="mono">005</figcaption></figure>
+  <figure><img src="assets/images/portfolio/portrait/portrait-rooftop-laugh.jpg" alt="" loading="lazy"><figcaption class="mono">006</figcaption></figure>
+</div>
+
+<section class="ch">
+  <img src="assets/images/portfolio/event/event-crowd-sparklers.jpg" alt="">
+  <div class="ch-meta mono"><span>03 / 04 — Event</span></div>
+  <h2 class="ch-word">EVENT</h2>
+  <p class="ch-side">Stimmung, Dynamik und die ungestellten Augenblicke, die ein Event unvergesslich machen.<br><a href="#">5 Bilder ansehen →</a></p>
+</section>
+<div class="strip">
+  <figure><img src="assets/images/portfolio/event/event-crowd-sparklers.jpg" alt="" loading="lazy"><figcaption class="mono">001</figcaption></figure>
+  <figure><img src="assets/images/portfolio/event/event-dancefloor-party.jpg" alt="" loading="lazy"><figcaption class="mono">002</figcaption></figure>
+  <figure><img src="assets/images/portfolio/event/event-dj-set.jpg" alt="" loading="lazy"><figcaption class="mono">003</figcaption></figure>
+  <figure><img src="assets/images/portfolio/event/event-dj-rooftop.jpg" alt="" loading="lazy"><figcaption class="mono">004</figcaption></figure>
+  <figure><img src="assets/images/portfolio/event/event-crowd-peace-sign.jpg" alt="" loading="lazy"><figcaption class="mono">005</figcaption></figure>
+</div>
+
+<section class="ch">
+  <video src="assets/videos/portfolio/reels/reel-8.mp4" poster="assets/videos/portfolio/reels/reel-8-poster.jpg" autoplay muted loop playsinline></video>
+  <div class="ch-meta mono"><span>04 / 04 — Video</span></div>
+  <h2 class="ch-word">VIDEO</h2>
+  <p class="ch-side">Reels und Kurzvideos – schneller Schnitt, echte Energie, Bilder, die im Feed nicht ignoriert werden.</p>
+</section>
+<div class="strip strip--video">
+  <figure><video src="assets/videos/portfolio/reels/reel-8.mp4" poster="assets/videos/portfolio/reels/reel-8-poster.jpg" muted loop playsinline preload="none"></video><figcaption class="mono">001</figcaption></figure>
+  <figure><video src="assets/videos/portfolio/reels/reel-3-aleks.mp4" poster="assets/videos/portfolio/reels/reel-3-aleks-poster.jpg" muted loop playsinline preload="none"></video><figcaption class="mono">002</figcaption></figure>
+  <figure><video src="assets/videos/portfolio/reels/reel-7.mp4" poster="assets/videos/portfolio/reels/reel-7-poster.jpg" muted loop playsinline preload="none"></video><figcaption class="mono">003</figcaption></figure>
+</div>
+
+<section class="cta">
+  <p class="mono" style="color:var(--gold)">Frame 000 — dein Projekt</p>
+  <h2>Dein Bild<br><em>fehlt noch.</em></h2>
+  <a href="#">Auf WhatsApp anfragen →</a>
+</section>
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const chapters = [...document.querySelectorAll('.ch')];
+
+  // Strips: first frame active; hover/click swaps chapter's main image
+  document.querySelectorAll('.strip').forEach((strip) => {
+    const ch = strip.previousElementSibling;
+    const main = ch.querySelector(':scope > img, :scope > video');
+    const frames = [...strip.querySelectorAll('figure')];
+    frames[0].classList.add('on');
+    frames.forEach((f) => {
+      const media = f.querySelector('img, video');
+      const pick = () => {
+        frames.forEach((x) => x.classList.toggle('on', x === f));
+        if (main.tagName === 'IMG' && media.tagName === 'IMG' && main.src !== media.src) {
+          main.src = media.src; main.classList.remove('swap'); void main.offsetWidth; main.classList.add('swap');
+        } else if (main.tagName === 'VIDEO' && media.tagName === 'VIDEO' && main.src !== media.src) {
+          main.poster = media.poster; main.src = media.src; main.play().catch(() => {});
+        }
+      };
+      f.addEventListener('mouseenter', () => { pick(); if (media.tagName === 'VIDEO') media.play().catch(() => {}); });
+      f.addEventListener('mouseleave', () => { if (media.tagName === 'VIDEO') media.pause(); });
+      f.addEventListener('click', pick);
+    });
+  });
+
+  // Reveal strips and CTA on enter
+  const els = document.querySelectorAll('.strip, .cta > *, .ch-side');
+  els.forEach((e) => e.classList.add('reveal'));
+  const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: 0.2 });
+  els.forEach((e) => io.observe(e));
+
+  if (reduce) return;
+  // Scroll: image zooms out, headline drifts slower than the page
+  let ticking = false;
+  const update = () => {
+    ticking = false;
+    const vh = innerHeight;
+    chapters.forEach((ch) => {
+      const r = ch.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > vh) return;
+      const p = Math.min(1, Math.max(0, 1 - (r.top + r.height) / (vh + r.height))); // 0 entering, 1 leaving
+      ch.querySelector(':scope > img, :scope > video').style.transform = `scale(${1.18 - p * 0.18}) translateY(${p * 6}%)`;
+      ch.querySelector('.ch-word').style.transform = `translateY(${(p - 0.5) * -10}vh)`;
+    });
+  };
+  addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+  update();
+})();
+</script>
+</body>
+</html>
