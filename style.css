@@ -1317,77 +1317,67 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   .services-intro-media { width: 100px; margin: 4px 16px 12px 0; }
 }
 
-/* Leistungen as an editorial numbered list — number, title, short text,
-   one per row with a hairline divider between them. Same visual family
-   as the portfolio's numbered chapters, but static (no stacking, no
-   pin): a plain, always-fully-readable list suits a handful of short
-   service descriptions better than more scroll machinery. */
+/* Leistungen as a bento grid -- asymmetric tiles (wide/narrow alternating)
+   instead of a uniform list or equal-size card grid. Tiles share a 1px
+   hairline grid built from the gap+background trick (gap shows the
+   --border color through, each tile paints over it with --bg). */
 .service-list {
   max-width: var(--max-width); margin: 0 auto; padding: 0 20px;
 }
-.service-row {
-  position: relative;
-  display: flex; align-items: flex-start; gap: 44px;
-  padding: 64px 20px;
-  margin: 0 -20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.16);
+.service-bento {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
 }
-.service-list .service-row:first-child { border-top: none; }
-/* Small corner-bracket mark, same motif as the stats section, so the
-   two "numbered list" patterns on the page read as one system. */
-.service-row::after {
+.service-bento-tile {
+  position: relative;
+  grid-column: span 3;
+  background: var(--bg);
+  padding: 56px 40px;
+  display: flex; flex-direction: column;
+  min-height: 280px;
+}
+.service-bento-tile:nth-child(1) { grid-column: span 4; }
+.service-bento-tile:nth-child(2) { grid-column: span 2; }
+.service-bento-tile:nth-child(3) { grid-column: span 2; }
+.service-bento-tile:nth-child(4) { grid-column: span 4; }
+/* Small corner-bracket mark, same motif used across the stats/portfolio
+   sections, so the bento tiles still read as part of the same system. */
+.service-bento-tile::after {
   content: '';
-  position: absolute; top: 64px; right: 20px;
+  position: absolute; top: 24px; right: 24px;
   width: 14px; height: 14px;
   border-top: 1.5px solid rgba(255, 255, 255, 0.3);
   border-right: 1.5px solid rgba(255, 255, 255, 0.3);
 }
-.service-row-num {
+.service-bento-num {
   font-family: var(--font-heading); font-weight: 800;
-  font-size: clamp(3.6rem, 7vw, 6.4rem); line-height: 1;
-  color: var(--ink-dim); opacity: 0.4; flex-shrink: 0;
+  font-size: clamp(2.6rem, 4.4vw, 3.8rem); line-height: 1;
+  color: var(--ink-dim); opacity: 0.4;
 }
-/* Media thumbnail -- a still for now; script.js/HTML can swap the img
-   for a muted autoplay <video loop> per row later without touching this
-   layout (same box, same object-fit). */
-.service-row-media {
-  width: clamp(240px, 26vw, 380px); aspect-ratio: 4 / 3; flex-shrink: 0;
-  border-radius: 10px;
-  overflow: hidden;
-}
-.service-row-media img,
-.service-row-media video {
-  width: 100%; height: 100%;
-  object-fit: cover;
-}
-.service-row-body {
-  flex: 1 1 auto; min-width: 0;
-  display: flex; flex-direction: column;
-  align-self: stretch;
-}
-.service-row-title {
+.service-bento-title {
   font-family: var(--font-heading); font-weight: 800;
-  font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
   color: #fff;
   letter-spacing: -0.01em;
-  margin: 0;
+  margin: 18px 0 0;
   overflow-wrap: anywhere;
 }
-/* Pushes the label+text block to the bottom of the row, level with the
-   thumbnail's bottom edge -- title sits up top instead, matching the
-   reference layout's top-title/bottom-copy split. */
-.service-row-copy { margin-top: auto; padding-top: 32px; }
-.service-row-text {
-  color: var(--ink-dim); font-size: 1rem; line-height: 1.7;
-  max-width: 560px;
-  margin: 0;
+.service-bento-text {
+  color: var(--ink-dim); font-size: 0.96rem; line-height: 1.65;
+  margin: auto 0 0;
+  padding-top: 20px;
+  max-width: 460px;
 }
-@media (max-width: 640px) {
-  .service-row { flex-wrap: wrap; gap: 20px; padding: 40px 20px; }
-  .service-row-num { font-size: 2.4rem; }
-  .service-row-media { width: 100%; aspect-ratio: 16 / 10; order: 1; }
-  .service-row-body { order: 2; flex: 1 1 100%; }
-  .service-row-copy { padding-top: 16px; }
+@media (max-width: 760px) {
+  .service-bento { grid-template-columns: 1fr; }
+  .service-bento-tile,
+  .service-bento-tile:nth-child(1),
+  .service-bento-tile:nth-child(2),
+  .service-bento-tile:nth-child(3),
+  .service-bento-tile:nth-child(4) { grid-column: span 1; padding: 40px 24px; min-height: 0; }
 }
 
 /* ==========================================================
@@ -2113,14 +2103,23 @@ img.img-loaded { opacity: 1; filter: blur(0); }
    a landscape hero). Instead: a simple wall of upright video tiles, main
    reel larger, no cropping trickery. */
 .pf-row-media--reels { padding-bottom: 40px; }
+/* Real horizontal scroll, not just a wrapping row -- snaps one tile at
+   a time, works with touch swipe and trackpad natively (no JS needed).
+   A short edge fade hints there's more to scroll past the viewport. */
 .pf-reel-wall {
-  display: flex; align-items: flex-end; justify-content: center; gap: 18px;
-  flex-wrap: wrap;
+  display: flex; align-items: flex-end; gap: 18px;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  padding: 0 calc(50% - 90px) 12px;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 60px, #000 calc(100% - 60px), transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 60px, #000 calc(100% - 60px), transparent 100%);
 }
 .pf-reel-tile {
   position: relative;
+  flex-shrink: 0;
   width: 180px; aspect-ratio: 9 / 16; border-radius: 6px; overflow: hidden;
   box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+  scroll-snap-align: center;
 }
 .pf-reel-tile video { width: 100%; height: 100%; object-fit: cover; display: block; }
 /* Extra gallery photos beyond the one shown per chapter — present so
@@ -2139,11 +2138,12 @@ img.img-loaded { opacity: 1; filter: blur(0); }
   #sport .pf-row-head { padding-top: 100px; }
   .pf-row-num { font-size: 1.6rem; }
   .pf-row-media { padding: 0 20px 44px; }
-  .pf-reel-wall { gap: 10px; }
+  .pf-reel-wall { gap: 10px; padding: 0 calc(50% - 50px) 12px; }
   .pf-reel-tile { width: 100px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .pf-row-media-fg img, .pf-row-media-bg img { transition: none; }
+  .pf-reel-wall { scroll-snap-type: none; }
 }
 
 
