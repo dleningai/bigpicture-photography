@@ -302,8 +302,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // Hero logo curtain — fades/scales out as the visitor scrolls past the
     // hero, scrubbed directly to scroll position so scrolling back up to
     // the top brings it right back (not a one-time, timer-based intro).
+    // Mobile never got this sequence smooth across several attempts
+    // (scrub jank on real hardware despite blur/scale/pinType
+    // mitigations that all tested fine in this sandbox). Rather than
+    // keep chasing it, mobile skips the whole pinned logo->name->cover
+    // sequence and gets a plain static hero instead (.hero-box below,
+    // already styled for exactly this via the
+    // ".hero-photo:not(.js-hero-sequence) .hero-box" CSS fallback) --
+    // zero scroll-linked JS cost. Desktop is unaffected.
     const heroLogoIntro = document.getElementById('heroLogoIntro');
-    if (heroLogoIntro && hasScrollFx) {
+    if (heroLogoIntro && hasScrollFx && window.innerWidth > 700) {
       heroLogoIntro.classList.add('js-active');
       const heroLogoImg = heroLogoIntro.querySelector('img');
       // Fix the starting point explicitly — otherwise GSAP captures
