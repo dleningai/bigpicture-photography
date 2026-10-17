@@ -54,6 +54,14 @@ document.addEventListener('DOMContentLoaded', () => {
     show(0);
   }
 
+  // Home "Über mich": portrait opens from a frame when scrolled into view
+  const aboutPhoto = document.querySelector('.about-photo');
+  if (aboutPhoto) {
+    new IntersectionObserver((entries, obs) => entries.forEach((e) => {
+      if (e.isIntersecting) { e.target.classList.add('is-in'); obs.unobserve(e.target); }
+    }), { threshold: 0.3 }).observe(aboutPhoto);
+  }
+
   // Home hero v2: crossfade through the work slides
   const heroSlides = document.querySelectorAll('.hero-v2-slide');
   const heroCount = document.querySelector('.hero-v2-count');
