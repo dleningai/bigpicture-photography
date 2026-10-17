@@ -2532,3 +2532,39 @@ img.img-loaded { opacity: 1; filter: blur(0); }
 .trust .trust-stats { grid-template-columns: repeat(4, 1fr); gap: 32px 40px; }
 @media (max-width: 900px) { .trust .trust-stats { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 480px) { .trust .trust-stats { gap: 28px 24px; } }
+
+/* ==========================================================
+   Home Kundenstimmen v2 -- two rows of quote cards drifting in opposite
+   directions (pause on hover), then a closing link to Kontakt
+   ========================================================== */
+.tq { padding: clamp(100px, 15vh, 160px) 0 clamp(60px, 9vh, 90px); overflow: hidden; }
+.tq-head { max-width: 1100px; margin: 0 auto clamp(40px, 7vh, 64px); padding: 0 clamp(20px, 5vw, 64px); }
+.tq-eyebrow { margin: 0 0 16px; font-family: var(--font-mono); font-size: .78rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); }
+.tq-title { margin: 0; font-family: var(--font-heading); font-weight: 900; font-size: clamp(2.4rem, 6vw, 5.2rem); line-height: 1; letter-spacing: -.03em; color: #fff; }
+.tq-title span { color: transparent; -webkit-text-stroke: 1.5px rgba(255,255,255,.8); }
+.tq-row { overflow: hidden; padding: 10px 0; -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
+.tq-track { display: flex; gap: 20px; width: max-content; animation: tqScroll 60s linear infinite; }
+.tq-row--b .tq-track { animation-direction: reverse; animation-duration: 70s; }
+.tq-row:hover .tq-track { animation-play-state: paused; }
+@keyframes tqScroll { from { transform: translateX(0); } to { transform: translateX(-25%); } }
+.tq-card {
+  flex: 0 0 auto; width: clamp(280px, 30vw, 420px); margin: 0; padding: 28px 28px 24px;
+  background: #0d0d0d; border: 1px solid rgba(255,255,255,.08); border-radius: 6px;
+  display: flex; flex-direction: column; gap: 16px;
+  transition: border-color .3s, transform .4s cubic-bezier(.2,.8,.2,1);
+}
+.tq-card:hover { border-color: var(--gold-border); transform: translateY(-4px); }
+.tq-stars { color: var(--gold); letter-spacing: 3px; font-size: .9rem; }
+.tq-card blockquote { margin: 0; color: var(--ink); font-size: clamp(.98rem, 1.15vw, 1.08rem); line-height: 1.55; font-weight: 500; }
+.tq-card figcaption { margin-top: auto; font-family: var(--font-mono); font-size: .76rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-faint); }
+.tq-review { margin: 36px 0 0; padding: 0 clamp(20px, 5vw, 64px); text-align: center; font-size: .9rem; }
+.tq-review a { color: var(--ink-dim); text-decoration: none; border-bottom: 1px solid rgba(255,255,255,.2); padding-bottom: 3px; }
+.tq-review a:hover { color: var(--gold); border-color: var(--gold); }
+.tq-cta { display: grid; justify-items: center; text-align: center; padding: clamp(80px, 14vh, 150px) clamp(20px, 5vw, 64px); border-top: 1px solid var(--border); }
+.tq-cta-link { font-family: var(--font-heading); font-weight: 900; font-size: clamp(2.2rem, 7vw, 6.5rem); line-height: 1; letter-spacing: -.03em; color: #fff; text-decoration: none; }
+.tq-cta-link span { display: inline-block; color: var(--gold); transition: transform .4s cubic-bezier(.2,.8,.2,1); }
+.tq-cta-link:hover span { transform: translateX(14px); }
+@media (prefers-reduced-motion: reduce) {
+  .tq-track { animation: none; }
+  .tq-row { overflow-x: auto; }
+}
