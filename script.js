@@ -125,7 +125,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const reachRouteTrack = document.getElementById('reachRouteTrack');
   const reachSection = document.getElementById('reach');
   const hasSkew = skewPanels.length > 0;
-  const hasRoute = reachRouteTrack && reachSection;
+  // On narrow/touch viewports the scroll-coupled JS transform on the route
+  // ticker was the one thing users kept reporting as janky, even after the
+  // rAF loop was gated to near-viewport only -- the per-frame
+  // getBoundingClientRect() + style write on real mobile hardware is still
+  // too costly. Mobile gets a plain CSS @keyframes marquee instead (GPU
+  // compositor only, zero JS per frame); desktop keeps the scroll-coupled
+  // version since that's the "mit Bewegung, aber per scroll" effect.
+  const isNarrowViewport = window.matchMedia('(max-width: 700px)').matches;
+  if (reachRouteTrack) reachRouteTrack.classList.toggle('is-css-marquee', isNarrowViewport);
+  const hasRoute = reachRouteTrack && reachSection && !isNarrowViewport;
   if ((hasSkew || hasRoute) && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     const routeHalfWidth = hasRoute ? reachRouteTrack.scrollWidth / 2 : 0;
     let rafId = null;
@@ -168,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
       { rootMargin: '50% 0px' }
     );
     skewPanels.forEach((panel) => nearObserver.observe(panel));
-    if (reachSection) nearObserver.observe(reachSection);
+    if (hasRoute) nearObserver.observe(reachSection);
   }
 
   // Smooth scroll (Lenis) + scroll-driven hero parallax (GSAP). Both are
